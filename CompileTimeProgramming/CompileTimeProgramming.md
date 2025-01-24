@@ -14,13 +14,6 @@
   * [Programmieren mit konstanten Ausdrücken und Funktionen](#link6)
   * [Literatur](#link7)
 
-
-
-
-
-
-
-
 ---
 
 #### Quellcode

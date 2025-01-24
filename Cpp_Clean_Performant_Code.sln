@@ -7,6 +7,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CompileTimeProgramming", "C
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Essential Utilities", "Essential Utilities\Essential Utilities.vcxproj", "{3A635FE3-4DF5-4DD6-9CDE-90FD080E3C0C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7133C3C8-7CD8-44E5-AD77-FEA92E46AB34}"
+	ProjectSection(SolutionItems) = preProject
+		Readme.md = Readme.md
+		Readme_Clean_Code.md = Readme_Clean_Code.md
+		Readme_Performance.md = Readme_Performance.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

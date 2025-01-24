@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <print>
+#include <unordered_map>
 
 namespace MetaprogrammingHashExample {
 
@@ -25,17 +26,41 @@ namespace MetaprogrammingHashExample {
 
 namespace MetaprogrammingHashExample {
 
+    // https://stackoverflow.com/questions/43435279/what-does-const-charan-mean
+    // HIER SEHR GUT BESCHRIEBEN !!!!!!!!!!!!!!:
+    // https://stackoverflow.com/questions/30981499/meaning-of-the-syntax-const-char-x
+    // Arrays of unknown bound
+    // https://en.cppreference.com/w/cpp/language/array 
+
     // =======================================================================
     // Metaprogramming: Example PrehashedString
 
-    // https://stackoverflow.com/questions/43435279/what-does-const-charan-mean
+    // Excursus: Passing an array to a function without decay
+    // (without loss of the length of the array):
+    // Syntax: const char (&x)[]
+    // use a reference to an array of const char.
+    // 
+    // The main use of reference to an array is in a template
+    // where the number of elements is than deduced
 
-    // https://stackoverflow.com/questions/30981499/meaning-of-the-syntax-const-char-x
+    template <typename T, size_t N>
+    void useArray(const T(&a)[N])
+    {
+        size_t length{ N };
+        std::println("Array Length: {} / First Element: {}", length, a[0]);
+    }
 
-    // HIER SEHR GUT BESCHRIEBEN !!!!!!!!!!!!!!
+    static void metaprogramming_02()
+    {
+        int array[] { 1, 2, 3, 4, 5};
+        useArray(array);
 
-    // Arrays of unknown bound
-    // https://en.cppreference.com/w/cpp/language/array 
+        char chars[]{ "ABC"};
+        useArray(chars);
+    }
+}
+
+namespace MetaprogrammingHashExample {
 
     class PrehashedString
     {
@@ -46,43 +71,132 @@ namespace MetaprogrammingHashExample {
 
     public:
         template <size_t N>
-        constexpr PrehashedString(const char(&str)[N])
-            : m_hash{ hashFunction(&str[0]) },
-            m_size{ N - 1 },       // The subtraction is to avoid null at end
-            m_strptr{ &str[0] } {
+        constexpr PrehashedString(const char(&str)[N]) :
+            m_hash{ hashFunction(&str[0]) },
+            m_size{ N - 1 }, 
+            m_strptr{ &str[0] }
+        {}
 
-            size_t dummy = N;
+        constexpr auto size() const { return m_size; }
+        constexpr auto get_hash() const { return m_hash; }
+        constexpr auto c_str() const -> const char* { return m_strptr; }
+
+        constexpr auto operator== (const PrehashedString& other) const {
+            return m_size == other.m_size &&
+                std::equal(c_str(), c_str() + m_size, other.c_str());
         }
 
-        auto operator==(const PrehashedString& other) const {
-            return
-                m_size == 
-                    other.m_size &&
-                    std::equal(c_str(), c_str() + m_size, other.c_str());
-        }
-
-        auto operator!=(const PrehashedString& other) const {
+        constexpr auto operator!=(const PrehashedString& other) const {
             return !(*this == other);
         }
-
-        constexpr auto size()     const { return m_size; }
-        constexpr auto get_hash() const { return m_hash; }
-        constexpr auto c_str()    const -> const char* { return m_strptr; }
     };
 
-    static void metaprogramming_02()
+    static void metaprogramming_03()
     {
-        auto prehashed_string = PrehashedString{ "my_string" };
+        constexpr auto prehashed_string = PrehashedString{ 
+            "my_string sdfsdfsd fsd sd sdfsdf" 
+        };
+        
+        constexpr auto size{ prehashed_string.size() };
+        constexpr auto hash{ prehashed_string.get_hash() };
+        constexpr auto c_str{ prehashed_string.c_str() };
+    }
 
-        // This does not compile
-        // The prehashed_string object would be broken if the str is modified
-        //auto str = std::string{ "my_string" };
-        //auto prehashed_string2 = PrehashedString{ str.c_str() };
+    static void metaprogramming_04()
+    {
+        constexpr auto prehashed_string{ 
+            PrehashedString{ "my_string sdfsdfsd fsd sd sdfsdf" } 
+        };
+        
+        constexpr auto size{ prehashed_string.size() };
+        constexpr auto hash{ prehashed_string.get_hash() };
+        constexpr auto c_str{ prehashed_string.c_str() };
 
-        // This does not compile.
-        // The prehashed_string object would be broken if the strptr is deleted
-        //auto* strptr = new char[5];
-        //auto prehashed_string = PrehashedString{ strptr };
+        constexpr auto another_prehashed_string{
+            PrehashedString{ "my_string sdfsdfsd f" }
+        };
+
+        constexpr auto another_size{ another_prehashed_string.size() };
+        constexpr auto another_hash{ another_prehashed_string.get_hash() };
+        constexpr auto another_c_str{ another_prehashed_string.c_str() };
+
+        constexpr auto equals{ prehashed_string == another_prehashed_string };
+    }
+}
+
+namespace std
+{
+    // =======================================================================
+    // Metaprogramming: Example PrehashedString
+
+    // An overload of struct std::hash(), which simply returns the hash value.
+    // This overload is used by std::unordered_map, std::unordered_set, or any
+    // other class from the standard library that uses hash values.
+
+    using namespace MetaprogrammingHashExample;
+
+    template<>
+    struct hash<PrehashedString> {
+        constexpr auto operator()(const PrehashedString& s) const {
+            return s.get_hash();
+        }
+    };
+}
+
+namespace MetaprogrammingHashExample {
+
+    static constexpr auto test_prehashed_string() {
+        const auto& hash_fn = std::hash<PrehashedString>{};
+        const auto& str = PrehashedString("abc");
+        return hash_fn(str);
+    }
+
+    static void metaprogramming_05()
+    {
+        constexpr auto hash{ test_prehashed_string() };
+    }
+
+    // dummy class Bitmap
+    class Bitmap{};
+
+    // external function which loads a bitmap from the filesystem
+    static auto load_bitmap_from_filesystem(const char* path) -> Bitmap { return {}; }
+
+    static auto get_bitmap_resource(const PrehashedString& path) -> const Bitmap&
+    {
+        // Static storage of all loaded bitmaps
+        static auto loaded_bitmaps =
+            std::unordered_map<PrehashedString, Bitmap>{};
+
+        // If the bitmap is already in loaded_bitmaps, return it
+        if (loaded_bitmaps.count(path) > 0) {
+            return loaded_bitmaps.at(path);
+        }
+        
+        // The bitmap isn't already loaded, load and return it
+        auto bitmap = load_bitmap_from_filesystem(path.c_str());
+        loaded_bitmaps.emplace(path, std::move(bitmap));
+
+        return loaded_bitmaps.at(path);
+    }
+
+    static auto draw_bitmap(const Bitmap& bm) {
+    }
+
+    static auto draw_something() {
+        const auto& bm = get_bitmap_resource("my_bitmap.png");
+        draw_bitmap(bm);
+    }
+
+    static auto draw_something_again() {
+        const auto& bm = get_bitmap_resource("my_bitmap.png");
+        draw_bitmap(bm);
+    }
+
+    static auto test_draw_something()
+    {
+        draw_something();
+        draw_something_again();
     }
 }
 
@@ -122,13 +236,11 @@ void compile_time_hash_strings()
 {
     using namespace MetaprogrammingHashExample;
 
-    metaprogramming_01();
-    metaprogramming_02();
+    //metaprogramming_01();
+    //metaprogramming_02();
     //metaprogramming_03();
     //metaprogramming_04();
-    //metaprogramming_05();
-    //metaprogramming_06();
-    //metaprogramming_07();
+    metaprogramming_05();
 }
 
 // ===========================================================================
