@@ -7,6 +7,9 @@
 
 namespace MetaprogrammingWithTemplates {
 
+    // =======================================================================
+    // Metaprogramming with Templates: Function Template
+
     template <typename T>
     auto powerN(const T& v, size_t n) {
         auto product = T{ 1 };
@@ -34,7 +37,8 @@ namespace MetaprogrammingWithTemplates {
         std::println("powerN: {}", y);
     }
 
-    // =============================================================
+    // =======================================================================
+    // Metaprogramming with Templates: Class Template
 
     template <typename T>
     class Rectangle
@@ -62,6 +66,9 @@ namespace MetaprogrammingWithTemplates {
 
 namespace std
 {
+    // =======================================================================
+    // Supporting std::println
+
     using namespace MetaprogrammingWithTemplates;
 
     template <typename T>
@@ -89,6 +96,9 @@ namespace std
 
 namespace MetaprogrammingWithTemplates {
 
+    // =======================================================================
+    // Function Template accepting a Class Template 
+
     template <typename T>
     auto isSquare(const Rectangle<T>& rect) {
         return rect.width() == rect.height();
@@ -111,6 +121,10 @@ namespace MetaprogrammingWithTemplates {
 }
 
 namespace MetaprogrammingWithTemplates {
+
+    // =======================================================================
+    // Using integers as template parameters and
+    // providing specializations of a template
 
     template <int N, typename T>
     auto morePowerN(const T& v) {
@@ -148,8 +162,10 @@ namespace MetaprogrammingWithTemplates {
 
 namespace MetaprogrammingWithTemplates {
 
-    // Abbreviated function templates
-    auto powerN(const auto& v, int n) {
+    // =======================================================================
+    // Abbreviated Function Templates Syntax
+
+    static auto anotherPowerN(const auto& v, int n) {
         auto product = decltype(v){ 1 };
         for (size_t i{}; i != n; ++i) {
             product *= v;
@@ -159,11 +175,42 @@ namespace MetaprogrammingWithTemplates {
 
     static void metaprogramming_05()
     {
-        auto x = powerN<float>(1.5f, 3);   // x is a float
-        auto y = powerN<int>(3, 4);        // y is an int
+        auto x = anotherPowerN<float>(1.5f, 3);   // x is a float
+        auto y = anotherPowerN<int>(3, 4);        // y is an int
 
         std::println("powerN: {}", x);
         std::println("powerN: {}", y);
+    }
+}
+
+namespace MetaprogrammingWithTemplates {
+
+    // =======================================================================
+    // Programming with constant expressions and functions
+    // constexpr vs consteval
+
+    static constexpr auto sum(int x, int y, int z) { return x + y + z; }
+
+    static consteval auto sub(int x, int y, int z) { return x - y - z; }
+
+    static void metaprogramming_06()
+    {
+        constexpr auto value1 = 123 + 456;          // constant expression
+
+        constexpr auto value2 = sum(1, 2, 3);       //  value2 is constexpr
+
+        auto value3 = sum(4, 5, 6);                 //  value3 is not constexpr
+    }
+
+    static void metaprogramming_07()
+    {
+        int x, y, z;
+
+        std::cin >> x >> y >> z;                    // get user input
+        
+        auto value1 = sum(x, y, z);
+
+        // auto value2 = sub(x, y, z);              // error: call to immediate function is not a constant expression
     }
 }
 
@@ -173,11 +220,13 @@ void compile_time_programming()
 {
     using namespace MetaprogrammingWithTemplates;
 
-    //metaprogramming_01();
-    //metaprogramming_02();
-    //metaprogramming_03();
-    //metaprogramming_04();
+    metaprogramming_01();
+    metaprogramming_02();
+    metaprogramming_03();
+    metaprogramming_04();
     metaprogramming_05();
+    metaprogramming_06();
+    metaprogramming_07();
 }
 
 // ===========================================================================

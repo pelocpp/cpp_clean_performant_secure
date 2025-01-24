@@ -6,59 +6,69 @@
 
 ## Inhalt
 
-  * [Verwendete Werkzeuge](#link1)
-  * [Allgemeines](#link2)
-  * [Verhalten der Klassen `std::jthread` und `std::jthread` bzgl. des `join`-Aufrufs](#link3)
+  * [Allgemeines](#link1)
+  * [Metaprogrammierung mit Templates](#link2)
+  * [Verwendung von ganzen Zahlen als Template Parameter](#link3)
+  * [Spezialisierung eines Templates](#link4)
+  * [Abgekürzte Funktionstemplates &ndash; *Abbreviated Function Templates*](#link5)
+  * [Programmieren mit konstanten Ausdrücken und Funktionen](#link6)
+  * [Literatur](#link7)
 
----
 
-## Verwendete Werkzeuge <a name="link1"></a>
 
-<ins>Klassen</ins>:
 
-  * Klasse `std::thread`
-  * Klasse `std::jthread`
+
+
+
 
 ---
 
 #### Quellcode
 
-[*JThread.cpp*: `std::jthread`-Objekt und `join()`-Aufruf](JThread.cpp).<br />
+[*CompileTimeProgramming*](CompileTimeProgramming.cpp).<br />
 
 ---
 
-## Allgemeines <a name="link2"></a>
-
-Die Implementierung der `std::jthread`-Klasse basiert auf der bereits vorhandenen Klasse `std::thread`.
-
-Die `std::jthread`-Klasse ist eine Wrapper-Klasse um Klasse `std::thread` herum,
-sie stellt dieselben öffentlichen Methoden bereit, die die Aufrufe einfach weiterleiten.
-
-Es kann folglich jedes `std::thread`-Objekt in ein `std::jthread`-Objekt umgewandelt werden,
-dieses verhält sich dann genau so, wie sich ein entsprechendes `std::thread`-Objekt verhalten würde.
+## Allgemeines <a name="link1"></a>
 
 ---
 
-## Verhalten der Klassen `std::jthread` und `std::jthread` bzgl. des `join`-Aufrufs <a name="link3"></a>
+## Metaprogrammierung mit Templates <a name="link2"></a>
 
-Wenn ein `std::thread`-Objekt den Zustand *joinable* besitzt
-und dieses auf Grund des Verlassens eines Blocks (Gültigkeitsbereichs) aufgeräumt wird,
-wird in seinem Destruktor automatisch `std::terminate` aufgerufen.
+---
 
-Ein `std::thread`-Objekt besitzt den Zustand *joinable*,
-wenn am Objekt keine der beiden Methoden `join()` oder `detach()` aufgerufen wurde.
+## Verwendung von ganzen Zahlen als Template Parameter <a name="link3"></a>
 
-Ein Objekt der Klasse `std::jthread` verhält sich hier anders: Der Destruktor des Objekts ruft automatisch `join` auf,
-wenn sich der Thread noch im Zustand *joinable* befindet.
+---
+
+## Spezialisierung eines Templates <a name="link4"></a>
+
+---
+
+## Abgekürzte Funktionstemplates &ndash; *Abbreviated Function Templates* <a name="link5"></a>
+
+---
+
+## Abgekürzte Funktionstemplates &ndash; *Abbreviated Function Templates* <a name="link5"></a>
+
+---
+
+## Literatur <a name="link6"></a>
 
 ---
 
 [Zurück](../../Readme.md)
 
+Die Anregungen zum konzeptionellen Beispiel finden Sie unter
+
+[https://refactoring.guru/design-patterns](https://refactoring.guru/design-patterns/memento/cpp/example#example-0)
+
+und 
+
+[https://www.codeproject.com](https://www.codeproject.com/Articles/455228/Design-Patterns-3-of-3-Behavioral-Design-Patterns#Memento)
+
+vor.
+
+Das *Real*-*World*-Beispiel kann [hier](https://vishalchovatiya.com/posts//memento-design-pattern-in-modern-cpp/) im Original nachgelesen werden.
+
 ---
-
-
-
-
-
-

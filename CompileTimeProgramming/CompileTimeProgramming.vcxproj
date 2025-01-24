@@ -130,6 +130,7 @@
   <ItemGroup>
     <ClCompile Include="CompileTimeProgramming.cpp" />
     <ClCompile Include="Program.cpp" />
+    <ClCompile Include="CompileTimeHashStrings.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CompileTimeProgramming.md" />
