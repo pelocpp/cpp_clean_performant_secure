@@ -28,6 +28,15 @@ namespace MetaprogrammingHashExample {
     // =======================================================================
     // Metaprogramming: Example PrehashedString
 
+    // https://stackoverflow.com/questions/43435279/what-does-const-charan-mean
+
+    // https://stackoverflow.com/questions/30981499/meaning-of-the-syntax-const-char-x
+
+    // HIER SEHR GUT BESCHRIEBEN !!!!!!!!!!!!!!
+
+    // Arrays of unknown bound
+    // https://en.cppreference.com/w/cpp/language/array 
+
     class PrehashedString
     {
     private:
@@ -41,26 +50,39 @@ namespace MetaprogrammingHashExample {
             : m_hash{ hashFunction(&str[0]) },
             m_size{ N - 1 },       // The subtraction is to avoid null at end
             m_strptr{ &str[0] } {
+
+            size_t dummy = N;
         }
 
         auto operator==(const PrehashedString& other) const {
             return
-                m_size == other.m_size &&
-                std::equal(c_str(), c_str() + m_size, other.c_str());
+                m_size == 
+                    other.m_size &&
+                    std::equal(c_str(), c_str() + m_size, other.c_str());
         }
 
         auto operator!=(const PrehashedString& other) const {
             return !(*this == other);
         }
 
-        constexpr auto size()const { return m_size; }
-        constexpr auto get_hash()const { return m_hash; }
-        constexpr auto c_str()const->const char* { return m_strptr; }
+        constexpr auto size()     const { return m_size; }
+        constexpr auto get_hash() const { return m_hash; }
+        constexpr auto c_str()    const -> const char* { return m_strptr; }
     };
 
     static void metaprogramming_02()
     {
-        constexpr auto prehashed_string = PrehashedString{ "my_string" };
+        auto prehashed_string = PrehashedString{ "my_string" };
+
+        // This does not compile
+        // The prehashed_string object would be broken if the str is modified
+        //auto str = std::string{ "my_string" };
+        //auto prehashed_string2 = PrehashedString{ str.c_str() };
+
+        // This does not compile.
+        // The prehashed_string object would be broken if the strptr is deleted
+        //auto* strptr = new char[5];
+        //auto prehashed_string = PrehashedString{ strptr };
     }
 }
 
@@ -100,8 +122,8 @@ void compile_time_hash_strings()
 {
     using namespace MetaprogrammingHashExample;
 
-    //metaprogramming_01();
-    //metaprogramming_02();
+    metaprogramming_01();
+    metaprogramming_02();
     //metaprogramming_03();
     //metaprogramming_04();
     //metaprogramming_05();
