@@ -175,6 +175,7 @@ namespace MetaprogrammingHashExample {
         
         // The bitmap isn't already loaded, load and return it
         auto bitmap = load_bitmap_from_filesystem(path.c_str());
+
         loaded_bitmaps.emplace(path, std::move(bitmap));
 
         return loaded_bitmaps.at(path);
