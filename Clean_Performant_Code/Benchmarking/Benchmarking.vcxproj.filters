@@ -34,5 +34,8 @@
     <Image Include="Quick_Cpp_Benchmark_String_Comparison_SSO.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Quick_Cpp_Benchmark_StdVector.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

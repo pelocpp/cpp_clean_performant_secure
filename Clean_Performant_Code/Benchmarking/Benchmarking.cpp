@@ -29,11 +29,12 @@ namespace benchmark {
     
         auto begin() { return StateIterator{}; }
         auto end() { return StateIterator{}; }
+
+        auto range(auto param) { return 0; }
     };
 
     void DoNotOptimize (auto) {}
 }
-
 
 namespace PerformingBenchmarks {
 
@@ -130,6 +131,44 @@ namespace PerformingBenchmarks {
 
         // To-Copy End
         // ======================================================================
+    }
+
+    namespace PerformingBenchmarkStdVector {
+
+        static constexpr int VectorSize = 100;
+
+        static void VecPushBack(benchmark::State& state) {
+
+            const auto size = state.range(0);
+
+            for (auto _ : state) {
+                std::vector<char> vec;
+                for (auto i = 0; i < size; ++i)
+                    vec.push_back(' ');
+
+                benchmark::DoNotOptimize(vec);
+            }
+        }
+
+        // remove comment
+        // BENCHMARK(VecPushBack)->Arg(VectorSize);
+
+        static void VecReserve(benchmark::State& state) {
+
+            const auto size = state.range(0);
+
+            for (auto _ : state) {
+                std::vector<char> vec;
+                vec.reserve(size);
+                for (auto i = 0; i < size; ++i)
+                    vec.push_back(' ');
+
+                benchmark::DoNotOptimize(vec);
+            }
+        }
+
+        // remove comment
+        // BENCHMARK(VecReserve)->Arg(VectorSize);
     }
 }
 

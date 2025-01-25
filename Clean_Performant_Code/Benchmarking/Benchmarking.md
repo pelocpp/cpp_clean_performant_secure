@@ -8,16 +8,22 @@
 
   * [Allgemeines](#link1)
   * [Vergleich `const std::string&` versus `std::string_view`](#link2)
+  * [Klasse `std::vector`: Bedeutung der `reserve`-Methode](#link3)
 
 ---
 
 #### Quellcode
 
-[*CompileTimeProgramming*](CompileTimeProgramming.cpp).<br />
+[*Benchmarking*](Benchmarking.cpp).<br />
 
 ---
 
 ## Allgemeines <a name="link1"></a>
+
+In diesem Projekt setzen wir das Tool [Quick C++ Benchmark](https://quick-bench.com/) von *Fred Tingaud* ein.
+
+Eine gute und vor allem ergänzende Tool-Beschreibung finden
+wir [hier](https://jaredmil.medium.com/micro-benchmarking-c-with-quick-bench-8788b1edcf79).
 
 ---
 
@@ -85,6 +91,8 @@ Hier kommt es zur Anwendung der *SSO* (*Small String Optimization*):
 
 <img src="Quick_Cpp_Benchmark_String_Comparison_SSO.png" width="700">
 
+*Abbildung* 1: Aufruf der `prefix`-Funktion mit `std::string`-Klasse.
+
 #### Erste Ausführung
 
 Im zweiten Vergleich wurde eine sehr lange Zeichenkette verwendet.
@@ -97,5 +105,77 @@ Man kann in jedem Fall sagen, das es *nicht* die Halde ist.
 
 <img src="Quick_Cpp_Benchmark_String_Comparison_No_SSO.png" width="700">
 
+*Abbildung* 2: Aufruf der `prefix`-Funktion mit `std::string_view`-Klasse.
+
 ---
 
+## Klasse `std::vector`: Bedeutung der `reserve`-Methode <a name="link3"></a>
+
+Instanzen der Klasse `std::vector` belegen nach ihrer Erzeugung
+mit dem Standardkonstruktor zunächst keinen Speicherplatz auf dem Heap.
+
+Dieser wird sukzessive bei entsprechenden `push_back`-Aufrufen reserviert.
+Hier wird sehr viel unnütze Rechenzeit verbraucht, wenn die &ndash; gerne auch ungefähre &ndash; 
+Kapazität des `std::vector`-Objekts vorab weiß.
+
+Mit der `reserve`-Methode lässt sich die *Kapazität* (benötigter Speicherplatz) des  
+`std::vector`-Objekts vorab reservieren.
+
+Das folgende Code-Snippet stellt eine Vergleich mit und ohne Aufruf
+der `reserve`-Methode an:
+
+```cpp
+01: static constexpr int VectorSize = 100;
+02: 
+03: static void VecPushBack(benchmark::State& state) {
+04:   
+05:   const auto size = state.range(0);
+06: 
+07:   for (auto _ : state) {
+08:     std::vector<char> vec;    
+09:     for (auto i = 0; i < size; ++i) 
+10:       vec.push_back(' ');
+11: 
+12:     benchmark::DoNotOptimize(vec);
+13:   }
+14: }
+15: 
+16: BENCHMARK(VecPushBack)->Arg(VectorSize);
+17: 
+18: static void VecReserve(benchmark::State& state) {
+19:   
+20:   const auto size = state.range(0);
+21: 
+22:   for (auto _ : state) {
+23:     std::vector<char> vec;
+24:     vec.reserve(size);
+25:     for (auto i = 0; i < size; ++i) 
+26:       vec.push_back(' ');
+27: 
+28:     benchmark::DoNotOptimize(vec);
+29:   }
+30: }
+31: 
+32: BENCHMARK(VecReserve)->Arg(VectorSize);
+```
+
+Betrachten Sie die Zeilen 16 und 5 des Listings:
+In Zeile 16 wird durch
+
+```cpp
+BENCHMARK(VecPushBack)->Arg(VectorSize);
+```
+
+ein Parameter &ndash; hier: `VectorSize` ist gleich `100` (siehe Zeile 1) &ndash; 
+an die Benchmark-Funktion übergeben. Mit `state.range(0)`
+kann man aus einem `State`-Objekt den Wert des Parameters abholen.
+
+<img src="Quick_Cpp_Benchmark_StdVector.png" width="700">
+
+*Abbildung* 3: `std::vector`-Objekt mit und ohne Aufruf der `reserve`-Methode.
+
+---
+
+[Zurück](../../Readme.md)
+
+---

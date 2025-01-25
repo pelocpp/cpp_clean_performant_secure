@@ -135,6 +135,7 @@
     <None Include="Benchmarking.md" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Quick_Cpp_Benchmark_StdVector.png" />
     <Image Include="Quick_Cpp_Benchmark_String_Comparison_No_SSO.png" />
     <Image Include="Quick_Cpp_Benchmark_String_Comparison_SSO.png" />
   </ItemGroup>
