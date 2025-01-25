@@ -22,6 +22,15 @@
 
 ---
 
+  * [*Quick C++ Benchmark*](https://quick-bench.com/)<br/>
+    (abgerufen am 25.01.2025).
+
+    Quick Bench ist ein Mikro-Benchmarking-Tool, mit dem die Leistung von zwei oder mehreren Code-Snippets schnell und einfach verglichen werden kann.
+
+   
+   
+---
+
 ## Clean Code
 
 ---

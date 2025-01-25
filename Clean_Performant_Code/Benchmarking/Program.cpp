@@ -1,14 +1,12 @@
 // ===========================================================================
-// Program.cpp // Compile Time Programming
+// Program.cpp // Benchmarking
 // ===========================================================================
 
-extern void compile_time_programming();
-extern void compile_time_hash_strings();
+extern void performance_performing_benchmarks();
 
 int main()
 {
-    compile_time_programming();
-    compile_time_hash_strings();
+    performance_performing_benchmarks();
     return 0;
 }
 
