@@ -31,6 +31,7 @@ namespace benchmark {
         auto end() { return StateIterator{}; }
 
         auto range(auto param) { return 0; }
+        auto KeepRunning() { return false; }
     };
 
     void DoNotOptimize (auto) {}
@@ -135,7 +136,10 @@ namespace PerformingBenchmarks {
 
     namespace PerformingBenchmarkStdVector {
 
-        static constexpr int VectorSize = 100;
+        // ======================================================================
+        // To-Copy Begin
+
+        static constexpr int VectorSize = 50;
 
         static void VecPushBack(benchmark::State& state) {
 
@@ -151,7 +155,7 @@ namespace PerformingBenchmarks {
         }
 
         // remove comment
-        // BENCHMARK(VecPushBack)->Arg(VectorSize);
+        BENCHMARK(VecPushBack) //->Arg(VectorSize);
 
         static void VecReserve(benchmark::State& state) {
 
@@ -168,16 +172,16 @@ namespace PerformingBenchmarks {
         }
 
         // remove comment
-        // BENCHMARK(VecReserve)->Arg(VectorSize);
+        BENCHMARK(VecReserve) //->Arg(VectorSize);
+
+        // To-Copy End
+        // ======================================================================
     }
 }
 
 // =================================================================
 
-void performance_performing_benchmarks()
-{
-    using namespace PerformingBenchmarks;
-}
+void performance_performing_benchmarks() {}
 
 // ===========================================================================
 // End-of-File

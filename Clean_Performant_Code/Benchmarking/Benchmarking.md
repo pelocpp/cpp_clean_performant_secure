@@ -25,6 +25,9 @@ In diesem Projekt setzen wir das Tool [Quick C++ Benchmark](https://quick-bench.
 Eine gute und vor allem ergänzende Tool-Beschreibung finden
 wir [hier](https://jaredmil.medium.com/micro-benchmarking-c-with-quick-bench-8788b1edcf79).
 
+Eine ganze Reihe von Vergleichsbeispielen hat *Mathieu Mallet* entwickelt
+und [hier](https://gist.github.com/mathieumallet/22c8fa248b9d260b79f92090ffcd42f3) publiziert.
+
 ---
 
 ## Vergleich `const std::string&` versus `std::string_view` <a name="link2"></a>
@@ -125,7 +128,7 @@ Das folgende Code-Snippet stellt eine Vergleich mit und ohne Aufruf
 der `reserve`-Methode an:
 
 ```cpp
-01: static constexpr int VectorSize = 100;
+01: static constexpr int VectorSize = 50;
 02: 
 03: static void VecPushBack(benchmark::State& state) {
 04:   
