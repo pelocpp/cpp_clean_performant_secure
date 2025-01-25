@@ -21,8 +21,8 @@ namespace MetaprogrammingWithTemplates {
 
     static void metaprogramming_01()
     {
-        auto x = powerN<float>(1.5f, 3);   // x is a float
-        auto y = powerN<int>(3, 4);        // y is an int
+        auto x{ powerN<float>(1.5f, 3) };   // x is a float
+        auto y{ powerN<int>(3, 4) };        // y is an int
 
         std::println("powerN: {}", x);
         std::println("powerN: {}", y);
@@ -30,8 +30,8 @@ namespace MetaprogrammingWithTemplates {
 
     static void metaprogramming_02()
     {
-        auto x = powerN(2.5, 5);           // x is a float
-        auto y = powerN(3, 6);             // y is an int
+        auto x{ powerN(2.5, 5) };           // x is a float
+        auto y{ powerN(3, 6) };             // y is an int
 
         std::println("powerN: {}", x);
         std::println("powerN: {}", y);
@@ -106,8 +106,8 @@ namespace MetaprogrammingWithTemplates {
 
     static void metaprogramming_03()
     {
-        auto r1 = Rectangle<float>{ 1.0f, 2.0f, 3.0f, 4.0f };
-        auto r2 = Rectangle{ -2, -2, 4, 4 };
+        auto r1{ Rectangle<float>{ 1.0f, 2.0f, 3.0f, 4.0f } };
+        auto r2{ Rectangle{ -2, -2, 4, 4 } };
 
         std::println("{}", r1);
         std::println("{}", r2);
@@ -143,19 +143,19 @@ namespace MetaprogrammingWithTemplates {
 
     static void metaprogramming_04()
     {
-        auto x1 = morePowerN<2>(4);
-        auto x2 = morePowerN<3>(4);
+        auto x1{ morePowerN<2>(4) };
+        auto x2{ morePowerN<3>(4) };
 
         std::println("{}", x1);
         std::println("{}", x2);
 
-        auto x3 = morePowerN<3,double>(4.5);
-        auto x4 = morePowerN<3,float>(4.5);
+        auto x3 { morePowerN<3,double>(4.5) };
+        auto x4 { morePowerN<3,float>(4.5) };
 
         std::println("{}", x3);
         std::println("{}", x4);
 
-        auto x5 = morePowerN<2>(4);
+        auto x5{ morePowerN<2>(4) };
         std::println("{}", x5);
     }
 }
@@ -175,8 +175,8 @@ namespace MetaprogrammingWithTemplates {
 
     static void metaprogramming_05()
     {
-        auto x = anotherPowerN<float>(1.5f, 3);   // x is a float
-        auto y = anotherPowerN<int>(3, 4);        // y is an int
+        auto x{ anotherPowerN<float>(1.5f, 3) };   // x is a float
+        auto y{ anotherPowerN<int>(3, 4) };        // y is an int
 
         std::println("powerN: {}", x);
         std::println("powerN: {}", y);
@@ -195,11 +195,15 @@ namespace MetaprogrammingWithTemplates {
 
     static void metaprogramming_06()
     {
-        constexpr auto value1 = 123 + 456;          // constant expression
+        constexpr auto value1 = 1 + 2 + 3;          // constant expression
 
         constexpr auto value2 = sum(1, 2, 3);       //  value2 is constexpr
 
-        auto value3 = sum(4, 5, 6);                 //  value3 is not constexpr
+        constexpr auto value3 = sub(5, 1, 1);       //  value3 is constexpr
+
+        auto value4 = sum(1, 2, 3);                 //  value4 is not constexpr
+
+        auto value5 = sub(5, 1, 1);                 //  value5 is not constexpr
     }
 
     static void metaprogramming_07()

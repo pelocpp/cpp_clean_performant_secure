@@ -3,19 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CompileTimeProgramming", "CompileTimeProgramming\CompileTimeProgramming.vcxproj", "{CCD18941-2C50-44FA-89A8-FCA42F78CDAC}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Essential Utilities", "Essential Utilities\Essential Utilities.vcxproj", "{3A635FE3-4DF5-4DD6-9CDE-90FD080E3C0C}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7133C3C8-7CD8-44E5-AD77-FEA92E46AB34}"
 	ProjectSection(SolutionItems) = preProject
+		Buch_Nicolai_Josuttis_Cpp_Move_Semantics.png = Buch_Nicolai_Josuttis_Cpp_Move_Semantics.png
+		Buch_Stephan_Roth_Clean_Cpp_20.png = Buch_Stephan_Roth_Clean_Cpp_20.png
+		Literature.md = Literature.md
+		Buch_Andrist_Sehr_High Performance_Cpp.png = Buch_Andrist_Sehr_High Performance_Cpp.png
 		Readme.md = Readme.md
 		Readme.txt = Readme.txt
 		Readme_Clean_Code.md = Readme_Clean_Code.md
 		Readme_Performance.md = Readme_Performance.md
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BestPractices", "BestPractices\BestPractices.vcxproj", "{4D448ADE-1218-4583-AECE-DBF2BD0E95CF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BestPractices", "Clean_Performant_Code\BestPractices\BestPractices.vcxproj", "{4D448ADE-1218-4583-AECE-DBF2BD0E95CF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CompileTimeProgramming", "Clean_Performant_Code\CompileTimeProgramming\CompileTimeProgramming.vcxproj", "{CCD18941-2C50-44FA-89A8-FCA42F78CDAC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Essential Utilities", "Clean_Performant_Code\Essential Utilities\Essential Utilities.vcxproj", "{3A635FE3-4DF5-4DD6-9CDE-90FD080E3C0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +29,14 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4D448ADE-1218-4583-AECE-DBF2BD0E95CF}.Debug|x64.ActiveCfg = Debug|x64
+		{4D448ADE-1218-4583-AECE-DBF2BD0E95CF}.Debug|x64.Build.0 = Debug|x64
+		{4D448ADE-1218-4583-AECE-DBF2BD0E95CF}.Debug|x86.ActiveCfg = Debug|Win32
+		{4D448ADE-1218-4583-AECE-DBF2BD0E95CF}.Debug|x86.Build.0 = Debug|Win32
+		{4D448ADE-1218-4583-AECE-DBF2BD0E95CF}.Release|x64.ActiveCfg = Release|x64
+		{4D448ADE-1218-4583-AECE-DBF2BD0E95CF}.Release|x64.Build.0 = Release|x64
+		{4D448ADE-1218-4583-AECE-DBF2BD0E95CF}.Release|x86.ActiveCfg = Release|Win32
+		{4D448ADE-1218-4583-AECE-DBF2BD0E95CF}.Release|x86.Build.0 = Release|Win32
 		{CCD18941-2C50-44FA-89A8-FCA42F78CDAC}.Debug|x64.ActiveCfg = Debug|x64
 		{CCD18941-2C50-44FA-89A8-FCA42F78CDAC}.Debug|x64.Build.0 = Debug|x64
 		{CCD18941-2C50-44FA-89A8-FCA42F78CDAC}.Debug|x86.ActiveCfg = Debug|Win32
@@ -41,14 +53,6 @@ Global
 		{3A635FE3-4DF5-4DD6-9CDE-90FD080E3C0C}.Release|x64.Build.0 = Release|x64
 		{3A635FE3-4DF5-4DD6-9CDE-90FD080E3C0C}.Release|x86.ActiveCfg = Release|Win32
 		{3A635FE3-4DF5-4DD6-9CDE-90FD080E3C0C}.Release|x86.Build.0 = Release|Win32
-		{4D448ADE-1218-4583-AECE-DBF2BD0E95CF}.Debug|x64.ActiveCfg = Debug|x64
-		{4D448ADE-1218-4583-AECE-DBF2BD0E95CF}.Debug|x64.Build.0 = Debug|x64
-		{4D448ADE-1218-4583-AECE-DBF2BD0E95CF}.Debug|x86.ActiveCfg = Debug|Win32
-		{4D448ADE-1218-4583-AECE-DBF2BD0E95CF}.Debug|x86.Build.0 = Debug|Win32
-		{4D448ADE-1218-4583-AECE-DBF2BD0E95CF}.Release|x64.ActiveCfg = Release|x64
-		{4D448ADE-1218-4583-AECE-DBF2BD0E95CF}.Release|x64.Build.0 = Release|x64
-		{4D448ADE-1218-4583-AECE-DBF2BD0E95CF}.Release|x86.ActiveCfg = Release|Win32
-		{4D448ADE-1218-4583-AECE-DBF2BD0E95CF}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,9 +4,6 @@
 
 ---
 
-## Reduzieren Sie Funktionsaufrufe <a name="link4"></a>
-
-
 ## Inhalt
 
   * [Vermeiden Sie unnötiges Kopieren](#link1)
@@ -16,7 +13,6 @@
   * [XXXX](#link)
   * [XXXX](#link)
   * [XXXX](#link)
-
   * [Literatur](#link7)
 
 ---

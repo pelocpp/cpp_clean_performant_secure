@@ -4,4 +4,6 @@
 
 ## [Performance and Optimization Techniques for C++ Programmers](Readme_Performance)
 
+## [Literatur](Literature.md)
+
 ---
