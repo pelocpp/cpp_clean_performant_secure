@@ -28,6 +28,41 @@ wir [hier](https://jaredmil.medium.com/micro-benchmarking-c-with-quick-bench-878
 Eine ganze Reihe von Vergleichsbeispielen hat *Mathieu Mallet* entwickelt
 und [hier](https://gist.github.com/mathieumallet/22c8fa248b9d260b79f92090ffcd42f3) publiziert.
 
+Der zu testende Code kann in zwei syntaktischen Formen geschrieben werden:
+
+```cpp
+for( auto _ : state)
+{
+    // code to be benchmarked
+}
+```
+
+oder
+
+
+```cpp
+while( state.KeepRunning() )
+{
+    // code to be benchmarked
+}
+```
+
+Auf die Schnelle betrachtet, ist die Variante mit der *Range-based for loop*
+eine Neuerung gegenüber der klassischen Wiederholungsschleife mit `while`.
+
+Wie man [hier](https://github.com/google/benchmark/pull/454) nachlesen kann,
+ist die `while`-Variante jedoch mit einer Reihe von Nachteilen verbunden.
+
+Eine Messung sollte also in dieser Schreibweise formiert werden:
+
+```cpp
+void BM_Foo(benchmark::State& state) {
+	for (auto _ : state) {
+		[...]  // code to be benchmarked
+	}
+}
+```
+
 ---
 
 ## Vergleich `const std::string&` versus `std::string_view` <a name="link2"></a>
@@ -96,13 +131,13 @@ Hier kommt es zur Anwendung der *SSO* (*Small String Optimization*):
 
 *Abbildung* 1: Aufruf der `prefix`-Funktion mit `std::string`-Klasse.
 
-#### Erste Ausführung
+#### Zweite Ausführung
 
 Im zweiten Vergleich wurde eine sehr lange Zeichenkette verwendet.
 Diese wird &ndash; bei Verwendung der `std::string`-Klasse &ndash;
 auf dem Heap abgelegt. Ein `std::string_view`-Objekt hingegen
 benutzt eine `const char*`-Adresse. In diesem Fall entscheiden der Compiler/Linker,
-in welchem Datensegment des Prozesses die Zeichenkette abgelegt wird.
+in welchem Datensegment des Prozesses diese Zeichenkette abgelegt wird.
 
 Man kann in jedem Fall sagen, das es *nicht* die Halde ist.
 
