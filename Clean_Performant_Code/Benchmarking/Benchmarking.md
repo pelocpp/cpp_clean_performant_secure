@@ -83,7 +83,9 @@
 Es wird bei dieser Ausführung die Zeichenkette `1234567890` zu Grunde gelegt.
 Hier kommt es zur Anwendung der *SSO* (*Small String Optimization*):
 
-<img src="Buch_Andrist_Sehr_High Quick_Cpp_Benchmark_String_Comparison_SSO.png" width="700">
+<img src="Quick_Cpp_Benchmark_String_Comparison_SSO.png" width="700">
+
+#### Erste Ausführung
 
 Im zweiten Vergleich wurde eine sehr lange Zeichenkette verwendet.
 Diese wird &ndash; bei Verwendung der `std::string`-Klasse &ndash;
@@ -93,7 +95,7 @@ in welchem Datensegment des Prozesses die Zeichenkette abgelegt wird.
 
 Man kann in jedem Fall sagen, das es *nicht* die Halde ist.
 
-<img src="Buch_Andrist_Sehr_High Quick_Cpp_Benchmark_String_Comparison_No_SSO.png" width="700">
+<img src="Quick_Cpp_Benchmark_String_Comparison_No_SSO.png" width="700">
 
 ---
 
