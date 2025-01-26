@@ -31,7 +31,7 @@ namespace DataStructuresandAlgorithms_Hashing {
 namespace std
 {
     // =======================================================================
-    // Supporting std::hash
+    // std::hash
 
     using namespace DataStructuresandAlgorithms_Hashing;
 
@@ -40,12 +40,11 @@ namespace std
     {
         size_t operator()(const Person& p) const {
 
-            auto h1 { std::hash<std::string>()(p.m_firstName) };
-            auto h2 { std::hash<size_t>()(p.m_age) };
-            auto h3 { std::hash<std::string>()(p.m_lastName) };
+            auto hash1 { std::hash<std::string>() (p.m_firstName) };
+            auto hash2 { std::hash<size_t>() (p.m_age) };
+            auto hash3 { std::hash<std::string>() (p.m_lastName) };
 
-            size_t hash{ h1 ^ (h2 << 1) ^ (h3 << 2) };  // combine these hash values
-
+            size_t hash{ hash1 ^ (hash2 << 1) ^ (hash3 << 2) };  // combine these hash values
             return hash;
         }
     };
@@ -54,7 +53,7 @@ namespace std
 namespace std
 {
     // =======================================================================
-    // Supporting std::println
+    // std::println
 
     using namespace DataStructuresandAlgorithms_Hashing;
 
@@ -83,7 +82,7 @@ namespace std
 namespace DataStructuresandAlgorithms_Hashing {
 
     // =======================================================================
-    // Hashing
+    // Use Cases
 
     static void hashing_01()
     {

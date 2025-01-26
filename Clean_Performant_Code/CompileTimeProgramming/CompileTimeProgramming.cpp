@@ -67,7 +67,7 @@ namespace MetaprogrammingWithTemplates {
 namespace std
 {
     // =======================================================================
-    // Supporting std::println
+    // std::println
 
     using namespace MetaprogrammingWithTemplates;
 
@@ -230,7 +230,7 @@ void compile_time_programming()
     metaprogramming_04();
     metaprogramming_05();
     metaprogramming_06();
-    metaprogramming_07();
+    // metaprogramming_07();  // needs user input
 }
 
 // ===========================================================================

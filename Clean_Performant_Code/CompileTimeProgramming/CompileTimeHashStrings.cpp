@@ -81,12 +81,12 @@ namespace MetaprogrammingHashExample {
         constexpr auto get_hash() const { return m_hash; }
         constexpr auto c_str() const -> const char* { return m_strptr; }
 
-        constexpr auto operator== (const PrehashedString& other) const {
+        auto operator== (const PrehashedString& other) const {
             return m_size == other.m_size &&
                 std::equal(c_str(), c_str() + m_size, other.c_str());
         }
 
-        constexpr auto operator!=(const PrehashedString& other) const {
+        auto operator!= (const PrehashedString& other) const {
             return !(*this == other);
         }
     };
@@ -94,7 +94,7 @@ namespace MetaprogrammingHashExample {
     static void metaprogramming_03()
     {
         constexpr auto prehashed_string = PrehashedString{ 
-            "my_string sdfsdfsd fsd sd sdfsdf" 
+            "this should be a long string" 
         };
         
         constexpr auto size{ prehashed_string.size() };
@@ -105,22 +105,12 @@ namespace MetaprogrammingHashExample {
     static void metaprogramming_04()
     {
         constexpr auto prehashed_string{ 
-            PrehashedString{ "my_string sdfsdfsd fsd sd sdfsdf" } 
+            PrehashedString{ "this should be a long string"  } 
         };
         
         constexpr auto size{ prehashed_string.size() };
         constexpr auto hash{ prehashed_string.get_hash() };
         constexpr auto c_str{ prehashed_string.c_str() };
-
-        constexpr auto another_prehashed_string{
-            PrehashedString{ "my_string sdfsdfsd f" }
-        };
-
-        constexpr auto another_size{ another_prehashed_string.size() };
-        constexpr auto another_hash{ another_prehashed_string.get_hash() };
-        constexpr auto another_c_str{ another_prehashed_string.c_str() };
-
-        constexpr auto equals{ prehashed_string == another_prehashed_string };
     }
 }
 
@@ -128,6 +118,7 @@ namespace std
 {
     // =======================================================================
     // Metaprogramming: Example PrehashedString
+    // std::hash
 
     // An overload of struct std::hash(), which simply returns the hash value.
     // This overload is used by std::unordered_map, std::unordered_set, or any
@@ -137,7 +128,7 @@ namespace std
 
     template<>
     struct hash<PrehashedString> {
-        constexpr auto operator()(const PrehashedString& s) const {
+        constexpr auto operator() (const PrehashedString& s) const {
             return s.get_hash();
         }
     };
@@ -146,8 +137,9 @@ namespace std
 namespace MetaprogrammingHashExample {
 
     static constexpr auto test_prehashed_string() {
-        const auto& hash_fn = std::hash<PrehashedString>{};
-        const auto& str = PrehashedString("abc");
+
+        const auto& hash_fn{ std::hash<PrehashedString>{} };
+        const auto& str{ PrehashedString("abc") };
         return hash_fn(str);
     }
 
@@ -164,16 +156,15 @@ namespace MetaprogrammingHashExample {
 
     static auto get_bitmap_resource(const PrehashedString& path) -> const Bitmap&
     {
-        // Static storage of all loaded bitmaps
-        static auto loaded_bitmaps =
-            std::unordered_map<PrehashedString, Bitmap>{};
+        // static storage of all loaded bitmaps
+        static auto loaded_bitmaps = std::unordered_map<PrehashedString, Bitmap>{};
 
-        // If the bitmap is already in loaded_bitmaps, return it
+        // ff the bitmap is already in loaded_bitmaps, return it
         if (loaded_bitmaps.count(path) > 0) {
             return loaded_bitmaps.at(path);
         }
         
-        // The bitmap isn't already loaded, load and return it
+        // bitmap isn't already loaded, load and return it
         auto bitmap = load_bitmap_from_filesystem(path.c_str());
 
         loaded_bitmaps.emplace(path, std::move(bitmap));
@@ -181,54 +172,23 @@ namespace MetaprogrammingHashExample {
         return loaded_bitmaps.at(path);
     }
 
-    static auto draw_bitmap(const Bitmap& bm) {
-    }
+    static auto draw_bitmap(const Bitmap& bm) {}
 
-    static auto draw_something() {
+    static auto draw_bitmap() {
         const auto& bm = get_bitmap_resource("my_bitmap.png");
         draw_bitmap(bm);
     }
 
-    static auto draw_something_again() {
+    static auto draw_bitmap_again() {
         const auto& bm = get_bitmap_resource("my_bitmap.png");
         draw_bitmap(bm);
     }
 
-    static auto test_draw_something()
+    static auto test_compile_time_hash_strings()
     {
-        draw_something();
-        draw_something_again();
+        draw_bitmap();
+        draw_bitmap_again();
     }
-}
-
-namespace std
-{
-    // =======================================================================
-    // Supporting std::println
-
-   using namespace MetaprogrammingHashExample;
-
-    //template <typename T>
-    //struct formatter<Rectangle<T>>
-    //{
-    //    constexpr auto parse(std::format_parse_context& ctx) {
-    //        return ctx.begin();
-    //    }
-
-    //    auto format(const Rectangle<T>& rect, std::format_context& ctx) const {
-
-    //        auto x{ rect.getX() };
-    //        auto y{ rect.getY() };
-    //        auto width{ rect.width() };
-    //        auto height{ rect.height() };
-
-    //        return std::format_to(
-    //            ctx.out(),
-    //            "Rectangle at {}:{} [width: {} / height: {}]",
-    //            x, y, width, height
-    //        );
-    //    }
-    //};
 }
 
 // =================================================================
@@ -237,11 +197,7 @@ void compile_time_hash_strings()
 {
     using namespace MetaprogrammingHashExample;
 
-    //metaprogramming_01();
-    //metaprogramming_02();
-    //metaprogramming_03();
-    //metaprogramming_04();
-    metaprogramming_05();
+    test_compile_time_hash_strings();
 }
 
 // ===========================================================================
