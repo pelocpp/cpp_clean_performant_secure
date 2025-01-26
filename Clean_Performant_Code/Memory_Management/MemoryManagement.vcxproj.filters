@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DataStructuresAndAlgorithms.cpp">
+    <ClCompile Include="MemoryManagement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Program.cpp">
@@ -23,7 +23,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data_Structures_and_Algorithms.md">
+    <None Include="MemoryManagement.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Cpp_Examine_Stack.svg">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

@@ -1,5 +1,5 @@
 // ===========================================================================
-// DataStructuresandAlgorithms.cpp
+// DataStructuresAndAlgorithms.cpp
 // ===========================================================================
 
 #include <iostream>
@@ -7,7 +7,7 @@
 #include <string>
 #include <unordered_map>
 
-namespace DataStructuresandAlgorithms_Hashing {
+namespace DataStructuresAndAlgorithms_Hashing {
 
     // =======================================================================
     // Hashing
@@ -33,7 +33,7 @@ namespace std
     // =======================================================================
     // std::hash
 
-    using namespace DataStructuresandAlgorithms_Hashing;
+    using namespace DataStructuresAndAlgorithms_Hashing;
 
     template <>
     struct hash<Person>
@@ -55,7 +55,7 @@ namespace std
     // =======================================================================
     // std::println
 
-    using namespace DataStructuresandAlgorithms_Hashing;
+    using namespace DataStructuresAndAlgorithms_Hashing;
 
     template <>
     struct formatter<Person>
@@ -79,7 +79,7 @@ namespace std
     };
 }
 
-namespace DataStructuresandAlgorithms_Hashing {
+namespace DataStructuresAndAlgorithms_Hashing {
 
     // =======================================================================
     // Use Cases
@@ -111,9 +111,9 @@ namespace DataStructuresandAlgorithms_Hashing {
 
 // =================================================================
 
-void data_atructures_and_algorithms()
+void data_structures_and_algorithms()
 {
-    using namespace DataStructuresandAlgorithms_Hashing;
+    using namespace DataStructuresAndAlgorithms_Hashing;
 
     hashing_01();
     hashing_02();

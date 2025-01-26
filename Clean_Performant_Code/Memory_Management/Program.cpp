@@ -1,12 +1,12 @@
 // ===========================================================================
-// Program.cpp // Data Structures and Algorithms
+// Program.cpp // Memory Management
 // ===========================================================================
 
-void data_structures_and_algorithms();
+void memory_management();
 
 int main()
 {
-    data_structures_and_algorithms();
+    memory_management();
     return 0;
 }
 

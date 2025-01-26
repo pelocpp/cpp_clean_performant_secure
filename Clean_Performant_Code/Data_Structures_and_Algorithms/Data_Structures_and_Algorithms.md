@@ -14,7 +14,7 @@
 
 #### Quellcode
 
-[*CompileTimeProgramming*](CompileTimeProgramming.cpp).<br />
+[*DataStructuresAndAlgorithms.cpp*](DataStructuresAndAlgorithms.cpp).<br />
 
 ---
 
@@ -41,17 +41,10 @@ attempting to reference a deleted function
 
 ## Literatur <a name="link6"></a>
 
-Die Anregungen zum konzeptionellen Beispiel finden Sie unter
+Die Anregungen zum Beispiel finden Sie unter
 
-[https://refactoring.guru/design-patterns](https://refactoring.guru/design-patterns/memento/cpp/example#example-0)
+[Unlocking the Power of `std::hash` in C++ Programming](https://johnfarrier.com/unlocking-the-power-of-stdhash-in-c-programming/)
 
-und 
-
-[https://www.codeproject.com](https://www.codeproject.com/Articles/455228/Design-Patterns-3-of-3-Behavioral-Design-Patterns#Memento)
-
-vor.
-
-Das *Real*-*World*-Beispiel kann [hier](https://vishalchovatiya.com/posts//memento-design-pattern-in-modern-cpp/) im Original nachgelesen werden.
 
 ---
 
