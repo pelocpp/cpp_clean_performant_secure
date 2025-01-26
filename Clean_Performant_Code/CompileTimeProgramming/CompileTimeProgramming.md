@@ -119,10 +119,6 @@
 
 ## Literatur <a name="link6"></a>
 
----
-
-[Zurück](../../Readme.md)
-
 Die Anregungen zum konzeptionellen Beispiel finden Sie unter
 
 [https://refactoring.guru/design-patterns](https://refactoring.guru/design-patterns/memento/cpp/example#example-0)
@@ -134,5 +130,9 @@ und
 vor.
 
 Das *Real*-*World*-Beispiel kann [hier](https://vishalchovatiya.com/posts//memento-design-pattern-in-modern-cpp/) im Original nachgelesen werden.
+
+---
+
+[Zurück](../../Readme.md)
 
 ---
