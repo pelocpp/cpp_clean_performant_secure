@@ -130,8 +130,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Arena.cpp" />
     <ClCompile Include="MemoryManagement.cpp" />
     <ClCompile Include="Program.cpp" />
+    <ClCompile Include="Arena.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Cpp_Examine_Stack.svg" />
