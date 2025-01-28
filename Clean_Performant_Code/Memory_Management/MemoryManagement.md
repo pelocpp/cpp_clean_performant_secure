@@ -10,7 +10,15 @@
   * [Der Stack (Stapel)](#link2)
   * [Größe des Stapels bestimmen](#link3)
   * [Speicher Ausrichtung (Memory Alignment)](#link4)
-  * [Literatur](#link5)
+  * [Der Heap (Halde)](#link5)
+  * [Placement *new*](#link6)
+  * [&bdquo;*Zeigerwäsche*&rdquo;: `std::launder`](#link7)
+  * [Literatur](#link8)
+
+---
+
+## Placement new <a name="link6"></a>
+
 
 ---
 
@@ -336,7 +344,218 @@ Man beachte wiederum die Anzahl der Nullen am Ende der Binärdarstellung.
 
 ---
 
-## Literatur <a name="link5"></a>
+## Der Heap (Halde) <a name="link5"></a>
+
+---
+
+## Placement new <a name="link6"></a>
+
+C++ ermöglicht es uns, die Bereitstellung von Speicher (Speicherallokation)
+von der Objekterstellung zu trennen.
+
+Wir könnten beispielsweise mit `malloc()` ein Byte-Array reservieren
+und in diesem Speicherbereich ein neues benutzerdefiniertes Objekt erstellen.
+
+*Beispiel*:
+
+
+
+Die möglicherweise ungewohnte Syntax, die `::new (memory)` verwendet, heißt *Placement new*.
+
+Es handelt sich um eine nicht allokierende Form von `new`, die nur ein Objekt konstruiert.
+
+Der doppelte Doppelpunkt (`::`) vor `new` stellt sicher,
+dass die Auflösung aus dem globalen Namensraum erfolgt, um zu vermeiden,
+dass eine überladene Version des Operators `new` verwendet wird.
+
+*Beispiel*:
+
+```cpp
+01:  void test() {
+02: 
+03:     auto* memory = std::malloc(sizeof(Person));
+04:     auto* person = ::new (memory) Person{ "Sepp", "Mueller", (size_t)30 };
+05: 
+06:     person->~Person();
+07:     std::free(memory);
+08: }
+```
+
+*Ausführung*:
+
+```
+c'tor Person
+d'tor Person
+```
+
+Es gibt kein *Placement delete*.
+Um das Objekt zu zerstören und den Speicher freizugeben, müssen wir also den Destruktor explizit aufrufen
+und dann den separat Speicher freigeben.
+
+C++17 führt eine Reihe von Hilfsfunktionen in der STL (<memory>) ein,
+um Objekte zu konstruieren und zu zerstören, ohne Speicher zuzuweisen oder freizugeben.
+
+Anstatt *Placement new* zu verwenden, ist es jetzt also möglich,
+einige der Funktionen aus der STL (<memory>) zu verwenden,
+deren Namen mit `std::uninitialized_` beginnen, um Objekte in einen nicht initialisierten Speicherbereich
+zu konstruieren, zu kopieren und zu verschieben.
+
+Und anstatt den Destruktor explizit aufzurufen, können wir jetzt `std::destroy_at()` verwenden,
+um ein Objekt an einer bestimmten Speicheradresse zu zerstören, ohne den Speicher freizugeben.
+
+Das vorherige Beispiel könnte mit diesen neuen Funktionen neu geschrieben werden:
+
+*Beispiel*:
+
+```cpp
+01: void test() {
+02: 
+03:     auto* memory = std::malloc(sizeof(Person));
+04:     auto* person = reinterpret_cast<Person*>(memory);
+05: 
+06:     std::uninitialized_fill_n(person, 1, Person{ "Sepp", "Mueller", (size_t) 30 });
+07:         
+08:     std::destroy_at(person);
+09:     std::free(memory);
+10: }
+```
+
+*Ausführung*:
+
+```
+c'tor Person
+d'tor Person
+d'tor Person
+```
+
+
+Der Aufruf der `std::uninitialized_fill_n`-Funktion kann ab C++ 20 auch
+durch einen  Aufruf der `std::construct_at`-Funktion ersetzt werden.
+Diese Funktion ist bzgl. ihres Aufrufs etwas einfacher in der Handhabung:
+
+
+*Beispiel*:
+
+```cpp
+01: void test() {
+02: 
+03:     auto* memory = std::malloc(sizeof(Person));
+04:     auto* person = reinterpret_cast<Person*>(memory);
+05: 
+06:     std::construct_at(person, Person{ "Sepp", "Mueller", (size_t)30 }); // C++20
+07: 
+08:     std::destroy_at(person);
+09:     std::free(memory);
+10: }
+```
+
+*Ausführung*:
+
+```
+c'tor Person
+d'tor Person
+d'tor Person
+```
+
+Bitte beachte, dass wir diese *Low-Level*-Speicherfunktionen betrachten,
+um ein besseres Verständnis der Speicherverwaltung in C++ zu vermitteln.
+
+Die Verwendung von `reinterpret_cast` und den hier gezeigten Speicherverwaltungsfunktionen
+sollte in einer C++-Codebasis auf ein absolutes Minimum beschränkt werden.
+
+
+---
+
+## &bdquo;*Zeigerwäsche*&rdquo;: `std::launder` <a name="link7"></a>
+
+Die STL-Funktion ist etwas kurios, sie führt eine &bdquo;*Zeigerwäsche*&rdquo; durch.
+
+`std::launder` gibt einen Zeiger auf denselben Speicher zurück, auf den das Argument von `std::launder` zeigt.
+Es wird jedoch angenommen,
+dass das Referenzobjekt eine andere Lebensdauer und einen anderen dynamischen Typ hat als der &bdquo;neue&rdquo; Zeiger,
+den `std::launder` zurückliefert.
+
+Ein Aufruf von `std::launder` hat keinen Einfluss auf das Argument.
+Der Rückgabewert muss verwendet werden, um auf das Objekt in einer &bdquo;*neuen Sichtweise*&rdquo; zuzugreifen.
+Es ergibt also keinen Sinn, `std::launder` aufzurufen und den Rückgabewert zu verwerfen.
+
+*Beispiel*:
+
+```cpp
+01: static void test_std_launder()
+02: {
+03:     constexpr int CountPersons{ 5 };
+04: 
+05:     alignas(class Person) unsigned char buffer[sizeof(class Person) * CountPersons];
+06: 
+07:     for (size_t i{}; i != CountPersons; ++i) {
+08: 
+09:         std::string first{ "first_name_" };
+10:         std::string last{ "last_name_" };
+11: 
+12:         // manually construct objects using placement new
+13:         new(buffer + sizeof(Person) * i) Person{ first + std::to_string(i), last + std::to_string(i), i};
+14:     }
+15: 
+16:     auto ptr{ std::launder(reinterpret_cast<Person*>(buffer)) };
+17: 
+18:     for (size_t i{}; i != CountPersons; ++i) {
+19: 
+20:         std::destroy_at(&ptr[i]);
+21:     }
+22: }
+```
+
+*Ausführung*:
+
+```
+c'tor Person
+c'tor Person
+c'tor Person
+c'tor Person
+c'tor Person
+d'tor Person
+d'tor Person
+d'tor Person
+d'tor Person
+d'tor Person
+```
+
+*Anwendungsfall*:<br />
+
+Definieren eines Zeigers
+mit Hilfe eines anderen Zeigers, der auf einen Speicherbereich verweist,
+in dem ein mittels *Placement new* erzeugtes Objekt residiert.
+Der Zeiger, der für *Placement new* den Speicher bereitstellt,
+ist meist von einem skalaren Typ wie `std::byte`, `unsigned char` oder ähnliches.
+
+Einige ergänzende Erläuterungen dazu:
+
+  * Bei `std::launder` handelt es sich um eine Funktion für den Compiler im Umfeld der Low-Level-Speicherverwaltung und der
+  Betrachtung von Lebensdauererwartungen bestimmter Objekte,
+  um die Nachverfolgung und Optimierungen zur Kompilierzeit zu deaktivieren, die möglicherweise nicht korrekt sind.
+
+  * Wird normalerweise nur verwendet, wenn Sie die Lebensdauer eines Objekts über oder innerhalb eines anderen starten.
+
+  * Wenn Sie möchten, dass der Compiler dumm ist, waschen Sie im Wesentlichen den Zeiger,
+  damit der Compiler die komplexe Zustandsnachverfolgung zur Kompilierzeit, die Compiler durchführen, absichtlich vergisst und so tut,
+  als wäre der Zeiger tatsächlich ein brandneues Objekt, von dem er nichts wusste.
+
+  * Es ´liegen gewisse Ähnlichkeiten zum Schlüsselwort `volatile` vor:
+  `volatile` dient zum Deaktivieren von Compiler-Annahmen darüber, was ein Wert zur Laufzeit sein könnte.
+  Wenn Sie beispielsweise zweimal hintereinander von einer regulären `int`-Variablen lesen, ohne dazwischen zu schreiben,
+  würde der Compiler wahrscheinlich den zweiten Lesevorgang entfernen und den ersten Wert wiederverwenden (bessere Codegenerierung),
+  da er weiß, dass der Wert nicht geändert wurde.
+
+  * Mit dem Schlüsselwort `volatile` teilen Sie dem Compiler mit, dass er nicht alle Änderungen an der Variable zuverlässig beobachten kann,
+  sodass jeder Lesevorgang ausgeführt werden muss (dasselbe gilt auch für Schreibvorgänge).
+
+  * `std::launder` und `volatile` sind sich insofern ähnlich, als sie existieren, um dem Compiler mitzuteilen,
+  dass er keine Annahmen über die Werte/Objekte auf Grund möglicher Beobachtungen treffen soll.
+
+---
+
+## Literatur <a name="link8"></a>
 
 Die Anregungen zum Beispiel eines Arena finden Sie in einem Artikel von *Howard Hinnant* unter
 

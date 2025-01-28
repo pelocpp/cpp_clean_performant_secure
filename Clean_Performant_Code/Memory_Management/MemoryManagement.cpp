@@ -3,16 +3,17 @@
 // ===========================================================================
 
 #include <bitset>
+#include <cassert>
 #include <iostream>
 #include <memory>
 #include <print>
+#include <string>
 #include <type_traits>
-#include <cassert>
 
 namespace MemoryManagement {
 
     // =======================================================================
-    // Examine Stack bevaviour
+    // Examine Stack behaviour
 
     static void func1()
     {
@@ -27,7 +28,7 @@ namespace MemoryManagement {
         func1();
     }
 
-    static void test_examine_stack_bevaviour() {
+    static void test_examine_stack_behaviour() {
 
         auto i{ 0 };
         std::cout << "main():  " << std::addressof(i) << " - i: " << i << '\n';
@@ -52,7 +53,7 @@ namespace MemoryManagement {
     }
 }
 
-// =======================================================================
+// ===========================================================================
 // Memory alignment
 
 namespace MemoryManagement {
@@ -245,25 +246,141 @@ namespace MemoryManagement {
     }
 }
 
-// =================================================================
+// ===========================================================================
+// Memory alignment
+
+namespace MemoryManagement {
+
+    class Person
+    {
+    private:
+        std::string m_first;
+        std::string m_last;
+        size_t      m_age;
+
+    public:
+        Person(std::string first, std::string last, size_t age)
+            : m_first{ first }, m_last{ last }, m_age{ age }
+        {
+            std::println("c'tor Person");
+        }
+
+        ~Person() {
+            std::println("d'tor Person");
+        }
+    };
+
+    static void test_placement_new_01() {
+
+        auto* memory = std::malloc(sizeof(Person));
+        auto* person = ::new (memory) Person{ "Sepp", "Mueller", (size_t) 30 };
+
+        person->~Person();
+        std::free(memory);
+    }
+
+    static void test_placement_new_02() {
+
+        auto* memory = std::malloc(sizeof(Person));
+        auto* person = reinterpret_cast<Person*>(memory);
+
+        std::uninitialized_fill_n(person, 1, Person{ "Sepp", "Mueller", (size_t) 30 });
+        
+        std::destroy_at(person);
+        std::free(memory);
+    }
+
+    static void test_placement_new_03() {
+
+        auto* memory = std::malloc(sizeof(Person));
+        auto* person = reinterpret_cast<Person*>(memory);
+
+        std::construct_at(person, Person{ "Sepp", "Mueller", (size_t)30 }); // C++20
+
+        std::destroy_at(person);
+        std::free(memory);
+    }
+}
+
+// ===========================================================================
+// Memory Laundry: std::launder
+
+namespace MemoryManagement {
+
+    //class Person
+    //{
+    //private:
+    //    std::string m_first;
+    //    std::string m_last;
+    //    size_t      m_age;
+
+    //public:
+    //    Person(std::string first, std::string last, size_t age)
+    //        : m_first{ first }, m_last{ last }, m_age{ age }
+    //    {
+    //        std::println("c'tor Person");
+    //    }
+
+    //    ~Person() {
+    //        std::println("d'tor Person");
+    //    }
+    //};
+
+    //struct Tracer
+    //{
+    //    int value;
+    //    ~Tracer() { std::cout << value << " destructed\n"; }
+    //};
+
+    static void test_std_launder()
+    {
+        constexpr int CountPersons{ 5 };
+
+        alignas(class Person) unsigned char buffer[sizeof(class Person) * CountPersons];
+
+        for (size_t i{}; i != CountPersons; ++i) {
+
+            std::string first{ "first_name_" };
+            std::string last{ "last_name_" };
+
+            // manually construct objects using placement new
+            new(buffer + sizeof(Person) * i) Person{ first + std::to_string(i), last + std::to_string(i), i};
+        }
+
+        auto ptr{ std::launder(reinterpret_cast<Person*>(buffer)) };
+
+        for (size_t i{}; i != CountPersons; ++i) {
+
+            std::destroy_at(&ptr[i]);
+        }
+    }
+}
+
+// ===========================================================================
 
 void memory_management()
 {
     using namespace MemoryManagement;
 
-    test_examine_stack_bevaviour();
-    // test_examine_stack_size();        // crashes (intentionally)
+    //test_examine_stack_behaviour();
+    //// test_examine_stack_size();     // crashes (intentionally)
 
-    test_examine_alignment_01();
-    test_examine_alignment_02();
-    test_examine_alignment_03();
-    test_examine_alignment_04();
-    test_examine_alignment_05();
-    test_examine_alignment_06();
-    test_examine_alignment_07();
-    test_examine_alignment_08();
-    test_examine_alignment_09();
-    test_examine_alignment_10();
+    //test_examine_alignment_01();
+    //test_examine_alignment_02();
+    //test_examine_alignment_03();
+    //test_examine_alignment_04();
+    //test_examine_alignment_05();
+    //test_examine_alignment_06();
+    //test_examine_alignment_07();
+    //test_examine_alignment_08();
+    //test_examine_alignment_09();
+    //test_examine_alignment_10();
+
+    //test_placement_new_01();
+    //test_placement_new_02();
+    //test_placement_new_03();
+
+    test_std_launder();
 }
 
 // ===========================================================================
