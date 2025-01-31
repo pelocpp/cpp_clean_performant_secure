@@ -6,6 +6,21 @@ https://hackernoon.com/c-performance-optimization-best-practices
 
 // =============================================================
 
+Siehe .pdf !!! im Downloads Folde
+
+https://indico.gsi.de/event/19561/contributions/78837/attachments/46921/67160/cpp_ranges.pdf
+
+und das hier:
+
+https://www.cppstories.com/2022/ranges-composition/
+
+AUS Cpp 23 umarbeiten !!!
+
+https://www.studyplan.dev/pro-cpp/views
+
+// =============================================================
+
+
 
 CLEAN CODE
 
