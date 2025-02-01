@@ -20,13 +20,16 @@ https://www.studyplan.dev/pro-cpp/views
 
 // =============================================================
 
-
-
 CLEAN CODE
 
 // Literatur:
 
 Ranges: 
+
+http://info.gerald-fahrnholz.eu/modern-c/ranges-functional-programming/
+
+https://brevzin.github.io/archives/
+
 
 // etwas verschwurbelter Artikel
 https://nixiz.github.io/yazilim-notlari/2020/12/17/cpp20-ranges

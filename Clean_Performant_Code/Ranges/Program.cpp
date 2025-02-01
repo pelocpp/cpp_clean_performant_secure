@@ -1,14 +1,12 @@
 // ===========================================================================
-// Program.cpp // Best Practices
+// Program.cpp // Ranges
 // ===========================================================================
 
-extern void performance_best_practices();
-extern void object_pool_best_practices();
+extern void ranges_clean_code_examples();
 
 int main()
 {
-    performance_best_practices();
-    //object_pool_best_practices();
+    ranges_clean_code_examples();
     return 0;
 }
 
