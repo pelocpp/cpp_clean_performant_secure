@@ -7,12 +7,6 @@
 ## Inhalt
 
   * [XXXX](#link)
-  * [Vermeiden Sie unnötiges Kopieren](#link1)
-  * [Bevorzuge Stack Allocation](#link2)
-  * [Schleifen optimieren](#link3)
-  * [Reduzieren Sie Funktionsaufrufe](#link4)
-  * [Vermeiden Sie *Raw*-Schleifen](#link5)
-  * [XXXX](#link)
   * [XXXX](#link)
   * [XXXX](#link)
   * [Literatur](#link7)
@@ -87,7 +81,6 @@ std::vector<int> numbers{ 1, 4, 2, 7, 9, 3, 5 };
 std::ranges::sort(numbers);
 ```
 
-
 ---
 
 ## Ranges und Concepts (Konzepte) <a name="link2"></a>
@@ -148,14 +141,14 @@ Dieses Mal finden wir die Zeilennummer 20 und die korrekte Zuordnung zur Quellda
 
 ## *Views* (Ansichten) <a name="link2"></a>
 
-  * Ansichten sind so genannten *lightweight Ranges* (*leichtgewichtige Bereiche*)
+  * Views sind so genannte *lightweight Ranges* (*leichtgewichtige Bereiche*)
 
-  * Ansichten haben * non-owning * (nicht besitzende) Referenzen der Daten.
+  * Views haben *non-owning* (nicht besitzende) Referenzen der Daten.
 
-  * Ansichten können über die Elemente eines Bereichs iterieren
-und dabei die Daten transformieren oder filtern.
+  * Views können über die Elemente eines Bereichs iterieren
+   und dabei die Daten transformieren oder filtern.
 
-  * Ansichten benötigen eine konstante Zeitkomplexität zum Kopieren, Verschieben oder Zuweisen von Ansichten.
+  * Views benötigen eine konstante Zeitkomplexität zum Kopieren, Verschieben oder Zuweisen von Ansichten.
 
 
 *Syntax*:
@@ -165,31 +158,237 @@ std::ranges::operation_view { range, arguments... }
 ```
 
 
+*Beispiel*:
 
+```cpp
+01: std::vector<int> numbers = { 1, 2, 3, 4, 5, 6 };
+02: 
+03: auto view{ std::ranges::take_view{ numbers, 3 } };
+04: 
+05: std::ranges::for_each(
+06:     view,
+07:     [] (auto n) { std::print("{} ", n); }
+08: );
+```
 
-  
+*Ausgabe*:
+
+```
+1 2 3
+```
+
+Normalerweise werden Ansichten nicht mit ihren Konstruktoren,
+sondern mit *Range Adaptors* (Bereichsadapter) erstellt.
+
 ---
 
-Legen Sie Objekte nach Möglichkeit auf dem Stapel an,
-da die Stack Allocation schneller ist als eine dynamische
-Speicherplatzreservierung auf der Halde (*Heap*).
+## *Range Adaptors* (Bereichsadapter) <a name="link2"></a>
 
-Verwenden Sie die dynamische Speicherplatzreservierung (`new` and `delete`) nur dann,
-wenn die Lebensdauer des Objekts über den aktuellen Scope hinausgehen soll.
+  * Bereichsadapter sind Hilfsfunktionen, die Views erstellen,
+  wie beispielsweise `views::filter` , `views::transform` 
+  und `views::take`.
 
-Es ist jedoch wichtig zu beachten, dass die Stack Allocation Einschränkungen hat:
+  * Es ist vorzuziehen, Adapter zum Erstellen von Ansichten zu verwenden, da sie Optimierungen ermöglichen:
+```
+range | std::ranges::views::operation(arguments...)
+```
 
-  * Feste Größe:<br />
-    Die Größe des Stapelspeichers ist fest und begrenzt.
-    Das bedeutet, dass man keine sehr großen Objekte oder eine dynamische Anzahl von Objekten auf dem Stapel anlegen kann.
+  * Bereichsadapter können zusammengesetzt werden (*Composition*),
+  um komplexe *Data Processing Pipelines* (Datenverarbeitungspipelines) effizient aufzubauen.
 
-  * Das Risiko eines *Stack Overflow*:<br />
-    Übermäßiger Stapelspeicherverbrauch kann zu einem Stapelüberlauf (*Stack Overflow*) führen,
-    wenn der verfügbare Stapelspeicherplatz erschöpft ist.
-    Der Heap-Speicher kennt diese Einschränkung nicht.
+
+*Beispiel*:
+
+```cpp
+01: std::vector<int> numbers = { 1, 2, 3, 4, 5, 6 };
+02: 
+03: auto result = numbers 
+04:     | std::views::filter([](auto n) { return n % 2 == 0; })
+05:     | std::views::transform([](auto n) { return n * 2; });
+06: 
+07: for (auto n : result) {
+08:     std::print("{} ", n);
+09: }
+```
+
+*Ausgabe*:
+
+```
+4 8 12
+```
 
 ---
 
+## *Function Composition, Pipelines* (Komposition von Funktionen) <a name="link2"></a>
+
+Da es sich bei einer View (Ansicht) um einen Range (Bereich) handelt,
+kann man eine Ansicht als Argument für eine andere Ansicht verwenden,
+um eine Verkettung zu ermöglichen:
+
+*Beispiel*:
+
+```cpp
+01: std::vector<int> numbers = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+02: 
+03: auto result {
+04:     std::views::reverse(
+05:         std::views::take(
+06:             std::views::transform(
+07:                 std::views::filter(numbers, [](auto n) { return n % 2 == 0; }),
+08:                 [](auto n) { return n * n; }
+09:             ),
+10:             4
+11:         )
+12:     ) 
+13: };
+14: 
+15: std::ranges::for_each(
+16:     result,
+17:     [](auto n) { std::print("{} ", n); }
+18: );
+```
+
+*Ausgabe*:
+
+```
+64 36 16 4
+```
+
+Übermäßige Verschachtelung kann zu Lesbarkeits- und Wartungsproblemen führen.
+
+Es gibt eine weitere Möglichkeit, Bereiche und Ansichten zu kombinieren,
+indem Sie den Pipe-Operator `|` verwenden:
+
+*Beispiel*:
+
+```cpp
+01: std::vector<int> numbers = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+02: 
+03: auto result = numbers | std::views::filter([](auto n) { return n % 2 == 0; })
+04:     | std::views::transform([](auto n) { return n * n; })
+05:     | std::views::take(4)
+06:     | std::views::reverse;
+07: 
+08: for (auto n : result) {
+09:     std::print("{} ", n);
+10: }
+```
+
+---
+
+## *Lazy Evaluation* (*Lazy* Auswertung) <a name="link2"></a>
+
+  * Eine Ansicht ist lediglich die Beschreibung einer Verarbeitung.
+
+  * Die Verarbeitung findet nicht statt, wenn man die Ansicht definiert.
+
+  * Die eigentliche Verarbeitung wird Element für Element ausgeführt, wenn der nächste Wert *angefordert* wird.
+
+*Beispiel*:
+
+```cpp
+01: auto lazySquares = 
+02:     std::views::iota(1, 10) | std::views::transform([](auto i) { return i * i; });
+03: 
+04: for (auto n : lazySquares) {
+05:     std::print("{} ", n);             // squares are calculated here
+06: }
+```
+
+
+*Ausgabe*:
+
+```
+1 4 9 16 25 36 49 64 81
+```
+
+---
+
+## Begrenzte vs. unbegrenzte (unendliche) Ranges <a name="link2"></a>
+
+  * `std::views::iota` kann als eine *Range-Factory* angesehen werden,
+  die eine Sequenz von Elementen generiert, indem sie einen Anfangswert wiederholt inkrementiert.
+
+  * Die Sequenz kann entweder begrenzt oder unbegrenzt (unendlich) sein.
+
+  * `std::views::iota(10)` ist eine *lazy* View. Sie erzeugt nur dann einen neuen Wert,
+  wenn dieser angefordert wird.
+
+
+*Beispiel*:
+
+```cpp
+01: // use bounded std::views::iota with begin and end value
+02: for (int n : std::views::iota(0, 10)) {
+03:     std::print("{} ", n);
+04: }
+05: std::println();
+06:         
+07: // use infinite std::views::iota in combination with std::views::take
+08: for (int n : std::views::iota(0) | std::views::take(10)) { 
+09:     std::print("{} ", n);
+10: }
+11: std::println();
+12:         
+13: // use infinite std::views::iota in combination with std::views::take_while
+14: for (int n : std::views::iota(0) | std::views::take_while([] (int y) { return y < 10; })) {
+15:     std::print("{} ", n);
+16: }
+17: std::println();
+```
+
+*Ausgabe*:
+
+```
+0 1 2 3 4 5 6 7 8 9
+0 1 2 3 4 5 6 7 8 9
+0 1 2 3 4 5 6 7 8 9
+```
+
+
+---
+
+## *Lazy* Auswertung, Beispiel für Primzahlen <a name="link2"></a>
+
+Wir betrachten ein Beispiel zur Berechnung von Primzahlen:
+
+*Beispiel*:
+
+```cpp
+01: bool isPrime(int num)
+02: {
+03:     if (num <= 1) return false;
+04:     if (num % 2 == 0) return false;
+05: 
+06:     for (int i = 2; i * i <= num; ++i) {
+07:         if (num % i == 0) return false;
+08:     }
+09: 
+10:     return true;
+11: }
+12: 
+13: void test()
+14: {
+15:     // generate an infinite range starting from 2
+16:     auto numbers = std::ranges::iota_view{ 2 };
+17: 
+18:     // filter the numbers to keep only prime numbers and take the first 20 ones
+19:     auto primeNumbers = numbers
+20:         | std::views::filter(isPrime)
+21:         | std::views::take(20);
+22: 
+23:     // print the first 20 prime numbers
+24:     for (int prime : primeNumbers) {
+25:         std::cout << prime << " ";
+26:     }
+27: }
+```
+
+*Ausgabe*:
+
+```
+3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73
+```
 
 ---
 
@@ -217,4 +416,9 @@ Die Anregungen zum konzeptionellen Beispiel finden Sie unter
 ```cpp
 ```
 
+
+*Ausgabe*:
+
+```
+```
 
