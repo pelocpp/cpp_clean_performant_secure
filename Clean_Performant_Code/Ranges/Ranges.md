@@ -30,54 +30,51 @@
 
 #### Quellcode
 
-[*BestPractices.cpp*](BestPractices.cpp).<br />
+[*Ranges.cpp*](Ranges.cpp).<br />
 
 ---
 
 ## Allgemeines <a name="link1"></a>
 
-Wir geben in diesem Tutorial keinen vollständigen Überblick über dir `std::ranges` Bibliothek,
-sondern vielmehr einige erste Beispiele für Neueinsteiger in modernes C++20 liefern.
+Wir geben in diesem Tutorial keinen vollständigen Überblick über die `std::ranges` Bibliothek:
+Es sollen vielmehr einige erste Beispiele für Neueinsteiger einen Einstieg in modernes C++20 liefern.
 
-An Hand einer Reihe von Beispielen zeigen wir auf, welche Rolle der Einsatz dieser Bibliothek
+An Hand einer Reihe von Beispielen zeigen wir auf, welche Rolle der Einsatz dieser Bibliothek in
 *Modern C++* spielt.
 
-Erfahren Sie, wie Sie `std::ranges` für besser lesbaren und effizienteren Code nutzen,
+Erfahren Sie, wie Sie `std::ranges` für besser lesbaren und effizienteren Code nutzen können,
 also für *Clean Code*.
-
-
 
 ---
 
 ## Was ist ein *Range* <a name="link2"></a>
 
-Ein *Range* (*Bereich*) ist ein Konzept, das die Anforderungen an einen Typ definiert,
-der eine Iteration über seine Elemente zulässt.
+  * Ein *Range* (*Bereich*) ist ein Konzept, das die Anforderungen an einen Typ definiert,
+  der eine Iteration über seine Elemente zulässt.
 
-Ein gültiger Bereich sollte zwei Methoden `begin()` und `end()` bereitstellen.
+  * Ein gültiger Bereich sollte zwei Methoden bereitstellen: `begin()` und `end()`.
 
-Im Gegensatz zur Definition des Iteratoren-Konzepts in C++ müssen die Rückgabetypen
-dieser beiden Methoden nicht identisch sein, dazu aber später mehr.
+  * Im Gegensatz zur Definition des Iteratoren-Konzepts in C++ müssen die Rückgabetypen
+  dieser beiden Methoden nicht identisch sein, dazu aber später mehr.
 
-*Beispiele*:<br />
-`std::array`, `std::vector`, `std::string_view`, `std::span`, Array im C-Stil usw.
+  * *Beispiele*:<br />
+  `std::array`, `std::vector`, `std::string_view`, `std::span`, Array im C-Stil usw.
 
-*Vorraussetzungen*:<br />
-
+  * Vorraussetzungen zum Gebrauch der Bibliothek:
+ 
 ```cpp
 #include <ranges>
 ```
 
-Die Datentypen der `std::ranges` Bibliothek liegen im Namensraum `std::ranges`.
+  * Die Datentypen der `std::ranges`-Bibliothek liegen im Namensraum `std::ranges`.
 
 ---
 
 ## *Ranges* versus traditionelle Iteratoren im Vergleich <a name="link3"></a>
 
-Traditionelle STL-Algorithmen verwenden Iteratorpaare zur Bezeichnung von Bereichen.
+  * Traditionelle STL-Algorithmen verwenden Iteratorenpaare zur Bezeichnung von Bereichen.
 
-Dies kann fehleranfällig sein und ist darüber hinaus etwas &bdquo;*verbose*&rdquo;.
-
+  * Dies kann fehleranfällig sein und ist darüber hinaus etwas &bdquo;*verbose*&rdquo;.
 
 *Beispiel*:
 
@@ -94,7 +91,6 @@ Dies kann fehleranfällig sein und ist darüber hinaus etwas &bdquo;*verbose*&rdqu
 
 ```cpp
 std::vector<int> numbers{ 1, 4, 2, 7, 9, 3, 5 };
-
 std::ranges::sort(numbers);
 ```
 
@@ -102,16 +98,16 @@ std::ranges::sort(numbers);
 
 ## Ranges und Concepts (Konzepte) <a name="link4"></a>
 
-Der Gebrauch von Range Concepts trägt dazu bei, bessere und verständlichere Fehlermeldungen zu generieren.
-Die Fehlermeldungen, die bei klassischem C++ und der STL erscheinen,
-sind manchmal absolut unverständlich und sie treten vor allem in Dateien in Erscheinung,
-die korrekt sind. Der Fehler ist im Regelfall in der Nähe der Template Instanziierung,
-was für einen C++ Compiler zunächst einmal nicht die Fehlerursache ist.
-Das reagierde Verhalten im Falle von Fehler tritt an anderen Stellen zu Tage.
+  * Der Gebrauch von Range Concepts trägt dazu bei, bessere und verständlichere Fehlermeldungen zu generieren.
+  Die Fehlermeldungen, die bei klassischem C++ und der STL erscheinen,
+  sind manchmal absolut unverständlich und sie treten vor allem in Dateien in Erscheinung,
+  die korrekt sind. Der Fehler wäre im Regelfall in der Nähe der Template Instanziierung zu suchen,
+  was für einen C++ Compiler zunächst einmal nicht die Fehlerursache ist.
+  Das **reagierde** Verhalten im Falle von Fehlern tritt an anderen Stellen zu Tage.
 
-Bei Gebrauch von Range Concepts haben wir es mit einem proaktiven Verhalten zu tun,
-es wird die Stelle der Template Instanziierung in Übereinstimmung mit dem Concept analyisiert,
-im Fehlerfall erfolgt die Fehlermeldung nun an dieser Stelle.
+  * Bei Gebrauch von Range Concepts haben wir es mit einem **proaktiven** Verhalten zu tun,
+  es wird die Stelle der Template Instanziierung in Übereinstimmung mit dem Concept analysiert,
+  im Fehlerfall erfolgt die Fehlermeldung an der Stelle des Fehlers.
 
 *Beispiel*:
 
@@ -158,9 +154,9 @@ Dieses Mal finden wir die Zeilennummer 20 und die korrekte Zuordnung zur Quellda
 
 ## *Views* (Ansichten) <a name="link5"></a>
 
-  * Views sind so genannte *lightweight Ranges* (*leichtgewichtige Bereiche*)
+  * Views sind so genannte *Lightweight Ranges* (*leichtgewichtige Bereiche*).
 
-  * Views haben *non-owning* (nicht besitzende) Referenzen der Daten.
+  * Views besitzen *non-owning* (nicht besitzende) Referenzen der Daten.
 
   * Views können über die Elemente eines Bereichs iterieren
    und dabei die Daten transformieren oder filtern.
@@ -238,9 +234,9 @@ range | std::ranges::views::operation(arguments...)
 
 ## *Function Composition, Pipelines* (Komposition von Funktionen) <a name="link7"></a>
 
-Da es sich bei einer View (Ansicht) um einen Range (Bereich) handelt,
-kann man eine Ansicht als Argument für eine andere Ansicht verwenden,
-um eine Verkettung zu ermöglichen:
+  * Da es sich bei einer View (Ansicht) um einen Range (Bereich) handelt,
+  kann man eine Ansicht als Argument für eine andere Ansicht verwenden,
+  um eine Verkettung zu ermöglichen:
 
 *Beispiel*:
 
@@ -271,10 +267,10 @@ um eine Verkettung zu ermöglichen:
 64 36 16 4
 ```
 
-Übermäßige Verschachtelung kann zu Lesbarkeits- und Wartungsproblemen führen.
+  * Übermäßige Verschachtelung kann zu Lesbarkeits- und Wartungsproblemen führen.
 
-Es gibt eine weitere Möglichkeit, Bereiche und Ansichten zu kombinieren,
-indem Sie den Pipe-Operator `|` verwenden:
+  * Es gibt eine weitere Möglichkeit, Bereiche und Ansichten zu kombinieren,
+  indem Sie den Pipe-Operator `|` verwenden:
 
 *Beispiel*:
 
@@ -311,7 +307,6 @@ indem Sie den Pipe-Operator `|` verwenden:
 05:     std::print("{} ", n);             // squares are calculated here
 06: }
 ```
-
 
 *Ausgabe*:
 
@@ -441,11 +436,11 @@ Wir betrachten ein Beispiel zur Berechnung von Primzahlen:
 
 ## Projektionen (*Projections*) <a name="link12"></a>
 
-Viele bereichsbasierte Algorithmen haben einen so genannten *Projektionsparameter*,
-einen Rückruf, der jedes Element vor der Verarbeitung transformiert.
+  * Viele bereichsbasierte Algorithmen haben einen so genannten *Projektionsparameter*,
+  einen Rückruf, der jedes Element vor der Verarbeitung transformiert.
 
-Beispiel: Projektionsparameter der Funktion `std::ranges::sort()`<br />
-(entnommen aus [https://en.cppreference.com/w/cpp/algorithm/ranges/sort](https://en.cppreference.com/w/cpp/algorithm/ranges/sort)):
+  * Beispiel: Projektionsparameter der Funktion `std::ranges::sort()`<br />
+  (entnommen aus [https://en.cppreference.com/w/cpp/algorithm/ranges/sort](https://en.cppreference.com/w/cpp/algorithm/ranges/sort)):
 
 ```cpp
 
@@ -556,7 +551,6 @@ sort( R&& r, Comp comp = {}, Proj proj = {} );
 22: }
 ```
 
-
 *Ausgabe*:
 
 ```
@@ -575,13 +569,11 @@ sort( R&& r, Comp comp = {}, Proj proj = {} );
 07: );
 ```
 
-
 *Ausgabe*:
 
 ```
 1 2 3
 ```
-
 
 *Beispiel*:
 
@@ -600,13 +592,11 @@ sort( R&& r, Comp comp = {}, Proj proj = {} );
 12: }
 ```
 
-
 *Ausgabe*:
 
 ```
 1 2 3
 ```
-
 
 
 *Beispiel*:
@@ -627,7 +617,6 @@ sort( R&& r, Comp comp = {}, Proj proj = {} );
 ```
 H e l l o ,   W o r l d !
 ```
-
 
 ---
 
@@ -665,14 +654,14 @@ Dieses Beispiel ist *nicht* übersetzungsfähig! Die Fehlermeldung lautet in etwa
 Error: You cannot dereference an operand of type 'std::ranges::dangling'
 ```
 
-Der Typ `std::ranges::dangling` stellt keinerlei Operationen bereit,
-man kann ihn in einem Programm nicht verwenden!
-Er dient ausschließlich dem Zweck,
-eine praktische Fehlermeldung zu erzeugen,
-um darauf hinzuweisen, was schiefgelaufen ist.
+  * Der Typ `std::ranges::dangling` stellt keinerlei Operationen bereit,
+  man kann ihn in einem Programm nicht verwenden!
+  Er dient ausschließlich dem Zweck,
+  eine praktische Fehlermeldung zu erzeugen,
+  um darauf hinzuweisen, was schiefgelaufen ist.
 
-Die Lösung des Problems besteht darin, dass man dem temporären Bereich
-einen Namen geben muss:
+  * Die Lösung des Problems besteht darin, dass man dem temporären Bereich
+  einen Namen geben muss:
 
 *Beispiel*:
 
@@ -702,13 +691,13 @@ Value 3 found!
 
 ## `std::map`: Views für Schlüssel und Werte von Assoziativ-Containern <a name="link15"></a>
 
-Mit *Ranges* ist es erheblich leichter, auf die Schlüssel und Werte von
-Assoziativ-Containern wie `std::map`, `unordered_map`, etc. zugreifen zu können. 
+  * Mit *Ranges* ist es erheblich leichter, auf die Schlüssel und Werte von
+  Assoziativ-Containern wie `std::map`, `unordered_map`, etc. zugreifen zu können. 
 
-Es gibt sogar gleich mehrere Möglichkeiten bzw. Schreibweisen,
-wir werden einen Blick auf die Ermittlung der Schlüssel.
+  * Es gibt sogar gleich mehrere Möglichkeiten bzw. Schreibweisen,
+  wir werden einen Blick auf die Ermittlung der Schlüssel.
 
-Klassische Vorgehensweise &ndash; auschließlich Verwendung der STL:
+  * Klassische Vorgehensweise &ndash; auschließlich Verwendung der STL:
 
 *Beispiel*:
 
@@ -741,7 +730,7 @@ Klassische Vorgehensweise &ndash; auschließlich Verwendung der STL:
 five four one three two
 ```
 
-Moderne Vorgehensweise &ndash; Verwendung der *Ranges* Bibliothek:
+  * Moderne Vorgehensweise &ndash; Verwendung der *Ranges* Bibliothek:
 
 
 *Beispiel*:
@@ -808,11 +797,11 @@ Sum: 30
 
 ## Das Trio `std::all_of`, `std::any_of` und `std::none_of` <a name="link17"></a>
 
-Das Trio der booleschen Algorithmen  `std::all_of`, `std::any_of` und `std::none_of`
-liefert die entsprechenden booleschen Reduktionen auf der Grundlage eines unären Prädikats.
+  * Das Trio der booleschen Algorithmen  `std::all_of`, `std::any_of` und `std::none_of`
+  liefert die entsprechenden booleschen Reduktionen auf der Grundlage eines unären Prädikats.
 
-Während `std::all_of` und `std::none_of` für leere Bereiche true* zurückgeben,
-erfordert `std::any_of` mindestens ein Argumnet und gibt für einen leeren Bereich *false* zurück.
+  * Während `std::all_of` und `std::none_of` für leere Bereiche true* zurückgeben,
+  erfordert `std::any_of` mindestens ein Argumnet und gibt für einen leeren Bereich *false* zurück.
 
 
 *Beispiel*:
@@ -851,7 +840,6 @@ Wir beenden unsere *Ranges*-Betrachtungen mit zwei Beispielen:
   * Die Zeichenfolgen werden mit std::views::filter herausgefiltert.
 
 
-
 *Beispiel*:
 
 ```cpp
@@ -866,7 +854,6 @@ Wir beenden unsere *Ranges*-Betrachtungen mit zwei Beispielen:
 09: }
 ```
 
-
 *Ausgabe*:
 
 ```
@@ -878,7 +865,6 @@ three five six
 
   * Das Transformieren von Elementen eines Bereichs erfordert nicht unbedint, dass der resultierende Bereich Elemente desselben Typs enthält..
   * Man kann Elemente Elementen eines anderen Typs zuordnen.
-
 
 *Beispiel*:
 
@@ -902,20 +888,18 @@ three five six
 17: }
 ```
 
-
 *Ausgabe*:
 
 ```
 one two three four five
 ```
 
-
 ## Literatur <a name="link19"></a>
 
 
 Die Beispiele und Anregungen dieses Abschnitts wurden sehr stark inspiriert von dem Aufsatz
 [&bdquo;C++ 20 Ranges. Practical examples&brquo;](https://indico.gsi.de/event/19561/contributions/78837/attachments/46921/67160/cpp_ranges.pdf)
-von Semen Lebedev.
+von *Semen Lebedev*.
 
 ---
 

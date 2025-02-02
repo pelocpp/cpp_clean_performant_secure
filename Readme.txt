@@ -55,10 +55,17 @@ https://www.youtube.com/watch?v=wSDyiEjhp8k
 
 // =============================================================
 
+Welcher container ???
+
 https://stackoverflow.com/questions/471432/in-which-scenario-do-i-use-a-particular-stl-container
 
 https://embeddedartistry.com/blog/2017/08/23/choosing-the-right-stl-container-general-rules-of-thumb/
 
+
+
+https://www.hackerearth.com/practice/notes/c-stls-when-to-use-which-stl/
+
+https://brainly.in/question/60524086#:~:text=643%20people%20helped-,Answer%3A,in%20which%20they%20were%20defined.
 
 // =============================================================
 
