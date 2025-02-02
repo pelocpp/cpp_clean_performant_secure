@@ -7,11 +7,15 @@
 #include <cstdlib>
 #include <iostream>
 #include <list>
+#include <map>
+#include <numeric>
 #include <print>
 #include <ranges>
 #include <string>
 #include <string_view>
+#include <variant>
 #include <vector>
+#include <unordered_map>
 
 namespace Ranges {
 
@@ -164,6 +168,39 @@ namespace Ranges {
             std::print("{} ", n); // squares are calculated here
         }
     }
+
+    // =======================================================================
+    // Eager Evaluation (std::ranges::to)
+
+    static void ranges_eager_evaluation_01()
+    {
+        auto squares = std::views::iota(1, 10)
+            | std::views::transform([](auto i) { return i * i; })
+            | std::ranges::to<std::vector>();
+
+        // squares are still calculated here / squares is of type std::vector<int>
+        for (auto n : squares) {
+            std::print("{} ", n);
+        }
+    }
+
+    static void ranges_eager_evaluation_02()
+    {
+        std::string str{ "hello world" };
+
+        auto upper = str
+            | std::views::transform([] (char c) { return std::toupper(c); }) 
+            | std::ranges::to<std::string>();
+
+        std::print("Result: {} ", upper);
+    }
+
+    static void ranges_eager_evaluation()
+    {
+        ranges_eager_evaluation_01();
+        ranges_eager_evaluation_02();
+    }
+
 
     // =======================================================================
     // Bounded vs. Unbounded (Infinite) Range
@@ -468,9 +505,10 @@ namespace Ranges {
 
     static void ranges_dangling_iterators_01()
     {
-        //auto pos = std::ranges::find( getData(), 123); 
-
-        //std::println("{} ", *pos);   // Error: You cannot dereference an operand of type 'std::ranges::dangling'
+        // auto pos = std::ranges::find( getData(), 123); 
+        
+        // Error: You cannot dereference an operand of type 'std::ranges::dangling'
+        // std::println("{} ", *pos);  
     }
 
     static void ranges_dangling_iterators_02()
@@ -494,6 +532,186 @@ namespace Ranges {
         ranges_dangling_iterators_01();
         ranges_dangling_iterators_02();
     }
+
+
+    // =======================================================================
+    // Keys View and Values View
+
+    static void ranges_keys_view_and_values_view_01()
+    {
+        std::map<std::string, int> map{ 
+            { "one",   1 }, 
+            { "two",   2 },
+            { "three", 3 }, 
+            { "four",  4 }, 
+            { "five",  5 } 
+        };
+
+        std::vector<std::string> keys{};
+
+        std::transform(
+            map.begin(),
+            map.end(),
+            std::back_inserter(keys),
+            [] (const auto& elem) { return elem.first; }
+        );
+
+        for (const auto& key : keys) {
+            std::print("{} ", key);
+        }
+        std::println();
+    }
+
+    static void ranges_keys_view_and_values_view_02()
+    {
+        std::map<std::string, int> map{
+            { "one",   1 },
+            { "two",   2 },
+            { "three", 3 },
+            { "four",  4 },
+            { "five",  5 }
+        };
+
+        auto strings{ std::views::keys(map) };
+
+        for (const auto& s : strings) { std::print("{} ", s); }
+        std::println();
+        
+        for (const auto& s : std::views::keys(map)) { std::print("{} ", s); }
+        std::println();
+
+        auto keysView = map | std::views::keys;
+
+        for (const auto& s : keysView) { 
+            std::print("{} ", s);
+        }
+    }
+
+    static void ranges_keys_view_and_values_view_03()
+    {
+        std::map<std::string, int> map{
+            { "one",   1 },
+            { "two",   2 },
+            { "three", 3 },
+            { "four",  4 },
+            { "five",  5 }
+        };
+
+        std::vector<int> values{};
+
+        std::transform(
+            map.begin(),
+            map.end(),
+            std::back_inserter(values),
+            [](const auto& elem) { return elem.second; }
+        );
+
+        for (const auto& value : values) {
+            std::print("{} ", value);
+        }
+        std::println();
+    }
+
+    static void ranges_keys_view_and_values_view_04()
+    {
+        std::map<std::string, int> map{
+            { "one",   1 },
+            { "two",   2 },
+            { "three", 3 },
+            { "four",  4 },
+            { "five",  5 }
+        };
+
+        auto numbers{ std::views::values(map) };
+
+        for (const auto& s : numbers) { std::print("{} ", s); }
+        std::println();
+
+        for (const auto& s : std::views::values(map)) { std::print("{} ", s); }
+        std::println();
+
+        auto valuesView = map | std::views::values;
+
+        for (const auto& v : valuesView) {
+            std::print("{} ", v);
+        }
+    }
+
+    // =======================================================================
+    // std::ranges::common_view
+
+    static void ranges_common_view()
+    {
+        // std::vector<int> numbers = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        // or
+        auto numbers = std::views::iota(1) | std::views::take(10);
+        
+        auto evenNumbers = numbers
+            | std::views::filter([](int n) { return n % 2 == 0; })
+            | std::views::common;
+        
+        int sum{ std::accumulate(evenNumbers.begin(), evenNumbers.end(), 0) };
+        
+        std::print("Sum: {} ", sum);
+    }
+
+
+    // =======================================================================
+    // all_of, any_of, none_of
+
+    static void ranges_all_of_any_of_none_of()
+    {
+        std::vector<int> numbers = { 2, 4, 6, 8, 10 };
+
+        bool anyNegative = std::ranges::any_of(numbers, [](int x) { return x < 0; });    // false
+        std::println("any_of:  {} ", anyNegative);
+        
+        bool noneNegative = std::ranges::none_of(numbers, [](int x) { return x < 0; });  // true
+        std::println("none_of: {} ", noneNegative);
+        
+        bool allEven = std::ranges::all_of(numbers, [](int x) { return x % 2 == 0; });   //true
+        std::println("all_of:  {} ", allEven);
+    }
+
+    // =======================================================================
+    // example with std::variant: filtering of elements of a specific type
+
+    static void ranges_example_variant()
+    {
+        std::vector<std::variant<int, std::string>> mixedData = { 1, 2, "three", 4, "five", "six" };
+
+        auto stringValues = mixedData 
+            | std::views::filter([](const auto& var) { return std::holds_alternative<std::string>(var); }
+        );
+        
+        for (const auto& str : stringValues) {
+            std::cout << std::get<std::string>(str) << " ";
+        }
+    }
+
+    // =======================================================================
+    // example with std::map: mapping elements to another type
+
+    static void ranges_example_unordered_map()
+    {
+        std::vector<int> numbers{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+        std::unordered_map<int, std::string> map {
+            { 1, "one"   },
+            { 2, "two"   },
+            { 3, "three" },
+            { 4, "four"  },
+            { 5, "five"  }
+        };
+        
+        auto result = numbers
+            | std::views::filter([](const auto& n) { return n <= 5; })
+            | std::views::transform([&](const auto& n) { return map[n]; });
+        
+        for (const auto& str : result) {
+            std::cout << str << " ";
+        }
+    }
 }
 
 // =================================================================
@@ -508,11 +726,17 @@ void ranges_clean_code_examples()
     //ranges_range_adaptors();
     //ranges_composition_of_views();
     //ranges_lazy_evaluation();
+    //ranges_eager_evaluation();
     //ranges_bounded_vs_unbounded_range();
     //ranges_lazy_primes();
     //ranges_projections();
     //ranges_sentinels();
-    ranges_dangling_iterators();
+    //ranges_dangling_iterators();
+    //ranges_keys_view_and_values_view();
+    //ranges_common_view();
+    //ranges_all_of_any_of_none_of();
+    //ranges_example_variant();
+    ranges_example_unordered_map();
 }
 
 // ===========================================================================

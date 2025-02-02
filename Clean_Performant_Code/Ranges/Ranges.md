@@ -6,10 +6,25 @@
 
 ## Inhalt
 
-  * [XXXX](#link)
-  * [XXXX](#link)
-  * [XXXX](#link)
-  * [Literatur](#link7)
+  * [Allgemeines](#link1)
+  * [Was ist ein *Range*](#link2)
+  * [*Ranges* versus traditionelle Iteratoren im Vergleich](#link3)
+  * [Ranges und Concepts (Konzepte)](#link4)
+  * [*Views* (Ansichten)](#link5)
+  * [*Range Adaptors* (Bereichsadapter)](#link6)
+  * [*Function Composition, Pipelines* (Komposition von Funktionen)](#link7)
+  * [*Lazy Evaluation* (*Lazy* Auswertung)](#link8)
+  * [*Eager Evaluation* (*Gierige* Auswertung)](#link9)
+  * [Begrenzte vs. unbegrenzte (unendliche) Ranges](#link10)
+  * [*Lazy* Auswertung, Beispiel für Primzahlen](#link11)
+  * [Projektionen (*Projections*)](#link12)
+  * [Sentinels](#link13)
+  * [*Dangling Iterators* / *Borrowed Iterators* ](#link14)
+  * [`std::map`: Views für Schlüssel und Werte von Assoziativ-Containern](#link15)
+  * [`std::views::common`](#link16)
+  * [Das Trio `std::all_of`, `std::any_of` und `std::none_of`](#link17)
+  * [Zwei Beispiele zum Abschluss: `std::variant` und `std::variant`](#link18)
+  * [Literatur](#link19)
 
 ---
 
@@ -29,6 +44,8 @@ An Hand einer Reihe von Beispielen zeigen wir auf, welche Rolle der Einsatz dies
 
 Erfahren Sie, wie Sie `std::ranges` für besser lesbaren und effizienteren Code nutzen,
 also für *Clean Code*.
+
+
 
 ---
 
@@ -55,7 +72,7 @@ Die Datentypen der `std::ranges` Bibliothek liegen im Namensraum `std::ranges`.
 
 ---
 
-## *Ranges* versus traditionelle Iteratoren im Vergleich <a name="link2"></a>
+## *Ranges* versus traditionelle Iteratoren im Vergleich <a name="link3"></a>
 
 Traditionelle STL-Algorithmen verwenden Iteratorpaare zur Bezeichnung von Bereichen.
 
@@ -83,7 +100,7 @@ std::ranges::sort(numbers);
 
 ---
 
-## Ranges und Concepts (Konzepte) <a name="link2"></a>
+## Ranges und Concepts (Konzepte) <a name="link4"></a>
 
 Der Gebrauch von Range Concepts trägt dazu bei, bessere und verständlichere Fehlermeldungen zu generieren.
 Die Fehlermeldungen, die bei klassischem C++ und der STL erscheinen,
@@ -139,7 +156,7 @@ Dieses Mal finden wir die Zeilennummer 20 und die korrekte Zuordnung zur Quellda
 
 ---
 
-## *Views* (Ansichten) <a name="link2"></a>
+## *Views* (Ansichten) <a name="link5"></a>
 
   * Views sind so genannte *lightweight Ranges* (*leichtgewichtige Bereiche*)
 
@@ -182,7 +199,7 @@ sondern mit *Range Adaptors* (Bereichsadapter) erstellt.
 
 ---
 
-## *Range Adaptors* (Bereichsadapter) <a name="link2"></a>
+## *Range Adaptors* (Bereichsadapter) <a name="link6"></a>
 
   * Bereichsadapter sind Hilfsfunktionen, die Views erstellen,
   wie beispielsweise `views::filter` , `views::transform` 
@@ -219,7 +236,7 @@ range | std::ranges::views::operation(arguments...)
 
 ---
 
-## *Function Composition, Pipelines* (Komposition von Funktionen) <a name="link2"></a>
+## *Function Composition, Pipelines* (Komposition von Funktionen) <a name="link7"></a>
 
 Da es sich bei einer View (Ansicht) um einen Range (Bereich) handelt,
 kann man eine Ansicht als Argument für eine andere Ansicht verwenden,
@@ -276,7 +293,7 @@ indem Sie den Pipe-Operator `|` verwenden:
 
 ---
 
-## *Lazy Evaluation* (*Lazy* Auswertung) <a name="link2"></a>
+## *Lazy Evaluation* (*Lazy* Auswertung) <a name="link8"></a>
 
   * Eine Ansicht ist lediglich die Beschreibung einer Verarbeitung.
 
@@ -304,7 +321,38 @@ indem Sie den Pipe-Operator `|` verwenden:
 
 ---
 
-## Begrenzte vs. unbegrenzte (unendliche) Ranges <a name="link2"></a>
+## *Eager Evaluation* (*Gierige* Auswertung) <a name="link9"></a>
+
+  * Ab C++ 23 gibt es mit `std::ranges::to` ein einfache `Möglichkeit`,
+  dass eine View *gierig* ausgewertet wird und das Ergebnis in einem Container gespeichert wird.
+
+  * `std::ranges::to` ist ein Klassentemplate, der Elementtyp kann infolgedessen weggelassen werden
+  und wird dann mithilfe von CTAD (*Class Template Argument Deduction*) entsprechend dem Elementtyp der View abgeleitet.
+
+
+*Beispiel*:
+
+```cpp
+01: auto squares = std::views::iota(1, 10)
+02:     | std::views::transform([](auto i) { return i * i; })
+03:     | std::ranges::to<std::vector>();
+04: 
+05: for (auto n : squares) {
+06:     std::print("{} ", n);
+07: }
+```
+
+
+*Ausgabe*:
+
+```
+1 4 9 16 25 36 49 64 81
+```
+
+  
+---
+
+## Begrenzte vs. unbegrenzte (unendliche) Ranges <a name="link10"></a>
 
   * `std::views::iota` kann als eine *Range-Factory* angesehen werden,
   die eine Sequenz von Elementen generiert, indem sie einen Anfangswert wiederholt inkrementiert.
@@ -347,7 +395,7 @@ indem Sie den Pipe-Operator `|` verwenden:
 
 ---
 
-## *Lazy* Auswertung, Beispiel für Primzahlen <a name="link2"></a>
+## *Lazy* Auswertung, Beispiel für Primzahlen <a name="link11"></a>
 
 Wir betrachten ein Beispiel zur Berechnung von Primzahlen:
 
@@ -391,7 +439,7 @@ Wir betrachten ein Beispiel zur Berechnung von Primzahlen:
 
 ---
 
-## Projektionen (*Projections*) <a name="link2"></a>
+## Projektionen (*Projections*) <a name="link12"></a>
 
 Viele bereichsbasierte Algorithmen haben einen so genannten *Projektionsparameter*,
 einen Rückruf, der jedes Element vor der Verarbeitung transformiert.
@@ -461,7 +509,7 @@ sort( R&& r, Comp comp = {}, Proj proj = {} );
 
 ---
 
-## Sentinels <a name="link6"></a>
+## Sentinels <a name="link13"></a>
 
   * *Sentinels* stellen das Ende eines Bereichs dar:
 
@@ -583,7 +631,7 @@ H e l l o ,   W o r l d !
 
 ---
 
-## *Dangling Iterators* / *Borrowed Iterators*  <a name="link2"></a>
+## *Dangling Iterators* / *Borrowed Iterators*  <a name="link14"></a>
 
   * Wenn man einen temporären Bereich an einen Algorithmus übergibt, der einen Iterator zurückgibt,
   ist der zurückgegebene Iterator am Ende der Anweisung ungültig, da der Bereich zerstört wird.
@@ -652,29 +700,225 @@ Value 3 found!
 
 ---
 
-[Zurück](../../Readme.md)
+## `std::map`: Views für Schlüssel und Werte von Assoziativ-Containern <a name="link15"></a>
 
-Die Anregungen zum konzeptionellen Beispiel finden Sie unter
+Mit *Ranges* ist es erheblich leichter, auf die Schlüssel und Werte von
+Assoziativ-Containern wie `std::map`, `unordered_map`, etc. zugreifen zu können. 
 
-[https://hackernoon.com/c-performance-optimization-best-practices](C++ Performance Optimization: Best Practices)
+Es gibt sogar gleich mehrere Möglichkeiten bzw. Schreibweisen,
+wir werden einen Blick auf die Ermittlung der Schlüssel.
+
+Klassische Vorgehensweise &ndash; auschließlich Verwendung der STL:
+
+*Beispiel*:
+
+```cpp
+01: std::map<std::string, int> map{ 
+02:     { "one",   1 }, 
+03:     { "two",   2 },
+04:     { "three", 3 }, 
+05:     { "four",  4 }, 
+06:     { "five",  5 } 
+07: };
+08: 
+09: std::vector<std::string> keys{};
+10: 
+11: std::transform(
+12:     map.begin(),
+13:     map.end(),
+14:     std::back_inserter(keys),
+15:     [] (const auto& elem) { return elem.first; }
+16: );
+17: 
+18: for (const auto& key : keys) {
+19:     std::print("{} ", key);
+20: }
+```
+
+*Ausgabe*:
+
+```
+five four one three two
+```
+
+Moderne Vorgehensweise &ndash; Verwendung der *Ranges* Bibliothek:
+
+
+*Beispiel*:
+
+```cpp
+01: std::map<std::string, int> map{
+02:     { "one",   1 },
+03:     { "two",   2 },
+04:     { "three", 3 },
+05:     { "four",  4 },
+06:     { "five",  5 }
+07: };
+08: 
+09: auto strings{ std::views::keys(map) };
+10: 
+11: for (const auto& s : strings) { std::print("{} ", s); }
+12: std::println();
+13:         
+14: for (const auto& s : std::views::keys(map)) { std::print("{} ", s); }
+15: std::println();
+16: 
+17: auto keysView = map | std::views::keys;
+18: 
+19: for (const auto& s : keysView) { 
+20:     std::print("{} ", s);
+21: }
+```
+
+Das Beispiel produziert diesselbe Ausgabe wie das Beispiel zuvor.
 
 ---
 
+## `std::views::common` <a name="link16"></a>
+
+Der Gebrauch von `std::views::common` ermöglicht:
+
+  * Kombination von `std::ranges::views` und `std::accumulate` (kein bereichsbasierter Algorithmus)
+
+  * `std::views::common` erstellt eine View mit konsistenten Typen von Anfangs- und Enditeratoren.
 
 
 *Beispiel*:
 
 ```cpp
-```
-
-*Beispiel*:
-
-```cpp
+01: auto numbers = std::views::iota(1) | std::views::take(10);
+02:         
+03: auto evenNumbers = numbers
+04:     | std::views::filter([](int n) { return n % 2 == 0; })
+05:     | std::views::common;
+06:         
+07: int sum{ std::accumulate(evenNumbers.begin(), evenNumbers.end(), 0) };
+08:         
+09: std::print("Sum: {} ", sum);
 ```
 
 
 *Ausgabe*:
 
 ```
+Sum: 30
 ```
 
+---
+
+## Das Trio `std::all_of`, `std::any_of` und `std::none_of` <a name="link17"></a>
+
+Das Trio der booleschen Algorithmen  `std::all_of`, `std::any_of` und `std::none_of`
+liefert die entsprechenden booleschen Reduktionen auf der Grundlage eines unären Prädikats.
+
+Während `std::all_of` und `std::none_of` für leere Bereiche true* zurückgeben,
+erfordert `std::any_of` mindestens ein Argumnet und gibt für einen leeren Bereich *false* zurück.
+
+
+*Beispiel*:
+
+```cpp
+01: std::vector<int> numbers = { 2, 4, 6, 8, 10 };
+02: 
+03: bool anyNegative = std::ranges::any_of(numbers, [](int x) { return x < 0; });    // false
+04: std::println("any_of:  {} ", anyNegative);
+05:         
+06: bool noneNegative = std::ranges::none_of(numbers, [](int x) { return x < 0; });  // true
+07: std::println("none_of: {} ", noneNegative);
+08:         
+09: bool allEven = std::ranges::all_of(numbers, [](int x) { return x % 2 == 0; });   //true
+10: std::println("all_of:  {} ", allEven);
+```
+
+*Ausgabe*:
+
+```
+any_of:  false
+none_of: true
+all_of:  true
+```
+
+
+---
+
+## Zwei Beispiele zum Abschluss: `std::variant` und `std::variant` <a name="link18"></a>
+
+Wir beenden unsere *Ranges*-Betrachtungen mit zwei Beispielen:
+
+#### Beispiel mit der Klasse `std::variant`
+
+  * Erstellung eines Vektors mit Zahlen und Zeichenfolgen.
+  * Die Zeichenfolgen werden mit std::views::filter herausgefiltert.
+
+
+
+*Beispiel*:
+
+```cpp
+01: std::vector<std::variant<int, std::string>> mixedData = { 1, 2, "three", 4, "five", "six" };
+02: 
+03: auto stringValues = mixedData 
+04:     | std::views::filter([](const auto& var) { return std::holds_alternative<std::string>(var); }
+05: );
+06:         
+07: for (const auto& str : stringValues) {
+08:     std::cout << std::get<std::string>(str) << " ";
+09: }
+```
+
+
+*Ausgabe*:
+
+```
+three five six
+```
+
+
+#### Beispiel mit der Klasse `std::unordered_map`
+
+  * Das Transformieren von Elementen eines Bereichs erfordert nicht unbedint, dass der resultierende Bereich Elemente desselben Typs enthält..
+  * Man kann Elemente Elementen eines anderen Typs zuordnen.
+
+
+*Beispiel*:
+
+```cpp
+01: std::vector<int> numbers{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+02: 
+03: std::unordered_map<int, std::string> map {
+04:     { 1, "one"   },
+05:     { 2, "two"   },
+06:     { 3, "three" },
+07:     { 4, "four"  },
+08:     { 5, "five"  }
+09: };
+10:         
+11: auto result = numbers
+12:     | std::views::filter([](const auto& n) { return n <= 5; })
+13:     | std::views::transform([&](const auto& n) { return map[n]; });
+14:         
+15: for (const auto& str : result) {
+16:     std::cout << str << " ";
+17: }
+```
+
+
+*Ausgabe*:
+
+```
+one two three four five
+```
+
+
+## Literatur <a name="link19"></a>
+
+
+Die Beispiele und Anregungen dieses Abschnitts wurden sehr stark inspiriert von dem Aufsatz
+[&bdquo;C++ 20 Ranges. Practical examples&brquo;](https://indico.gsi.de/event/19561/contributions/78837/attachments/46921/67160/cpp_ranges.pdf)
+von Semen Lebedev.
+
+---
+
+[Zurück](../../Readme.md)
+
+---
