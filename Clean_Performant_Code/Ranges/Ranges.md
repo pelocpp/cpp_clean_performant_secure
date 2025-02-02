@@ -1,4 +1,4 @@
-# std::ranges` Bibliothek
+# `std::ranges` Bibliothek
 
 [Zurück](../../Readme.md)
 
@@ -345,7 +345,6 @@ indem Sie den Pipe-Operator `|` verwenden:
 0 1 2 3 4 5 6 7 8 9
 ```
 
-
 ---
 
 ## *Lazy* Auswertung, Beispiel für Primzahlen <a name="link2"></a>
@@ -392,7 +391,264 @@ Wir betrachten ein Beispiel zur Berechnung von Primzahlen:
 
 ---
 
-## Literatur <a name="link6"></a>
+## Projektionen (*Projections*) <a name="link2"></a>
+
+Viele bereichsbasierte Algorithmen haben einen so genannten *Projektionsparameter*,
+einen Rückruf, der jedes Element vor der Verarbeitung transformiert.
+
+Beispiel: Projektionsparameter der Funktion `std::ranges::sort()`<br />
+(entnommen aus [https://en.cppreference.com/w/cpp/algorithm/ranges/sort](https://en.cppreference.com/w/cpp/algorithm/ranges/sort)):
+
+```cpp
+
+template<ranges::random_access_range R,
+         class Comp = ranges::less,
+         class Proj = std::identity>
+    requires std::sortable<ranges::iterator_t<R>, Comp, Proj>
+constexpr ranges::borrowed_iterator_t<R>
+sort( R&& r, Comp comp = {}, Proj proj = {} );
+```
+
+
+*Beispiel*:
+
+```cpp
+01: std::vector<int> numbers = { -8, 4, -6, -3, 2, -5, 10, 7, 1, -9 };
+02: 
+03: // using projection
+04: std::ranges::sort(
+05:     numbers,
+06:     std::ranges::less{},                  // comparison
+07:     [](auto n) { return std::abs(n); }    // identity
+08: );
+09: 
+10: for (auto elem : numbers) {
+11:     std::print("{} ", elem);
+12: }
+13: std::println();
+```
+
+
+*Ausgabe*:
+
+```
+1 2 -3 4 -5 -6 7 -8 -9 10
+```
+
+
+*Beispiel*:
+
+```cpp
+01: std::vector<int> numbers = { -8, 4, -6, -3, 2, -5, 10, 7, 1, -9 };
+02: 
+03: // using defaulted projection and original value
+04: std::ranges::sort(
+05:     numbers,
+06:     {},
+07:     {}
+08: );
+09: 
+10: for (auto elem : numbers) {
+11:     std::print("{} ", elem);
+12: }
+```
+
+*Ausgabe*:
+
+```
+-9 -8 -6 -5 -3 1 2 4 7 10
+```
+
+---
+
+## Sentinels <a name="link6"></a>
+
+  * *Sentinels* stellen das Ende eines Bereichs dar:
+
+  * Beispiele für Sentinels in der Programmierung:
+
+    * EOF als Ende eines Dateistreams
+    * Der Nullterminator `\0` als Ende einer Zeichenfolge im C-Stil
+    * `nullptr` als Ende einer verknüpften Liste
+    * `-1` als Ende einer Liste mit nicht-negativen Ganzzahlen
+    * `\n` als Ende einer Zeile
+
+  * Im Gegensatz zum traditionellen iteratorenbasierten STL-Ansatz,
+  bei dem Anfang und Ende einer Sequenz (STL-Container) durch Iteratoren desselben Typs gekennzeichnet sind,
+  können der Typ des Sentinels und der des Anfangsiterators unterschiedlich sein.
+
+  * Dieses Feature kann nützlich sein,
+  wenn das Ende der Sequenz ungewiss ist, bis es während der Iteration erreicht wird.
+
+
+*Beispiel*:
+
+```cpp
+01: struct NegativeNumber
+02: {
+03:     bool operator== (std::input_iterator auto iter) const {
+04:         return *iter < 0;
+05:     }
+06: };
+07: 
+08: static void ranges_sentinels_01()
+09: {
+10:     std::vector<int> numbers{ 1, 2, 3, -4, 5, 6 };
+11: 
+12:     std::ranges::transform(
+13:         numbers.begin(),
+14:         NegativeNumber{},   // <== sentinel
+15:         numbers.begin(),
+16:         [](const auto& n) { return n * n; }
+17:     );
+18: 
+19:     for (auto elem : numbers) {
+20:         std::print("{} ", elem);
+21:     }
+22: }
+```
+
+
+*Ausgabe*:
+
+```
+1 4 9 -4 5 6
+```
+
+*Beispiel*:
+
+```cpp
+01: std::vector<int> numbers{ 1, 2, 3, -4, 5, 6 };
+02: 
+03: std::ranges::for_each(
+04:     numbers.begin(),
+05:     NegativeNumber{},     // <== sentinel
+06:     [] (auto n) { std::print("{} ", n); }
+07: );
+```
+
+
+*Ausgabe*:
+
+```
+1 2 3
+```
+
+
+*Beispiel*:
+
+```cpp
+01: std::vector<int> numbers{ 1, 2, 3, -4, 5, 6 };
+02: 
+03: auto range{ 
+04:     std::ranges::subrange{
+05:         numbers.begin(),
+06:         NegativeNumber{}    // <== sentinel
+07:     }
+08: };
+09: 
+10: for (auto elem : range) {
+11:     std::print("{} ", elem);
+12: }
+```
+
+
+*Ausgabe*:
+
+```
+1 2 3
+```
+
+
+
+*Beispiel*:
+
+```cpp
+01: const char* str = "Hello, World!";
+02: 
+03: std::ranges::for_each(
+04:     str,
+05:     TerminatingZero{},
+06:     [] (char c) { std::print("{} ", c); }
+07: );
+```
+
+
+*Ausgabe*:
+
+```
+H e l l o ,   W o r l d !
+```
+
+
+---
+
+## *Dangling Iterators* / *Borrowed Iterators*  <a name="link2"></a>
+
+  * Wenn man einen temporären Bereich an einen Algorithmus übergibt, der einen Iterator zurückgibt,
+  ist der zurückgegebene Iterator am Ende der Anweisung ungültig, da der Bereich zerstört wird.
+
+  * Dieses Problem würde nicht auftreten, wenn man einen Bereich mit zwei Argumenten definiert (Anfang und Ende).
+
+  * Die *Ranges* Bibliothek führt zu diesem Zweck das Konzept so genannter *Borrowed Iterators* ein.
+
+  * Wenn der an einen Algorithmus übergebene Range ein temporäres Objekt ist,
+  dann ist der Rückgabewert ein Objekt vom Typ `std::ranges::dangling`.
+
+*Beispiel*:
+
+```cpp
+01: std::vector<int> getData()
+02: {
+03:     return std::vector<int> { 1, 2, 3, 4, 5 };
+04: }
+05: 
+06: void test()
+07: {
+08:     auto pos = std::ranges::find( getData(), 123); 
+09: 
+10:     std::println("{} ", *pos);
+11: }
+```
+
+Dieses Beispiel ist *nicht* übersetzungsfähig! Die Fehlermeldung lautet in etwa
+
+```
+Error: You cannot dereference an operand of type 'std::ranges::dangling'
+```
+
+Der Typ `std::ranges::dangling` stellt keinerlei Operationen bereit,
+man kann ihn in einem Programm nicht verwenden!
+Er dient ausschließlich dem Zweck,
+eine praktische Fehlermeldung zu erzeugen,
+um darauf hinzuweisen, was schiefgelaufen ist.
+
+Die Lösung des Problems besteht darin, dass man dem temporären Bereich
+einen Namen geben muss:
+
+*Beispiel*:
+
+```cpp
+01: const auto& values = getData();               // declare const lvalue reference
+02: 
+03: auto value{ 3 };
+04: 
+05: auto pos = std::ranges::find(values, value);
+06: 
+07: if (pos == values.end()) {
+08:     std::println("Value {} not found!", value);
+09: }
+10: else {
+11:     std::println("Value {} found!", *pos);
+12: }
+```
+
+*Ausgabe*:
+
+```
+Value 3 found!
+```
+
 
 ---
 

@@ -3,6 +3,8 @@
 // ===========================================================================
 
 #include <algorithm>
+#include <cstddef>
+#include <cstdlib>
 #include <iostream>
 #include <list>
 #include <print>
@@ -79,7 +81,7 @@ namespace Ranges {
 
         std::ranges::for_each(
             view,
-            [] (auto n) { std::print("{} ", n); }
+            [](auto n) { std::print("{} ", n); }
         );
     }
 
@@ -90,7 +92,7 @@ namespace Ranges {
     {
         std::vector<int> numbers = { 1, 2, 3, 4, 5, 6 };
 
-        auto result = numbers 
+        auto result = numbers
             | std::views::filter([](auto n) { return n % 2 == 0; })
             | std::views::transform([](auto n) { return n * 2; });
 
@@ -106,7 +108,7 @@ namespace Ranges {
     {
         std::vector<int> numbers = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-        auto result {
+        auto result{
             std::views::reverse(
                 std::views::take(
                     std::views::transform(
@@ -115,7 +117,7 @@ namespace Ranges {
                     ),
                     4
                 )
-            ) 
+            )
         };
 
         std::ranges::for_each(
@@ -155,7 +157,7 @@ namespace Ranges {
 
     static void ranges_lazy_evaluation()
     {
-        auto lazySquares = 
+        auto lazySquares =
             std::views::iota(1, 10) | std::views::transform([](auto i) { return i * i; });
 
         for (auto n : lazySquares) {
@@ -173,15 +175,15 @@ namespace Ranges {
             std::print("{} ", n);
         }
         std::println();
-        
+
         // use infinite std::views::iota in combination with std::views::take
-        for (int n : std::views::iota(0) | std::views::take(10)) { 
+        for (int n : std::views::iota(0) | std::views::take(10)) {
             std::print("{} ", n);
         }
         std::println();
-        
+
         // use infinite std::views::iota in combination with std::views::take_while
-        for (int n : std::views::iota(0) | std::views::take_while([] (int y) { return y < 10; })) {
+        for (int n : std::views::iota(0) | std::views::take_while([](int y) { return y < 10; })) {
             std::print("{} ", n);
         }
         std::println();
@@ -219,9 +221,278 @@ namespace Ranges {
             | std::views::take(20);
 
         // print the first 20 prime numbers
-        for (int prime : primeNumbers) {
-            std::cout << prime << " ";
+        for (auto prime : primeNumbers) {
+            std::print("{} ", prime);
         }
+    }
+
+    // =======================================================================
+    // Projections
+
+    static void ranges_projections_01()
+    {
+        std::vector<int> numbers = { -8, 4, -6, -3, 2, -5, 10, 7, 1, -9 };
+
+        // classic implementation: sort std::vector of integers by absolut value
+        std::ranges::sort(
+            numbers,
+            [](auto lhs, auto rhs) {
+                return std::abs(lhs) < std::abs(rhs); }
+        );
+
+        for (auto elem : numbers) {
+            std::print("{} ", elem);
+        }
+    }
+
+    static void ranges_projections_02()
+    {
+        std::vector<int> numbers = { -8, 4, -6, -3, 2, -5, 10, 7, 1, -9 };
+
+        // using projection
+        std::ranges::sort(
+            numbers,
+            std::ranges::less{},                  // comparison
+            [](auto n) { return std::abs(n); }    // identity
+        );
+
+        for (auto elem : numbers) {
+            std::print("{} ", elem);
+        }
+        std::println();
+    }
+
+    static void ranges_projections_03()
+    {
+        std::vector<int> numbers = { -8, 4, -6, -3, 2, -5, 10, 7, 1, -9 };
+
+        // using defaulted projection and original value
+        std::ranges::sort(
+            numbers,
+            {},
+            {}
+        );
+
+        for (auto elem : numbers) {
+            std::print("{} ", elem);
+        }
+        std::println();
+    }
+
+    struct Person
+    {
+        std::string m_name{};
+        size_t      m_age{};
+    };
+}
+
+namespace std
+{
+    using namespace Ranges;
+
+    template <>
+    struct formatter<Person>
+    {
+        constexpr auto parse(std::format_parse_context& ctx) {
+            return ctx.begin();
+        }
+
+        auto format(const Person& person, std::format_context& ctx) const {
+            return std::format_to(ctx.out(), "Name: {}, Age: {}", person.m_name, person.m_age);
+        }
+    };
+}
+
+namespace Ranges {
+
+    // =======================================================================
+    // Projections - Part II
+
+    static void ranges_projections_04()
+    {
+        // sort struct by different fields
+        std::vector<Person> persons{
+            { "Sepp",  35 },
+            { "Hans",  45 },
+            { "Anton", 40 },
+            { "Joe",   20 },
+        };
+
+       // ascending by name
+       std::ranges::sort(
+           persons,
+           {}, 
+           &Person::m_name
+       );                     
+
+       for (const auto& person : persons) {
+           std::println("{} ", person);
+       }
+       std::println();
+
+       // descending by name
+       std::ranges::sort(
+           persons,
+           std::ranges::greater(),
+           &Person::m_name
+       );
+
+       for (const auto& person : persons) {
+           std::println("{} ", person);
+       }
+       std::println();
+
+       // ascending by age
+       std::ranges::sort(
+           persons,
+           {},
+           &Person::m_age
+       );
+       
+       for (const auto& person : persons) {
+           std::println("{} ", person);
+       }
+       std::println();
+
+       // descending by age
+       std::ranges::sort(
+           persons, 
+           std::ranges::greater(),
+           &Person::m_age
+       );
+
+       for (const auto& person : persons) {
+           std::println("{} ", person);
+       }
+       std::println();
+    }
+
+    static void ranges_projections()
+    {
+        ranges_projections_01();
+        ranges_projections_02();
+        ranges_projections_03();
+        ranges_projections_04();
+    }
+
+    // =======================================================================
+    // Sentinels
+
+    struct NegativeNumber
+    {
+        bool operator== (std::input_iterator auto iter) const {
+            return *iter < 0;
+        }
+    };
+
+    static void ranges_sentinels_01()
+    {
+        std::vector<int> numbers{ 1, 2, 3, -4, 5, 6 };
+
+        std::ranges::transform(
+            numbers.begin(),
+            NegativeNumber{},   // <== sentinel
+            numbers.begin(),
+            [](const auto& n) { return n * n; }
+        );
+
+        for (auto elem : numbers) {
+            std::print("{} ", elem);
+        }
+        std::println();
+    }
+
+    static void ranges_sentinels_02()
+    {
+        std::vector<int> numbers{ 1, 2, 3, -4, 5, 6 };
+
+        std::ranges::for_each(
+            numbers.begin(),
+            NegativeNumber{},     // <== sentinel
+            [] (auto n) { std::print("{} ", n); }
+        );
+        std::println();
+    }
+
+    static void ranges_sentinels_03()
+    {
+        std::vector<int> numbers{ 1, 2, 3, -4, 5, 6 };
+
+        auto range{ 
+            std::ranges::subrange{
+                numbers.begin(),
+                NegativeNumber{}   // <== sentinel
+            }
+        };
+
+        for (auto elem : range) {
+            std::print("{} ", elem);
+        }
+        std::println();
+    }
+
+    struct TerminatingZero
+    {
+        bool operator== (std::input_iterator auto iter) const {
+            return *iter == '\0';
+        }
+    };
+
+    static void ranges_sentinels_04()
+    {
+        const char* str = "Hello, World!";
+
+        std::ranges::for_each(
+            str,
+            TerminatingZero{},
+            [] (char c) { std::print("{} ", c); }
+        );
+    }
+
+    static void ranges_sentinels()
+    {
+        ranges_sentinels_01();
+        ranges_sentinels_02();
+        ranges_sentinels_03();
+        ranges_sentinels_04();
+    }
+
+
+    // =======================================================================
+    // Dangling Iterators
+
+    static std::vector<int> getData()
+    {
+        return std::vector<int> { 1, 2, 3, 4, 5 };
+    }
+
+    static void ranges_dangling_iterators_01()
+    {
+        //auto pos = std::ranges::find( getData(), 123); 
+
+        //std::println("{} ", *pos);   // Error: You cannot dereference an operand of type 'std::ranges::dangling'
+    }
+
+    static void ranges_dangling_iterators_02()
+    {
+        const auto& values = getData();               // declare const lvalue reference
+
+        auto value{ 3 };
+
+        auto pos = std::ranges::find(values, value);
+
+        if (pos == values.end()) {
+            std::println("Value {} not found!", value);
+        }
+        else {
+            std::println("Value {} found!", *pos);
+        }
+    }
+
+    static void ranges_dangling_iterators()
+    {
+        ranges_dangling_iterators_01();
+        ranges_dangling_iterators_02();
     }
 }
 
@@ -231,14 +502,17 @@ void ranges_clean_code_examples()
 {
     using namespace Ranges;
 
-    comparison_iterators_vs_ranges();
-    ranges_example_concepts();
-    ranges_views();
-    ranges_range_adaptors();
-    ranges_composition_of_views();
-    ranges_lazy_evaluation();
-    ranges_bounded_vs_unbounded_range();
-    ranges_lazy_primes();
+    //comparison_iterators_vs_ranges();
+    //ranges_example_concepts();
+    //ranges_views();
+    //ranges_range_adaptors();
+    //ranges_composition_of_views();
+    //ranges_lazy_evaluation();
+    //ranges_bounded_vs_unbounded_range();
+    //ranges_lazy_primes();
+    //ranges_projections();
+    //ranges_sentinels();
+    ranges_dangling_iterators();
 }
 
 // ===========================================================================
