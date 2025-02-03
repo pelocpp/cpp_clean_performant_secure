@@ -4,12 +4,12 @@
 
 #include <print>
 
-void test_guidelines_inheritance();
+void guidelines_inheritance();
 
 int main()
 {
     std::println("Guidelines");
-    test_guidelines_inheritance();
+    guidelines_inheritance();
     return 0;
 }
 

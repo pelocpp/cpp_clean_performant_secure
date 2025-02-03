@@ -2,8 +2,8 @@
 // Guidelines_Inheritance.cpp
 // ===========================================================================
 
-#include <print>
 #include <cassert>
+#include <print>
 
 namespace GuidelinesInheritance {
 
@@ -59,7 +59,7 @@ namespace GuidelinesInheritance {
 		}
 	};
 
-	static void test_invariants_game()
+	static void guidelines_inheritance_invariants()
 	{
 		Game game{ 30, 20, Point2D{ 5, 5 } };
 
@@ -69,14 +69,78 @@ namespace GuidelinesInheritance {
         // game is being spawned out of bounds 
 		Game anotherGame{10, 10, Point2D{ 12, 8 } };
 	}
+
+	// =======================================================================
+    // Comparison virtual / non virtual methods
+
+	class A
+	{
+	public:
+		void func() {};
+	};
+
+	class Base
+	{
+	public:
+		virtual void func() {};
+	};
+
+	class Derived : public Base
+	{
+	public:
+		virtual void func() override {};
+	};
+
+	class X
+	{
+	private:
+		double m_value{};
+
+	public:
+		void func() {};
+	};
+
+	class Y
+	{
+	private:
+		double m_value{};
+
+	public:
+		virtual void func() {};
+	};
+
+	class Z : public Y
+	{
+	public:
+		virtual void func() override { Y::func(); };
+	};
+
+	static void guidelines_inheritance_virtual()
+	{
+		// comparison virtual / non-virtua method invocation
+		A a;
+		a.func();
+
+		Base* bp;
+		bp = new Derived();
+		bp->func();
+
+		// comparison object siyes of classes with / without virtual methods
+		X x;
+		Y y;
+
+		std::println("Sizeof x: {}", sizeof(x));
+		std::println("Sizeof y: {}", sizeof(y));
+	}
 }
 
 
-void test_guidelines_inheritance()
+void guidelines_inheritance()
 {
 	using namespace GuidelinesInheritance;
 
-	test_invariants_game();
+	//guidelines_inheritance_invariants();
+	guidelines_inheritance_virtual();
 }
 
 // ===========================================================================
