@@ -24,6 +24,9 @@
     <ClCompile Include="Guidelines_Inheritance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Guidelines_Core_Cpp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Guidelines.md">
@@ -33,6 +36,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Guidelines_Inheritance.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Guidelines_Core_Cpp.md">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

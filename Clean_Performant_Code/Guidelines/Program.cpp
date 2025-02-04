@@ -4,6 +4,8 @@
 
 #include <print>
 
+void guidelines_core_cpp();
+void guidelines_generic_programming();
 void guidelines_inheritance();
 
 int main()

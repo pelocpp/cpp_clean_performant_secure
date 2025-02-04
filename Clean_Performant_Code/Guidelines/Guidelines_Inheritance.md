@@ -15,6 +15,68 @@
 
 ---
 
+## Vererbung
+
+#### Wann nutzen Sie eine Hierarchie von Klassen?
+
+Modelliert man etwas in Quellcode, das eine *inhärent hierarchische Struktur* besitzt,
+sollte man zu einer *Hierarchie von Klassen* greifen.
+
+Diese Regel ist eigentlich einleuchtend,
+auch wenn sie im *Wording* etwas schrill ist.
+
+Gelingt es, eine Analogie zwischen der realen Welt und Quellcode herzustellen,
+ist man häufig auf der sicheren Seite.
+
+Stellen wir uns vor, wir müssen ein komplexes System modellieren,
+das aus einer Reihe von Teilsystemen besteht.
+Im meinem Fall handelte es sich um die Werkzeuge einer Werkzeugmaschinensteuerung.
+
+Ein exemplarisches Werkzeuge stellt die Schnittstelle zum Benutzer dar. 
+
+Damit leiten sich sofort Anforderungen ab,
+verschiedene Benutzerschnittstellen wie Tastatur, Mauszeiger, Touchscreen
+oder einfach auch nur Buttons zu unterstützen. 
+
+Solch ein System von Teilsystemen besitzt eine inhärent hierarchische Struktur.
+Eine Modellierung bildete daher die physikalische Struktur ab und
+ist damit relativ leicht im Top-down-Ansatz zu erfassen.
+
+*Beispiel*:
+
+```cpp
+01: class DrawableUIElement {
+02: public:
+03:     virtual void render() const = 0;
+04:     // ...
+05: };
+06: 
+07: class AbstractButton : public DrawableUIElement {
+08: public:
+09:     virtual void onClick() = 0;
+10:     // ...
+11: };
+12: 
+13: class PushButton : public AbstractButton {
+14:     virtual void render() const override {};
+15:     virtual void onClick() override {};
+16:     // ...
+17: };
+18: 
+19: class Checkbox : public AbstractButton {
+20:     // ...
+21: };
+```
+
+#### Wann nutzen Sie eine Hierarchie von Klassen?
+
+WEITER:
+
+https://www.heise.de/blog/C-Core-Guidelines-Klassenhierarchien-3852049.html
+
+
+---
+
 ## Virtuelle Methoden 
 
 #### `virtual` oder nicht `virtual` 
@@ -22,38 +84,39 @@
   * Einige Klassen dienen nur dem Zweck, mehr oder weniger *Daten* zu halten.
    Derartige Klassen sind dann auch nicht Teil einer Hierarchie.
    Es gibt hier keinen Grund für *virtuelle* Methoden.
-  * Eine Klasse ist Teil einer Klassenhierarchie. Auch dies ist zunächst kein Grund,
+  * Eine Klasse ist Teil einer Hierarchie von Klassen. Auch ist dies zunächst kein Grund,
    Methoden als *virtuell* zu definieren. Hier bedarf es einer gewissen &bdquo;Weitsicht&rdquo;:
-   Ist man von dem Vorhandensein als auch der Intention dieser Methode in einer Weise überzeugt,
+   Ist man von dem Vorhandensein als auch der Intention einer Methode in einer Weise überzeugt,
    dass es keinen Grund geben kann (oder sollte), diese in einer abgeleiteten Klasse
    zu überschreiben &ndash; und damit zu erweitern oder ggf. zu ersetzen &ndash;,
    dann ist `virtual` nicht angesagt.
-  * Gibt es hingegen in einer Vaterklasse eine Methode &ndash; ggf. mit einer minimalistischen Realisierung (aus welchen Gründen auch immer) &ndash;,
+  * Gibt es hingegen in einer Vaterklasse eine Methode &ndash; ggf. mit einer Realisierung, aus welchen Gründen auch immer &ndash;,
    und ist diese Methode gewissermaßen als Hinweis für Kindklassen konzipiert, 
    an ihrem *Verhalten* einen Beitrag zu leisten, dann sollte die Methode als `virtual` definiert werden.
 
 
 #### Haben virtuelle Methoden einen Overhead im Vergleich zu nicht virtuellen Methoden?
 
-In der Umsetzung von virtuellen Methoden auf den Maschinencode weisen Klassen bzw. deren
+Einfache Frage, einfache Antwort: Ja. In der Umsetzung von virtuellen Methoden auf den Maschinencode weisen Klassen bzw. deren
 Objekte mit virtuellen Methoden Nachteile in punkto
 
-  * Geschwindigkeit
+  * Geschwindigkeit und
   * Speicher
 
 auf. Zu den Details:
 
-  * Der Aufruf einer virtuellen Methode erfolgt *indirekt*.<br />
+  * Der Aufruf einer virtuellen Methode erfolgt *indirekt*:<br />
   Wird eine virtuelle Methode aufgerufen, dann benötigt dieser Aufruf indirekte Zugriffe
   und auch Additionsbefehle: Die indirekten Zugriffe kommen dadurch zustande,
   dass die Adressen virtueller Methoden in Tabellen hinterlegt sind
   (so genannte *virtual function pointer table* oder kurz *vtable* genannt).
+  Die Additionen kommen durch Offsets zustande, mit denen innerhalb in dieser Tabelle zugegriffen wird.
 
-  * Viruelle Methoden können &ndash; im Regelfall &ndash; nicht zu `inline`-Code optimiert werden.<br />
+  * Virtuelle Methoden können &ndash; im Regelfall &ndash; nicht zu `inline`-Code optimiert werden:<br />
    Das so genannte *Inlining* ist eine Optimierungstechnik des Compilers. Diese ist nicht anwendbar,
    wenn der zu optimierende Code erst zur Laufzeit bekannt ist.
 
-  * Pro Objekt ist mehr Speicher notwendig.<br />
+  * Pro Objekt ist mehr Speicher notwendig:<br />
    Jedes Objekt, das mindestens eine virtuelle Methode hat, besitzt eine zusätzliche, &bdquo;versteckte&rdquo; Variable.
    Es handelt sich dabei um eine Zeigervariable (typischerweise unter dem Namen `vptr` bekannt),
    der in eine statische Klassentabelle (`vtable`) zeigt. 
@@ -81,7 +144,7 @@ Wir betrachten diese Aussagen an zwei Beispielen:
 16:     virtual void func() override {};
 17: };
 18: 
-19: static void guidelines_inheritance_virtual()
+19: void test()
 20: {
 21:     // comparison virtual / non-virtual method invocation
 22:     A a;
@@ -100,7 +163,7 @@ Wir betrachten diese Aussagen an zwei Beispielen:
         A a;
         a.func();
 00007FF7341C10FF  lea         rcx,[a]
-00007FF7341C1103  call        GuidelinesInheritance::A::func (07FF734185595h)
+00007FF7341C1103  call        A::func (07FF734185595h)
 
         Base* bp;
         bp = new Derived();
@@ -134,7 +197,7 @@ Wir betrachten diese Aussagen an zwei Beispielen:
 18: 
 19: void test()
 20: {
-21:     // comparison object sizesof classes with / without virtual methods
+21:     // comparison object sizes of classes with / without virtual methods
 22:     X x;
 23:     Y y;
 24: 
@@ -197,19 +260,25 @@ Wenn Ihr Design auf abstrakte Klassen und Schnittstellen baut, dann ist `virtual
 Konstruktoren als solche sind niemals virtuell. 
 Innerhalb von Konstruktoren darf man keine virtuellen Methoden aufrufen.
 
-Der Aufruf virtueller Funktionen im Konstruktor und Destruktor ist verboten,
+Der Aufruf virtueller Funktionen im Konstruktor ist verboten,
 da der Zugriff auf noch nicht initialisierte Variablen der abgeleiteten Klasse in überschriebenen Versionen
-virtueller Methoden erfolgen kann, die in der abgeleiteten Klasse implementiert sind.
+virtueller Methoden erfolgen könnte, die in der abgeleiteten Klasse implementiert sind.
 
 *Hinweis*:
-Betrachten Sie hierzu das Design Pattern *Virtueller Konstruktor*
+Betrachten Sie hierzu das Design Pattern &bdquo;*Virtueller Konstruktor*&rdquo;.
+
+
+#### Destruktoren und virtuelle Methoden
+
+Man kann wie bei den Konstruktoren ähnliche Überlegungen anstellen:
+Auch in Destruktoren sollte man auf den Aufruf von virtuellen Methoden verzichten.
 
 #### Einmal `virtual` &ndash; immer `virtual`
 
 Eine virtuelle Methode einer Basisklasse, die in einer abgeleiteten Klasse überschrieben wird,
 ist ebenfalls virtuell. 
 
-Man muss es folglich nicht explizit hinschreiben: Einmal `virtual` &ndash; immer `virtual`.
+Man muss das Schlüsselwort folglich nicht mehr explizit hinschreiben: Einmal `virtual` &ndash; immer `virtual`.
 
 #### Destruktoren und `virtual`: Virtueller Basisklassendestruktor
 
@@ -238,7 +307,7 @@ wenn es in der Klasse mindestens eine virtuelle Methode gibt.
 16:     }
 17: };
 18: 
-19: static void test_base_class_destructor() {
+19: void test() {
 20:     Base* bp = new Derived();
 21:     delete bp;
 22: }
@@ -279,7 +348,7 @@ sie zu überschreiben.
 Daher ist es sinnvoll, `override` an der Stelle anzugeben,
 an der man diese Absicht hat.
 
-Dies kann und sollte man dann den Übersetzter dann auch überprüfen lassen,
+Dies kann und sollte man dann den Übersetzter auch überprüfen lassen,
 nämlich die Absicht, diese Methode zu überschreiben.
 
 Frei nach dem Motto
@@ -308,7 +377,7 @@ und ob man in der abgeleiteten Klasse die Signatur richtig verwendet hat.
 13:     }
 14: };
 15: 
-16: static void guidelines_inheritance_keyword_override()
+16: void test()
 17: {
 18:     Base base;
 19:     Derived derived;
@@ -319,6 +388,9 @@ und ob man in der abgeleiteten Klasse die Signatur richtig verwendet hat.
 24:     bp->func();
 25: }
 ```
+
+*Frage*:<br />
+Welche Ausgabe erwarten Sie in der Konsole?
 
 *Ausgabe*:
 
@@ -332,7 +404,7 @@ In base class
 Das C++ Schlüsselwort `final` wurde ab C++ 11 eingeführt,
 um die weitere Vererbung einer Klasse oder das Überschreiben einer virtuellen Funktion zu verhindern.
 
-Er dient zwei Hauptzwecken:
+Es dient zwei Hauptzwecken:
 
   * Verhindern der Klassenvererbung:<br />
    Wenn eine Klasse als `final` markiert wird, wird verhindert, dass sie als Basisklasse verwendet werden kann.
@@ -341,10 +413,10 @@ Er dient zwei Hauptzwecken:
     Wenn `final`  auf eine virtuelle Methode  angewendet wird,
     wird sichergestelt, dass keine abgeleitete Klasse diese Methode überschreiben kann.
 
-Dieses Sprachfeature trägt zur Verbesserung der *Programmsicherheit*,
-*Wartbarkeit* und *potentiellen Optimierungen* bei.
+Dieses Sprachfeature trägt zu Verbesserungen der *Programmsicherheit*,
+der *Wartbarkeit* und von *potentiellen Optimierungen* bei.
 
-In einigen Fällen ermöglicht sie dem Compiler, optimierteren Code zu generieren.
+In einigen Fällen ermöglicht es dem Compiler, optimierteren Code zu generieren.
 Diese Technik ist bekannt als *Devirtualisierung*.
 
 Wir betrachten einige Beispiele dazu:
@@ -413,9 +485,25 @@ Ohne `final` muss ein indirekter Aufruf innerhalb von `anotherMethod()` generier
 da `anotherMethod()` innerhalb einer abgeleiteten Klasse aufgerufen werden könnte,
 die `doSomething()` überschrieben hat.
 
+*Abschließende Frage*:<br />
+Welchen Sinn ergibt es, virtuelle Methode in einer als `final` deklarierten Methode aufzurufen?
+
+*Antwort*:<br />
+Keinen!
+<br />Wenn Sie eine Methode als `final` deklarieren, dann bringen Sie zum Ausdruck,
+dass sich das Verhalten des Objekts nicht mehr ändert! Aber halten Sie sich auch daran?
+Wir stellen uns den Aufruf einer virtuellen Methode in einer als `final` deklarierten Methode vor.
+Kann man dann noch sagen, dass die Methode dann noch das tut, was wir mit ihrer Realisierung verbinden.
+Wir haben doch mit `final` zum Ausdruck bringen wollen, das wir ein Versprechen
+&bdquo;*diese Methode tut das, was ich sage*&rdquo;
+geben wollten.
+
+*Fazit*:<br />
+Als `final` deklarierte Methoden sollten keine virtuellen Methoden aufrufen!
+
 ---
 
-[Zurück](../../Readme.md)
+[Zurück](Guidelines.md)
 
 ---
 

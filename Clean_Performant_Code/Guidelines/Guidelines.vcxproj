@@ -129,10 +129,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="Guidelines.md" />
+    <None Include="Guidelines_Core_Cpp.md" />
     <None Include="Guidelines_Generic_Programming.md" />
     <None Include="Guidelines_Inheritance.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Guidelines_Core_Cpp.cpp" />
     <ClCompile Include="Guidelines_GenericProgramming.cpp" />
     <ClCompile Include="Guidelines_Inheritance.cpp" />
     <ClCompile Include="Program.cpp" />

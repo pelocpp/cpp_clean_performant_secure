@@ -44,7 +44,7 @@ namespace GuidelinesGenericProgramming {
     };
 }
 
-void test_guidelines_generic_programming()
+void guidelines_generic_programming()
 {
     using namespace GuidelinesGenericProgramming;
 

@@ -11,29 +11,17 @@
 
 ---
 
-#### Quellcode
-
-[*Ranges.cpp*](Ranges.cpp).<br />
-
----
-
 ## Allgemeines <a name="link1"></a>
 
-Wir geben in diesem Tutorial keinen vollständigen Überblick über die `std::ranges` Bibliothek:
-Es sollen vielmehr einige erste Beispiele für Neueinsteiger einen Einstieg in modernes C++20 liefern.
-
-An Hand einer Reihe von Beispielen zeigen wir auf, welche Rolle der Einsatz dieser Bibliothek in
-*Modern C++* spielt.
-
-Erfahren Sie, wie Sie `std::ranges` für besser lesbaren und effizienteren Code nutzen können,
-also für *Clean Code*.
-
 ---
 
-## XXX <a name="link2"></a>
+## [Guidelines Core C++](Guidelines_Core_Cpp.md)
+
+## [Guidelines zur Vererbung](Guidelines_Inheritance.md)
+
+## [Guidelines Generische Programmierung](Guidelines_Generic_Programming.md)
 
 ---
-
 
 ## Literatur <a name="link19"></a>
 
