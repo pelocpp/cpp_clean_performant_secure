@@ -15,46 +15,47 @@
 
 ---
 
-## `virtual` oder nicht `virtual` 
+## Virtuelle Methoden 
+
+#### `virtual` oder nicht `virtual` 
 
   * Einige Klassen dienen nur dem Zweck, mehr oder weniger *Daten* zu halten.
    Derartige Klassen sind dann auch nicht Teil einer Hierarchie.
-   Ohne Vererbung gibt es keinen Grund für *virtuelle* Methoden
+   Es gibt hier keinen Grund für *virtuelle* Methoden.
   * Eine Klasse ist Teil einer Klassenhierarchie. Auch dies ist zunächst kein Grund,
-   Methoden als *virtuell* zu definieren. Hier bedarf es eine gewissen &bdquo;Weitsicht&rdquo;:
-   Ist man von der Realisierung als auch dem Vorhandensein einer Methode überzeugt,
+   Methoden als *virtuell* zu definieren. Hier bedarf es einer gewissen &bdquo;Weitsicht&rdquo;:
+   Ist man von dem Vorhandensein als auch der Intention dieser Methode in einer Weise überzeugt,
    dass es keinen Grund geben kann (oder sollte), diese in einer abgeleiteten Klasse
    zu überschreiben &ndash; und damit zu erweitern oder ggf. zu ersetzen &ndash;,
    dann ist `virtual` nicht angesagt.
-  * Ist hingegen die Realisierung eher minimalistisch  erfolgt &ndash; aus welchen Gründen auch immer &ndash;,
+  * Gibt es hingegen in einer Vaterklasse eine Methode &ndash; ggf. mit einer minimalistischen Realisierung (aus welchen Gründen auch immer) &ndash;,
    und ist diese Methode gewissermaßen als Hinweis für Kindklassen konzipiert, 
    an ihrem *Verhalten* einen Beitrag zu leisten, dann sollte die Methode als `virtual` definiert werden.
 
-## `final` und `override` 
 
-## Haben virtuelle Methoden einen Overhead im Vergleich zu nicht virtuellen Methoden?
+#### Haben virtuelle Methoden einen Overhead im Vergleich zu nicht virtuellen Methoden?
 
 In der Umsetzung von virtuellen Methoden auf den Maschinencode weisen Klassen bzw. deren
-Objekte mit virtuellen Methoden Nachteile auf:
+Objekte mit virtuellen Methoden Nachteile in punkto
 
   * Geschwindigkeit
   * Speicher
 
-Zu den Details:
+auf. Zu den Details:
 
-  * Der Aufruf einer virtuellen Methode erfolgt indirekt.
+  * Der Aufruf einer virtuellen Methode erfolgt *indirekt*.<br />
   Wird eine virtuelle Methode aufgerufen, dann benötigt dieser Aufruf indirekte Zugriffe
   und auch Additionsbefehle: Die indirekten Zugriffe kommen dadurch zustande,
   dass die Adressen virtueller Methoden in Tabellen hinterlegt sind
-  (so genannte *virtual function pointer table* oder kurz *vtable*).
+  (so genannte *virtual function pointer table* oder kurz *vtable* genannt).
 
-  * Viruelle Methoden können &ndash; im Regelfall &ndash; nicht zu `inline`-Code optimiert werden.
+  * Viruelle Methoden können &ndash; im Regelfall &ndash; nicht zu `inline`-Code optimiert werden.<br />
    Das so genannte *Inlining* ist eine Optimierungstechnik des Compilers. Diese ist nicht anwendbar,
-   wenn der zu optoimierende Code erst zur Laufzeit bekannt ist.
+   wenn der zu optimierende Code erst zur Laufzeit bekannt ist.
 
-  * Pro Objekt ist mehr Speicher notwendig.
+  * Pro Objekt ist mehr Speicher notwendig.<br />
    Jedes Objekt, das mindestens eine virtuelle Methode hat, besitzt eine zusätzliche, &bdquo;versteckte&rdquo; Variable.
-   Es handelt sich dabei um eine Zeigervariable (typischerweise unter dem Namen `vtptr` bekannt),
+   Es handelt sich dabei um eine Zeigervariable (typischerweise unter dem Namen `vptr` bekannt),
    der in eine statische Klassentabelle (`vtable`) zeigt. 
    
 Wir betrachten diese Aussagen an zwei Beispielen:
@@ -92,25 +93,23 @@ Wir betrachten diese Aussagen an zwei Beispielen:
 28: }
 ```
 
-
 *Ausgabe*:
 
 ```
         // comparison virtual / non-virtual method invocation
         A a;
         a.func();
-00007FF7341C10FF  lea         rcx,[a]  
-00007FF7341C1103  call        GuidelinesInheritance::A::func (07FF734185595h)   
+00007FF7341C10FF  lea         rcx,[a]
+00007FF7341C1103  call        GuidelinesInheritance::A::func (07FF734185595h)
 
         Base* bp;
         bp = new Derived();
         bp->func();
-00007FF7341C115F  mov         rax,qword ptr [bp]  
-00007FF7341C1163  mov         rax,qword ptr [rax]  
-00007FF7341C1166  mov         rcx,qword ptr [bp]  
-00007FF7341C116A  call        qword ptr [rax]  
+00007FF7341C115F  mov         rax,qword ptr [bp]
+00007FF7341C1163  mov         rax,qword ptr [rax]
+00007FF7341C1166  mov         rcx,qword ptr [bp]
+00007FF7341C116A  call        qword ptr [rax]
 ```
-
 
 *Beispiel*:
 
@@ -152,7 +151,267 @@ Sizeof x: 8
 Sizeof y: 16
 ```
 
+#### Abstrakte Klassen und Schnittstellen
 
+Wenn Ihr Design auf abstrakte Klassen und Schnittstellen baut, dann ist `virtual` natürlich angesagt.
+
+*Beispiel*:
+
+```cpp
+01: class IObserver {
+02: public:
+03:     virtual ~IObserver() {};
+04:     virtual void update(const std::string& message) = 0;
+05: };
+06: 
+07: class ISubject {
+08: public:
+09:     virtual ~ISubject() {}
+10:     virtual void attach(IObserver* observer) = 0;
+11:     virtual void detach(IObserver* observer) = 0;
+12: };
+```
+
+*Beispiel*:
+
+```cpp
+01: class DecoratorBase : public Component
+02: {
+03: protected:
+04:    std::shared_ptr<Component> m_component;
+05: 
+06: public:
+07:     DecoratorBase(const std::shared_ptr<Component>& component) 
+08:         : m_component{ component }
+09:     {}
+10: 
+11:     // decorator delegates all work to the wrapped component
+12:     virtual std::string operation() const override {
+13:         return m_component->operation();
+14:     }
+15: };
+```
+
+#### Konstruktoren und virtuelle Methoden
+
+Konstruktoren als solche sind niemals virtuell. 
+Innerhalb von Konstruktoren darf man keine virtuellen Methoden aufrufen.
+
+Der Aufruf virtueller Funktionen im Konstruktor und Destruktor ist verboten,
+da der Zugriff auf noch nicht initialisierte Variablen der abgeleiteten Klasse in überschriebenen Versionen
+virtueller Methoden erfolgen kann, die in der abgeleiteten Klasse implementiert sind.
+
+*Hinweis*:
+Betrachten Sie hierzu das Design Pattern *Virtueller Konstruktor*
+
+#### Einmal `virtual` &ndash; immer `virtual`
+
+Eine virtuelle Methode einer Basisklasse, die in einer abgeleiteten Klasse überschrieben wird,
+ist ebenfalls virtuell. 
+
+Man muss es folglich nicht explizit hinschreiben: Einmal `virtual` &ndash; immer `virtual`.
+
+#### Destruktoren und `virtual`: Virtueller Basisklassendestruktor
+
+Ein Destruktor einer Klasse ist als `virtual` kennzuzeichnen,
+wenn es in der Klasse mindestens eine virtuelle Methode gibt.
+
+
+*Beispiel*:
+
+```cpp
+01: class Base
+02: {
+03: public:
+04:     ~Base() {
+05:         std::println("d'tor Base");
+06:     }
+07: 
+08:     virtual void doSomething() {}
+09: };
+10: 
+11: class Derived : public Base
+12: {
+13: public:
+14:     ~Derived() {
+15:         std::println("d'tor Derived");
+16:     }
+17: };
+18: 
+19: static void test_base_class_destructor() {
+20:     Base* bp = new Derived();
+21:     delete bp;
+22: }
+```
+
+*Frage*:<br />
+Welcher der beiden Konstruktoren wird in dem Code-Snippet aufgerufen?
+
+*Ausgabe*:
+
+```
+d'tor Base
+```
+
+*Frage*:<br />
+Wie kann man erreichen, dass auch zusätzlich der Destruktor der abgeleiteten Klasse aufgerufen wird?
+
+*Antwort*:
+
+```cpp
+virtual ~Base()
+```
+
+
+*Ausgabe*:
+
+```
+d'tor Derived
+d'tor Base
+```
+
+
+#### Schlüsselwort `override`
+
+Deklariert man eine Methode mit dem Schlüsselwort `override`, drückt man die Absicht aus,
+sie zu überschreiben. 
+
+Daher ist es sinnvoll, `override` an der Stelle anzugeben,
+an der man diese Absicht hat.
+
+Dies kann und sollte man dann den Übersetzter dann auch überprüfen lassen,
+nämlich die Absicht, diese Methode zu überschreiben.
+
+Frei nach dem Motto
+
+> **The more things you check at compile time the fewer runtime bugs you have.**
+
+Eine derartige Deklaration reicht dann auch aus, um zu überprüfen,
+ob die Methode ursprünglich (in einer der Basisklassen) als `virtual` deklariert wurde
+und ob man in der abgeleiteten Klasse die Signatur richtig verwendet hat.
+
+*Beispiel*:
+
+```cpp
+01: class Base
+02: {
+03: public:
+04:     virtual void func() { std::println("In base class"); }
+05: };
+06: 
+07: class Derived : public Base
+08: {
+09: public:
+10:     void func(int a)
+11:     {
+12:         std::println("In derived class");
+13:     }
+14: };
+15: 
+16: static void guidelines_inheritance_keyword_override()
+17: {
+18:     Base base;
+19:     Derived derived;
+20:     std::println("Compiles successfully");
+21: 
+22:     Base* bp;
+23:     bp = &derived;
+24:     bp->func();
+25: }
+```
+
+*Ausgabe*:
+
+```
+Compiles successfully
+In base class
+```
+
+#### Schlüsselwort `final`
+
+Das C++ Schlüsselwort `final` wurde ab C++ 11 eingeführt,
+um die weitere Vererbung einer Klasse oder das Überschreiben einer virtuellen Funktion zu verhindern.
+
+Er dient zwei Hauptzwecken:
+
+  * Verhindern der Klassenvererbung:<br />
+   Wenn eine Klasse als `final` markiert wird, wird verhindert, dass sie als Basisklasse verwendet werden kann.
+
+  * Verhindern des Überschreibens virtueller Methoden:<br />
+    Wenn `final`  auf eine virtuelle Methode  angewendet wird,
+    wird sichergestelt, dass keine abgeleitete Klasse diese Methode überschreiben kann.
+
+Dieses Sprachfeature trägt zur Verbesserung der *Programmsicherheit*,
+*Wartbarkeit* und *potentiellen Optimierungen* bei.
+
+In einigen Fällen ermöglicht sie dem Compiler, optimierteren Code zu generieren.
+Diese Technik ist bekannt als *Devirtualisierung*.
+
+Wir betrachten einige Beispiele dazu:
+
+*Beispiel*:
+
+```cpp
+01: struct Base {
+02:     virtual void func() {};
+03: };
+04: 
+05: struct Derived : public Base {
+06:     void func() final {};                   // virtual as it overrides base::f
+07: };
+08: 
+09: struct MostDerived : public Derived {
+10:     void func() {};
+11: };
+```
+
+*Frage*: Ist dieses Code-Snippet übersetzungsfähig?
+ 
+*Beispiel*:
+
+```cpp
+01: struct Base final {
+02:     virtual void func() {};
+03: };
+04: 
+05: struct Derived : public Base {
+06: };
+```
+
+*Frage*: Ist dieses Code-Snippet übersetzungsfähig?
+
+*Beispiel*:
+
+```cpp
+01: class IAbstract
+02: {
+03: public:
+04:     virtual void doSomething() = 0;
+05: };
+06: 
+07: class CDerived : public IAbstract
+08: {
+09: private:
+10:     int m_x{};
+11: 
+12: public:
+13:     void doSomething() final { m_x = 1; }
+14: 
+15:     void anotherMethod (void) { doSomething(); }
+16: };
+```
+
+*Frage*:<br />
+Auf welche Weise kann der Compiler die Methode `anotherMethod` optimieren?
+
+*Antwort*:<br />
+Unter Verwendung des `final`-Schlüsselworts in Zeile 13
+kann der Compiler `CDerived::doSomething()` **direkt** aus `anotherMethod()` heraus
+oder sogar inline aufrufen.
+
+Ohne `final` muss ein indirekter Aufruf innerhalb von `anotherMethod()` generiert werden,
+da `anotherMethod()` innerhalb einer abgeleiteten Klasse aufgerufen werden könnte,
+die `doSomething()` überschrieben hat.
 
 ---
 

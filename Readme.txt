@@ -6,6 +6,25 @@ https://hackernoon.com/c-performance-optimization-best-practices
 
 // =============================================================
 
+To Be Done:
+
+Die 6 automatisch generierten Methoden:
+
+== Will
+== Gregoire
+
+Lebenzyklus
+
+// =============================================================
+
+To Be Done:
+
+Wann welcher Algorithmus
+
+// =============================================================
+
+
+
 Siehe .pdf !!! im Downloads Folde
 
 https://indico.gsi.de/event/19561/contributions/78837/attachments/46921/67160/cpp_ranges.pdf
