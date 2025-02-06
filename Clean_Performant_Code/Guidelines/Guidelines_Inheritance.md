@@ -501,6 +501,27 @@ geben wollten.
 *Fazit*:<br />
 Als `final` deklarierte Methoden sollten keine virtuellen Methoden aufrufen!
 
+#### Schlüsselwört `virtual`, `override` und `final`
+
+Es gibt mehrere Optionen, eine virtuelle Methoden mit den oben genannten Schlüsselwörter zu markieren.
+
+Verwenden Sie entweder
+
+   *  nur `virtual`
+   * oder nur `override`
+   * oder nur `final`
+   
+`override` und `final` implizieren `virtual`, eine doppelte Benennung ist folglich nicht nötig
+`virtual` muss an der ursprünglichen Deklaration vorhanden sein
+Ein fehlendes `virtual` oder `override` an einer virtuellen Methode verwirrt
+
+
+#### Schützen Sie sich vor *Object Slicing*
+
+
+https://stackoverflow.com/questions/274626/what-is-object-slicing
+
+
 ---
 
 [Zurück](Guidelines.md)

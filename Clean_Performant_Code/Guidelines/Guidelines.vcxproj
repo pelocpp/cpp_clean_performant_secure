@@ -128,6 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="cpp_special_member_functions.svg" />
     <None Include="Guidelines.md" />
     <None Include="Guidelines_Core_Cpp.md" />
     <None Include="Guidelines_Generic_Programming.md" />

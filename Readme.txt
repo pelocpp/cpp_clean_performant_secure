@@ -1,10 +1,26 @@
 // =============================================================
 
+Clean Code
+
 https://hackernoon.com/c-performance-optimization-best-practices
 
 1. Use the Right Data Structures
 
 // =============================================================
+
+
+Marc Gregoire
+
+// Pass-by-Value or Pass-by-Reference
+
+Chapter 9: Optimal Way to Pass Arguments to Functions
+
+
+// =============================================================
+
+
+
+Clean Code
 
 To Be Done:
 
@@ -17,13 +33,15 @@ Lebenzyklus
 
 // =============================================================
 
+Clean Code
+
 To Be Done:
 
 Wann welcher Algorithmus
 
 // =============================================================
 
-
+Ranges
 
 Siehe .pdf !!! im Downloads Folde
 

@@ -41,5 +41,8 @@
     <None Include="Guidelines_Core_Cpp.md">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="cpp_special_member_functions.svg">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
