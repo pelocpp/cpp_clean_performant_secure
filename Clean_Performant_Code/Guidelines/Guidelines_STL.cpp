@@ -182,6 +182,8 @@ namespace GuidelinesSTLAlgorithms {
         // =======================================================================
         // Copy and Transform with Ranges
 
+        // https://arne-mertz.de/2019/05/algorithms-and-the-kiss-principle/
+
         static void guidelines_stl_algorithms_copy_01_ranges() {
 
             //std::vector<Employee> source;
@@ -197,7 +199,6 @@ namespace GuidelinesSTLAlgorithms {
             //    employees.push_back(employee);
             //}
         }
-
     }
 }
 
