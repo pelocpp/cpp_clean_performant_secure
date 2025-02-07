@@ -10,7 +10,9 @@ https://hackernoon.com/c-performance-optimization-best-practices
 
 Tutorial zu C++ Clean Code
 
-https://arne-mertz.de/category/clean-code/
+https://arne-mertz.de/category/clean-code/   
+
+HIER KISS
 
 // =============================================================
 

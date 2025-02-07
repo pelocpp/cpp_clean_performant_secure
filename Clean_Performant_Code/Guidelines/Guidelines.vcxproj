@@ -133,11 +133,13 @@
     <None Include="Guidelines_Core_Cpp.md" />
     <None Include="Guidelines_Generic_Programming.md" />
     <None Include="Guidelines_Inheritance.md" />
+    <None Include="Guidelines_STL_Algorithms.md" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Guidelines_Core_Cpp.cpp" />
     <ClCompile Include="Guidelines_GenericProgramming.cpp" />
     <ClCompile Include="Guidelines_Inheritance.cpp" />
+    <ClCompile Include="Guidelines_STL_Algorithms.cpp" />
     <ClCompile Include="Program.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

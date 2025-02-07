@@ -2,16 +2,14 @@
 // Program.cpp // Guidelines
 // ===========================================================================
 
-#include <print>
-
 void guidelines_core_cpp();
 void guidelines_generic_programming();
 void guidelines_inheritance();
+void guidelines_stl_algorithms();
 
 int main()
 {
-    std::println("Guidelines");
-    guidelines_core_cpp();
+    guidelines_stl_algorithms();
     return 0;
 }
 

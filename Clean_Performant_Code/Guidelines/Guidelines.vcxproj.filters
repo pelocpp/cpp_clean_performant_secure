@@ -27,6 +27,9 @@
     <ClCompile Include="Guidelines_Core_Cpp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Guidelines_STL_Algorithms.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Guidelines.md">
@@ -42,6 +45,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="cpp_special_member_functions.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Guidelines_STL_Algorithms.md">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
