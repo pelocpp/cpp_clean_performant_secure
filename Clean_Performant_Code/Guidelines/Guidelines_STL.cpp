@@ -7,6 +7,7 @@
 #include <map>
 #include <print>
 #include <vector>
+#include <ranges>
 
 namespace GuidelinesSTLAlgorithms {
 
@@ -84,6 +85,7 @@ namespace GuidelinesSTLAlgorithms {
         static void guidelines_stl_algorithms_transform_01() {
 
             std::vector<Employee> employees;
+            //...
 
             std::map<std::string, unsigned int> salariesByName;
 
@@ -103,6 +105,7 @@ namespace GuidelinesSTLAlgorithms {
         static void guidelines_stl_algorithms_transform_02() {
 
             std::vector<Employee> employees;
+            //...
 
             std::map<std::string, unsigned int> salariesByName;
 
@@ -120,6 +123,20 @@ namespace GuidelinesSTLAlgorithms {
             );
         }
 
+        static void guidelines_stl_algorithms_transform_03() {
+
+            std::vector<Employee> employees;
+            //...
+
+            std::map<std::string, unsigned> salariesByName;
+
+            for (auto const& employee : employees) {
+                if (!employee.isManager()) {
+                    salariesByName[employee.uniqueName()] = employee.salary();
+                }
+            }
+        }
+
         template <typename InIter, typename OutIter, typename UnaryOp, typename Pred>
         OutIter transform_if(InIter first, InIter last,
             OutIter result, UnaryOp unaryOp, Pred pred) {
@@ -132,7 +149,7 @@ namespace GuidelinesSTLAlgorithms {
             return result;
         }
 
-        static void guidelines_stl_algorithms_transform_03() {
+        static void guidelines_stl_algorithms_transform_04() {
 
             std::vector<Employee> employees;
 
@@ -161,6 +178,26 @@ namespace GuidelinesSTLAlgorithms {
             guidelines_stl_algorithms_transform_02();
             guidelines_stl_algorithms_transform_03();
         }
+
+        // =======================================================================
+        // Copy and Transform with Ranges
+
+        static void guidelines_stl_algorithms_copy_01_ranges() {
+
+            //std::vector<Employee> source;
+            ////...
+
+            ////std::vector<Employee> employees;
+            ////employees.reserve(source.size());
+
+            //auto employees = source | std::ranges::to<std::vector>;
+
+            //// using for loop
+            //for (auto const& employee : source) {
+            //    employees.push_back(employee);
+            //}
+        }
+
     }
 }
 

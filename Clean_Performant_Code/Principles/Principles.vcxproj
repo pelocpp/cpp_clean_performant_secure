@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{7a337d9c-2a2e-4b03-a7ba-92ad759fc5c9}</ProjectGuid>
-    <RootNamespace>Guidelines</RootNamespace>
+    <ProjectGuid>{22b75f38-78ef-476d-a354-e8258435b553}</ProjectGuid>
+    <RootNamespace>Principles</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -104,7 +104,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,19 +127,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="cpp_special_member_functions.svg" />
-    <None Include="Guidelines.md" />
-    <None Include="Guidelines_Core_Cpp.md" />
-    <None Include="Guidelines_Generic_Programming.md" />
-    <None Include="Guidelines_Inheritance.md" />
-    <None Include="Guidelines_STL.md" />
+    <ClCompile Include="Principles.cpp" />
+    <ClCompile Include="Program.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Guidelines_Core_Cpp.cpp" />
-    <ClCompile Include="Guidelines_GenericProgramming.cpp" />
-    <ClCompile Include="Guidelines_Inheritance.cpp" />
-    <ClCompile Include="Guidelines_STL.cpp" />
-    <ClCompile Include="Program.cpp" />
+    <None Include="Principles.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
