@@ -6,18 +6,24 @@
 
 ## Inhalt
 
-  * [Allgemeines](#link1)
-  * [Literatur](#link19)
+  * [Wann nutzen Sie eine Hierarchie von Klassen?](#link1)
+  * [`virtual` oder nicht `virtual`](#link2)
+  * [Haben virtuelle Methoden einen Overhead im Vergleich zu nicht virtuellen Methoden?](#link3)
+  * [Abstrakte Klassen und Schnittstellen](#link4)
+  * [Konstruktoren und virtuelle Methoden](#link5) 
+  * [Destruktoren und virtuelle Methoden](#link6)
+  * [Einmal `virtual` &ndash; immer `virtual`](#link7)
+  * [Destruktoren und `virtual`: Virtueller Basisklassendestruktor](#link8)
+  * [Schlüsselwort `override`](#link9)
+  * [Schlüsselwort `final`](#link10)
+  * [Schlüsselwort `override`](#link11)
+  * [Schlüsselwörter `virtual`, `override` und `final`](#link12)
+  * [Schützen Sie sich vor *Object Slicing*](#link13)
+  * [Literatur](#link14)
 
 ---
 
-## Allgemeines <a name="link1"></a>
-
----
-
-## Vererbung
-
-#### Wann nutzen Sie eine Hierarchie von Klassen?
+#### Wann nutzen Sie eine Hierarchie von Klassen? <a name="link1"></a>
 
 Modelliert man etwas in Quellcode, das eine *inhärent hierarchische Struktur* besitzt,
 sollte man zu einer *Hierarchie von Klassen* greifen.
@@ -68,7 +74,7 @@ ist damit relativ leicht im Top-down-Ansatz zu erfassen.
 21: };
 ```
 
-#### Wann nutzen Sie eine Hierarchie von Klassen?
+#### Wann nutzen Sie eine Hierarchie von Klassen? <a name="link2"></a>
 
 WEITER:
 
@@ -77,9 +83,7 @@ https://www.heise.de/blog/C-Core-Guidelines-Klassenhierarchien-3852049.html
 
 ---
 
-## Virtuelle Methoden 
-
-#### `virtual` oder nicht `virtual` 
+#### `virtual` oder nicht `virtual`  <a name="link3"></a>
 
   * Einige Klassen dienen nur dem Zweck, mehr oder weniger *Daten* zu halten.
    Derartige Klassen sind dann auch nicht Teil einer Hierarchie.
@@ -95,7 +99,7 @@ https://www.heise.de/blog/C-Core-Guidelines-Klassenhierarchien-3852049.html
    an ihrem *Verhalten* einen Beitrag zu leisten, dann sollte die Methode als `virtual` definiert werden.
 
 
-#### Haben virtuelle Methoden einen Overhead im Vergleich zu nicht virtuellen Methoden?
+#### Haben virtuelle Methoden einen Overhead im Vergleich zu nicht virtuellen Methoden? <a name="link4"></a>
 
 Einfache Frage, einfache Antwort: Ja. In der Umsetzung von virtuellen Methoden auf den Maschinencode weisen Klassen bzw. deren
 Objekte mit virtuellen Methoden Nachteile in punkto
@@ -214,7 +218,7 @@ Sizeof x: 8
 Sizeof y: 16
 ```
 
-#### Abstrakte Klassen und Schnittstellen
+#### Abstrakte Klassen und Schnittstellen <a name="link5"></a>
 
 Wenn Ihr Design auf abstrakte Klassen und Schnittstellen baut, dann ist `virtual` natürlich angesagt.
 
@@ -255,7 +259,7 @@ Wenn Ihr Design auf abstrakte Klassen und Schnittstellen baut, dann ist `virtual
 15: };
 ```
 
-#### Konstruktoren und virtuelle Methoden
+#### Konstruktoren und virtuelle Methoden <a name="link6"></a>
 
 Konstruktoren als solche sind niemals virtuell. 
 Innerhalb von Konstruktoren darf man keine virtuellen Methoden aufrufen.
@@ -268,19 +272,19 @@ virtueller Methoden erfolgen könnte, die in der abgeleiteten Klasse implementier
 Betrachten Sie hierzu das Design Pattern &bdquo;*Virtueller Konstruktor*&rdquo;.
 
 
-#### Destruktoren und virtuelle Methoden
+#### Destruktoren und virtuelle Methoden <a name="link7"></a>
 
 Man kann wie bei den Konstruktoren ähnliche Überlegungen anstellen:
 Auch in Destruktoren sollte man auf den Aufruf von virtuellen Methoden verzichten.
 
-#### Einmal `virtual` &ndash; immer `virtual`
+#### Einmal `virtual` &ndash; immer `virtual` <a name="link8"></a>
 
 Eine virtuelle Methode einer Basisklasse, die in einer abgeleiteten Klasse überschrieben wird,
 ist ebenfalls virtuell. 
 
 Man muss das Schlüsselwort folglich nicht mehr explizit hinschreiben: Einmal `virtual` &ndash; immer `virtual`.
 
-#### Destruktoren und `virtual`: Virtueller Basisklassendestruktor
+#### Destruktoren und `virtual`: Virtueller Basisklassendestruktor <a name="link9"></a>
 
 Ein Destruktor einer Klasse ist als `virtual` kennzuzeichnen,
 wenn es in der Klasse mindestens eine virtuelle Methode gibt.
@@ -340,7 +344,7 @@ d'tor Base
 ```
 
 
-#### Schlüsselwort `override`
+#### Schlüsselwort `override` <a name="link10"></a>
 
 Deklariert man eine Methode mit dem Schlüsselwort `override`, drückt man die Absicht aus,
 sie zu überschreiben. 
@@ -399,7 +403,7 @@ Compiles successfully
 In base class
 ```
 
-#### Schlüsselwort `final`
+#### Schlüsselwort `final` <a name="link11"></a>
 
 Das C++ Schlüsselwort `final` wurde ab C++ 11 eingeführt,
 um die weitere Vererbung einer Klasse oder das Überschreiben einer virtuellen Funktion zu verhindern.
@@ -501,7 +505,7 @@ geben wollten.
 *Fazit*:<br />
 Als `final` deklarierte Methoden sollten keine virtuellen Methoden aufrufen!
 
-#### Schlüsselwört `virtual`, `override` und `final`
+#### Schlüsselwörter `virtual`, `override` und `final` <a name="link12"></a>
 
 Es gibt mehrere Optionen, eine virtuelle Methoden mit den oben genannten Schlüsselwörter zu markieren.
 
@@ -516,25 +520,13 @@ Verwenden Sie entweder
 Ein fehlendes `virtual` oder `override` an einer virtuellen Methode verwirrt
 
 
-#### Schützen Sie sich vor *Object Slicing*
+#### Schützen Sie sich vor *Object Slicing* <a name="link13"></a>
 
 
 https://stackoverflow.com/questions/274626/what-is-object-slicing
-
 
 ---
 
 [Zurück](Guidelines.md)
 
 ---
-
-*Beispiel*:
-
-```cpp
-```
-
-
-*Ausgabe*:
-
-```
-```

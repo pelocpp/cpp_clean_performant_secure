@@ -69,13 +69,42 @@ namespace GuidelinesCoreCpp {
         // game is being spawned out of bounds 
         Game anotherGame{ 10, 10, Point2D{ 12, 8 } };
     }
+
+    // =======================================================================
+    // The new syntax "= default" in C++11
+
+    class A
+    {
+    public:
+        int x;
+        A() {}
+    };
+
+    class B
+    {
+    public:
+        int m_x;
+        B(int x) : m_x(x) {}
+        B() = default;
+    };
+
+    static void guidelines_defaulted_constructor()
+    {
+        int x = 5;
+
+        A a;
+
+        B b;
+
+    }
 }
 
 void guidelines_core_cpp()
 {
     using namespace GuidelinesCoreCpp;
 
-    guidelines_inheritance_invariants();
+ //   guidelines_inheritance_invariants();
+    guidelines_defaulted_constructor();
 
 }
 

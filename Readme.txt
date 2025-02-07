@@ -8,13 +8,17 @@ https://hackernoon.com/c-performance-optimization-best-practices
 
 // =============================================================
 
+Tutorial zu C++ Clean Code
+
+https://arne-mertz.de/category/clean-code/
+
+// =============================================================
 
 Marc Gregoire
 
 // Pass-by-Value or Pass-by-Reference
 
 Chapter 9: Optimal Way to Pass Arguments to Functions
-
 
 // =============================================================
 
