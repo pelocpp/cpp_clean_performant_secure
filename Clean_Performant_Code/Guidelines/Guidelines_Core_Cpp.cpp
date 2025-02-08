@@ -3,6 +3,8 @@
 // ===========================================================================
 
 #include <cassert>
+#include <iostream>
+#include <fstream>
 #include <print>
 
 namespace GuidelinesCoreCpp {
@@ -93,8 +95,175 @@ namespace GuidelinesCoreCpp {
         int x = 5;
 
         A a;
-
         B b;
+    }
+
+    // =======================================================================
+    // Write Small, Focused Functions
+
+    static bool isValidUsername(const std::string& username) {
+
+        const auto MinLength{ 8 };
+        const auto MaxLength{ 30 };
+        
+        const std::string ValidCharacters {
+            "abcdefghijklmnopqrstuvwxyz0123456789_-."
+        };
+
+        if (username.length() < MinLength || username.length() > MaxLength) {
+            return false;
+        }
+
+        for (char ch : username) {
+            if (ValidCharacters.find(ch) == std::string::npos) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // =======================================================================
+    // Use 'const' Liberally
+
+    class Rectangle
+    {
+    private:
+        double m_width;
+        double m_height;
+
+    public:
+        Rectangle(double width, double height) 
+            : m_width(width), m_height(height) 
+        {}
+
+        double area() const {
+            return  m_width * m_height;
+        }
+
+        void scale(double factor) {
+            m_width *= factor;
+            m_height *= factor;
+        }
+    };
+
+    static void printArea(const Rectangle& rect) {
+        std::println("Area: {}", rect.area());
+    }
+
+    // =======================================================================
+    // Prefer Exceptions over Error Codes
+
+    static void error_handling_01() {
+
+        try {
+            std::ifstream file("data.txt");
+            
+            if (!file.is_open()) {
+                throw std::runtime_error("Could not open file");
+            }
+            
+            // Process the file
+        }
+        catch (const std::exception& e) {
+            std::cerr << "Error: " << e.what() << std::endl;
+        }
+    }
+
+    static void error_handling_02() {
+
+        std::ifstream file("data.txt");
+
+        if (!file.is_open()) {
+            // Handle the error, maybe return an error code  
+        }
+
+        // Process the file
+    }
+
+    // =======================================================================
+    // Return Type of Methods
+
+    namespace GuidelinesCoreCpp_MethodsReturnType_CopiedToCaller {
+
+        class Person
+        {
+        private:
+            std::string   m_name;
+            size_t        m_age;
+
+        public:
+            Person() = default;
+            Person(const std::string& name, size_t age)
+                : m_name{ name }, m_age{ age }
+            {}
+
+            std::string getName() const { return m_name; }
+            size_t getAge() const { return m_age; }
+        };
+
+        static void test_person() {
+            Person jack{ "Jack", 50 };
+            std::string name{ jack.getName() };
+            std::println("Name: {}", name);
+        }
+    }
+
+    namespace GuidelinesCoreCpp_MethodsReturnType_LifetimeByVoucher {
+
+        class Person
+        {
+        private:
+            std::string   m_name;
+            size_t        m_age;
+
+        public:
+            Person() = default;
+            Person(const std::string& name, size_t age)
+                : m_name{ name }, m_age{ age }
+            {}
+
+            const std::string& getName() const { return m_name; }
+            size_t getAge() const { return m_age; }
+        };
+
+        static void test_person() {
+            Person jack{ "Jack", 50 };
+            const std::string& name{ jack.getName() };
+            std::println("Name: {}", name);
+        }
+    }
+
+    // =======================================================================
+    // Prefer Composition over Inheritance
+
+    namespace GuidelinesCoreCpp_CompositionOverInheritance {
+
+        class Vector3D{};
+
+        class Transform {
+            Vector3D m_position;
+            Vector3D m_rotation;
+            Vector3D m_scale;
+        };
+
+        class Character
+        {
+        public:
+            // functions that might use *m_transform* if they need it
+
+        private:
+            Transform m_transform;
+        };
+
+        class Obstacle
+        {
+        public:
+            // functions that might use *m_transform* if they need it
+
+        private:
+            Transform m_transform;
+        };
 
     }
 }
@@ -103,7 +272,7 @@ void guidelines_core_cpp()
 {
     using namespace GuidelinesCoreCpp;
 
- //   guidelines_inheritance_invariants();
+    guidelines_inheritance_invariants();
     guidelines_defaulted_constructor();
 
 }

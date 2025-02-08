@@ -11,7 +11,8 @@
   * [DRY](#link3)
   * [POLS](#link4)
   * [*Kohäsion* und *Kopplung*](#link5)
-  * [Literatur](#link6)
+  * [RAII](#link6)
+  * [Literatur](#link7)
 
 ---
 
@@ -195,7 +196,13 @@ mit Klassen fort:
 
 ---
 
-## Literatur <a name="link19"></a>
+## RAII <a name="link6"></a>
+
+Siehe Repository *Entwurfsmuster*.
+
+---
+
+## Literatur <a name="link6"></a>
 
 Eine gute Beschreibung der Begriffe *Kohäsion* und *Kopplung*  
 wird in [Cohesion and Coupling: the difference](https://enterprisecraftsmanship.com/posts/cohesion-coupling-difference/) gegeben.

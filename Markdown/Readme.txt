@@ -8,11 +8,11 @@ https://hackernoon.com/c-performance-optimization-best-practices
 
 // =============================================================
 
-Tutorial zu C++ Clean Code
 
-https://arne-mertz.de/category/clean-code/   
+https://stackoverflow.com/questions/274626/what-is-object-slicing
 
-HIER KISS
+Da steht auch hier was drin: S
+
 
 // =============================================================
 
@@ -21,21 +21,6 @@ Marc Gregoire
 // Pass-by-Value or Pass-by-Reference
 
 Chapter 9: Optimal Way to Pass Arguments to Functions
-
-// =============================================================
-
-
-
-Clean Code
-
-To Be Done:
-
-Die 6 automatisch generierten Methoden:
-
-== Will
-== Gregoire
-
-Lebenzyklus
 
 // =============================================================
 

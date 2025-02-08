@@ -20,6 +20,10 @@ Die Beispiele und Anregungen dieses Abschnitts wurden sehr stark inspiriert von 
 [&bdquo;C++ 20 Ranges. Practical examples&rdquo;](https://indico.gsi.de/event/19561/contributions/78837/attachments/46921/67160/cpp_ranges.pdf)
 von *Semen Lebedev*.
 
+Der folgende Artikel ist ebenfalls berücksichtigt:
+
+[How to Write Clean Code in C++: An Expert Guide](https://www.bomberbot.com/clean-code/how-to-write-clean-code-in-c-an-expert-guide/)
+
 ---
 
 [Zurück](../../Markdown/Readme_Clean_Performant_Code.md)

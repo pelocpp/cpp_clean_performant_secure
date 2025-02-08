@@ -6,11 +6,29 @@
 
 ## Inhalt
 
-  * [Benutze STL Standardalgorithmen](#link1)
+  * [Bevorzugen Sie Elemente der Standardbibliothek](#link1)
+  * [Benutze STL Standardalgorithmen](#link2)
 
 ---
 
-#### Benutze STL Standardalgorithmen <a name="link1"></a>
+#### Bevorzugen Sie Elemente der Standardbibliothek <a name="link1"></a>
+
+  * C++ verfügt über eine umfangreiche und leistungsstarke Standardbibliothek,
+    die gut getestete, effiziente und portable Implementierungen gängiger Algorithmen und Datenstrukturen bietet.
+
+  * Verwenden Sie nach Möglichkeit Elemente der Standardbibliothek als selbst geschriebene.
+
+
+Einige Beispiel:
+
+  * Bevorzugen Sie `std::vector` oder `std::array` gegenüber C-Stil-Arrays.
+  * Bevorzugen Sie `std::string` oder `std::string_view_` gegenüber Zeichenketten im C-Stil.
+  * Bevorzugen Sie `std::unique_ptr` oder `std::shared_ptr` gegenüber klassischen Zeigern.
+  * Bevorzugen Sie Standardalgorithmen wie `std::find`, `std::sort` usw. gegenüber handgeschriebenen Schleifen.
+
+---
+
+#### Bevorzugen Sie  STL Standardalgorithmen <a name="link2"></a>
 
 Was spricht dafür, STL-Standardalgorithmen einfachen `for`-Schleifen vorzuziehen?
 
@@ -209,7 +227,8 @@ Also starten wir jetzt unsere eigene Algorithmenbibliothek. Der gesamte Code sie
 ## Literatur <a name="link19"></a>
 
 Das Beispiel zu KISS und der Verwendung von STL Algorithmen wurde in
-[Algorithms and the KISS principle](https://arne-mertz.de/2019/05/algorithms-and-the-kiss-principle/) gefunden.
+[Algorithms and the KISS Principle](https://arne-mertz.de/2019/05/algorithms-and-the-kiss-principle/)
+von Arne Mertz gefunden.
 
 ---
 
