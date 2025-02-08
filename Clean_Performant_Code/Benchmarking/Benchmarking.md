@@ -1,6 +1,6 @@
 # Benchmarking
 
-[Zurück](../../Readme.md)
+[Zurück](../../Markdown/Readme_Performance_Optimization.md)
 
 ---
 
@@ -14,7 +14,7 @@
 
 #### Quellcode
 
-[*Benchmarking.cpp*](Benchmarking.cpp).<br />
+[*Benchmarking.cpp*](Benchmarking.cpp)<br />
 
 ---
 
@@ -214,6 +214,6 @@ kann man aus einem `State`-Objekt den Wert des Parameters abholen.
 
 ---
 
-[Zurück](../../Readme.md)
+[Zurück](../../Markdown/Readme_Performance_Optimization.md)
 
 ---

@@ -1,6 +1,6 @@
 # C++ Performance Optimierung: Best Practices
 
-[Zurück](../../Readme.md)
+[Zurück](../../Markdown/Readme_Performance_Optimization.md)
 
 ---
 
@@ -20,7 +20,7 @@
 
 #### Quellcode
 
-[*BestPractices.cpp*](BestPractices.cpp).<br />
+[*BestPractices.cpp*](BestPractices.cpp)<br />
 
 ---
 
@@ -136,7 +136,7 @@ kann der Funktionsaufruf-Overhead eliminiert werden.
 
 ---
 
-[Zurück](../../Readme.md)
+[Zurück](../../Markdown/Readme_Performance_Optimization.md)
 
 Die Anregungen zum konzeptionellen Beispiel finden Sie unter
 

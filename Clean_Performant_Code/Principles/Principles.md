@@ -1,6 +1,6 @@
-# Wesentliche Prinzipien der Clean Code Programmierung
+# Klassische Prinzipien der Clean Code Programmierung
 
-[Zurück](../../Readme.md)
+[Zurück](../../Markdown/Readme_Clean_Performant_Code.md)
 
 ---
 
@@ -17,7 +17,7 @@
 
 #### Quellcode
 
-[*Principles.cpp*](Principles.cpp).<br />
+[*Principles.cpp*](Principles.cpp)<br />
 
 ---
 
@@ -202,6 +202,6 @@ wird in [Cohesion and Coupling: the difference](https://enterprisecraftsmanship.
 
 ---
 
-[Zurück](../../Readme.md)
+[Zurück](../../Markdown/Readme_Clean_Performant_Code.md)
 
 ---

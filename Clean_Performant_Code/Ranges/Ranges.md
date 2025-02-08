@@ -1,6 +1,6 @@
-# `std::ranges` Bibliothek
+# Besserer Code mit der `std::ranges`-Bibliothek
 
-[Zurück](../../Readme.md)
+[Zurück](../../Markdown/Readme_Clean_Performant_Code.md)
 
 ---
 
@@ -30,7 +30,7 @@
 
 #### Quellcode
 
-[*Ranges.cpp*](Ranges.cpp).<br />
+[*Ranges.cpp*](Ranges.cpp)<br />
 
 ---
 
@@ -903,6 +903,6 @@ von *Semen Lebedev*.
 
 ---
 
-[Zurück](../../Readme.md)
+[Zurück](../../Markdown/Readme_Clean_Performant_Code.md)
 
 ---

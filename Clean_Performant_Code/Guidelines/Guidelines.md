@@ -1,6 +1,6 @@
-# Guidelines
+# Grundlegende Guidelines für C++ Clean Code
 
-[Zurück](../../Readme.md)
+[Zurück](../../Markdown/Readme_Clean_Performant_Code.md)
 
 ---
 
@@ -22,6 +22,6 @@ von *Semen Lebedev*.
 
 ---
 
-[Zurück](../../Readme.md)
+[Zurück](../../Markdown/Readme_Clean_Performant_Code.md)
 
 ---

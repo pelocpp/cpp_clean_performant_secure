@@ -14,7 +14,7 @@
 
 #### Quellcode
 
-[*DataStructuresAndAlgorithms.cpp*](DataStructuresAndAlgorithms.cpp).<br />
+[*DataStructuresAndAlgorithms.cpp*](DataStructuresAndAlgorithms.cpp)<br />
 
 ---
 

@@ -6,8 +6,8 @@
 
 ## Inhalt
 
-  * [XXX](#link1)
-  * [Literatur](#link)
+  * [Benutze STL Standardalgorithmen](#link1)
+
 ---
 
 #### Benutze STL Standardalgorithmen <a name="link1"></a>
@@ -204,7 +204,6 @@ Also starten wir jetzt unsere eigene Algorithmenbibliothek. Der gesamte Code sie
 34: }
 ```
 
-
 ---
 
 ## Literatur <a name="link19"></a>
@@ -217,10 +216,3 @@ Das Beispiel zu KISS und der Verwendung von STL Algorithmen wurde in
 [Zurück](Guidelines.md)
 
 ---
-
-
-
-```cpp
-```
-
-

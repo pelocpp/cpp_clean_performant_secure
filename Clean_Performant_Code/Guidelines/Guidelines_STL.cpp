@@ -23,6 +23,11 @@ namespace GuidelinesSTLAlgorithms {
         unsigned int  m_salary;
     
     public:
+        Employee() = default;
+        Employee(const std::string& name, size_t age, size_t id, unsigned int salary) 
+            : m_name{ name }, m_age{ age }, m_id{ id }, m_salary{ salary }
+        {}
+
         std::string uniqueName() const { return m_name; }
         unsigned int salary() const { return m_salary; }
         bool isManager() const { return false; }
@@ -178,26 +183,101 @@ namespace GuidelinesSTLAlgorithms {
             guidelines_stl_algorithms_transform_02();
             guidelines_stl_algorithms_transform_03();
         }
+    }
 
-        // =======================================================================
-        // Copy and Transform with Ranges
+    // =======================================================================
+    // Copy and Transform with Ranges
+
+    namespace STLAlgorithms_Copy_and_Transform_with_Ranges {
 
         // https://arne-mertz.de/2019/05/algorithms-and-the-kiss-principle/
 
-        static void guidelines_stl_algorithms_copy_01_ranges() {
+        static void guidelines_stl_algorithms_copy_ranges() {
 
-            //std::vector<Employee> source;
-            ////...
+            std::vector<Employee> source;
+            //...
 
-            ////std::vector<Employee> employees;
-            ////employees.reserve(source.size());
+            auto employees = source | std::ranges::to<std::vector>();
 
-            //auto employees = source | std::ranges::to<std::vector>;
+            // using for loop
+            for (auto const& employee : source) {
+                employees.push_back(employee);
+            }
+        }
 
-            //// using for loop
-            //for (auto const& employee : source) {
-            //    employees.push_back(employee);
-            //}
+        static void guidelines_stl_algorithms_transform_ranges() {
+
+            std::vector<Employee> employees;
+            //...
+
+            auto salariesByName = employees
+
+                | std::views::filter([](auto const& employee) {
+                return !employee.isManager();
+                    })
+
+                | std::views::transform([](auto const& employee) {
+                return std::make_pair(
+                    employee.uniqueName(),
+                    employee.salary()
+                );
+                    })
+
+                | std::ranges::to<std::map>();
+        }
+
+        static void guidelines_stl_algorithms_with_ranges() {
+
+            guidelines_stl_algorithms_copy_ranges();
+            guidelines_stl_algorithms_transform_ranges();
+        }
+    }
+
+    // =======================================================================
+    // Copy and Transform Benchmarks
+
+    namespace STLAlgorithms_Copy_and_Transform_Benchmark {
+
+        static void guidelines_stl_algorithms_copy_benchmark_01() {
+
+            std::vector<Employee> source
+            {
+                { "Hans", 30, 334455, 2500 },
+                { "Hans", 30, 334455, 2700 },
+                { "Hans", 30, 334455, 2000 },
+                { "Hans", 30, 334455, 3500 },
+                { "Hans", 30, 334455, 3000 }
+            };
+            
+            std::vector<Employee> employees;
+            employees.reserve(source.size());
+
+            // using for loop
+            for (auto const& employee : source) {
+                employees.push_back(employee);
+            }
+        }
+
+        static void guidelines_stl_algorithms_copy_benchmark_02() {
+
+            std::vector<Employee> source
+            {
+                { "Hans", 30, 334455, 2500 },
+                { "Hans", 30, 334455, 2700 },
+                { "Hans", 30, 334455, 2000 },
+                { "Hans", 30, 334455, 3500 },
+                { "Hans", 30, 334455, 3000 }
+            };
+
+            std::vector<Employee> employees;
+            employees.reserve(source.size());
+
+            // using STL algorithm 'std::copy'
+            std::copy(
+                source.begin(),
+                source.end(),
+                std::back_inserter(employees)
+            );
         }
     }
 }
@@ -208,6 +288,7 @@ void guidelines_stl_algorithms()
 
     STLAlgorithms_Copy::guidelines_stl_algorithms_copy();
     STLAlgorithms_Transform::guidelines_stl_algorithms_transform();
+    STLAlgorithms_Copy_and_Transform_with_Ranges::guidelines_stl_algorithms_with_ranges();
 }
 
 // ===========================================================================

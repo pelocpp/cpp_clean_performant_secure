@@ -24,7 +24,7 @@
 
 #### Quellcode
 
-[*MemoryManagement.cpp*](MemoryManagement.cpp).<br />
+[*MemoryManagement.cpp*](MemoryManagement.cpp)<br />
 
 [*Arena.h*](Arena.h).<br />
 [*Arena.cpp*](Arena.cpp).<br />

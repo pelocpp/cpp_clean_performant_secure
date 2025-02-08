@@ -1,6 +1,6 @@
 # Literatur
 
-[Zurück](Readme.md)
+[Zurück](../Readme.md)
 
 ---
 
@@ -76,6 +76,6 @@
 
 ---
 
-[Zurück](Readme.md)
+[Zurück](../Readme.md)
 
 ---
