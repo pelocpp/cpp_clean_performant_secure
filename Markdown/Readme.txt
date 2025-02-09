@@ -1,5 +1,24 @@
 // =============================================================
 
+Einleitung
+
+https://github.com/wongjiahau/Clean-Code
+
+    
+<sup>[Hier gefunden](https://www.osnews.com/story/19266/wtfsm/)</sup>
+[Gefunden hier](https://www.osnews.com/story/19266/wtfsm/)
+
+
+// =============================================================
+
+Spaceship operator
+
+https://indii.org/blog/overloading-the-spaceship-operator/
+
+// =============================================================
+
+
+
 Clean Code
 
 https://hackernoon.com/c-performance-optimization-best-practices
@@ -7,6 +26,10 @@ https://hackernoon.com/c-performance-optimization-best-practices
 1. Use the Right Data Structures
 
 // =============================================================
+
+
+// =============================================================
+
 
 
 https://stackoverflow.com/questions/274626/what-is-object-slicing

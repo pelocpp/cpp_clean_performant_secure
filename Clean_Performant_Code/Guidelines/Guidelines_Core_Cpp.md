@@ -25,7 +25,8 @@
   * [Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen](#link)
   * [Rückgabetyp einer Methode](#link)
   * [Bevorzuge Komposition der Vererbung](#link)
-
+  * [Implizite Konvertierungen vermeiden](#link)
+  * [Schlüsselwort `auto` verwenden oder nicht?](#link)
 
 ---
 
@@ -476,6 +477,124 @@ Sie könnten eine Transform-Eigenschaft aber auch als Attribut den Klassen hinzu
   * Und Komposition ermutigt Sie natürlich auch, kleinere Klassen zu schreiben, anstatt von einer großen übergeordneten Klasse zu erben.
 
 ---
+
+#### Implizite Konvertierungen vermeiden <a name="link"></a>
+
+In der Sprache C++ gibt es des Feature so genannter &bdquo;impliziter Typkonvertierungen&rdquo;.
+
+Hierunter versteht man Konvertierungen, die der Übersetzer automatisch durchführt:
+
+  * Sie werden immer dann durchgeführt, wenn ein Ausdruck eines Typs `T1` in einem Kontext verwendet wird,
+  der diesen Typ nicht akzeptiert, aber einen anderen Typ `T2`.
+
+  * Obwohl diese nützlich sein können, können sie auch zu unerwarteten Ergebnissen und Fehlern führen.
+
+Daher ist es manchmal wünschenswert, implizite Konvertierungen zu vermeiden.
+
+*Beispiel*:
+
+```cpp
+01: class Distance
+02: {
+03: private:
+04:     int m_meters;
+05: 
+06: public:
+07:     Distance(int meters) : m_meters{ meters } {}
+08: 
+09:     void display() const {
+10:         std::println("Distance: {}", m_meters);
+11:     }
+12: };
+13: 
+14: void printDistance(const Distance& d) {
+15:     d.display();
+16: }
+17: 
+18: void test() {
+19:     auto meters{ 10 };
+20:     printDistance(meters);
+21: }
+```
+
+In diesem Beispiel gibt es neben der Klasse `Distance` eine Funktion `printDistance`,
+die ein Objekt vom Typ `Distance` als Argument annimmt.
+
+In der rufenden Funktion haben wir jedoch eine `int`-Variable an die Funktion übergeben
+und dennoch wird der Quellcode fehlerfrei übersetzt und korrekt ausgeführt:
+
+Der Compiler hat eine implizite Konvertierung von `int` nach `Distance` durchgeführt!
+
+Um implizite Konvertierungen in C++ zu vermeiden, können wir das Schlüsselwort `explicit` verwenden.
+
+Wenn das Schlüsselwort `explicit` mit einem Konstruktor oder einer Konvertierungsfunktion verwendet wird,
+verhindert es implizite Konvertierungen, die automatisch vom Compiler durchgeführt werden.
+
+*Hinweis*:
+Mit einer expliziten Typwandlung könnte man die Konvertierung wieder aktivieren,
+aber dieses Mal eben nicht versteckt, sondern sichtbar für den Entwickler!
+
+---
+
+#### Schlüsselwort `auto` verwenden oder nicht? <a name="link"></a>
+
+Empfielt sich der Einsatz des Schlüsselworts `auto` oder nicht?
+
+`auto`: **You totally know what you’re doing, or you totally don’t**
+
+*Frage*:
+
+Warum ist dieses Code-Fragment nicht übersetzungsfähig?
+
+```cpp
+01: void test()
+02: {
+03:     std::map<int, std::string> aMap{ { 1, "Hello"  } };
+04: 
+05:     std::map<int, std::string>::iterator it{ aMap.begin() };
+06: 
+07:     std::pair<int, std::string>& entry1{ *it };  // Why this line DOES NOT compile ???
+08: 
+09:     auto& entry2{ *it };                         // This line compiles :)
+10: }
+```
+
+#### Zwei Empfehlungen:
+
+  * Verwenden Sie es prinzipiell großzügig. Es kann die Lesbarkeit verbessern.
+    Der Compiler kann Typen für uns besser ableiten (*Type Deduction*) als wir selbst.
+
+  * Ist der Typ einer Variablen von entscheidender Natur, dann sollte man diesen auch explizit hinschreiben.
+
+*Achtung*:
+
+Verlust von `const` und `&` bei Verwendung von `auto`:
+
+```cpp
+01: class Person
+02: {
+03: private:
+04:     std::string   m_name;
+05: 
+06: public:
+07:     Person() = default;
+08:     Person(const std::string& name) : m_name{ name } {}
+09: 
+10:     const std::string& getName() const { return m_name; }
+11: };
+12: 
+13: static void guidelines_keyword_auto_02()
+14: {
+15:     Person jack{ "Jack", 50 };
+16:     auto name = jack.getName();
+17: }
+```
+
+Es gibt  hier nur eine Warnung:<br />
+*auto does not deduce references a possibly unintended copy is being made*.
+
+---
+
 [Zurück](Guidelines.md)
 
 ---

@@ -8,9 +8,9 @@
 
 ## [Guidelines STL](Guidelines_STL.md)
 
-## [Guidelines zur Vererbung](Guidelines_Inheritance.md)
+## [Richtlinien zur Vererbung](Guidelines_Inheritance.md)
 
-## [Guidelines Generische Programmierung](Guidelines_Generic_Programming.md)
+## [Richtlinien Generische Programmierung](Guidelines_Generic_Programming.md)
 
 ---
 
