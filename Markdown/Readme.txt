@@ -27,15 +27,9 @@ https://hackernoon.com/c-performance-optimization-best-practices
 
 // =============================================================
 
-
-// =============================================================
-
-
-
 https://stackoverflow.com/questions/274626/what-is-object-slicing
 
 Da steht auch hier was drin: S
-
 
 // =============================================================
 

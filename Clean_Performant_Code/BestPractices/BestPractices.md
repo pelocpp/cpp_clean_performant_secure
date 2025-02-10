@@ -7,14 +7,11 @@
 ## Inhalt
 
   * [Vermeiden Sie unnötiges Kopieren](#link1)
-  * [Bevorzuge Stack Allocation](#link2)
+  * [Bevorzuge Stack Allokation](#link2)
   * [Schleifen optimieren](#link3)
-  * [Reduzieren Sie Funktionsaufrufe](#link4)
-  * [Vermeiden Sie *Raw*-Schleifen](#link5)
-  * [XXXX](#link)
-  * [XXXX](#link)
-  * [XXXX](#link)
-  * [Literatur](#link7)
+  * [Vermeiden Sie *Raw*-Schleifen](#link4)
+  * [Reduzieren Sie Funktionsaufrufe](#link5)
+  * [Literatur](#link6)
 
 ---
 
@@ -28,7 +25,7 @@
 
 Das Kopieren von Objekten kann teuer sein.
 
-Verwenden Sie beim Übergeben und Zurückgeben von Objekten Referenzen oder Verschiebesemantik (`std::move`),
+Verwenden Sie beim Übergeben von Objekten Referenzen oder Verschiebesemantik (`std::move`),
 um unnötiges Kopieren zu minimieren.
 
 Hat man bei Parametern die Wahl zwischen `const std::string&` und `std::string_view`,
@@ -37,22 +34,22 @@ aber häufig kann in diesem Fall die Performance besser sein.
 
 ---
 
-## Bevorzuge Stack Allocation <a name="link2"></a>
+## Bevorzuge Stack Allokation <a name="link2"></a>
 
 Legen Sie Objekte nach Möglichkeit auf dem Stapel an,
-da die Stack Allocation schneller ist als eine dynamische
+da die Stack Allokation schneller ist als eine dynamische
 Speicherplatzreservierung auf der Halde (*Heap*).
 
 Verwenden Sie die dynamische Speicherplatzreservierung (`new` and `delete`) nur dann,
 wenn die Lebensdauer des Objekts über den aktuellen Scope hinausgehen soll.
 
-Es ist jedoch wichtig zu beachten, dass die Stack Allocation Einschränkungen hat:
+Es ist jedoch wichtig zu beachten, dass die Stack Allokation Einschränkungen hat:
 
   * Feste Größe:<br />
     Die Größe des Stapelspeichers ist fest und begrenzt.
-    Das bedeutet, dass man keine sehr großen Objekte oder eine dynamische Anzahl von Objekten auf dem Stapel anlegen kann.
+    Das bedeutet, dass man keine sehr großen Objekte oder eine dynamische Anzahl von Objekten auf dem Stapel ablegen kann.
 
-  * Das Risiko eines *Stack Overflow*:<br />
+  * Das Risiko eines *Stack Overflows*:<br />
     Übermäßiger Stapelspeicherverbrauch kann zu einem Stapelüberlauf (*Stack Overflow*) führen,
     wenn der verfügbare Stapelspeicherplatz erschöpft ist.
     Der Heap-Speicher kennt diese Einschränkung nicht.
@@ -69,10 +66,9 @@ unnötige Berechnungen reduzieren und die richtigen Schleifenkonstrukte verwenden
 
 ---
 
-## Vermeiden Sie *Raw*-Wiederholungschleifen <a name="link3"></a>
+## Vermeiden Sie *Raw*-Wiederholungschleifen <a name="link4"></a>
 
-
-Vermeiden Sie *Raw*-Wiederholungschleifen drücken keine Absicht aus &ndash; vor allem in Bezug auf die Lesbarkeit des Quellcodes &ndash;,
+*Raw*-Wiederholungschleifen drücken keine Absicht aus &ndash; vor allem in Bezug auf die Lesbarkeit des Quellcodes &ndash;,
 Algorithmen jedoch schon.
 
 *Beispiel*: *Violating the Rule*
@@ -118,17 +114,12 @@ Algorithmen jedoch schon.
 
 ---
 
-## Reduzieren Sie Funktionsaufrufe <a name="link4"></a>
+## Reduzieren Sie Funktionsaufrufe <a name="link5"></a>
 
 Minimieren Sie Funktionsaufrufe innerhalb enger Schleifen.
 
-Durch *Inline*-Funktionen (z. B. mithilfe von `inline`- oder Compileroptimierungen)
+Durch *Inline*-Funktionen (z. B. mit Hilfe von `inline`- oder Compileroptimierungen)
 kann der Funktionsaufruf-Overhead eliminiert werden.
-
----
-
-## XXXX <a name="link"></a>
-
 
 ---
 
@@ -140,6 +131,6 @@ kann der Funktionsaufruf-Overhead eliminiert werden.
 
 Die Anregungen zum konzeptionellen Beispiel finden Sie unter
 
-[https://hackernoon.com/c-performance-optimization-best-practices](C++ Performance Optimization: Best Practices)
+[C++ Performance Optimization: Best Practices](https://hackernoon.com/c-performance-optimization-best-practices)
 
 ---
