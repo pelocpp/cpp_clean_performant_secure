@@ -79,6 +79,18 @@ namespace SecureProgrammingPractices {
             *u32 = 0x12345678; // de-referencing invokes undefined behavior
         }
     }
+
+    static int x[100];
+
+    namespace UsingAddressSanitizer {
+
+        static void test_address_sanitizer() {
+
+            std::println("Hello!");
+            x[100] = 5; // Boom!
+            std::println("Boom!");
+        }
+    }
 }
 
 // =================================================================
@@ -90,8 +102,9 @@ void secure_programming_practices()
     //BufferOverflowStack::test_corrupt_stack();
     //BufferOverflowStack::test_corrupt_stack_02();
     //BufferOverflowHeap::test_corrupt_heap();
+    //TypePunning::test_type_punning();
 
-    TypePunning::test_type_punning();
+    UsingAddressSanitizer::test_address_sanitizer();
 
     std::println("Done.");
 }
