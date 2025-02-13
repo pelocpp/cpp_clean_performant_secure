@@ -17,8 +17,6 @@ https://indii.org/blog/overloading-the-spaceship-operator/
 
 // =============================================================
 
-
-
 Clean Code
 
 https://hackernoon.com/c-performance-optimization-best-practices
@@ -146,8 +144,14 @@ https://github.com/facontidavide/CPP_Optimizations_Diary
 //  Viusal Studio
 https://www.youtube.com/watch?v=YDqRJRROir8
 
+// =============================================================
 
+How to use QueryPerformanceCounter?
+
+https://gist.github.com/csmoore/d3af490666378272d6ff
  
+https://stackoverflow.com/questions/1739259/how-to-use-queryperformancecounter
+
 // =============================================================
 
 
@@ -176,3 +180,10 @@ Benchmark and Iterate
 
 // =============================================================
 
+Big Integer:
+
+https://faheel.github.io/BigInt/
+
+https://github.com/faheel/BigInt
+
+// =============================================================

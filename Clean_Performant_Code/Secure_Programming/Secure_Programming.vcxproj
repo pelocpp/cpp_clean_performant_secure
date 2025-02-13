@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{9432adfa-7da0-45a7-afed-52b09ad27185}</ProjectGuid>
-    <RootNamespace>SafeInt</RootNamespace>
+    <ProjectGuid>{eeaf9320-501e-44e1-93c1-638d3808dece}</ProjectGuid>
+    <RootNamespace>SecureProgramming</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -130,13 +130,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp" />
-    <ClCompile Include="SafeInt.cpp" />
+    <ClCompile Include="SecureProgramming.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="SafeInt.md" />
+    <None Include="SecureProgramming.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SafeInt.hpp" />
+    <Image Include="CppCheck_01.png" />
+    <Image Include="CppCheck_Extension_01.png" />
+    <Image Include="CppCheck_Extension_02.png" />
+    <Image Include="CppCheck_Extension_03.png" />
+    <Image Include="CppCheck_Extension_04.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

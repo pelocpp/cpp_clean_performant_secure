@@ -10,13 +10,53 @@
 
 namespace SafeFaculty {
 
-    static std::size_t factorial(const std::size_t& x) {
-        std::size_t ret = 1;
-        for (std::size_t i = 1; i <= x; ++i) ret *= i;
+    static size_t factorial (size_t x) {
+
+        size_t ret{ 1 };
+
+        for (size_t i{ 1 }; i <= x; ++i) {
+            ret *= i;
+        } 
+        
         return ret;
     }
 
+    static size_t factorial_safe(size_t x) {
 
+        SafeInt<size_t> ret{ 1 };
+
+        for (size_t i{ 1 }; i <= x; ++i) {
+            ret *= i;
+        }
+
+        return ret;
+    }
+
+    static void test_factorial_unsafe()
+    {
+        for (size_t i{ 1 }; i != 30; ++i) {
+            auto result{ factorial (i) };
+            std::println("Factorial of {:2}: {}", i, result);
+        }
+    }
+
+    static void test_factorial_safe()
+    {
+        try
+        {
+            for (size_t i{ 1 }; i != 30; ++i) {
+                auto result{ factorial_safe(i) };
+                std::println("Factorial of {:2}: {}", i, result);
+            }
+        }
+        catch (const SafeIntException& ex)
+        {
+            if (ex.m_code == SafeIntArithmeticOverflow)
+            {
+                std::println("No more correct Factorial values available!");
+            }
+        }
+    }
 }
 
 namespace SafeArithmetic {
@@ -86,31 +126,30 @@ namespace SafeArithmetic {
         std::println("{}", std::numeric_limits<int16_t>::max());
     }
 
-    static void test_sum_naive()
+    static void test_sum_unsave() 
     {
-        std::vector<int16_t> vec{ 10, 1000, 2000, 32000 };
+        std::vector<int16_t> vec{ 30'000, 2'000, 700, 60, 7, 1 };   // 32'767 // change last 0 to 1
         auto result{ sum(vec) };
         std::println("Sum: {}", result);
     }
 
     static void test_sum_safe_hand_written()
     {
-        std::vector<int16_t> vec{ 10, 1000, 2000, 32000 };
+        std::vector<int16_t> vec{ 30'000, 2'000, 700, 60, 7, 1 };
         auto result{ sum_safe_hand_written(vec) };
         std::println("Sum: {}", result);
     }
 
     static void test_sum_safe()
     {
-        std::vector<int16_t> vec{ 10, 1000, 2000, 32000 };
+        std::vector<int16_t> vec{ 30'000, 2'000, 700, 60, 7, 1 };
         auto result{ sum_safe(vec) };
         std::println("Sum: {}", result);
     }
 
     static void test_sum_more_safe()
     {
-        // std::vector<int16_t> vec{ 10, 1000, 2000, 32000 };
-        std::vector<int16_t> vec{ 10, 1000, 2000 };
+        std::vector<int16_t> vec{  30'000, 2'000, 700, 60, 7, 1 };
         
         try
         {
@@ -133,10 +172,14 @@ void clean_code_arithmetic()
 {
     using namespace SafeArithmetic;
     //test_maximum_int16_t();
-    //test_sum_naive();
+    test_sum_unsave();
     //test_sum_safe_hand_written();
     //test_sum_safe();
-    test_sum_more_safe();
+    //test_sum_more_safe();
+
+    //using namespace SafeFaculty;
+    //test_factorial_unsafe();
+    //test_factorial_safe();
 }
 
 // ===========================================================================

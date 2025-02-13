@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Markdown\Readme.txt = Markdown\Readme.txt
 		Markdown\Readme_Clean_Performant_Code.md = Markdown\Readme_Clean_Performant_Code.md
 		Markdown\Readme_Performance_Optimization.md = Markdown\Readme_Performance_Optimization.md
+		Readme_Security.txt = Readme_Security.txt
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Best_Practices", "Clean_Performant_Code\BestPractices\BestPractices.vcxproj", "{4D448ADE-1218-4583-AECE-DBF2BD0E95CF}"
@@ -35,6 +36,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Principles", "Clean_Performant_Code\Principles\Principles.vcxproj", "{22B75F38-78EF-476D-A354-E8258435B553}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SafeInt", "Clean_Performant_Code\SafeInt\SafeInt.vcxproj", "{9432ADFA-7DA0-45A7-AFED-52B09AD27185}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Secure_Programming", "Clean_Performant_Code\Secure_Programming\Secure_Programming.vcxproj", "{EEAF9320-501E-44E1-93C1-638D3808DECE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -124,8 +127,19 @@ Global
 		{9432ADFA-7DA0-45A7-AFED-52B09AD27185}.Release|x64.Build.0 = Release|x64
 		{9432ADFA-7DA0-45A7-AFED-52B09AD27185}.Release|x86.ActiveCfg = Release|Win32
 		{9432ADFA-7DA0-45A7-AFED-52B09AD27185}.Release|x86.Build.0 = Release|Win32
+		{EEAF9320-501E-44E1-93C1-638D3808DECE}.Debug|x64.ActiveCfg = Debug|x64
+		{EEAF9320-501E-44E1-93C1-638D3808DECE}.Debug|x64.Build.0 = Debug|x64
+		{EEAF9320-501E-44E1-93C1-638D3808DECE}.Debug|x86.ActiveCfg = Debug|Win32
+		{EEAF9320-501E-44E1-93C1-638D3808DECE}.Debug|x86.Build.0 = Debug|Win32
+		{EEAF9320-501E-44E1-93C1-638D3808DECE}.Release|x64.ActiveCfg = Release|x64
+		{EEAF9320-501E-44E1-93C1-638D3808DECE}.Release|x64.Build.0 = Release|x64
+		{EEAF9320-501E-44E1-93C1-638D3808DECE}.Release|x86.ActiveCfg = Release|Win32
+		{EEAF9320-501E-44E1-93C1-638D3808DECE}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D39D2364-DA73-403D-88AE-16B324C778E8}
 	EndGlobalSection
 EndGlobal
