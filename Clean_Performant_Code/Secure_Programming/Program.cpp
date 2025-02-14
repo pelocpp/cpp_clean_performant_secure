@@ -2,11 +2,12 @@
 // Program.cpp // Secure Programming
 // ===========================================================================
 
-void secure_programming_practices();
+extern void secure_programming_practices();
+extern void secure_programming_exploitability();
 
 int main()
 {
-    secure_programming_practices();
+    secure_programming_exploitability();
     return 0;
 }
 

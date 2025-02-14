@@ -10,8 +10,6 @@
 #include <iostream>
 #include <print>
 
-
-
 namespace SecureProgrammingPractices {
 
     namespace BufferOverflowStack {

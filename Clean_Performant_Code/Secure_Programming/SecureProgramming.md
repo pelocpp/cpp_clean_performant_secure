@@ -23,6 +23,20 @@
   * [XXX](#link)
   * [Literatur](#link6)
 
+
+
+  * [Unsigned Integer Wraparound](#link)
+  * [Signed Integer Overflow](#link)
+  * [Numeric Truncation](#link)
+  * [Stack Buffer Overflow](#link)
+  * [Heap Buffer Overflow](#link)
+  * [Buffer Underflow](#link)
+  * [Use after Free](#link)
+  * [Double Free](#link)
+  * [Incorrect Type Conversion](#link)
+  * [Uncontrolled Format String](#link)
+
+  
   Tools / Code-Analyse und -Bewertung
   
   * [Clang-Tidy](#link)
