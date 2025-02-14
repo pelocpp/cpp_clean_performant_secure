@@ -2,22 +2,15 @@
 // SecureProgramming.cpp
 // ===========================================================================
 
+// don't use the secure versions of the CRT library functions
 #define _CRT_SECURE_NO_WARNINGS 
 
-
-//#include <algorithm>
+#include <complex>
+#include <cstring>
 #include <iostream>
-//#include <string>
-//#include <string_view>
-//#include <vector>
-
 #include <print>
 
-// don't use the secure versions of the CRT library functions
 
-// #include <cstring>
-
-#include <cstring>
 
 namespace SecureProgrammingPractices {
 
@@ -91,6 +84,24 @@ namespace SecureProgrammingPractices {
             std::println("Boom!");
         }
     }
+
+    namespace InfiniteLoop {
+
+        std::complex<float> delta;
+        std::complex<float> mc[4];
+
+        // sanitizer beispiel !!!!!
+
+        static void test_infinite_loop() {
+
+            for (int di = 0; di < 4; di++, delta = mc[di]) {
+
+                std::println("{}", di);
+
+            }
+        }
+
+    }
 }
 
 // =================================================================
@@ -104,7 +115,9 @@ void secure_programming_practices()
     //BufferOverflowHeap::test_corrupt_heap();
     //TypePunning::test_type_punning();
 
-    UsingAddressSanitizer::test_address_sanitizer();
+   // UsingAddressSanitizer::test_address_sanitizer();
+
+    InfiniteLoop::test_infinite_loop();
 
     std::println("Done.");
 }

@@ -43,5 +43,11 @@
     <Image Include="CppCheck_Extension_04.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="VisualStudio_AddressSanitizer_01.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="VisualStudio_AddressSanitizer_02.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

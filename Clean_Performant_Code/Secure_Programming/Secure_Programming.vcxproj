@@ -44,7 +44,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
-    <EnableASAN>true</EnableASAN>
+    <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -142,6 +142,8 @@
     <Image Include="CppCheck_Extension_02.png" />
     <Image Include="CppCheck_Extension_03.png" />
     <Image Include="CppCheck_Extension_04.png" />
+    <Image Include="VisualStudio_AddressSanitizer_01.png" />
+    <Image Include="VisualStudio_AddressSanitizer_02.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

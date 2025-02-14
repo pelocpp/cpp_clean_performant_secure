@@ -4,9 +4,6 @@
 
 ---
 
-Incorrect type conversion
-
-
 ## Inhalt
 
   * [Puffer Über-/Unterlauf (*Buffer Overflows/Underflows*)](#link)
@@ -38,7 +35,88 @@ Incorrect type conversion
   MISRA C++
   C++ Core Guidelines
 
+
+  https://www.youtube.com/watch?v=gHGMDFm2MVs
+
+  Infinite Loop  // Sanitizer
+
+  Optimizations : Disapperaing memset 9:30
+
+  memset_s ???? _s Family of Functions ....
+
+  12:00 Guter Überblick !!!
+
+
+  https://github.com/patricia-gallardo/insecure-coding-examples/tree/main
+
+
+
 ---
+
+## Einige Eigenschaften der Programmiersprache C
+
+  * Passen C und &bdquo;Secure Programming&rdquo; zusammen? Nein!
+
+  * Ist C als sichere, robuste Programmiersprache konzipert: Nein!
+
+  * Ist es möglich, in C sichere und robuste Programme zu schreiben: Ja!
+
+  * Gibt es ein Motto für C Programmierung: Ja: &bdquo;A Programmer knows what he does&rdquo;
+
+  * Warum ist C so unglaublich erfolgreich: Weil man nahezu jedes erdenkliche Programm in C schreiben kann.
+
+  * How to Shoot Yourself In the Foot using C: *You shoot yourself in the foot*.
+
+
+---
+
+## Einige Eigenschaften der Programmiersprache C++
+
+  * Passen C++ und &bdquo;Secure Programming&rdquo; zusammen? Durchaus!
+
+  * Ist C++ als sichere, robuste Programmiersprache konzipert: Ja!
+
+  * Ist es möglich, in C++ sichere und robuste Programme zu schreiben: Ja!
+
+  * Gibt es ein Motto für C++ Programmierung: Ja: &bdquo;Never trust a programmer who says he knows C++&rdquo;
+
+  * Warum ist C++ so unglaublich erfolgreich: Preformance.
+
+  * How to Shoot Yourself In the Foot using C: *You accidentally create a dozen instances of yourself and shoot them all in the foot. Providing emergency medical care is impossible since you can't tell which are bitwise copies and which are just pointing at others and saying &bdquo;that's me, over there.&rdquo;*.
+
+---
+
+## Sicherheitslücken versus Undefined Behaviour
+
+In C/C++ gibt es sowohl Sicherheitslücken als auch das sogenannte *Undefined Behaviour* (kurz: *UB*).
+
+Beide Begriffe liegen eng beieinander.
+
+#### Beispiel für eine Sicherheitslücke: &bdquo;Use After Free&rdquo;
+
+Es gibt den Datentyp Pointer in C/C++. Mit der Funktion `malloc` / dem Operator `new`
+kann man Speicher reservieren, um ihn anschließend verwenden zu können.
+
+Der Name &bdquo;Use After Free&rdquo; verrät eigentlich schon alles. Hierbei geht es darum, dass ein Zeiger auf eine Variable
+nach seiner Freigabe weiterhin genutzt wird.
+
+Es ist dem Compiler nicht möglich, zur Übersetzungszeit zu überprüfen,
+ob Variablen, die nur via Zeiger erreichbar sind (`malloc`, `new`), noch verfügbar sind (`free`, `delete`).
+Dies ist eine Sicherheitslücke in der Definition der Programmiersprache.
+
+Andere Programmiersprachen gehen hier einen anderen Weg wie z. B. C# oder Java.
+Hier wird vormals reservierter Speicher,
+der im Programm keine Verwendung mehr findet, durch die Laufzeitumgtebung wieder freigegeben (*Garbage Collection*)
+
+Die damit verbundene Anfälligkeit (Sicherheitslücke) hängt mit einem Fehler im Zusammenhang
+mit dem Speichermanagement im Ablauf des Programms zusammen:
+
+Aus der Nutzung der Variable nach ihrer Freigabe resultieren im Programm
+unerwartete Aktionen oder andere unerwünschte Effekte. Dies bezeichnet man als *Undefined Behaviour*.
+Häufig macht man die Beobachtung, dass *Undefined Behaviour* zu einem Absturz des Programms führt.
+
+---
+
 
 ## *Type Punning*
 
@@ -81,7 +159,6 @@ Mehrere Möglichkeiten zum Download finden sich [hier](https://cppcheck.sourcefor
 mit erweiterter Funktionalität verfügbar.
 Weitere Informationen und Kaufoptionen für die kommerzielle Version finden Sie unter [www.cppcheck.com](www.cppcheck.com).
 
-
 ---
 
 ## Visual Studio Integration Add-In für Cppcheck
@@ -119,18 +196,76 @@ welche Meldungen man haben möchte &ndash; und welche vielleicht auch nicht.
 
 ## Visual Studio Address Sanitizer
 
-Beschreibung:
+So genannte *Address Sanitizer* sind eine Compiler- und Laufzeittechnologie,
+die schwer zu findende Fehler aufdecken.
 
-[hier](https://learn.microsoft.com/en-us/cpp/sanitizers/asan?view=msvc-170).
+Address Sanitizer wurde ursprünglich von Google eingeführt
+und bieten Technologien zur Laufzeitfehlersuche,
+die das vorhandene Build-Systeme und die vorhandenen Testressourcen direkt nutzen.
 
-Fehlermeldung;
+Der Visual C++ Sanitizer kann folgende Fehlerursachen aufspüren:
 
-https://stackoverflow.com/questions/76781556/visual-studio-22-asan-failed-to-use-and-restart-external-symbolizer
+ * Alloc/dealloc mismatches and new/delete type mismatches
+ * Allocations too large for the heap
+ * calloc overflow and alloca overflow
+ * Double free and use after free
+ * Global variable overflow
+ * Heap buffer overflow
+ * Invalid alignment of aligned values
+ * memcpy and strncat parameter overlap
+ * Stack buffer overflow and underflow
+ * Stack use after return and use after scope
+ * Memory use after it's poisoned
+
+ #### Installation des Address Sanitizers
+
+Zur Installation des Address Sanitizers finden sich [hier](https://learn.microsoft.com/en-us/cpp/sanitizers/asan?view=msvc-170) Hinweise.
+
+Grundlegende Vorraussetzung ist natürlich, dass der Sanitizer bei der Visual Studio Installation mit berücksichtigt wurde:
+
+<img src="VisualStudio_AddressSanitizer_02.png" width="300">
+
+*Abbildung* 1: Installation des Address Sanitizers in den Einstellungen des *Visual Studio Installers*.
+
+Dann muss man den Sanitizer pro Projekt in den *Projekt Eigenschgaften* aktivieren:
+
+<img src="VisualStudio_AddressSanitizer_01.png" width="600">
+
+*Abbildung* 2: *Enable Address Sanitizer*-Einstellung in den Einstellungen des Projekts.
 
 
-Visual Studio 22 - Asan - Failed to use and restart external symbolizer
+*Hinweis*:<br />
+Bei Ausführung des Sanitizers auf meinem Rechner kommt es bei
+den Ausgaben des Sanitizers zu einer Fehlermeldung:
 
-Aufheben:
+*Visual Studio 22 - Asan - Failed to use and restart external symbolizer*
+
+In *Stackoverflow* kann man
+[hier](https://stackoverflow.com/questions/76781556/visual-studio-22-asan-failed-to-use-and-restart-external-symbolizer) nachlesen,
+wie man den Fehler behebt.
+
+Es muss &ndash; und das ist etwas schlecht in *SO* beschrieben &ndash;,
+der zweite Pfad entfernt werden:
+
+```
+PATH=$(VC_ExecutablePath_x64);%PATH%
+ASAN_SYMBOLIZER_PATH=$(VC_ExecutablePath_x64)
+```
+   
+Es folgt ein Beispiel, um den Address Sanitizer zu testen:
+
+```cpp
+01: static int x[100];
+02: 
+03: void test() {
+04:     
+05:     std::println("Hello!");
+06:     x[100] = 5; // Boom!
+07:     std::println("Boom!");
+08: }
+```
+
+Die Ausgaben in der Konsole sehen nun so aus:
 
 
 ```
@@ -182,9 +317,6 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   Left alloca redzone:     ca
   Right alloca redzone:    cb
 ==16452==ABORTING
-
-C:\Development\GitRepositoryCPlusPlus\Cpp_Clean_Performant_Code\x64\Debug\Secure_Programming.exe (process 16452) exited with code 1 (0x1).
-Press any key to close this window . . .
 ```
 
 ---
