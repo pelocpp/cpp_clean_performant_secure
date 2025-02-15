@@ -50,7 +50,9 @@
   C++ Core Guidelines
 
 
-  https://www.youtube.com/watch?v=gHGMDFm2MVs
+  Tools: Use Several Compilers
+
+  Warning / Errors
 
   Infinite Loop  // Sanitizer
 
@@ -60,9 +62,22 @@
 
   12:00 Guter Überblick !!!
 
+  
+  https://www.youtube.com/watch?v=gHGMDFm2MVs
 
   https://github.com/patricia-gallardo/insecure-coding-examples/tree/main
 
+
+  // Für die Literatir
+  https://www.exploit-db.com/docs/english/28476-linux-format-string-exploitation.pdf
+
+  -----
+
+
+  Notes
+  memset may be optimized away (under the as-if rules) if the object modified by this function is not accessed again for the rest of its lifetime (e.g., gcc bug 8537). For that reason, this function cannot be used to scrub memory (e.g., to fill an array that stored a password with zeroes).
+  This optimization is prohibited for memset_explicit and memset_s: they are guaranteed to perform the memory write.
+  Third-party solutions for that include FreeBSD explicit_bzero or Microsoft SecureZeroMemory.
 
 
 ---
@@ -79,8 +94,10 @@
 
   * Warum ist C so unglaublich erfolgreich: Weil man nahezu jedes erdenkliche Programm in C schreiben kann.
 
-  * How to Shoot Yourself In the Foot using C: *You shoot yourself in the foot*.
+#### Zusammanfassung:
 
+
+  * How to Shoot Yourself In the Foot using C:<br />*You shoot yourself in the foot*.
 
 ---
 
@@ -96,7 +113,9 @@
 
   * Warum ist C++ so unglaublich erfolgreich: Preformance.
 
-  * How to Shoot Yourself In the Foot using C: *You accidentally create a dozen instances of yourself and shoot them all in the foot. Providing emergency medical care is impossible since you can't tell which are bitwise copies and which are just pointing at others and saying &bdquo;that's me, over there.&rdquo;*.
+#### Zusammanfassung:
+
+  * How to Shoot Yourself In the Foot using C:<br />*You accidentally create a dozen instances of yourself and shoot them all in the foot. Providing emergency medical care is impossible since you can't tell which are bitwise copies and which are just pointing at others and saying &bdquo;that's me, over there.&rdquo;*.
 
 ---
 
@@ -337,12 +356,30 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
 
 ## Literatur <a name="link6"></a>
 
----
+3 Websites:
 
-[Zurück](../../Markdown/Readme_Performance_Optimization.md)
+[*Common Weakness Enumeration (CWE)*](https://cwe.mitre.org/index.html)
+
+[SEI External Wiki Home](https://wiki.sei.cmu.edu/confluence/)
+
+
+[C++ Core Guidelines Introduction](https://isocpp.github.io/CppCoreGuidelines/)
+
+[C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
 
 Die Anregungen zum konzeptionellen Beispiel finden Sie unter
 
 [C++ Performance Optimization: Best Practices](https://hackernoon.com/c-performance-optimization-best-practices)
 
 ---
+
+[Zurück](../../Markdown/Readme_Performance_Optimization.md)
+
+---
+
+
+27:28
+
+
+
+    23:37

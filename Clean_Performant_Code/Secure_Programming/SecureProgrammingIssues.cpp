@@ -1,5 +1,5 @@
 // ===========================================================================
-// SecureProgramming.cpp
+// SecureProgrammingIssues.cpp
 // ===========================================================================
 
 // don't use the secure versions of the CRT library functions
@@ -10,7 +10,7 @@
 #include <iostream>
 #include <print>
 
-namespace SecureProgrammingPractices {
+namespace SecureProgrammingIssues {
 
     namespace BufferOverflowStack {
 
@@ -98,7 +98,6 @@ namespace SecureProgrammingPractices {
 
             }
         }
-
     }
 }
 
@@ -106,18 +105,14 @@ namespace SecureProgrammingPractices {
 
 void secure_programming_practices()
 {
-    using namespace SecureProgrammingPractices;
+    using namespace SecureProgrammingIssues;
 
-    //BufferOverflowStack::test_corrupt_stack();
-    //BufferOverflowStack::test_corrupt_stack_02();
-    //BufferOverflowHeap::test_corrupt_heap();
-    //TypePunning::test_type_punning();
-
-   // UsingAddressSanitizer::test_address_sanitizer();
-
+    BufferOverflowStack::test_corrupt_stack();
+    BufferOverflowStack::test_corrupt_stack_02();
+    BufferOverflowHeap::test_corrupt_heap();
+    TypePunning::test_type_punning();
+    UsingAddressSanitizer::test_address_sanitizer();
     InfiniteLoop::test_infinite_loop();
-
-    std::println("Done.");
 }
 
 // ===========================================================================

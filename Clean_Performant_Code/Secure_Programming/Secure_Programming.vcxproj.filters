@@ -18,15 +18,27 @@
     <ClCompile Include="Program.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SecureProgramming.cpp">
+    <ClCompile Include="SecureProgrammingIssues.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Exploitability.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SecureProgrammingAdvices.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="SecureProgramming.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="SecureProgrammingAdvices.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="cpp_security_advice_no_new.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="cpp_security_advice_no_new_gc.svg">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
