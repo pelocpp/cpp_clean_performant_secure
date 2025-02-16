@@ -6,8 +6,21 @@
 
 ## Inhalt
 
-#### Exploitability und Vulnerability
+#### Allgemeines
 
+  * [Einige Eigenschaften der Programmiersprache C](#link)
+  * [Einige Eigenschaften der Programmiersprache C++](#link)
+  * [Exploitability und Vulnerability](#link)
+  * [Sicherheitslücken versus *Undefined Behaviour* (*UB*)](#link)
+  * [XXXX](#link)
+  * [XXXX](#link)
+  * [XXXX](#link)
+  * [XXXX](#link)
+  * [XXXX](#link)
+  * [XXXX](#link)
+
+  
+#### Exploitability und Vulnerability
 
   * [Unsigned Integer Wraparound](#link)
   * [Signed Integer Overflow](#link)
@@ -22,8 +35,6 @@
 
 
 #### Weitere Probleme des *Secure Programming* in C/C++
-
-
 
   * [Puffer Über-/Unterlauf (*Buffer Overflows/Underflows*)](#link)
   * [Speicherlecks (*Memory Leaks*)](#link)
@@ -43,53 +54,7 @@
   * [Literatur](#link6)
 
 
-  
-  Tools / Code-Analyse und -Bewertung
-  
-  * [Clang-Tidy](#link)
-  * [Cppcheck](#link)
 
-
-  Coding Standards:
-
-  CERT C++ Secure Coding Standard
-  MISRA C++
-  C++ Core Guidelines
-
-------------------
-
-  Tools: Use Several Compilers
-
-------------------
-
-  Warning / Errors
-
-------------------
-
-  Infinite Loop  // Sanitizer
-
-  Optimizations : Disapperaing memset 9:30
-
-  ------------------
-
-
-  memset_s ???? _s Family of Functions ....
-
-  ------------------
-
-
-  Verwende Keyword expliit ==> no implicit conversion !!!!
-
-  
-  ------------------
-
-  UDL. Hier gibt man Semantik an Variablen elementaren Datentyps
-
-  Mann kann Fehler erzeugen
-
-  Man kann auch rechnen
-  
-  
   ------------------
 
 
@@ -98,17 +63,6 @@
   void doSomething (int* ptr*)
 
 
-  -----------------
-
-  size_t für
-  
-  sizeof 
-
-  Use it for object sizes
-  Use is for container like objecst and their size
-  Use it for array indexing and loop counting
-
-  Controverse discussion
 
 
   ------------------
@@ -196,7 +150,6 @@ Oft genannte Exploit-Arten sind beispielsweise:
   * Command-Execution-Exploits
   * Zero-Day-Exploits
 
-
 ##### Was ist ein *Vulnerability*?
 
 Unter dem Begriff *Vulnerability* versteht man Schwachstellen,
@@ -218,7 +171,7 @@ Performance und Implementierung lassen sich so zwar äußerst feinstufig optimiere
 ---
 
 
-## Sicherheitslücken versus Undefined Behaviour
+## Sicherheitslücken versus *Undefined Behaviour* (*UB*)
 
 In C/C++ gibt es sowohl Sicherheitslücken als auch das sogenannte *Undefined Behaviour* (kurz: *UB*).
 
@@ -475,4 +428,17 @@ Die Anregungen zum konzeptionellen Beispiel finden Sie unter
 [Zurück](../../Markdown/Readme_Secure_Programming.md)
 
 ---
+
+TO BE DONE:
+
+------------------
+
+  Infinite Loop  // Sanitizer
+
+  Optimizations : Disapperaing memset 9:30
+
+  ------------------
+
+
+  memset_s ???? _s Family of Functions ....
 

@@ -124,3 +124,5 @@ Die ganzen Cast Operatoren beschreiben !!!!!!!!!!!
 Warning Level 4 !!!
 
 Dangling C++ Referenzen .. wie bekommt man die hin ...
+
+// =============================================================

@@ -38,7 +38,7 @@ namespace SecureProgrammingExploitability {
 
             unsigned short len = first_len + second_len;  // < -sum == 255
 
-            if (len <= 256) {                             // <- sum == 255
+            if (len <= 256) {
                 memcpy(buf, first, first_len);
             }
         }

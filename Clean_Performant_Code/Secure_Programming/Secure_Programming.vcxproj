@@ -149,6 +149,7 @@
     <Image Include="CppCheck_Extension_04.png" />
     <Image Include="VisualStudio_AddressSanitizer_01.png" />
     <Image Include="VisualStudio_AddressSanitizer_02.png" />
+    <Image Include="WarningLevel.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

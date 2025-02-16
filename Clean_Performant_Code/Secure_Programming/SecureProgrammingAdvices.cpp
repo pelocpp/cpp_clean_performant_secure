@@ -3,8 +3,6 @@
 // Advices for Secure Programming
 // ===========================================================================
 
-#include <string.h>
-
 #include <cstdint>
 #include <iostream>
 #include <limits>
@@ -18,7 +16,7 @@ namespace SecureProgrammingAdvices {
 
         static void test_prefer_cpp_to_c_01() {
 
-            // use std::string
+            // use 'std::string'
             std::string first{ "Hello " };
             std::string second{ "World" };
             std::string result{ first + second };
@@ -203,7 +201,7 @@ namespace SecureProgrammingAdvices {
 
             auto d = 7_days;
 
-            // auto wrong = h + d;   // doesn't compile: Errir
+            // auto wrong = h + d;   // doesn't compile: Error
 
             // binary '+': 'Hours' does not define this operator or a conversion to a type acceptable to the predefined operator
         }
@@ -247,6 +245,24 @@ namespace SecureProgrammingAdvices {
             constexpr auto totalHours = weeks + days + hours; // 12 + 2*24 + 3*7*24 = 564
         }
     }
+
+    namespace DeclareSingleArgumentConstructorsExplicit {
+    
+        class String {
+        public:
+            /*explicit*/ String(size_t length) : m_length{ length } {};   // Bad
+            // ...
+
+        private:
+            size_t m_length;
+            // ...
+        };
+    
+        static void test_declare_single_argument_constructors_explicit() {
+
+            String s = '!';  // Uhhh: String of length 33
+        }
+    }
 }
 
 // ===========================================================================
@@ -257,21 +273,16 @@ void secure_programming_advices()
 
     //PreferCppToC::test_prefer_cpp_to_c_01();
     //PreferCppToC::test_prefer_cpp_to_c_02();
-
-
-    TakeCareOfOverflow::test_take_care_of_overflow();
-
+    //TakeCareOfOverflow::test_take_care_of_overflow();
     //UseAlgorithms::test_use_algorithms_01();
     //UseAlgorithms::test_use_algorithms_02();
-
     //SafeDowncasting::test_safe_downcasting_01();
     //SafeDowncasting::test_safe_downcasting_02();
-
-   // DontUseNewExplicitely::test_dont_use_new_explicitely();
-
+    //DontUseNewExplicitely::test_dont_use_new_explicitely();
     //GivePrimitiveDatatypesSemantics::test_give_primitive_datatypes_semantics();
+    //UseStringLiterals::test_use_string_Literals();
 
-   // UseStringLiterals::test_use_string_Literals();
+    DeclareSingleArgumentConstructorsExplicit::test_declare_single_argument_constructors_explicit();
 }
 
 // ===========================================================================

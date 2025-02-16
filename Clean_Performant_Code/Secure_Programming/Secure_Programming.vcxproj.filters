@@ -64,5 +64,8 @@
     <Image Include="VisualStudio_AddressSanitizer_02.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="WarningLevel.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
