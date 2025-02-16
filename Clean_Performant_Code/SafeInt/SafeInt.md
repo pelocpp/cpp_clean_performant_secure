@@ -1,4 +1,5 @@
-# Schutz von C++-Quellcode vor Integer-Überläufen
+# *SafeInt*: Eine Bibliothek zum Schutz vor Integer-Überläufen
+
 
 [Zurück](../../Markdown/Readme_Clean_Performant_Code.md)
 
@@ -90,8 +91,6 @@ Welche Lösungen bieten sich an:
    dann gibt es nur eine Vorgehensweise: Man muss die Wertebereiche überprügen.
   * Big Integer Arithmetik
 
-
-
 ---
 
 ## Literatur <a name="link6"></a>
@@ -104,10 +103,3 @@ wird in [Cohesion and Coupling: the difference](https://enterprisecraftsmanship.
 [Zurück](../../Markdown/Readme_Clean_Performant_Code.md)
 
 ---
-
-
-```cpp
-```
-
-
-

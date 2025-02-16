@@ -188,14 +188,9 @@ dem Typ `int` definieren sollte. `int`-Werte können sehr groß sein als auch nega
 
 
 Enum-Klassen sind typsichere Klassen.
-
   
 ---
-
-
 
 [Zurück](../../Markdown/Readme_Performance_Optimization.md)
 
 ---
-
-36:17

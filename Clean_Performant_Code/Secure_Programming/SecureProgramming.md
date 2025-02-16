@@ -49,26 +49,70 @@
   MISRA C++
   C++ Core Guidelines
 
+------------------
 
   Tools: Use Several Compilers
 
+------------------
+
   Warning / Errors
+
+------------------
 
   Infinite Loop  // Sanitizer
 
   Optimizations : Disapperaing memset 9:30
 
+  ------------------
+
+
   memset_s ???? _s Family of Functions ....
 
-  12:00 Guter Überblick !!!
+  ------------------
+
+
+  Verwende Keyword expliit ==> no implicit conversion !!!!
 
   
+  ------------------
+
+  UDL. Hier gibt man Semantik an Variablen elementaren Datentyps
+
+  Mann kann Fehler erzeugen
+
+  Man kann auch rechnen
+  
+  
+  ------------------
+
+
+  Don't use pointers:
+
+  void doSomething (int* ptr*)
+
+
+  -----------------
+
+  size_t für
+  
+  sizeof 
+
+  Use it for object sizes
+  Use is for container like objecst and their size
+  Use it for array indexing and loop counting
+
+  Controverse discussion
+
+
+  ------------------
+
+
   https://www.youtube.com/watch?v=gHGMDFm2MVs
 
   https://github.com/patricia-gallardo/insecure-coding-examples/tree/main
 
 
-  // Für die Literatir
+  // Für die Literatur
   https://www.exploit-db.com/docs/english/28476-linux-format-string-exploitation.pdf
 
   -----
@@ -118,6 +162,54 @@
   * How to Shoot Yourself In the Foot using C:<br />*You accidentally create a dozen instances of yourself and shoot them all in the foot. Providing emergency medical care is impossible since you can't tell which are bitwise copies and which are just pointing at others and saying &bdquo;that's me, over there.&rdquo;*.
 
 ---
+
+#### Exploitability und Vulnerability
+
+##### Was ist ein *Exploit*?
+
+Ein Exploit zeigt Sicherheitslücken von Software auf und ermöglicht deren Ausnutzung.
+Exploits stellen ein Werkzeug für Hacker dar, um in Computersysteme einzudringen und sie zu manipulieren.
+Sie können auch zur Beseitigung der Schwachstellen genutzt werden.
+
+Der Begriff Exploit kommt vom englischen &bdquo;to exploit&rdquo;, zu Deutsch &bdquo;ausnutzen&rdquo;.
+Ein Exploit stellt eine systematische Möglichkeit dar, aufgrund von Schwachstellen oder Sicherheitslücken
+der Software in Computersysteme &ndash; in unserem Fall: in C/C++ Programme &ndash; einzudringen.
+
+
+Welche Arten von Exploits gibt es?
+
+Es existiert eine Vielzahl verschiedener Exploits. Abhängig von der verwendeten Angriffsart
+und zeitlichen Aspekten lassen sich die Exploits unterschiedlich klassifizieren.
+Oft genannte Exploit-Arten sind beispielsweise:
+
+  * Remote ausgeführte Exploits
+  * Lokale ausgeführte Exploits
+  * Denial-of-Service-Exploits (DoS-Exploits)
+  * SQL-Injection-Exploits
+  * Command-Execution-Exploits
+  * Zero-Day-Exploits
+
+
+##### Was ist ein *Vulnerability*?
+
+Unter dem Begriff *Vulnerability* versteht man Schwachstellen,
+möglicherweise etwas drastischer übersetzt *Hochrisiko-Schwachstellen*.
+
+Wie kommt es dazu?
+
+C/C++ sind so genannte *Low-Level*-Programmiersprachen.
+
+Das Speichermanagement ist also anders geregelt als bei High-Level-Sprachen wie JavaScript oder Python.
+Bei diesen wird die Zuweisung, Nutzung und Bereitstellung implizit verwaltet (zum Beispiel mit *Garbage Collection*)
+
+Bei C/C++ muss dies entwicklerseitig geschehen. 
+Performance und Implementierung lassen sich so zwar äußerst feinstufig optimieren, zugleich ist dieses Programmierkonzept aber auch mit sehr spezifischen Problematiken verbunden.
+
+*Buffer-Overflows* (CWE-121) und *Out-of-Bounds Write* (CWE-787) sind einige der bekanntesten
+*Vulnerabilities* in C/C++.
+
+---
+
 
 ## Sicherheitslücken versus Undefined Behaviour
 
@@ -377,9 +469,3 @@ Die Anregungen zum konzeptionellen Beispiel finden Sie unter
 
 ---
 
-
-27:28
-
-
-
-    23:37
