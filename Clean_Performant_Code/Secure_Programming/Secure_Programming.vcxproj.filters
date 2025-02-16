@@ -18,10 +18,10 @@
     <ClCompile Include="Program.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SecureProgrammingIssues.cpp">
+    <ClCompile Include="SecureProgrammingMoreIssues.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Exploitability.cpp">
+    <ClCompile Include="SecureProgrammingIssues.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SecureProgrammingAdvices.cpp">
@@ -29,7 +29,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="SecureProgramming.md">
+    <None Include="SecureProgrammingIssues.md">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="SecureProgrammingAdvices.md">

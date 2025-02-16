@@ -130,15 +130,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Exploitability.cpp" />
+    <ClCompile Include="SecureProgrammingIssues.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="SecureProgrammingAdvices.cpp" />
-    <ClCompile Include="SecureProgrammingIssues.cpp" />
+    <ClCompile Include="SecureProgrammingMoreIssues.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp_security_advice_no_new.svg" />
     <None Include="cpp_security_advice_no_new_gc.svg" />
-    <None Include="SecureProgramming.md" />
+    <None Include="SecureProgrammingIssues.md" />
     <None Include="SecureProgrammingAdvices.md" />
   </ItemGroup>
   <ItemGroup>
