@@ -1,42 +1,33 @@
-# Schutzmaßnahme für *Secure Programming*
+# Schutzmaßnahmen für *Secure Programming*
 
-[Zurück](../../Markdown/Readme_Secure_Programming.md)
+[Zurück](./Readme_Secure_Programming.md)
 
 ---
 
 ## Inhalt
 
-  * [Don't use C &ndash; Use C++](#link)
+#### Einige Schutzmaßnahmen
+
+  * [Don't use C &ndash; use C++](#link)
   * [Verwende mehrere Compiler](#link)
   * [*Warnings* und *Errors*](#link)
   * [Warning Level](#link)
   * [Verwenden Sie STL-Algorithmen](#link)
   * [Achte auf sicheres *Downcasting*](#link)
-  * [Verzichte auf die direkte Verwendug des `new`-Operators](#link)
+  * [Verzichte auf die direkte Verwendung des `new`-Operators](#link)
+  * [Deklariere Konstruktoren mit einem einzigen Argument `explicit`](#link)
   * [Elementare Datentypen haben keine Bedeutung (*Semantics*), nur Wertebereiche](#link)
-
-
   * [Benutzerdefinierte Literale: Elementare Datentypen &bdquo;mit Bedeutung&rdquo;](#link)
-  
-
-
-
-  * 
- * [XXX](#link)
-  * [XXX](#link)
-  * [XXX](#link)
-  * [XXX](#link)
-  * [XXX](#link)
-  * [XXX](#link)
-  * [XXX](#link)
-
+  * [Datentyp `size_t`](#link)
 
     
-  Tools / Code-Analyse und -Bewertung
+#### Tools / Code-Analyse und -Bewertung
   
-  * [Clang-Tidy](#link)
-  * [Cppcheck](#link)
-
+  * [Tool *Cppcheck*](#link)
+  * [Visual Studio Integration Add-In für *Cppcheck*](#link)
+  * [Visual Studio Address Sanitizer](#link)
+  * [Installation des Address Sanitizers](#link)
+  * [Clang-Tidy](#link)  To be Done
 
 ---
 
@@ -46,9 +37,9 @@
 
 ---
 
-## Don't use C &ndash; Use C++
+## Don't use C &ndash; use C++
 
-Sollten Sie die Wahl haben: Verwenden Sie C++ an Stelle von C.
+Sollten Sie die Wahl haben: Verwenden Sie C++ und nicht C.
 
 Warum: C++ bietet bessere Typprüfungsmöglichkeiten und attraktivere Möglichkeiten in der Formulierung von Quellcode.
 Es bietet bessere Unterstützung für die Programmierung auf höherer Ebene
@@ -57,8 +48,11 @@ und generiert häufig schnelleren Code.
 Diese Aussage findet sich auch in den [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
 wieder: *Prefer C++ to C* (*CPL.1*).
 
-Als Illustration vergleiche man das Konkatenieren von zwei Zeichenketten:
+Zur Illustration vergleiche man das Konkatenieren zweier Zeichenketten:
 Einmal in C++ geschrieben und ein zweites Mal in C:
+
+
+*Beispiel*: C++
 
 ```c
 01: std::string first{ "Hello " };
@@ -66,6 +60,8 @@ Einmal in C++ geschrieben und ein zweites Mal in C:
 03: std::string result{ first + second };
 04: std::println("{}", result);
 ```
+
+*Beispiel*: C
 
 ```cpp
 01: char first[] = "Hello ";
@@ -82,10 +78,10 @@ Einmal in C++ geschrieben und ein zweites Mal in C:
 ## Verwende mehrere Compiler
 
 Alle C/++ Compiler übersetzen lt. Definition C/C++&ndash;Quellcode in Maschinencode.
-Dennoch bedeutet das noch lange nicht, dass es hier keine Unterschiede.
+Dennoch bedeutet das noch lange nicht, dass es hier keine Unterschiede gibt.
 
-Je komplexeren Quellcode Sie schreiben, kann es sein, dass der eine Compiler ein Programm ohne Warnungen und Fehlermeldungen
-akzepetiert und übersetzt, ein anderer Compiler aber Warnungen oder im Extremfall sogar mit Fehlermeldungen reagiert.
+Je komplexeren Quellcode Sie schreiben, umso mehr kann es sein, dass ein Compiler ein Programm ohne Warnungen und Fehlermeldungen
+akzeptiert und übersetzt, ein anderer Compiler hingegen mit Warnungen oder im Extremfall sogar mit Fehlermeldungen reagiert.
 
 Es empfiehlt sich daher, eine Code-Basis mit mehreren Compiler übersetzungsfähig zu halten.
 Dies minimiert mögliche Nischenprobleme des einen oder anderen Übersetzers.
@@ -96,7 +92,7 @@ Dies minimiert mögliche Nischenprobleme des einen oder anderen Übersetzers.
 
 Vermutlich durften Sie diesen Hinweis schon oft über sich ergehen lassen:
 Vermeiden Sie &ndash; so gut es geht &ndash; jegliche Warnungen, die ihr Übersetzer in ihrem Projekt erzeugt.
-In den allermeisten Fällen ist eine Warning ein Hinweis, dass mit Ihrem Quellcode an dieser Stelle etwas nicht in Ordnung ist.
+In den allermeisten Fällen ist eine Warnung ein Hinweis, dass mit Ihrem Quellcode an dieser Stelle etwas nicht in Ordnung ist.
 Nehmen Sie Warnungen nicht auf die leichte Schulter:
 
 Eine Kostprobe:
@@ -108,7 +104,7 @@ Warning C4047 : '=': 'int' differs in levels of indirection from 'int *'
 Dies wird zwar vom C/C++ Compiler als Warnung eingestuft, es handelt sich hierbei aber um einen beinharten Fehler!
 
 *Bemerkung*:<br />
-Über *Errors* müssen wir nicht so viel reden, weil bei Vorhandensein von Fehlern das Programm überhaupt nicht übersetzungsfähig ist.
+Über *Errors* müssen wir nicht so viel reden: Bei Vorhandensein von Fehlern ist ein Programm überhaupt nicht übersetzungsfähig!
 
 ---
 
@@ -120,7 +116,11 @@ Je höher Sie den *Warning Level* einstellen, desto mehr Warnungen werden angezei
 
 <img src="WarningLevel.png" width="700">
 
-*Abbildung* 3: Unterschiedliche *Warning Level* des Visual C++ Compilers.
+*Abbildung* 1: Unterschiedliche *Warning Level* des Visual C++ Compilers.
+
+Sicherlich machen Sie die Beobachtung, dass bei vergleichsweise großem Warning Level sehr viele bisweilen pedantische Warnungen erzeugt werden.
+Hier muss man sich für eine Gratwanderung entscheiden: Ein zu kleiner Warning Level ist schlecht für die Qualität des Programms,
+ein zu großer Warning Level kann zu viele Warnungen erzeugen, die nicht unbedingt hilfreich sind.
 
 ---
 
@@ -168,8 +168,8 @@ Algorithmen der STL sind robuster im Gebrauch als CRT-Bibliotheksfunktionen oder
 *Hinweis*:
 Vermeiden Sie generell *manuelle* Wiederholungsschleifen!
 
-Verwenden Sie Algorithmen der STL oder die C++ *Range-based Loop*:
-Beide kommen ohne Schleifen-Indices aus, die eine häufige Ursache für Fehlerquellen sind.
+Verwenden Sie Algorithmen der STL und, wenn es eine Wiederholungsschleife sein muss, die so genannten C++ *Range-based Loop*:
+Beide kommen ohne Schleifen-Indizes aus, die eine häufige Ursache von Fehlerquellen sind.
 
 ---
 
@@ -213,7 +213,7 @@ Ein Beispiel ist der Gebrauch von `static_cast`:
 
 ---
 
-## Verzichte auf die direkte Verwendug des `new`-Operators
+## Verzichte auf die direkte Verwendung des `new`-Operators
 
 Siehe hierzu das entsprechende 
 [C++ Core Guideline](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
@@ -221,12 +221,12 @@ mit dem Titel *Avoid calling new and delete explicitly* (*R.11*).
 
 <img src="cpp_security_advice_no_new.svg" width="600">
 
-*Abbildung* 1: `std::unique_ptr`-Variablen haben Charme.
+*Abbildung* 2: `std::unique_ptr`-Variablen haben Charme.
 
 
-<img src="cpp_security_advice_no_new_gc.svg" width="500">
+<img src="cpp_security_advice_no_new_gc.svg" width="300">
 
-*Abbildung* 2: Stack-Variablen haben Charme.
+*Abbildung* 3: Stack-Variablen haben Charme.
 
 Am Ende des Tages stellt sich bei einem mit `new` erzeugten Zeiger immer die Frage:
 Wer hat wann und wo `delete` aufgerufen?
@@ -356,10 +356,7 @@ Man muss in diesem Fall die *Literal*-Operatoren nur anders definieren:
 21: }
 ```
 
-
 ---
-
-
 
 ## Datentyp `size_t`
 
@@ -372,8 +369,13 @@ die von der Funktion `strlen()` zurückgegeben wird.
 `size_t` ist keiner der &bdquo;integrierten&rdquo; Datentypen von C/C++.
 Stattdessen wird er im Regelfall in Headerdateien mit `typedef` oder `using` definiert.
 
-Der genaue Datentyp ist implementierungsspezifisch, ist aber normalerweise eine Form eines vorzeichenlosen Integer-Typs.
+Der genaue Datentyp ist implementierungsspezifisch, ist aber normalerweise eine Form eines vorzeichenlosen ganzzahligen Datentyps.
 
+Man sollte `size_t` einsetzen
+
+  * für etwaige Größenangaben von Objekten
+  * für Container-ähnliche Objekte und deren Größe
+  * für Array-Indizierung und Schleifenzähler
 
 ---
 
@@ -392,10 +394,11 @@ Mehrere Möglichkeiten zum Download finden sich [hier](https://cppcheck.sourcefor
 
 <img src="CppCheck_01.png" width="600">
 
-*Abbildung* 1: [https://cppcheck.sourceforge.io](https://cppcheck.sourceforge.io) Website.
+*Abbildung* 4: [https://cppcheck.sourceforge.io](https://cppcheck.sourceforge.io) Website.
 
-*Cppcheck* ist sowohl als Open Source ([hier](https://cppcheck.sourceforge.io) als auch als *Cppcheck Premium Paket*
+*Cppcheck* ist sowohl als Open Source ([hier](https://cppcheck.sourceforge.io)) als auch als *Cppcheck Premium Paket*
 mit erweiterter Funktionalität verfügbar.
+
 Weitere Informationen und Kaufoptionen für die kommerzielle Version finden Sie unter [www.cppcheck.com](www.cppcheck.com).
 
 ---
@@ -403,12 +406,12 @@ Weitere Informationen und Kaufoptionen für die kommerzielle Version finden Sie u
 ## Visual Studio Integration Add-In für Cppcheck
 
 Um *Cppcheck* mit Visual Studio zusammen betreiben zu können,
-grift man am besten auf
+greift man am besten auf
 das [Visual Studio Integration Add-In](https://github.com/VioletGiraffe/cppcheck-vs-addin) für Cppcheck zurück.
 
 <img src="CppCheck_Extension_01.png" width="700">
 
-*Abbildung* 2: [https://github.com/VioletGiraffe/cppcheck-vs-addin](https://github.com/VioletGiraffe/cppcheck-vs-addin) Website.
+*Abbildung* 5: [https://github.com/VioletGiraffe/cppcheck-vs-addin](https://github.com/VioletGiraffe/cppcheck-vs-addin) Website.
 
 *Hinweis*:
 
@@ -420,13 +423,13 @@ um das aktuelle Projekt überprüfen zu können:
 
 <img src="CppCheck_Extension_03.png" width="300">
 
-*Abbildung* 3: Erweiterungen im Menü &bdquo;*Tools*&rdquo;
+*Abbildung* 6: Erweiterungen im Menü &bdquo;*Tools*&rdquo;
 
-Zum Abschluss finden Sie in *Abbildung* 4 das *Settings*-Dialogfenster vor:
+Zum Abschluss finden Sie in *Abbildung* 7 das *Settings*-Dialogfenster vor:
 
-<img src="CppCheck_Extension_04.png" width="600">
+<img src="CppCheck_Extension_04.png" width="700">
 
-*Abbildung* 4: Spezifische Parametrierung des *Cppcheck*-Tools.
+*Abbildung* 7: Spezifische Parametrierung des *Cppcheck*-Tools.
 
 In diesem Fenster kann man spezfische Einstellungen vornehmen,
 welche Meldungen man haben möchte &ndash; und welche vielleicht auch nicht.
@@ -440,7 +443,7 @@ die schwer zu findende Fehler aufdecken.
 
 Address Sanitizer wurde ursprünglich von Google eingeführt
 und bieten Technologien zur Laufzeitfehlersuche,
-die das vorhandene Build-Systeme und die vorhandenen Testressourcen direkt nutzen.
+die das vorhandene Build-System und die vorhandenen Testressourcen direkt nutzen.
 
 Der Visual C++ Sanitizer kann folgende Fehlerursachen aufspüren:
 
@@ -456,7 +459,7 @@ Der Visual C++ Sanitizer kann folgende Fehlerursachen aufspüren:
  * Stack use after return and use after scope
  * Memory use after it's poisoned
 
- #### Installation des Address Sanitizers
+#### Installation des Address Sanitizers
 
 Zur Installation des Address Sanitizers finden sich [hier](https://learn.microsoft.com/en-us/cpp/sanitizers/asan?view=msvc-170) Hinweise.
 
@@ -464,13 +467,13 @@ Grundlegende Vorraussetzung ist natürlich, dass der Sanitizer bei der Visual Stu
 
 <img src="VisualStudio_AddressSanitizer_02.png" width="300">
 
-*Abbildung* 1: Installation des Address Sanitizers in den Einstellungen des *Visual Studio Installers*.
+*Abbildung* 8: Installation des Address Sanitizers in den Einstellungen des *Visual Studio Installers*.
 
-Dann muss man den Sanitizer pro Projekt in den *Projekt Eigenschgaften* aktivieren:
+Dann muss man den Sanitizer pro Projekt in den *Projekt Eigenschaften* aktivieren:
 
-<img src="VisualStudio_AddressSanitizer_01.png" width="600">
+<img src="VisualStudio_AddressSanitizer_01.png" width="700">
 
-*Abbildung* 2: *Enable Address Sanitizer*-Einstellung in den Einstellungen des Projekts.
+*Abbildung* 9: *Enable Address Sanitizer*-Einstellung in den Einstellungen des Projekts.
 
 
 *Hinweis*:<br />
@@ -558,31 +561,8 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
 ==16452==ABORTING
 ```
 
-
-
 ---
 
-
-  -----------------
-
-  size_t für
-  
-  sizeof 
-
-  Use it for object sizes
-  Use is for container like objecst and their size
-  Use it for array indexing and loop counting
-
-  Controverse discussion
-
-
----
-
-
-
-
----
-
-[Zurück](../../Markdown/Readme_Secure_Programming.md)
+[Zurück](./Readme_Secure_Programming.md)
 
 ---

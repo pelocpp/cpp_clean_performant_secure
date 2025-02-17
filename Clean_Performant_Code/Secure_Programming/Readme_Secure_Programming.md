@@ -1,6 +1,6 @@
 # Probleme und Techniken des *Secure Programming* für C/C++ Entwickler
 
-[Zurück](../Readme.md)
+[Zurück](../../Readme.md)
 
 ---
 
@@ -49,19 +49,13 @@ Begleitmaterial:
 (abgerufen am 17.2.2025)
 
 
-
-
-
-  Coding Standards:
-
-  CERT C++ Secure Coding Standard
-  MISRA C++
-  C++ Core Guidelines
-
+Coding Standards:
+CERT C++ Secure Coding Standard
+MISRA C++
 
 
 ---
 
-[Zurück](../Readme.md)
+[Zurück](../../Readme.md)
 
 ---

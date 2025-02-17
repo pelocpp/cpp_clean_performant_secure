@@ -1,6 +1,6 @@
 # Clean Code Richtlinien für C++ Entwickler
 
-[Zurück](../Readme.md)
+[Zurück](../../Readme.md)
 
 ---
 
@@ -82,6 +82,6 @@ But only good programmer can write a code that human can understand.&rdquo;
 
 ---
 
-[Zurück](../Readme.md)
+[Zurück](../../Readme.md)
 
 ---

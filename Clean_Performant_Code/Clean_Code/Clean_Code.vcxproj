@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{eeaf9320-501e-44e1-93c1-638d3808dece}</ProjectGuid>
-    <RootNamespace>SecureProgramming</RootNamespace>
+    <ProjectGuid>{fb220433-4847-462a-849d-8675b2231332}</ProjectGuid>
+    <RootNamespace>CleanCode</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -44,7 +44,6 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
-    <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -105,7 +104,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -120,7 +118,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,27 +127,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="SecureProgrammingIssues.cpp" />
     <ClCompile Include="Program.cpp" />
-    <ClCompile Include="SecureProgrammingAdvices.cpp" />
-    <ClCompile Include="SecureProgrammingMoreIssues.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="cpp_security_advice_no_new.svg" />
-    <None Include="cpp_security_advice_no_new_gc.svg" />
-    <None Include="Readme_Secure_Programming.md" />
-    <None Include="Readme_Secure_ProgrammingIssues.md" />
-    <None Include="Readme_Secure_ProgrammingAdvices.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="CppCheck_01.png" />
-    <Image Include="CppCheck_Extension_01.png" />
-    <Image Include="CppCheck_Extension_02.png" />
-    <Image Include="CppCheck_Extension_03.png" />
-    <Image Include="CppCheck_Extension_04.png" />
-    <Image Include="VisualStudio_AddressSanitizer_01.png" />
-    <Image Include="VisualStudio_AddressSanitizer_02.png" />
-    <Image Include="WarningLevel.png" />
+    <None Include="Readme_Clean_Code.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

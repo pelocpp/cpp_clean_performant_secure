@@ -1,6 +1,6 @@
 # Klassische Probleme des *Secure Programming* in C/C++
 
-[Zurück](../../Markdown/Readme_Secure_Programming.md)
+[Zurück](./Readme_Secure_Programming.md)
 
 ---
 
@@ -302,8 +302,16 @@ was möglicherweise zur Änderung unerwarteter Speicherorte führt.
 
 [CWE-704: Incorrect Type Conversion or Cast](https://cwe.mitre.org/data/definitions/704.html)
 
-
 Das Problem konvertiert ein Objekt, eine Ressource oder eine Struktur nicht ordnungsgemäß von einem Typ in einen anderen Typ.
+
+Was bezeichnet man als *Type Punning*?
+
+&bdquo;Eine Form des Zeigeraliasings, bei der zwei Zeiger auf dieselbe Stelle im Speicher verweisen,
+diese Stelle aber aus der Sichtweise unterschiedlicher Datentypen betrachten.<br />
+Der Compiler behandelt beide &bdquo;Punnings&rdquo; als nicht verwandte Zeiger.
+
+*Type Punnings* können Abhängigkeitsprobleme für alle Daten verursachen, auf die über beide Zeiger zugegriffen wird.&rdquo;
+
 
 
 #### Uncontrolled Format String
@@ -338,28 +346,14 @@ die eine Formatzeichenfolge als Argument akzeptiert, die Formatzeichenfolge stam
 -----------------------------------------------------------------------
 -----------------------------------------------------------------------
 
-
-
-## *Type Punning*
-
-Was bezeichnet man als *Type Punning*?
-
-&bdquo;Eine Form des Zeigeraliasings, bei der zwei Zeiger auf dieselbe Stelle im Speicher verweisen,
-diese Stelle aber aus der Sichtweise unterschiedlicher Datentypen betrachten.<br />
-Der Compiler behandelt beide &bdquo;Punnings&rdquo; als nicht verwandte Zeiger.
-
-*Type Punnings* können Abhängigkeitsprobleme für alle Daten verursachen, auf die über beide Zeiger zugegriffen wird.&rdquo;
-
-
-
-
+---
 
 ## Literatur <a name="link6"></a>
 
 
 ---
 
-[Zurück](../../Markdown/Readme_Secure_Programming.md)
+[Zurück](./Readme_Secure_Programming.md)
 
 ---
 
