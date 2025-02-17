@@ -23,5 +23,16 @@
     <None Include="Readme_Clean_Code.md">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Literature.md">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Buch_Stephan_Roth_Clean_Cpp_20.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="CleanCodeImage.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

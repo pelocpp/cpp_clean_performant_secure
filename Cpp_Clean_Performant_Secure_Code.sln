@@ -5,14 +5,9 @@ VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7133C3C8-7CD8-44E5-AD77-FEA92E46AB34}"
 	ProjectSection(SolutionItems) = preProject
-		Markdown\Buch_Andrist_Sehr_High Performance_Cpp.png = Markdown\Buch_Andrist_Sehr_High Performance_Cpp.png
-		Markdown\Buch_Nicolai_Josuttis_Cpp_Move_Semantics.png = Markdown\Buch_Nicolai_Josuttis_Cpp_Move_Semantics.png
-		Markdown\Buch_Stephan_Roth_Clean_Cpp_20.png = Markdown\Buch_Stephan_Roth_Clean_Cpp_20.png
-		Markdown\CleanCodeImage.png = Markdown\CleanCodeImage.png
-		Markdown\Literature.md = Markdown\Literature.md
 		Readme.md = Readme.md
 		Markdown\Readme.txt = Markdown\Readme.txt
-		Readme_Security.txt = Readme_Security.txt
+		Markdown\Readme_Security.txt = Markdown\Readme_Security.txt
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Best_Practices", "Clean_Performant_Code\BestPractices\BestPractices.vcxproj", "{4D448ADE-1218-4583-AECE-DBF2BD0E95CF}"

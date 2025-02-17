@@ -1,6 +1,6 @@
 # Grundlegende Guidelines für C++ Clean Code
 
-[Zurück](../../Markdown/Readme_Clean_Performant_Code.md)
+[Zurück](../Clean_Code/Readme_Clean_Code.md)
 
 ---
 
@@ -26,6 +26,6 @@ Der folgende Artikel ist ebenfalls berücksichtigt:
 
 ---
 
-[Zurück](../../Markdown/Readme_Clean_Performant_Code.md)
+[Zurück](../Clean_Code/Readme_Clean_Code.md)
 
 ---

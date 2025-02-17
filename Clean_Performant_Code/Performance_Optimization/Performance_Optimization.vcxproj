@@ -130,7 +130,12 @@
     <ClCompile Include="Program.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Literature.md" />
     <None Include="Readme_Performance_Optimization.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Buch_Andrist_Sehr_High Performance_Cpp.png" />
+    <Image Include="Buch_Nicolai_Josuttis_Cpp_Move_Semantics.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

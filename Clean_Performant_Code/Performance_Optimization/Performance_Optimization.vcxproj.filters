@@ -23,5 +23,16 @@
     <None Include="Readme_Performance_Optimization.md">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Literature.md">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Buch_Andrist_Sehr_High Performance_Cpp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buch_Nicolai_Josuttis_Cpp_Move_Semantics.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
