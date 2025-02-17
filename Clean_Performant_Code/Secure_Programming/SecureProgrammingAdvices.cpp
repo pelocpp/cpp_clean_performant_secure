@@ -53,6 +53,8 @@ namespace SecureProgrammingAdvices {
 
         static void test_use_algorithms_01() {
 
+            // solved with STL algorithm
+
             std::string str{ "Hello World" }; // use also "Hello:World"
             std::println("{}", str);
 
@@ -70,6 +72,8 @@ namespace SecureProgrammingAdvices {
 
         static void test_use_algorithms_02() {
 
+            // solved with CRT function 'strstr' // no STL algorithm
+
             char str[] = "Hello World";    // use also "Hello:World"
             std::printf("%s\n", str);
 
@@ -83,6 +87,25 @@ namespace SecureProgrammingAdvices {
             }
 
             std::printf("%s\n", str);
+        }
+
+        static void corrupt_stack(const char* input) {
+
+            char buffer[32];
+            std::copy(input, input + 32, buffer);
+            std::println("{}", buffer);  // std::copy works, std::println fails, no '\0'
+        }
+
+        static void test_use_algorithms_03() {
+
+            corrupt_stack("The quick brown fox jumps over the lazy dog");
+        }
+
+        static void test_use_algorithms() {
+
+            test_use_algorithms_01();
+            test_use_algorithms_02();
+            test_use_algorithms_03();
         }
     }
 
@@ -276,13 +299,18 @@ void secure_programming_advices()
     //TakeCareOfOverflow::test_take_care_of_overflow();
     //UseAlgorithms::test_use_algorithms_01();
     //UseAlgorithms::test_use_algorithms_02();
+    // 
+    
+    UseAlgorithms::test_use_algorithms();
+
+    // 
     //SafeDowncasting::test_safe_downcasting_01();
     //SafeDowncasting::test_safe_downcasting_02();
     //DontUseNewExplicitely::test_dont_use_new_explicitely();
     //GivePrimitiveDatatypesSemantics::test_give_primitive_datatypes_semantics();
     //UseStringLiterals::test_use_string_Literals();
 
-    DeclareSingleArgumentConstructorsExplicit::test_declare_single_argument_constructors_explicit();
+ //   DeclareSingleArgumentConstructorsExplicit::test_declare_single_argument_constructors_explicit();
 }
 
 // ===========================================================================

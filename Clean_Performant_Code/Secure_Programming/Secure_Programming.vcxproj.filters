@@ -29,16 +29,19 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="SecureProgrammingIssues.md">
+    <None Include="Readme_SecureProgrammingIssues.md">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="SecureProgrammingAdvices.md">
+    <None Include="Readme_SecureProgrammingAdvices.md">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="cpp_security_advice_no_new.svg">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="cpp_security_advice_no_new_gc.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Readme_SecureProgramming.md">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

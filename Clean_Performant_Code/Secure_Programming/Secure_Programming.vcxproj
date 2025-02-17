@@ -138,8 +138,9 @@
   <ItemGroup>
     <None Include="cpp_security_advice_no_new.svg" />
     <None Include="cpp_security_advice_no_new_gc.svg" />
-    <None Include="SecureProgrammingIssues.md" />
-    <None Include="SecureProgrammingAdvices.md" />
+    <None Include="Readme_SecureProgramming.md" />
+    <None Include="Readme_SecureProgrammingIssues.md" />
+    <None Include="Readme_SecureProgrammingAdvices.md" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="CppCheck_01.png" />

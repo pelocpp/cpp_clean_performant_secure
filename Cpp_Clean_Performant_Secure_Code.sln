@@ -14,7 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Markdown\Readme.txt = Markdown\Readme.txt
 		Markdown\Readme_Clean_Performant_Code.md = Markdown\Readme_Clean_Performant_Code.md
 		Markdown\Readme_Performance_Optimization.md = Markdown\Readme_Performance_Optimization.md
-		Markdown\Readme_Secure_Programming.md = Markdown\Readme_Secure_Programming.md
 		Readme_Security.txt = Readme_Security.txt
 	EndProjectSection
 EndProject

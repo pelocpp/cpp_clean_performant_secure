@@ -6,6 +6,6 @@
 
 ## [Performance and Optimization Techniques](./Markdown/Readme_Performance_Optimization.md)
 
-## [Secure Programming Issues and Techniques](./Markdown/Readme_Secure_Programming.md)
+## [Secure Programming Issues and Techniques](./Clean_Performant_Code/Secure_Programming/Readme_SecureProgramming.md)
 
 ---
