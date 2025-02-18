@@ -58,6 +58,10 @@ namespace SecureProgrammingMoreIssues {
 
     namespace MemsetIssue {
 
+        // https://cwe.mitre.org/data/definitions/14.html
+
+        // Compiler Removal of Code to Clear Buffers
+
         static bool connectToServer(char* pwd) {
             std::println("{}", pwd);
             return true;

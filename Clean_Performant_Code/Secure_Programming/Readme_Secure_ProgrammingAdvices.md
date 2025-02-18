@@ -12,22 +12,19 @@
   * [Verwende mehrere Compiler](#link)
   * [*Warnings* und *Errors*](#link)
   * [Warning Level](#link)
+  * [Ein Tipp für Überlauf: `std::midpoint`](#link)
   * [Verwenden Sie STL-Algorithmen](#link)
   * [Achte auf sicheres *Downcasting*](#link)
   * [Verzichte auf die direkte Verwendung des `new`-Operators](#link)
-  * [Deklariere Konstruktoren mit einem einzigen Argument `explicit`](#link)
+  * [Deklariere Konstruktoren mit einem einzigen Argument mit `explicit`](#link)
   * [Elementare Datentypen haben keine Bedeutung (*Semantics*), nur Wertebereiche](#link)
   * [Benutzerdefinierte Literale: Elementare Datentypen &bdquo;mit Bedeutung&rdquo;](#link)
-  * [Datentyp `size_t`](#link)
-
-    
-#### Tools / Code-Analyse und -Bewertung
-  
-  * [Tool *Cppcheck*](#link)
-  * [Visual Studio Integration Add-In für *Cppcheck*](#link)
-  * [Visual Studio Address Sanitizer](#link)
-  * [Installation des Address Sanitizers](#link)
-  * [Clang-Tidy](#link)  To be Done
+  * [Verwenden `std::string` Literale](#link)
+  * [Der Datentyp `size_t`](#link)
+  * [Virtuelle Methoden sollten genau eines der drei Schlüsselwörter `virtual`, `override` oder `final` verwenden.](#link)
+  * [Setze standardmäßig Methoden auf `const`, soweit möglich](#link)
+  * [Setze standardmäßig Memberfunktionen auf `const`, soweit möglich](#link)
+  * [Verwende das Attribut `[[nodiscard]]`](#link)
 
 ---
 
@@ -38,6 +35,10 @@
 ---
 
 ## Don't use C &ndash; use C++
+
+*Beschreibung*:
+
+[CPL.1: Prefer C++ to C](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#cpl1-prefer-c-to-c)
 
 Sollten Sie die Wahl haben: Verwenden Sie C++ und nicht C.
 
@@ -50,7 +51,6 @@ wieder: *Prefer C++ to C* (*CPL.1*).
 
 Zur Illustration vergleiche man das Konkatenieren zweier Zeichenketten:
 Einmal in C++ geschrieben und ein zweites Mal in C:
-
 
 *Beispiel*: C++
 
@@ -121,6 +121,39 @@ Je höher Sie den *Warning Level* einstellen, desto mehr Warnungen werden angezei
 Sicherlich machen Sie die Beobachtung, dass bei vergleichsweise großem Warning Level sehr viele bisweilen pedantische Warnungen erzeugt werden.
 Hier muss man sich für eine Gratwanderung entscheiden: Ein zu kleiner Warning Level ist schlecht für die Qualität des Programms,
 ein zu großer Warning Level kann zu viele Warnungen erzeugen, die nicht unbedingt hilfreich sind.
+
+---
+
+## Ein Tipp für Überlauf: `std::midpoint`
+
+Die Funktion `std::midpoint()` berechnet den Mittelpunkt von zwei ganzen Zahlen
+oder zwei Gleitkommazahlen:
+
+*Beispiel*:
+
+```cpp
+01: void test() {
+02: 
+03:     std::uint32_t a = std::numeric_limits<std::uint32_t>::max();
+04:     std::uint32_t b = std::numeric_limits<std::uint32_t>::max() - 2;
+05: 
+06:     std::println("a:                                 {}", a);
+07:     std::println("b:                                 {}", b);
+08:     std::println("Incorrect (overflow and wrapping): {}", (a + b) / 2);
+09:     std::println("Correct:                           {}", std::midpoint(a, b));
+10: }
+```
+
+
+*Ausgabe*:
+
+```
+a:                                 4294967295
+b:                                 4294967293
+Incorrect (overflow and wrapping): 2147483646
+Correct:                           4294967294
+```
+
 
 ---
 
@@ -233,7 +266,7 @@ Wer hat wann und wo `delete` aufgerufen?
 
 ---
 
-## Deklariere Konstruktoren mit einem einzigen Argument `explicit`
+## Deklariere Konstruktoren mit einem einzigen Argument mit `explicit`
 
 Standardmäßig sollten Konstruktoren mit einem Argument als  `explicit` deklariert werden.
 Damit kann man unbeabsichtige Konvertierungen &ndash; und damit Überraschungen &ndash; vermeiden:
@@ -358,8 +391,7 @@ Man muss in diesem Fall die *Literal*-Operatoren nur anders definieren:
 
 ---
 
-## Datentyp `size_t`
-
+## Der Datentyp `size_t`
 
 Der Name `size_t` bedeutet im Wesentlichen &bdquo;*size type*&rdquo;,
 und man verwendet diesen Datentyp normalerweise dann,
@@ -379,186 +411,141 @@ Man sollte `size_t` einsetzen
 
 ---
 
+## Virtuelle Methoden sollten genau eines der drei Schlüsselwörter `virtual`, `override` oder `final` verwenden.
 
-## Tool *Cppcheck*
+*Beschreibung*:
 
-*Cppcheck* ist ein statisches Analysetool für C/C++-Quellcode.
-Es bietet eine einzigartige Codeanalyse zum Erkennen von Fehlern und konzentriert sich auf das Erkennen undefinierten Verhaltens
-und gefährlicher Codekonstrukte.
+[C.128: Virtual functions should specify exactly one of `virtual`, `override`, or `final`](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#c128-virtual-functions-should-specify-exactly-one-of-virtual-override-or-final)
 
-Das Ziel besteht darin, möglichst wenige Fehlalarme zu haben.
-Cppcheck ist so konzipiert, dass es C/C++-Code analysieren kann,
-auch wenn er eine nicht standardmäßige Syntax aufweist (was häufig bei Embedded C++ Projekten der Fall ist).
+*Beispiel*:
 
-Mehrere Möglichkeiten zum Download finden sich [hier](https://cppcheck.sourceforge.io).
-
-<img src="CppCheck_01.png" width="600">
-
-*Abbildung* 4: [https://cppcheck.sourceforge.io](https://cppcheck.sourceforge.io) Website.
-
-*Cppcheck* ist sowohl als Open Source ([hier](https://cppcheck.sourceforge.io)) als auch als *Cppcheck Premium Paket*
-mit erweiterter Funktionalität verfügbar.
-
-Weitere Informationen und Kaufoptionen für die kommerzielle Version finden Sie unter [www.cppcheck.com](www.cppcheck.com).
+```c
+01: struct Button {
+02:     // ...
+03:     virtual void onClick() { 
+04:         std::println("Button!");
+05:     }
+06: };
+07: 
+08: struct SuperButton : public Button {
+09:     // ...
+10:     void onClick() override {
+11:         std::println("Super Button!");
+12:     }
+13: };
+14: 
+15: static void test_use_override() {
+16:     Button button;
+17:     button.onClick();
+18: 
+19:     SuperButton superButton;
+20:     superButton.onClick();
+21: }
+```
 
 ---
 
-## Visual Studio Integration Add-In für Cppcheck
+## Setze standardmäßig Methoden auf `const`, soweit möglich
 
-Um *Cppcheck* mit Visual Studio zusammen betreiben zu können,
-greift man am besten auf
-das [Visual Studio Integration Add-In](https://github.com/VioletGiraffe/cppcheck-vs-addin) für Cppcheck zurück.
+*Beschreibung*:
 
-<img src="CppCheck_Extension_01.png" width="700">
+[Con.2: By default, make member functions `const`](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#con2-by-default-make-member-functions-const)
 
-*Abbildung* 5: [https://github.com/VioletGiraffe/cppcheck-vs-addin](https://github.com/VioletGiraffe/cppcheck-vs-addin) Website.
+*Beispiel*:
 
-*Hinweis*:
-
-Das Add-In stellt keine Installation des *Cppcheck*-Tools -bereit.
-Bevor man dieses Add-In installiert, muss eine *Cppcheck*-Installation erfolgt sein.
-
-Das Add-In fügt an diversen Stellen im Visual Studio neue Menüeinträge hinzu,
-um das aktuelle Projekt überprüfen zu können:
-
-<img src="CppCheck_Extension_03.png" width="300">
-
-*Abbildung* 6: Erweiterungen im Menü &bdquo;*Tools*&rdquo;
-
-Zum Abschluss finden Sie in *Abbildung* 7 das *Settings*-Dialogfenster vor:
-
-<img src="CppCheck_Extension_04.png" width="700">
-
-*Abbildung* 7: Spezifische Parametrierung des *Cppcheck*-Tools.
-
-In diesem Fenster kann man spezfische Einstellungen vornehmen,
-welche Meldungen man haben möchte &ndash; und welche vielleicht auch nicht.
+```c
+01: class Point {
+02: private:
+03:     int m_x = 0;
+04:     int m_y = 0;
+05: 
+06: public:
+07:     Point() : Point{ 0, 0 } {};
+08:     Point(int x, int y) : m_x{ x }, m_y{ y } {}
+09: 
+10:     int x() const { return m_x; }
+11:     int y() const { return m_y; }
+12: 
+13:     bool is_valid() const {
+14:         return m_x >= 0 && m_y >= 0;
+15:     }
+16: };
+17: 
+18: void test() {
+19:     Point point;
+20:     point.is_valid();
+21: }
+```
 
 ---
 
-## Visual Studio Address Sanitizer
+## Setze standardmäßig Memberfunktionen auf `const`, soweit möglich
 
-So genannte *Address Sanitizer* sind eine Compiler- und Laufzeittechnologie,
-die schwer zu findende Fehler aufdecken.
+*Beschreibung*:
 
-Address Sanitizer wurde ursprünglich von Google eingeführt
-und bieten Technologien zur Laufzeitfehlersuche,
-die das vorhandene Build-System und die vorhandenen Testressourcen direkt nutzen.
+[Con.2: By default, make member functions `const`](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#con2-by-default-make-member-functions-const)
 
-Der Visual C++ Sanitizer kann folgende Fehlerursachen aufspüren:
+*Beispiel*:
 
- * Alloc/dealloc mismatches and new/delete type mismatches
- * Allocations too large for the heap
- * calloc overflow and alloca overflow
- * Double free and use after free
- * Global variable overflow
- * Heap buffer overflow
- * Invalid alignment of aligned values
- * memcpy and strncat parameter overlap
- * Stack buffer overflow and underflow
- * Stack use after return and use after scope
- * Memory use after it's poisoned
-
-#### Installation des Address Sanitizers
-
-Zur Installation des Address Sanitizers finden sich [hier](https://learn.microsoft.com/en-us/cpp/sanitizers/asan?view=msvc-170) Hinweise.
-
-Grundlegende Vorraussetzung ist natürlich, dass der Sanitizer bei der Visual Studio Installation mit berücksichtigt wurde:
-
-<img src="VisualStudio_AddressSanitizer_02.png" width="300">
-
-*Abbildung* 8: Installation des Address Sanitizers in den Einstellungen des *Visual Studio Installers*.
-
-Dann muss man den Sanitizer pro Projekt in den *Projekt Eigenschaften* aktivieren:
-
-<img src="VisualStudio_AddressSanitizer_01.png" width="700">
-
-*Abbildung* 9: *Enable Address Sanitizer*-Einstellung in den Einstellungen des Projekts.
-
-
-*Hinweis*:<br />
-Bei Ausführung des Sanitizers auf meinem Rechner kommt es bei
-den Ausgaben des Sanitizers zu einer Fehlermeldung:
-
-*Visual Studio 22 - Asan - Failed to use and restart external symbolizer*
-
-In *Stackoverflow* kann man
-[hier](https://stackoverflow.com/questions/76781556/visual-studio-22-asan-failed-to-use-and-restart-external-symbolizer) nachlesen,
-wie man den Fehler behebt.
-
-Es muss &ndash; und das ist etwas schlecht in *SO* beschrieben &ndash;,
-der zweite Pfad entfernt werden:
-
-```
-PATH=$(VC_ExecutablePath_x64);%PATH%
-ASAN_SYMBOLIZER_PATH=$(VC_ExecutablePath_x64)
-```
-   
-Es folgt ein Beispiel, um den Address Sanitizer zu testen:
-
-```cpp
-01: static int x[100];
-02: 
-03: void test() {
-04:     
-05:     std::println("Hello!");
-06:     x[100] = 5; // Boom!
-07:     std::println("Boom!");
-08: }
+```c
+01: class Point {
+02: private:
+03:     int m_x = 0;
+04:     int m_y = 0;
+05: 
+06: public:
+07:     Point() : Point{ 0, 0 } {};
+08:     Point(int x, int y) : m_x{ x }, m_y{ y } {}
+09: 
+10:     int x() const { return m_x; }
+11:     int y() const { return m_y; }
+12: 
+13:     bool is_valid() const {
+14:         return m_x >= 0 && m_y >= 0;
+15:     }
+16: };
+17: 
+18: void test() {
+19:     Point point;
+20:     point.is_valid();
+21: }
 ```
 
-Die Ausgaben in der Konsole sehen nun so aus:
+---
 
+## Verwende das Attribut `[[nodiscard]]`
 
-```
-Hello!
-=================================================================
-==16452==ERROR: AddressSanitizer: global-buffer-overflow on address 0x7ff604745af0 at pc 0x7ff60472111d bp 0x00576738fa10 sp 0x00576738fa18
-WRITE of size 4 at 0x7ff604745af0 thread T0
-    #0 0x7ff60472111c in SecureProgrammingPractices::UsingAddressSanitizer::test_address_sanitizer C:\Development\GitRepositoryCPlusPlus\Cpp_Clean_Performant_Code\Clean_Performant_Code\Secure_Programming\SecureProgramming.cpp:90
-    #1 0x7ff604721184 in secure_programming_practices(void) C:\Development\GitRepositoryCPlusPlus\Cpp_Clean_Performant_Code\Clean_Performant_Code\Secure_Programming\SecureProgramming.cpp:107
-    #2 0x7ff604721054 in main C:\Development\GitRepositoryCPlusPlus\Cpp_Clean_Performant_Code\Clean_Performant_Code\Secure_Programming\Program.cpp:9
-    #3 0x7ff60472dcc8 in invoke_main D:\a\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:78
-    #4 0x7ff60472dc11 in __scrt_common_main_seh D:\a\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:288
-    #5 0x7ff60472dacd in __scrt_common_main D:\a\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:330
-    #6 0x7ff60472dd3d in mainCRTStartup D:\a\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_main.cpp:16
-    #7 0x7ffce42d7373  (C:\WINDOWS\System32\KERNEL32.DLL+0x180017373)
-    #8 0x7ffce521cc90  (C:\WINDOWS\SYSTEM32\ntdll.dll+0x18004cc90)
+*Beschreibung*:
 
-0x7ff604745af0 is located 0 bytes after global variable 'SecureProgrammingPractices::x' defined in 'SecureProgramming.cpp:83:15' (0x7ff604745960) of size 400
-SUMMARY: AddressSanitizer: global-buffer-overflow C:\Development\GitRepositoryCPlusPlus\Cpp_Clean_Performant_Code\Clean_Performant_Code\Secure_Programming\SecureProgramming.cpp:90 in SecureProgrammingPractices::UsingAddressSanitizer::test_address_sanitizer
-Shadow bytes around the buggy address:
-  0x7ff604745800: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7ff604745880: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7ff604745900: 00 00 00 00 00 00 00 00 04 f9 f9 f9 00 00 00 00
-  0x7ff604745980: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7ff604745a00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7ff604745a80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00[f9]f9
-  0x7ff604745b00: f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 f9 00 00 00 00
-  0x7ff604745b80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7ff604745c00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7ff604745c80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7ff604745d00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-Shadow byte legend (one shadow byte represents 8 application bytes):
-  Addressable:           00
-  Partially addressable: 01 02 03 04 05 06 07
-  Heap left redzone:       fa
-  Freed heap region:       fd
-  Stack left redzone:      f1
-  Stack mid redzone:       f2
-  Stack right redzone:     f3
-  Stack after return:      f5
-  Stack use after scope:   f8
-  Global redzone:          f9
-  Global init order:       f6
-  Poisoned by user:        f7
-  Container overflow:      fc
-  Array cookie:            ac
-  Intra object redzone:    bb
-  ASan internal:           fe
-  Left alloca redzone:     ca
-  Right alloca redzone:    cb
-==16452==ABORTING
+Die Idee von `[[nodiscard]]` ist, dass, wenn es nur dann sinnvoll ist, eine Funktion/Methode aufzurufen *und*
+ihren Rückgabewert zu übernehmen, für Aufrufe dieser Funktion ohne Zuweisung des Rückgabewerts ein Programmierfehler gemeldet wird.
+
+Die Annotation `[[nodiscard]]` hilft Programmierern, die mit Ihrem Code interagieren, diesen Fehler zu vermeiden.
+
+*Beispiel*:
+
+```c
+01: class Point {
+02: private:
+03:     int m_x = 0;
+04:     int m_y = 0;
+05: 
+06: public:
+07:     Point() : Point{ 0, 0 } {};
+08:     Point(int x, int y) : m_x{ x }, m_y{ y } {}
+09: 
+10:     int x() const { return m_x; }
+11:     int y() const { return m_y; }
+12: 
+13:     [[nodiscard]] bool is_valid() const {
+14:         return m_x >= 0 && m_y >= 0;
+15:     }
+16: };
+17: 
+18: static void test_use_const() {
+19:     Point point;
+20:     point.is_valid();     // warning: ignoring return value
+21: }
 ```
 
 ---

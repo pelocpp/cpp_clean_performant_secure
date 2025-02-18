@@ -1,6 +1,6 @@
 # Literatur
 
-[Zurück](../Readme.md)
+[Zurück](./Readme_Secure_Programming.md)
 
 ---
 
@@ -33,7 +33,6 @@
 
 [*SEI CERT C++ Coding Standard*](https://wiki.sei.cmu.edu/confluence/pages/viewpage.action?pageId=88046682)
 
-
   * Die C++ Core Guidelines sind ein portabler Satz von Richtlinien, Regeln und
     Best Practices zum Programmieren in C++, der von C++&ndash;Experten und &ndash;Designern erstellt wurde.
 
@@ -42,32 +41,26 @@
     in der C++&ndash;Programmierung ist Vorraussetzung.
 
 
-
 ### *MISRA*
 
-
-*MISRA C:2023 Third Edition, Second Revision*
-
-<img src="Misra_C.png" width="150">
+#### *MISRA C:2023 Third Edition, Second Revision*
 
   * MISRA C:2023 Richtlinien für die Verwendung der Sprache C in kritischen Systemen.
   Aktualisiert im April 2023, ist diese dritte Ausgabe, zweite Revision die aktuelle Version von MISRA C.
 
+    <img src="Misra_C.png" width="150">
 
-*MISRA C++:2023*
-
-<img src="Misra_Cpp.png" width="150">
+#### *MISRA C++:2023*
 
   * MISRA C++:2023 Richtlinien für die Verwendung von C++:17 in kritischen Systemen.<br />
-  Dies ist die neueste und aktuelle Ausgabe von MISRA C++, die im Oktober 2023 veröffentlicht wurde.
-  Sie zielt speziell auf die Sprachversion 2017 (C++:17) gemäß ISO/IEC 14882:2017 ab.
+    Dies ist die neueste und aktuelle Ausgabe von MISRA C++, die im Oktober 2023 veröffentlicht wurde.
+    Sie zielt speziell auf die Sprachversion 2017 (C++:17) gemäß ISO/IEC 14882:2017 ab.
+
+    <img src="Misra_Cpp.png" width="150">
 
 ---
-
 
 ## Bücher
-
----
 
   * SEI, Carnegie Mellon University &bdquo;*SEI CERT C Coding Standard*&rdquo;.</br>
     2016 Edition, 528 Seiten. Sprache: Englisch.
@@ -88,7 +81,6 @@
 
     <img src="Buch_Barr_Embedded_C_Coding_Standard.png" width="150">
 
-
 ---
 
   * LeBlanc, David und Howard, Michael, &bdquo;*Writing Secure Code*&rdquo;.</br> 
@@ -96,9 +88,7 @@
 
     <img src="Buch_LeBlanc_Writing_Secure_Code.png" width="150">
 
- 
 ---
-
 
 ## *Youtube*
 
@@ -121,6 +111,6 @@ Begleitmaterial:
 
 ---
 
-[Zurück](../Readme.md)
+[Zurück](./Readme_Secure_Programming.md)
 
 ---

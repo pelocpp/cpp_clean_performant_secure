@@ -5,6 +5,7 @@
 
 #include <complex>
 #include <cstdint>
+#include <format>
 #include <iostream>
 #include <limits>
 #include <numeric>
@@ -14,6 +15,10 @@
 namespace SecureProgrammingAdvices {
 
     namespace PreferCppToC {
+
+        // https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#cpl1-prefer-c-to-c
+
+        // CPL.1: Prefer C++ to C
 
         static void test_prefer_cpp_to_c_01() {
 
@@ -65,7 +70,7 @@ namespace SecureProgrammingAdvices {
             std::string str{ "Hello World" }; // use also "Hello:World"
             std::println("{}", str);
 
-            auto isColon = [] (int ch) { return ch == ':'; };
+            auto isColon = [](int ch) { return ch == ':'; };
 
             auto pos = std::find_if(str.begin(), str.end(), isColon);
 
@@ -126,8 +131,8 @@ namespace SecureProgrammingAdvices {
             Spiderman* ptr = new Spiderman;
 
             Ironman* ptr2 = NULL;
-            
-            ptr = (Spiderman*) ptr;
+
+            ptr = (Spiderman*)ptr;
         }
 
         static void test_safe_downcasting_02() {
@@ -158,7 +163,29 @@ namespace SecureProgrammingAdvices {
         }
     }
 
+    namespace DeclareSingleArgumentConstructorsExplicit {
+
+        class String {
+        public:
+            /*explicit*/ String(size_t length) : m_length{ length } {};   // Bad
+            // ...
+
+        private:
+            size_t m_length;
+            // ...
+        };
+
+        static void test_declare_single_argument_constructors_explicit() {
+
+            String s = '!';  // Uhhh: String of length 33
+        }
+    }
+
     namespace GivePrimitiveDatatypesSemantics {
+
+        // https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Renum-class
+
+        // Enum.3: Prefer class enums over "plain" enums
 
         enum class Direction : char {
             NORTH = 'N',
@@ -167,10 +194,34 @@ namespace SecureProgrammingAdvices {
             SOUTH = 'S'
         };
 
-        static std::ostream& operator<<(std::ostream& os, const Direction& obj) {
+        static std::ostream& operator<<(std::ostream& os, Direction obj) {
             os << static_cast<std::underlying_type<Direction>::type>(obj);
             return os;
         }
+    }
+}
+
+namespace std
+{
+    using namespace SecureProgrammingAdvices::GivePrimitiveDatatypesSemantics;
+
+    // formatter for user defined enum type 'class Direction'
+    template<>
+    struct std::formatter<Direction> : public std::formatter<char>
+    {
+        auto format(Direction obj, format_context& ctx) const {
+
+            auto ch = static_cast<std::underlying_type<Direction>::type>(obj);
+
+            // delegate the rest of formatting to the character formatter
+            return std::formatter<char>::format(ch, ctx);
+        }
+    };
+}
+
+namespace SecureProgrammingAdvices {
+
+    namespace GivePrimitiveDatatypesSemantics {
 
         static void test_give_primitive_datatypes_semantics() {
 
@@ -179,12 +230,11 @@ namespace SecureProgrammingAdvices {
                 << "\t" << Direction::WEST << "\n"
                 << "\t" << Direction::SOUTH << "\n";
         
-            // NACHZIEHEN !!!
-            //std::println("{}", Direction::NORTH);
-            //std::println("{}", Direction::EAST);
-            //std::println("{}", Direction::WEST);
-            //std::println("{}", Direction::SOUTH);
-        
+            // oder "modern"
+            std::println("{:>4}", Direction::NORTH);
+            std::println("{:>4}", Direction::EAST);
+            std::println("{:>4}", Direction::WEST);
+            std::println("{:>4}", Direction::SOUTH);
         }
     }
 
@@ -281,57 +331,92 @@ namespace SecureProgrammingAdvices {
         }
     }
 
-    namespace DeclareSingleArgumentConstructorsExplicit {
-    
-        class String {
-        public:
-            /*explicit*/ String(size_t length) : m_length{ length } {};   // Bad
-            // ...
 
-        private:
-            size_t m_length;
+    namespace UseOverride {
+
+        // https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#c128-virtual-functions-should-specify-exactly-one-of-virtual-override-or-final
+
+        // C.128: Virtual functions should specify exactly one of virtual, override, or final
+
+        struct Button {
             // ...
+            virtual void onClick() {
+                std::println("Button!");
+            }
         };
-    
-        static void test_declare_single_argument_constructors_explicit() {
 
-            String s = '!';  // Uhhh: String of length 33
+        struct SuperButton : public Button {
+            // ...
+            void onClick() override {
+                std::println("Super Button!");
+            }
+        };
+
+        static void test_use_override() {
+            Button button;
+            button.onClick();
+
+            SuperButton superButton;
+            superButton.onClick();
         }
     }
 
-    static int x[100];
+    namespace UseConst {
 
-    namespace UsingAddressSanitizer {
+        // https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#con2-by-default-make-member-functions-const
 
-        static void test_valid_address_with_sanitizer() {
+        // Con.2:By default, make member functions `const`
 
-            std::println("Hello!");
-            x[100] = 5; // Boom!
-            std::println("Boom!");
-        }
-
-        // ---------------------
-
-        std::complex<float> delta;
-        std::complex<float> mc[4];
-
-        static void test_infinite_loop_with_sanitizer() {
-
-            for (int di = 0; di < 4; di++, delta = mc[di]) {
-
-                std::println("{}", di);
-            }
-        }
-
-        static void test_sanitizer()
+        class Point
         {
-            test_valid_address_with_sanitizer();
-            test_infinite_loop_with_sanitizer();
+        private:
+            int m_x = 0;
+            int m_y = 0;
+
+        public:
+            Point() : Point{ 0, 0 } {};
+            Point(int x, int y) : m_x{ x }, m_y{ y } {}
+
+            int x() const { return m_x; }
+            int y() const { return m_y; }
+
+            bool is_valid() const {
+                return m_x >= 0 && m_y >= 0;
+            }
+        };
+
+        static void test_use_const() {
+            Point point;
+            bool valid = point.is_valid();
+        }
+    }
+
+    namespace UseNodiscardAttribute {
+
+        class Point
+        {
+        private:
+            int m_x = 0;
+            int m_y = 0;
+
+        public:
+            Point() : Point{ 0, 0 } {};
+            Point(int x, int y) : m_x{ x }, m_y{ y } {}
+
+            int x() const { return m_x; }
+            int y() const { return m_y; }
+
+            [[nodiscard]] bool is_valid() const {
+                return m_x >= 0 && m_y >= 0;
+            }
+        };
+
+        static void test_use_nodiscard() {
+            Point point;
+            // point.is_valid();   // REMOVE COMMENT  // warning: ignoring return value
         }
     }
 }
-
-// ===========================================================================
 
 void secure_programming_advices()
 {
@@ -345,7 +430,9 @@ void secure_programming_advices()
     GivePrimitiveDatatypesSemantics::test_give_primitive_datatypes_semantics();
     UseStringLiterals::test_use_string_Literals();
     DeclareSingleArgumentConstructorsExplicit::test_declare_single_argument_constructors_explicit();
-    UsingAddressSanitizer::test_sanitizer();
+    UseOverride::test_use_override();
+    UseConst::test_use_const();
+    UseNodiscardAttribute::test_use_nodiscard();
 }
 
 // ===========================================================================

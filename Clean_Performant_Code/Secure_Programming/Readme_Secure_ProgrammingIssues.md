@@ -361,6 +361,10 @@ Man beachte den Gebrauch zweier systemnaher Funktionen:
 
 ### Verschwindendes `std::memset`
 
+*Beschreibung*:
+
+[CWE-14: Compiler Removal of Code to Clear Buffers](https://cwe.mitre.org/data/definitions/14.html)
+
 Worum geht es?
 
 

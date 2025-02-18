@@ -6,7 +6,7 @@
 
 ## [Klassische Probleme des *Secure Programming* in C/C++](../Secure_Programming/Readme_Secure_ProgrammingIssues.md)
 
-## [Schutzmaßnahme für *Secure Programming*](../Secure_Programming/Readme_Secure_ProgrammingAdvices.md)
+## [Schutzmaßnahmen für *Secure Programming*](../Secure_Programming/Readme_Secure_ProgrammingAdvices.md)
 
 ## [*SafeInt*: Eine Bibliothek zum Schutz vor Integer-Überläufen](../SafeInt/Readme_SafeInt.md)
 
