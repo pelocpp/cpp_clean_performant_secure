@@ -136,7 +136,7 @@
     <ClCompile Include="TestObjectPool.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BestPractices.md" />
+    <None Include="Readme_BestPractices.md" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ObjectPool.h" />

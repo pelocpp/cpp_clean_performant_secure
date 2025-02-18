@@ -132,7 +132,7 @@
     <ClCompile Include="Ranges.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Ranges.md" />
+    <None Include="Readme_Ranges.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

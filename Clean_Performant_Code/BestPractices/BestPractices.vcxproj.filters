@@ -29,7 +29,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="BestPractices.md">
+    <None Include="Readme_BestPractices.md">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

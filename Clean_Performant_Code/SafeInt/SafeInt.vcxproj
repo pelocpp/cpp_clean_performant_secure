@@ -133,7 +133,7 @@
     <ClCompile Include="SafeInt.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="SafeInt.md" />
+    <None Include="Readme_SafeInt.md" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SafeInt.hpp" />

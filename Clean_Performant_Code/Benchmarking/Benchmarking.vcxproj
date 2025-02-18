@@ -132,7 +132,7 @@
     <ClCompile Include="Program.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Benchmarking.md" />
+    <None Include="Readme_Benchmarking.md" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Quick_Cpp_Benchmark_StdVector.png" />

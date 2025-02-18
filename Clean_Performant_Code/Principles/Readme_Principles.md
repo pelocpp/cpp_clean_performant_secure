@@ -1,6 +1,6 @@
 # Klassische Prinzipien der Clean Code Programmierung
 
-[Zurück](../../Markdown/Readme_Clean_Performant_Code.md)
+[Zurück](../Clean_Code/Readme_Clean_Code.md)
 
 ---
 
@@ -209,6 +209,6 @@ wird in [Cohesion and Coupling: the difference](https://enterprisecraftsmanship.
 
 ---
 
-[Zurück](../../Markdown/Readme_Clean_Performant_Code.md)
+[Zurück](../Clean_Code/Readme_Clean_Code.md)
 
 ---

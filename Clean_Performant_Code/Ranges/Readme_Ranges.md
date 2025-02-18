@@ -1,6 +1,6 @@
 # Besserer Code mit der `std::ranges`-Bibliothek
 
-[Zurück](../../Markdown/Readme_Clean_Performant_Code.md)
+[Zurück](../Clean_Code/Readme_Clean_Code.md)
 
 ---
 
@@ -903,6 +903,6 @@ von *Semen Lebedev*.
 
 ---
 
-[Zurück](../../Markdown/Readme_Clean_Performant_Code.md)
+[Zurück](../Clean_Code/Readme_Clean_Code.md)
 
 ---

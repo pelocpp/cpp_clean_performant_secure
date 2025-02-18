@@ -4,6 +4,14 @@
 
 ---
 
+## [Grundlegende Richtlinien für C++ Clean Code](../../Clean_Performant_Code/Guidelines/Readme_Guidelines.md)
+
+## [Klassische Prinzipien der Clean Code Programmierung](../../Clean_Performant_Code/Principles/Readme_Principles.md)
+
+## [Besserer Code mit der `std::ranges`-Bibliothek](../../Clean_Performant_Code/Ranges/Readme_Ranges.md)
+
+---
+
 ## Was ist Clean Code?
 
 ```c
@@ -67,14 +75,6 @@ But only good programmer can write a code that human can understand.&rdquo;
   * Wenn Dein Code sauber ist, findest Du Fehler leicht.
   * Wenn Dein Code schmutzig ist, tummeln sich die Fehler überall!
 
-
----
-
-## [Grundlegende Richtlinien für C++ Clean Code](../../Clean_Performant_Code/Guidelines/Guidelines.md)
-
-## [Klassische Prinzipien der Clean Code Programmierung](../../Clean_Performant_Code/Principles/Principles.md)
-
-## [Besserer Code mit der `std::ranges`-Bibliothek](../../Clean_Performant_Code/Ranges/Ranges.md)
 
 ---
 

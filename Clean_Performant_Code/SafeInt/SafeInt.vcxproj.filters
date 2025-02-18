@@ -23,7 +23,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="SafeInt.md">
+    <None Include="Readme_SafeInt.md">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

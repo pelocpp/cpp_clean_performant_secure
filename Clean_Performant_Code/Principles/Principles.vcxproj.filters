@@ -23,7 +23,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Principles.md">
+    <None Include="Readme_Principles.md">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

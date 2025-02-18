@@ -32,7 +32,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Guidelines.md">
+    <None Include="Readme_Guidelines.md">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Guidelines_Generic_Programming.md">

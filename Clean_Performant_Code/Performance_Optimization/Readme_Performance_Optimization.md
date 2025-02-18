@@ -4,11 +4,11 @@
 
 ---
 
-## [Benchmarking](../Clean_Performant_Code/Benchmarking/Benchmarking.md)
+## [Benchmarking](../Benchmarking/Readme_Benchmarking.md)
 
-## [C++ Performance Optimierung: Best Practices](../Clean_Performant_Code/BestPractices/BestPractices.md)
+## [C++ Performance Optimierung: Best Practices](../BestPractices/Readme_BestPractices.md)
 
-## [Compile-Time Programming](../Clean_Performant_Code/CompileTimeProgramming/CompileTimeProgramming.md)
+## [Compile-Time Programming](../CompileTimeProgramming/Readme_CompileTimeProgramming.md)
 
 ---
 
@@ -19,4 +19,3 @@
 [Zurück](../../Readme.md)
 
 ---
-

@@ -137,7 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Cpp_Examine_Stack.svg" />
-    <None Include="MemoryManagement.md" />
+    <None Include="Readme_MemoryManagement.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,17 +1,16 @@
 # Probleme und Techniken des *Secure Programming* für C/C++ Entwickler
 
-[Zurück](../../Readme.md)
+[Zurück](./Readme_Secure_Programming.md) 
 
 ---
 
-## [Klassische Probleme des *Secure Programming* in C/C++](./Readme_SecureProgrammingIssues.md)
+## [Klassische Probleme des *Secure Programming* in C/C++](../Secure_Programming/Readme_Secure_ProgrammingIssues.md)
 
-## [Schutzmaßnahme für *Secure Programming*](./Readme_SecureProgrammingAdvices.md)
+## [Schutzmaßnahme für *Secure Programming*](../Secure_Programming/Readme_Secure_ProgrammingAdvices.md)
 
-## [*SafeInt*: Eine Bibliothek zum Schutz vor Integer-Überläufen](../../Clean_Performant_Code/SafeInt/SafeInt.md)
+## [*SafeInt*: Eine Bibliothek zum Schutz vor Integer-Überläufen](../SafeInt/Readme_SafeInt.md)
 
-## [*BigInt*: Eine Bibliothek für sehr große Zahlen](../../Clean_Performant_Code/BigInt/BigInt.md)
-
+## [*BigInt*: Eine Bibliothek für sehr große Zahlen](../BigInt/Readme_BigInt.md.md)
 
 ---
 
@@ -56,6 +55,6 @@ MISRA C++
 
 ---
 
-[Zurück](../../Readme.md)
+[Zurück](./Readme_Secure_Programming.md) 
 
 ---
