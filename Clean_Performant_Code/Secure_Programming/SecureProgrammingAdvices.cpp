@@ -33,6 +33,12 @@ namespace SecureProgrammingAdvices {
             strcat_s(result, 20, second);
             std::printf("%s\n", result);
         }
+
+        static void test_prefer_cpp_to_c() {
+
+            test_prefer_cpp_to_c_01();
+            test_prefer_cpp_to_c_02();
+        }
     }
 
     namespace TakeCareOfOverflow {
@@ -131,6 +137,11 @@ namespace SecureProgrammingAdvices {
 
             // compile error: 'static_cast': cannot convert from 'Spiderman *' to 'Ironman *'
             // ptr2 = static_cast<Ironman*>(ptr);
+        }
+
+        static void test_safe_downcasting() {
+            test_safe_downcasting_01();
+            test_safe_downcasting_02();
         }
     }
 
@@ -286,6 +297,18 @@ namespace SecureProgrammingAdvices {
             String s = '!';  // Uhhh: String of length 33
         }
     }
+
+    static int x[100];
+
+    namespace UsingAddressSanitizer {
+
+        static void test_address_sanitizer() {
+
+            std::println("Hello!");
+            x[100] = 5; // Boom!
+            std::println("Boom!");
+        }
+    }
 }
 
 // ===========================================================================
@@ -294,23 +317,15 @@ void secure_programming_advices()
 {
     using namespace SecureProgrammingAdvices;
 
-    //PreferCppToC::test_prefer_cpp_to_c_01();
-    //PreferCppToC::test_prefer_cpp_to_c_02();
-    //TakeCareOfOverflow::test_take_care_of_overflow();
-    //UseAlgorithms::test_use_algorithms_01();
-    //UseAlgorithms::test_use_algorithms_02();
-    // 
-    
+    PreferCppToC::test_prefer_cpp_to_c();
+    TakeCareOfOverflow::test_take_care_of_overflow();
     UseAlgorithms::test_use_algorithms();
-
-    // 
-    //SafeDowncasting::test_safe_downcasting_01();
-    //SafeDowncasting::test_safe_downcasting_02();
-    //DontUseNewExplicitely::test_dont_use_new_explicitely();
-    //GivePrimitiveDatatypesSemantics::test_give_primitive_datatypes_semantics();
-    //UseStringLiterals::test_use_string_Literals();
-
- //   DeclareSingleArgumentConstructorsExplicit::test_declare_single_argument_constructors_explicit();
+    SafeDowncasting::test_safe_downcasting();
+    DontUseNewExplicitely::test_dont_use_new_explicitely();
+    GivePrimitiveDatatypesSemantics::test_give_primitive_datatypes_semantics();
+    UseStringLiterals::test_use_string_Literals();
+    DeclareSingleArgumentConstructorsExplicit::test_declare_single_argument_constructors_explicit();
+    UsingAddressSanitizer::test_address_sanitizer();
 }
 
 // ===========================================================================

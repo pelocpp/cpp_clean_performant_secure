@@ -6,7 +6,7 @@
 
 ## Inhalt
 
-#### Allgemeines
+### Allgemeines
 
   * [Einige Eigenschaften der Programmiersprache C](#link)
   * [Einige Eigenschaften der Programmiersprache C++](#link)
@@ -14,7 +14,7 @@
   * [Sicherheitslücken versus *Undefined Behaviour* (*UB*)](#link)
 
   
-#### Exploitability und Vulnerability
+### Die häufigsten *Exploits* und *Vulnerabilities*
 
   * [Unsigned Integer Wraparound](#link)
   * [Signed Integer Overflow](#link)
@@ -28,7 +28,7 @@
   * [Uncontrolled Format String](#link)
 
 
-#### Weitere Probleme des *Secure Programming* in C/C++
+### Weitere Probleme des *Secure Programming* in C/C++
 
   * [Speicherlecks (*Memory Leaks*)](#link)
   * [Race Conditions](#link)
@@ -40,10 +40,6 @@
   * [Error handling and logging](#link)
   * [Nutzung sicherer Bibliotheken und Funktionen](#link)
 
-
------------------------------------------------------------------------
------------------------------------------------------------------------
-
 ---
 
 #### Quellcode
@@ -53,8 +49,7 @@
 
 ---
 
-
-## Einige Eigenschaften der Programmiersprache C
+### Einige Eigenschaften der Programmiersprache C
 
   * Passen C und &bdquo;Secure Programming&rdquo; zusammen? Nein!
 
@@ -66,14 +61,13 @@
 
   * Warum ist C so unglaublich erfolgreich: Weil man nahezu jedes erdenkliche Programm in C schreiben kann.
 
-#### Zusammanfassung:
-
+##### Zusammenfassung:
 
   * How to Shoot Yourself In the Foot using C:<br />*You shoot yourself in the foot*.
 
 ---
 
-## Einige Eigenschaften der Programmiersprache C++
+### Einige Eigenschaften der Programmiersprache C++
 
   * Passen C++ und &bdquo;Secure Programming&rdquo; zusammen? Durchaus!
 
@@ -85,15 +79,15 @@
 
   * Warum ist C++ so unglaublich erfolgreich: Preformance.
 
-#### Zusammanfassung:
+##### Zusammenfassung:
 
   * How to Shoot Yourself In the Foot using C:<br />*You accidentally create a dozen instances of yourself and shoot them all in the foot. Providing emergency medical care is impossible since you can't tell which are bitwise copies and which are just pointing at others and saying &bdquo;that's me, over there.&rdquo;*.
 
 ---
 
-#### Exploitability und Vulnerability
+### Exploitability und Vulnerability
 
-##### Was ist ein *Exploit*?
+##### Was versteht man unter einem *Exploit*?
 
 Ein Exploit zeigt Sicherheitslücken von Software auf und ermöglicht deren Ausnutzung.
 Exploits stellen ein Werkzeug für Hacker dar, um in Computersysteme einzudringen und sie zu manipulieren.
@@ -117,7 +111,7 @@ Oft genannte Exploit-Arten sind beispielsweise:
   * Command-Execution-Exploits
   * Zero-Day-Exploits
 
-##### Was ist ein *Vulnerability*?
+##### Was versteht man unter *Vulnerability*?
 
 Unter dem Begriff *Vulnerability* versteht man Schwachstellen,
 möglicherweise etwas drastischer übersetzt *Hochrisiko-Schwachstellen*.
@@ -137,14 +131,13 @@ Performance und Implementierung lassen sich so zwar äußerst feinstufig optimiere
 
 ---
 
-
-## Sicherheitslücken versus *Undefined Behaviour* (*UB*)
+### Sicherheitslücken versus *Undefined Behaviour* (*UB*)
 
 In C/C++ gibt es sowohl Sicherheitslücken als auch das sogenannte *Undefined Behaviour* (kurz: *UB*).
 
 Beide Begriffe liegen eng beieinander.
 
-#### Beispiel für eine Sicherheitslücke: &bdquo;Use After Free&rdquo;
+##### Beispiel für eine Sicherheitslücke: &bdquo;Use After Free&rdquo;
 
 Es gibt den Datentyp Pointer in C/C++. Mit der Funktion `malloc` / dem Operator `new`
 kann man Speicher reservieren, um ihn anschließend verwenden zu können.
@@ -169,14 +162,9 @@ Häufig macht man die Beobachtung, dass *Undefined Behaviour* zu einem Absturz de
 
 ---
 
+## Die häufigsten *Exploits* und *Vulnerabilities*
 
------------------------------------------------------------------------
------------------------------------------------------------------------
-
-
-
-
-#### Unsigned Integer Wraparound
+### &bdquo;*Unsigned Integer Wraparound*&rdquo;
 
 *Beschreibung*:
 
@@ -191,15 +179,15 @@ In diesem Fall kann der Wert eine sehr kleine oder negative Zahl werden.
 
 
 
-#### Signed Integer Overflow
+### &bdquo;*Signed Integer Overflow*&rdquo;
 
 *Beschreibung*:
 
 [CWE-190: Integer Overflow or Wraparound](https://cwe.mitre.org/data/definitions/190.html)
 
-Siehe &bdquo;**Unsigned Integer Wraparound&rdquo;.
+Siehe &bdquo;*Unsigned Integer Wraparound*&rdquo;.
 
-#### Numeric Truncation
+### &bdquo;*Numeric Truncation*&rdquo;
 
 *Beschreibung*:
 
@@ -218,7 +206,7 @@ In jedem Fall ist der Wert nicht vertrauenswürdig und das System befindet sich i
 
 
 
-#### Stack Buffer Overflow
+### &bdquo;*Stack Buffer Overflow*&rdquo;
 
 *Beschreibung*:
 
@@ -248,7 +236,7 @@ Das Produkt schreibt Daten über das Ende oder vor den Anfang des vorgesehenen Pu
 
 
 
-#### Heap Buffer Overflow
+### &bdquo;*Heap Buffer Overflow*&rdquo;
 
 *Beschreibung*:
 
@@ -261,7 +249,7 @@ Dies bedeutet im Allgemeinen, dass der Puffer mithilfe einer Routine wie `malloc
 
 
 
-#### Buffer Underflow
+### &bdquo;*Buffer Underflow*&rdquo;
 
 *Beschreibung*:
 
@@ -271,7 +259,7 @@ Das Problem schreibt in einen Puffer mithilfe eines Index oder Zeigers,
 der auf einen Speicherort vor dem Anfang des Puffers verweist.
 
 
-#### Use after Free
+### &bdquo;*Use after Free*&rdquo;
 
 *Beschreibung*:
 
@@ -285,7 +273,7 @@ Alle Vorgänge, die den ursprünglichen Zeiger verwenden, sind nicht mehr gültig, 
 der mit dem neuen Zeiger arbeitet.
 
 
-#### Double Free
+### &bdquo;*Double Free*&rdquo;
 
 *Beschreibung*:
 
@@ -296,7 +284,7 @@ Das Problem ruft `free()` / `delete` zweimal für dieselbe Speicheradresse auf,
 was möglicherweise zur Änderung unerwarteter Speicherorte führt.
 
 
-#### Incorrect Type Conversion / Type Punning
+### &bdquo;*Incorrect Type Conversion*&rdquo; / &bdquo;*Type Punning*&rdquo;
 
 *Beschreibung*:
 
@@ -312,9 +300,7 @@ Der Compiler behandelt beide &bdquo;Punnings&rdquo; als nicht verwandte Zeiger.
 
 *Type Punnings* können Abhängigkeitsprobleme für alle Daten verursachen, auf die über beide Zeiger zugegriffen wird.&rdquo;
 
-
-
-#### Uncontrolled Format String
+### &bdquo;*Uncontrolled Format String*&rdquo;
 
 *Beschreibung*:
 
@@ -323,11 +309,7 @@ Der Compiler behandelt beide &bdquo;Punnings&rdquo; als nicht verwandte Zeiger.
 Das Problem verwendet eine Funktion,
 die eine Formatzeichenfolge als Argument akzeptiert, die Formatzeichenfolge stammt jedoch aus einer externen Quelle.
 
-
-
 --------------------
-
-
 
 
   Don't use pointers:

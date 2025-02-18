@@ -134,7 +134,7 @@
     <None Include="Readme_Performance_Optimization.md" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Buch_Andrist_Sehr_High Performance_Cpp.png" />
+    <Image Include="Buch_Andrist_Sehr_High_Performance_Cpp.png" />
     <Image Include="Buch_Nicolai_Josuttis_Cpp_Move_Semantics.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

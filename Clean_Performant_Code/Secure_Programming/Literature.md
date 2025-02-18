@@ -4,75 +4,120 @@
 
 ---
 
-## Performance and Optimization
+## *Websites* / *Coding Standards*
 
----
+[*Common Weakness Enumeration (CWE)*](https://cwe.mitre.org/index.html)
 
-  * Björn Andrist, Viktor Sehr &bdquo;*C++ High Performance (2. Auflage)*&rdquo;.</br>
-    Packt Publishing (21. Dezember 2020), 544 Seiten. Sprache: Englisch. ISBN-13: 978-1839216541, ISBN-10: 1839216549.
+  * Die *Common Weakness Enumeration* ist eine frei zugängliche Auflistung typischer Schwachstellen in Software und Hardware. Sie kategorisiert die Schwachstellen und dient als Basis und gemeinsame Sprache zur Identifizierung sicherheitsrelevanter Schwächen.
 
-    <img src="Buch_Andrist_Sehr_High Performance_Cpp.png" width="150">
+  * Wichtigstes Ziel der Common Weakness Enumeration ist es, durch Auflistung der Schwachstellen die typische Fehler und Schwächen in Hard- und Software zu vermeiden, noch bevor die betroffenen Produkte in Umlauf kommen. Sicherheitsanalysten, Programmierer oder Entwickler können sich der Liste bedienen und sie für ihre Arbeit verwenden.
 
----
 
-  * Josuttis, Nicolai M., &bdquo;*C++ Move Semantics &ndash; The Complete Guide*&rdquo;.</br> 
-    NicoJosuttis (30. August 2020), 262 Seiten. Sprache: Englisch. ISBN-10: 3967309002, ISBN-13: 978-3967309003.
+### *C++ Core Guidelines*
 
-    <img src="Buch_Nicolai_Josuttis_Cpp_Move_Semantics.png" width="150">
+[*C++ Core Guidelines Introduction*](https://isocpp.github.io/CppCoreGuidelines/)
 
----
+[*C++ Core Guidelines*](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
 
-  * [*Quick C++ Benchmark*](https://quick-bench.com/)<br/>
-    (abgerufen am 25.01.2025).
+<img src="cpp_core_guidelines.png" width="450">
 
-    Quick Bench ist ein Mikro-Benchmarking-Tool, mit dem die Leistung von zwei oder mehreren Code-Snippets schnell und einfach verglichen werden kann.
+  * Diese Website stellt eine Reihe von Kernrichtlinien für modernes C++ zusammen,
 
-   
-   
----
+  * Ziel ist es, C++-Programmierern zu helfen, einfacheren, effizienteren und wartungsfreundlicheren Code zu schreiben.
 
-## Clean Code
+### *Software Engineering Institute (SEI)*
 
----
+[*Software Engineering Institute (SEI) &ndash; External Wiki Home*](https://wiki.sei.cmu.edu/confluence/)
 
-  * Stephan Roth: &bdquo;Clean C++ 20&rdquo;.</br>
-    Apress (18. Juni 2021), 508 Seiten. Sprache: Englisch. ISBN-10: 1484259483, ISBN-13: 978-1484259481.
+[*SEI CERT C Coding Standard*](https://wiki.sei.cmu.edu/confluence/display/c/SEI+CERT+C+Coding+Standard)
 
-    Dieses Buch vermittelt weniger die Merkmale der Programmiersprache C++ (Lexikon, Syntax, ...),
-    sondern vielmehr allgemeingültige Prinzipien für eine moderne Softwareentwicklung mit C++.
+[*SEI CERT C++ Coding Standard*](https://wiki.sei.cmu.edu/confluence/pages/viewpage.action?pageId=88046682)
 
-    Die Beispiele sind vergleichsweise einfach gehalten, besitzen deshalb eine starke Prägnanz
-    und bringen das jeweilige zu veranschaulichende Konzept auf den Punkt. Ein absolut empfehlenswertes Buch!
 
-    <img src="Buch_Stephan_Roth_Clean_Cpp_20.png" width="150">
-
----
-
-  * [*Google C++ Style Guide*](https://google.github.io/styleguide/cppguide.html)<br/>
-    (abgerufen am 26.02.2022).
-
-    Ein aus meiner Sicht sehr interessantes und hilfreiches Dokument,
-    um die Sprachfeatures von C++ besser einordnen und verstehen zu können.
-
-    Es soll nicht verschwiegen werden,
-    dass das Dokument zum Zeitpunkt seiner Einführung auf seine Nützlichkeit hin überprüft wurde.
-    So gesehen sollte man das Dokument mit einer gewissen gesunden Skepsis lesen,
-    da manche Sprachkonstrukte von C++ heutzutage durchaus als veraltet bezeichnet werden können.
-    Also was &bdquo;damals&rdquo; als nützlich galt,
-    kann &bdquo;heute&rdquo; möglicherweise eine schlechte Idee sein, entweder weil es
-    bessere Alternativen gibt oder weil sich herausgestellt hat, dass das Feature Mängel hat.
-
----
-
-  * [*C++ Core Guidelines*](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)<br/>
-    (abgerufen am 26.02.2022).
-
-    Die C++ Core Guidelines sind ein portabler Satz von Richtlinien, Regeln und
+  * Die C++ Core Guidelines sind ein portabler Satz von Richtlinien, Regeln und
     Best Practices zum Programmieren in C++, der von C++&ndash;Experten und &ndash;Designern erstellt wurde.
 
-    Einziger Wermutstropfen dieser exzellenten Website:
+  * Einziger Wermutstropfen dieser exzellenten Website:
     Nicht alle Guidelines sind einfach zu Lesen, eine gewisse Erfahrung
     in der C++&ndash;Programmierung ist Vorraussetzung.
+
+
+
+### *MISRA*
+
+
+*MISRA C:2023 Third Edition, Second Revision*
+
+<img src="Misra_C.png" width="150">
+
+  * MISRA C:2023 Richtlinien für die Verwendung der Sprache C in kritischen Systemen.
+  Aktualisiert im April 2023, ist diese dritte Ausgabe, zweite Revision die aktuelle Version von MISRA C.
+
+
+*MISRA C++:2023*
+
+<img src="Misra_Cpp.png" width="150">
+
+  * MISRA C++:2023 Richtlinien für die Verwendung von C++:17 in kritischen Systemen.<br />
+  Dies ist die neueste und aktuelle Ausgabe von MISRA C++, die im Oktober 2023 veröffentlicht wurde.
+  Sie zielt speziell auf die Sprachversion 2017 (C++:17) gemäß ISO/IEC 14882:2017 ab.
+
+---
+
+
+## Bücher
+
+---
+
+  * SEI, Carnegie Mellon University &bdquo;*SEI CERT C Coding Standard*&rdquo;.</br>
+    2016 Edition, 528 Seiten. Sprache: Englisch.
+
+    <img src="SEI_CERT_C_Coding_Standard.png" width="150">
+
+---
+
+  * SEI, Carnegie Mellon University &bdquo;*SEI CERT C++ Coding Standard*&rdquo;.</br>
+    2016 Edition, 429 Seiten. Sprache: Englisch.
+
+    <img src="SEI_CERT_Cpp_Coding_Standard.png" width="150">
+
+---
+
+  * Barr, Michael, &bdquo;*Embedded C Coding Standard Taschenbuch*&rdquo;.</br> 
+    Barr Group (The Embedded System Experts) (12. Juni 2018), 84 Seiten. Sprache: Englisch. ISBN-10: 1721127984, ISBN-13: 978-1721127986.
+
+    <img src="Buch_Barr_Embedded_C_Coding_Standard.png" width="150">
+
+
+---
+
+  * LeBlanc, David und Howard, Michael, &bdquo;*Writing Secure Code*&rdquo;.</br> 
+    Microsoft Press (1. Dezember 2001), 477 Seiten. Sprache: Englisch. ISBN-10: 0735615888, ISBN-13: 978-0735615885.
+
+    <img src="Buch_LeBlanc_Writing_Secure_Code.png" width="150">
+
+ 
+---
+
+
+## *Youtube*
+
+[NDC Conferences / Oslo / Secure Programming Practices in C++ - Patricia Aas](https://www.youtube.com/watch?v=gHGMDFm2MVs)
+
+Begleitmaterial:
+
+[(In)Secure C++ &ndash; Secure Coding Practices in C++](https://github.com/patricia-gallardo/insecure-coding-examples)
+
+---
+
+## *Verschiedenes*
+
+[C++ Performance Optimization: Best Practices](https://hackernoon.com/c-performance-optimization-best-practices) von Ivan Chiklikchi.<br />
+(abgerufen am 17.2.2025)
+
+
+[Format String Exploitation-Tutorial](https://www.exploit-db.com/docs/english/28476-linux-format-string-exploitation.pdf) von Saif El-Sherei.<br />
+(abgerufen am 17.2.2025)
 
 ---
 

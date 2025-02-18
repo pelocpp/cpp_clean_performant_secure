@@ -11,7 +11,7 @@
   * Björn Andrist, Viktor Sehr &bdquo;*C++ High Performance (2. Auflage)*&rdquo;.</br>
     Packt Publishing (21. Dezember 2020), 544 Seiten. Sprache: Englisch. ISBN-13: 978-1839216541, ISBN-10: 1839216549.
 
-    <img src="Buch_Andrist_Sehr_High Performance_Cpp.png" width="150">
+    <img src="Buch_Andrist_Sehr_High_Performance_Cpp.png" width="150">
 
 ---
 

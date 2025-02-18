@@ -28,7 +28,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Buch_Andrist_Sehr_High Performance_Cpp.png">
+    <Image Include="Buch_Andrist_Sehr_High_Performance_Cpp.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Buch_Nicolai_Josuttis_Cpp_Move_Semantics.png">

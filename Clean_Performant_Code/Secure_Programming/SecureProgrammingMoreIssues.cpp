@@ -11,19 +11,7 @@
 #include <iostream>
 #include <print>
 
-namespace SecureProgrammingIssues {
-
-    static int x[100];
-
-    namespace UsingAddressSanitizer {
-
-        static void test_address_sanitizer() {
-
-            std::println("Hello!");
-            x[100] = 5; // Boom!
-            std::println("Boom!");
-        }
-    }
+namespace SecureProgrammingMoreIssues {
 
     namespace InfiniteLoop {
 
@@ -71,9 +59,8 @@ namespace SecureProgrammingIssues {
 
 void secure_programming_more_issues()
 {
-    using namespace SecureProgrammingIssues;
+    using namespace SecureProgrammingMoreIssues;
 
-    UsingAddressSanitizer::test_address_sanitizer();
     InfiniteLoop::test_infinite_loop();
     UsingPointers::test_using_pointers();
 }

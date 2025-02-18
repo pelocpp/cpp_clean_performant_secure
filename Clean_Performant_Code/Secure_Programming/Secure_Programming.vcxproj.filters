@@ -73,5 +73,26 @@
     <Image Include="WarningLevel.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="SEI_CERT_C_Coding_Standard.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="SEI_CERT_Cpp_Coding_Standard.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="cpp_core_guidelines.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Misra_C.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Misra_Cpp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buch_Barr_Embedded_C_Coding_Standard.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buch_LeBlanc_Writing_Secure_Code.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
