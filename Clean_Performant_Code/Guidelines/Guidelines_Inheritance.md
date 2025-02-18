@@ -1,6 +1,6 @@
 # Guidelines zur Vererbung
 
-[Zurück](Guidelines.md)
+[Zurück](Readme_Clean_Code.md)
 
 ---
 
@@ -527,6 +527,6 @@ https://stackoverflow.com/questions/274626/what-is-object-slicing
 
 ---
 
-[Zurück](Guidelines.md)
+[Zurück](Readme_Clean_Code.md)
 
 ---

@@ -1,6 +1,6 @@
 # Guidelines Generische Programmierung
 
-[Zurück](Guidelines.md)
+[Zurück](./Readme_Guidelines.md)
 
 ---
 
@@ -65,11 +65,6 @@ von *Semen Lebedev*.
 
 ---
 
-[Zurück](Guidelines.md)
+[Zurück](./Readme_Guidelines.md)
 
 ---
-
-*Beispiel*:
-
-```cpp
-```

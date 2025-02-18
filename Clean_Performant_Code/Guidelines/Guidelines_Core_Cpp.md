@@ -1,6 +1,6 @@
 ﻿# Guidelines Core C++
 
-[Zurück](Guidelines.md)
+[Zurück](./Readme_Guidelines.md)
 
 ---
 
@@ -595,6 +595,6 @@ Es gibt  hier nur eine Warnung:<br />
 
 ---
 
-[Zurück](Guidelines.md)
+[Zurück](./Readme_Guidelines.md)
 
 ---

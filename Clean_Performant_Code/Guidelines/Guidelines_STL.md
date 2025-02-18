@@ -1,6 +1,6 @@
 # Guidelines zur STL (Standard Template Library)
 
-[Zurück](Guidelines.md)
+[Zurück](./Readme_Guidelines.md)
 
 ---
 
@@ -232,6 +232,6 @@ von Arne Mertz gefunden.
 
 ---
 
-[Zurück](Guidelines.md)
+[Zurück](./Readme_Guidelines.md)
 
 ---
