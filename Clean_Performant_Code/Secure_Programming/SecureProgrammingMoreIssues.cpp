@@ -6,28 +6,12 @@
 // don't use the secure versions of the CRT library functions
 #define _CRT_SECURE_NO_WARNINGS 
 
-#include <complex>
 #include <cstring>
 #include <iostream>
 #include <print>
+#include <vector>
 
 namespace SecureProgrammingMoreIssues {
-
-    namespace InfiniteLoop {
-
-        std::complex<float> delta;
-        std::complex<float> mc[4];
-
-        // sanitizer beispiel !!!!!
-
-        static void test_infinite_loop() {
-
-            for (int di = 0; di < 4; di++, delta = mc[di]) {
-
-                std::println("{}", di);
-            }
-        }
-    }
 
     namespace UsingPointers {
 
@@ -39,7 +23,7 @@ namespace SecureProgrammingMoreIssues {
             // std::cout << std::size(ages) << '\n';
         }
 
-        static void test_using_pointers() {
+        static void test_using_pointers_demstrating_decay() {
 
             int ages[] = { 15, 30, 50 };
             // Number of elements = 3
@@ -52,6 +36,51 @@ namespace SecureProgrammingMoreIssues {
             std::println("Number of bytes used by this array: {}", sizeof(ages));
             decay(ages);
         }
+
+        static void test_using_pointers_std_size() {
+
+            std::vector<int> numbers{ 1, 2, 3 };
+            std::println("Number of std::vector elements:           {}", std::size(numbers));
+
+            numbers.push_back(4);
+            numbers.push_back(5);
+            numbers.push_back(6);
+
+            std::println("Number of std::vector elements:           {}", std::size(numbers));
+        }
+
+        static void test_using_pointers() {
+
+            test_using_pointers_demstrating_decay();
+            test_using_pointers_std_size();
+        }
+    }
+
+    namespace MemsetIssue {
+
+        static bool connectToServer(char* pwd) {
+            std::println("{}", pwd);
+            return true;
+        }
+
+        static bool getPasswordFromUser(char* pwd, size_t pwdSize) {
+            strncpy(pwd, "My super secret password", pwdSize);
+            std::println("{}", pwd);
+            return true;
+        }
+
+        static void test_disappearing_memset()
+        {
+            char pwd[64];
+
+            if (getPasswordFromUser(pwd, sizeof(pwd))) {
+                if (connectToServer(pwd)) {
+                    // interaction with server
+                }
+            }
+
+            std::memset(pwd, 0, sizeof(pwd)); // <- Removed by the optimizer !!!
+        }
     }
 }
 
@@ -61,8 +90,8 @@ void secure_programming_more_issues()
 {
     using namespace SecureProgrammingMoreIssues;
 
-    InfiniteLoop::test_infinite_loop();
-    UsingPointers::test_using_pointers();
+   // UsingPointers::test_using_pointers();
+    MemsetIssue::test_disappearing_memset();
 }
 
 // ===========================================================================

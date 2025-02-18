@@ -8,9 +8,9 @@ extern void secure_programming_advices();
 
 int main()
 {
-    secure_programming_issues();
+    //secure_programming_issues();
     secure_programming_more_issues();
-    secure_programming_advices();
+    //secure_programming_advices();
     
     return 0;
 }
