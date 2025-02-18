@@ -1,6 +1,6 @@
 # Probleme und Techniken des *Secure Programming* für C/C++ Entwickler
 
-[Zurück](./Readme_Secure_Programming.md) 
+[Zurück](../../Readme.md)
 
 ---
 
@@ -55,6 +55,6 @@ MISRA C++
 
 ---
 
-[Zurück](./Readme_Secure_Programming.md) 
+[Zurück](../../Readme.md)
 
 ---
