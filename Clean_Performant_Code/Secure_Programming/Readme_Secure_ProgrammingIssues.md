@@ -14,7 +14,6 @@
   * [Exploitability und Vulnerability](#link)
   * [Sicherheitslücken versus *Undefined Behaviour* (*UB*)](#link)
 
-  
 ### Die häufigsten *Exploits* und *Vulnerabilities*
 
   * [Unsigned Integer Wraparound](#link)
@@ -33,6 +32,7 @@
 
   * [Vorsicht in der Verwendung von Zeigern](#link)
   * [Verschwindendes `std::memset`](#link)
+  
   * [Speicherlecks (*Memory Leaks*)](#link)
   * [Race Conditions](#link)
   * [Injection attacks](#link)
@@ -124,6 +124,12 @@ Oft genannte Exploit-Arten sind beispielsweise:
   * SQL-Injection-Exploits
   * Command-Execution-Exploits
   * Zero-Day-Exploits
+
+
+Der berühmteste Exploit: *Off-by-one Exploit*
+
+Ein häufiger Programmierfehler beim Berechnen von Array-Grenzen.
+In Little-Endian-Architekturen kann dies zum Überschreiben des niederwertigsten Bytes führen.
 
 ##### Was versteht man unter *Vulnerability*?
 
@@ -247,7 +253,29 @@ Das Produkt ruft eine Funktion auf, deren sichere Funktion nie garantiert werden
 
 Das Produkt schreibt Daten über das Ende oder vor den Anfang des vorgesehenen Puffers hinaus.
 
+*Beispiel*:
 
+```cpp
+01: void test() {
+02: 
+03:     const int Size = 32;
+04:     char password[Size];
+05:     // gets(password); // <- Write outside  // Deprecated in C++ 11 // Removed in C++ 14
+06: }
+07: 
+08: void test() {
+09: 
+10:     const int Size = 32;
+11:     char password[Size];
+12:     std::println("Please enter Password: ");
+13:     fgets(password, Size, stdin);
+14: 
+15:     auto result = strncmp(password, "12345", 5);
+16:     if (result == 0) {
+17:         std::println("Login successful!");
+18:     }
+19: }
+```
 
 
 ### &bdquo;*Heap Buffer Overflow*&rdquo;
@@ -329,7 +357,7 @@ die eine Formatzeichenfolge als Argument akzeptiert, die Formatzeichenfolge stam
 
 ### Vorsicht in der Verwendung von Zeigern
 
-Ein Beispiel:
+*Beispiel*:
 
 
 ```cpp

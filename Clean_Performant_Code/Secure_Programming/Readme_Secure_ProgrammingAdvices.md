@@ -13,7 +13,8 @@
   * [*Warnings* und *Errors*](#link)
   * [Warning Level](#link)
   * [Typensicherheit: Datentypen sind unsere Freunde](#link)
-  * [Ein Tipp für Pufferüberlauf: Verwende ausschließlich &bdquo;*secure*&rdquo; Funktionen](#link)
+  * [Erster Tipp für Pufferüberlauf: Exaktes Arbeiten](#link)
+  * [Zweiter Tipp für Pufferüberlauf: Verwende ausschließlich &bdquo;*secure*&rdquo; Funktionen](#link)
   * [Ein Tipp für arithmetischen Überlauf: `std::midpoint`](#link)
   * [Verwende STL-Algorithmen](#link)
   * [Verwende STL-Container](#link)
@@ -143,7 +144,12 @@ Eine Stärke der beiden Programmiersprachen C/C++ ist, dass beide das Konzept von
 
 ---
 
-## Ein Tipp für Pufferüberlauf: Verwende ausschließlich &bdquo;*secure*&rdquo; Funktionen
+## Erster Tipp für Pufferüberlauf: Exaktes Arbeiten
+
+
+---
+
+## Zweiter Tipp für Pufferüberlauf: Verwende ausschließlich &bdquo;*secure*&rdquo; Funktionen
 
 *Beispiel*: `strncpy_s`
 

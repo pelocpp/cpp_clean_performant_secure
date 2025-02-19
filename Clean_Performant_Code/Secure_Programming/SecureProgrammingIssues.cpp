@@ -108,8 +108,22 @@ namespace SecureProgrammingExploitability {
 
         static void test_stack_based_buffer_overflow_01() {
 
-            //char buffer[10];
-            //gets(buffer); // <- Write outside  // Deprecated in C++ 11 // Removed in C++ 14
+            const int Size = 32;
+            char password[Size];
+            // gets(password); // <- Write outside  // Deprecated in C++ 11 // Removed in C++ 14
+        }
+
+        static void test_stack_based_buffer_overflow_02() {
+
+            const int Size = 32;
+            char password[Size];
+            std::println("Please enter Password: ");
+            fgets(password, Size, stdin);
+
+            auto result = strncmp(password, "12345", 5);
+            if (result == 0) {
+                std::println("Login successful!");
+            }
         }
 
         static void corrupt_stack(const char* input) {
@@ -119,7 +133,7 @@ namespace SecureProgrammingExploitability {
             std::println("{}", buffer);
         }
 
-        static void test_stack_based_buffer_overflow_02() {
+        static void test_stack_based_buffer_overflow_03() {
 
             corrupt_stack("This is way too long for this buffer");
         }
@@ -128,6 +142,7 @@ namespace SecureProgrammingExploitability {
 
             test_stack_based_buffer_overflow_01();
             test_stack_based_buffer_overflow_02();
+            test_stack_based_buffer_overflow_03();
         }
     }
 
@@ -273,22 +288,22 @@ namespace SecureProgrammingExploitability {
     }
 }
 
-// =================================================================
+// ===========================================================================
 
 void secure_programming_issues()
 {
     using namespace SecureProgrammingExploitability;
 
-    //UnsignedIntegerWraparound::test_unsigned_integer_wraparound();
-    //SignedIntegerOverflow::test_signed_integer_overflow();
-    //NumericTruncationError::test_numeric_Truncation_error();
-    //StackBasedBufferOverflow::test_stack_based_buffer_overflow();
+    UnsignedIntegerWraparound::test_unsigned_integer_wraparound();
+    SignedIntegerOverflow::test_signed_integer_overflow();
+    NumericTruncationError::test_numeric_Truncation_error();
+    StackBasedBufferOverflow::test_stack_based_buffer_overflow();
     HeapBasedBufferOverflow::test_heap_based_buffer_overflow();
-    //BufferUnderwriteUnderflow::test_buffer_underwrite_underflow();
-    //UseAfterFree::test_use_after_free();
-    //DoubleFree::test_double_free();
-    //IncorrectTypeConversion::test_incorrect_type_conversion();
-    //UseOfExternalFormatString::test_use_of_external_format_string();
+    BufferUnderwriteUnderflow::test_buffer_underwrite_underflow();
+    UseAfterFree::test_use_after_free();
+    DoubleFree::test_double_free();
+    IncorrectTypeConversion::test_incorrect_type_conversion();
+    UseOfExternalFormatString::test_use_of_external_format_string();
 }
 
 // ===========================================================================

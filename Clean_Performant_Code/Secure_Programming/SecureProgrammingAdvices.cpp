@@ -84,6 +84,12 @@ namespace SecureProgrammingAdvices {
 
             std::println("Buffer: >{}< // Bytes written: {}", buffer, bytesWritten);
         }
+
+        static void test_take_care_of_buffer_overflow() {
+
+            test_take_care_of_buffer_overflow_01();
+            test_take_care_of_buffer_overflow_02();
+        }
     }
 
     namespace TakeCareOfArithmeticOverflow {
@@ -487,22 +493,19 @@ void secure_programming_advices()
 {
     using namespace SecureProgrammingAdvices;
 
-    //PreferCppToC::test_prefer_cpp_to_c();
-
-    TakeCareOfBufferOverflow::test_take_care_of_buffer_overflow_01();
-    TakeCareOfBufferOverflow::test_take_care_of_buffer_overflow_02();
-
-    //TakeCareOfArithmeticOverflow::test_take_care_of_arithmetic_overflow();
-    //UseAlgorithms::test_use_algorithms();
-    //SafeDowncasting::test_safe_downcasting();
-    //DontUseNewExplicitely::test_dont_use_new_explicitely();
-    //GivePrimitiveDatatypesSemantics::test_use_string_literals();
-    //GivePrimitiveDatatypesSemantics::test_use_class_enums();
-    //GivePrimitiveDatatypesSemantics::test_give_primitive_datatypes_semantics();
-    //DeclareSingleArgumentConstructorsExplicit::test_declare_single_argument_constructors_explicit();
-    //UseOverride::test_use_override();
-    //UseConst::test_use_const();
-    //UseNodiscardAttribute::test_use_nodiscard();
+    PreferCppToC::test_prefer_cpp_to_c();
+    TakeCareOfBufferOverflow::test_take_care_of_buffer_overflow();
+    TakeCareOfArithmeticOverflow::test_take_care_of_arithmetic_overflow();
+    UseAlgorithms::test_use_algorithms();
+    SafeDowncasting::test_safe_downcasting();
+    DontUseNewExplicitely::test_dont_use_new_explicitely();
+    GivePrimitiveDatatypesSemantics::test_use_string_literals();
+    GivePrimitiveDatatypesSemantics::test_use_class_enums();
+    GivePrimitiveDatatypesSemantics::test_give_primitive_datatypes_semantics();
+    DeclareSingleArgumentConstructorsExplicit::test_declare_single_argument_constructors_explicit();
+    UseOverride::test_use_override();
+    UseConst::test_use_const();
+    UseNodiscardAttribute::test_use_nodiscard();
 }
 
 // ===========================================================================
