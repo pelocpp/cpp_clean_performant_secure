@@ -121,7 +121,7 @@ namespace SecureProgrammingExploitability {
 
         static void test_stack_based_buffer_overflow_02() {
 
-            corrupt_stack("The quick brown fox jumps over the lazy dog");
+            corrupt_stack("This is way too long for this buffer");
         }
 
         static void test_stack_based_buffer_overflow() {
@@ -149,7 +149,7 @@ namespace SecureProgrammingExploitability {
 
         static void test_heap_based_buffer_overflow() {
 
-            test_heap_based_buffer_overflow_internal("The quick brown fox jumps over the lazy dog");
+            test_heap_based_buffer_overflow_internal("This is way too long for this buffer");
         }
     }
 

@@ -11,8 +11,8 @@ int main()
 {
     //secure_programming_issues();
     //secure_programming_more_issues();
-    //secure_programming_advices();
-    secure_programming_tools();
+    secure_programming_advices();
+    //secure_programming_tools();
     
     return 0;
 }

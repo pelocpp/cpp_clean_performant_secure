@@ -12,18 +12,19 @@
   * [Verwende mehrere Compiler](#link)
   * [*Warnings* und *Errors*](#link)
   * [Warning Level](#link)
-  * [Ein Tipp für Überlauf: `std::midpoint`](#link)
-  * [Verwenden Sie STL-Algorithmen](#link)
+  * [Typensicherheit: Datentypen sind unsere Freunde](#link)
+  * [Ein Tipp für Pufferüberlauf: Verwende ausschließlich &bdquo;*secure*&rdquo; Funktionen](#link)
+  * [Ein Tipp für arithmetischen Überlauf: `std::midpoint`](#link)
+  * [Verwende STL-Algorithmen](#link)
+  * [Verwende STL-Container](#link)
   * [Achte auf sicheres *Downcasting*](#link)
   * [Verzichte auf die direkte Verwendung des `new`-Operators](#link)
   * [Deklariere Konstruktoren mit einem einzigen Argument mit `explicit`](#link)
   * [Elementare Datentypen haben keine Bedeutung (*Semantics*), nur Wertebereiche](#link)
-  * [Benutzerdefinierte Literale: Elementare Datentypen &bdquo;mit Bedeutung&rdquo;](#link)
-  * [Verwenden `std::string` Literale](#link)
   * [Der Datentyp `size_t`](#link)
+  * [Benutzerdefinierte Literale: Elementare Datentypen &bdquo;mit Bedeutung&rdquo;](#link)
   * [Virtuelle Methoden sollten genau eines der drei Schlüsselwörter `virtual`, `override` oder `final` verwenden.](#link)
   * [Setze standardmäßig Methoden auf `const`, soweit möglich](#link)
-  * [Setze standardmäßig Memberfunktionen auf `const`, soweit möglich](#link)
   * [Verwende das Attribut `[[nodiscard]]`](#link)
 
 ---
@@ -124,7 +125,97 @@ ein zu großer Warning Level kann zu viele Warnungen erzeugen, die nicht unbeding
 
 ---
 
-## Ein Tipp für Überlauf: `std::midpoint`
+## Typensicherheit: Datentypen sind unsere Freunde
+
+Eine Stärke der beiden Programmiersprachen C/C++ ist, dass beide das Konzept von &bdquo;Datentypen&rdquo; beherzigen.
+
+  * Man sollte tunlichst vermeiden, mit `void*` einzusetzen bzw. damit eine Typprüfung zu umgehen.
+
+  * Man sollte die Praxis des *Castings* vermeiden oder nur sehr behutsam einsetzen, um damit eine starke Typprüfung zu umgehen.
+
+  * Ein Downcasting durch `reinterpret_cast` oder auf der Basis von C-Style-Casting sollte vermieden werden.
+
+  * Entfernen Sie *Constness* nicht mit mit `const_cast` oder mit C-Style-Casting, nur weil Sie es wollen oder der Compiler es erlaubt.
+
+  * C-Style-Casting, Zeiger-Casting und `reinterpret_cast` sind im Allgemeinen riskant und können eine Quelle für ausnutzbare Fehler sein.
+
+  * In diesem Sinne ist es besser, mit starken Typen zu arbeiten!
+
+---
+
+## Ein Tipp für Pufferüberlauf: Verwende ausschließlich &bdquo;*secure*&rdquo; Funktionen
+
+*Beispiel*: `strncpy_s`
+
+```cpp
+01: static void test_take_care_of_buffer_overflow_01() {
+02: 
+03:     char buffer[16];
+04: 
+05:     const char* str = "This is way too long for this buffer";
+06:     std::println("Source:      >{}<", str);
+07: 
+08:     auto length = strlen(str);
+09:     auto size = std::size(buffer);
+10: 
+11:     // strncpy_s(buffer, size, str, length);      // crashes
+12:     strncpy_s(buffer, size, str, size - 1);       //  copy with adjusted boundary
+13: 
+14:     buffer[size - 1] = '\0';
+15:     std::println("Destination: >{}<", buffer);
+16: }
+```
+
+*Ausgabe*:
+
+```
+Source:      >This is way too long for this buffer<
+Destination: >This is way too<
+```
+
+*Beispiel*: `snprintf`
+
+```cpp
+01: static void test_take_care_of_buffer_overflow_02() {
+02: 
+03:     constexpr int Size = 64;
+04: 
+05:     char buffer[Size];
+06: 
+07:     auto bytesWritten = 0;
+08: 
+09:     bytesWritten = snprintf(buffer, Size, "The half of %d is %d", 60, 60/2);
+10: 
+11:     if (bytesWritten >= 0 && bytesWritten < Size) {    // check returned value
+12: 
+13:         bytesWritten = snprintf(buffer + bytesWritten, Size - bytesWritten, ", and the half of that is %d.", 60/2/2);
+14:     }
+15: 
+16:     std::println("Buffer: >{}< // Bytes written: {}", buffer, bytesWritten);
+17: }
+```
+
+*Ausgabe*:
+
+```
+Buffer: >The half of 60 is 30, and the half of that is 15.< // Bytes written: 29
+```
+
+
+Es gibt für die CRT (*C-Runtime Library*) eine Überarbeitung der meisten Funktionen,
+um deren Parameter besser überprü+fen zu können:
+
+[Security Features in the CRT](https://learn.microsoft.com/en-us/cpp/c-runtime-library/security-features-in-the-crt?view=msvc-170)
+
+
+Die Menge aller Modifikationen an den ursprünglichen Funktionen ist hier beschrieben:
+
+[Security-enhanced versions of CRT functions](https://learn.microsoft.com/en-us/cpp/c-runtime-library/security-enhanced-versions-of-crt-functions?view=msvc-170)
+
+
+---
+
+## Ein Tipp für arithmetischen Überlauf: `std::midpoint`
 
 Die Funktion `std::midpoint()` berechnet den Mittelpunkt von zwei ganzen Zahlen
 oder zwei Gleitkommazahlen:
@@ -154,10 +245,9 @@ Incorrect (overflow and wrapping): 2147483646
 Correct:                           4294967294
 ```
 
-
 ---
 
-## Verwenden Sie STL-Algorithmen
+## Verwende STL-Algorithmen
 
 Algorithmen der STL sind robuster im Gebrauch als CRT-Bibliotheksfunktionen oder selbst geschriebene Funktionen.
 
@@ -203,6 +293,14 @@ Vermeiden Sie generell *manuelle* Wiederholungsschleifen!
 
 Verwenden Sie Algorithmen der STL und, wenn es eine Wiederholungsschleife sein muss, die so genannten C++ *Range-based Loop*:
 Beide kommen ohne Schleifen-Indizes aus, die eine häufige Ursache von Fehlerquellen sind.
+
+---
+
+## Verwende STL-Container
+
+
+  * `std::string`
+  * `std::vector`
 
 ---
 
@@ -306,13 +404,88 @@ dem Typ `int` definieren sollte. `int`-Werte können sehr groß sein als auch nega
 
 Es gibt die eine oder andere Möglichkeit, Werte mit einer Semantik zu verbinden:
 
-  * Aufzählungstypen
-  * `std::string` Literals
+  * Aufzählungstypen (`enum`-Klassen)
+  * `std::string` Literale
   * Benutzerdefinierte Literale
   * `size_t`
 
-Enum-Klassen sind typsichere Klassen.
- 
+*Beispiel*: `std::string` Literale
+
+```cpp
+01: void test() {
+02: 
+03:     using namespace std::literals::string_literals;
+04: 
+05:     auto heroes = { "Spiderman"s, "Ironman"s, "Wonder Woman"s };
+06: 
+07:     for (auto const& hero : heroes) {
+08:         std::println("{:12} ({})", hero, hero.size());
+09:     }
+10: }
+```
+
+`enum`-Klassen sind typsichere Klassen.
+
+*Beispiel*: `enum`-Klassen
+
+```cpp
+01: enum class RainbowColors : char
+02: {
+03:     Violet = 'V',
+04:     Indigo = 'I',
+05:     Blue   = 'B',
+06:     Green  = 'G',
+07:     Yellow = 'Y',
+08:     Orange = 'O',
+09:     Red    = 'R'
+10: };
+11: 
+12: enum class EyeColors
+13: {
+14:     Blue,
+15:     Green,
+16:     Brown
+17: };
+18: 
+19: static void test_use_class_enums() {
+20: 
+21:     std::cout << static_cast<std::underlying_type_t<RainbowColors>>(RainbowColors::Green) << std::endl;
+22:     std::cout << static_cast<std::underlying_type_t<RainbowColors>>(RainbowColors::Orange) << std::endl;
+23:     std::cout << static_cast<std::underlying_type_t<EyeColors>>(EyeColors::Blue) << std::endl;
+24:     std::cout << static_cast<std::underlying_type_t<EyeColors>>(EyeColors::Green) << std::endl;
+25: }
+```
+
+*Ausgabe*:
+
+```
+G
+O
+0
+1
+```
+
+---
+
+## Der Datentyp `size_t`
+
+Der Name `size_t` bedeutet im Wesentlichen &bdquo;*size type*&rdquo;,
+und man verwendet diesen Datentyp normalerweise dann,
+um die Größe oder Länge von Dingen anzugeben &ndash; wie beispielsweise die Länge einer C-Zeichenfolge,
+die von der Funktion `strlen()` zurückgegeben wird.
+
+`size_t` ist keiner der &bdquo;integrierten&rdquo; Datentypen von C/C++.
+Stattdessen wird er im Regelfall in Headerdateien mit `typedef` oder `using` definiert.
+
+Der genaue Datentyp ist implementierungsspezifisch, ist aber normalerweise eine Form eines vorzeichenlosen ganzzahligen Datentyps.
+
+Man sollte `size_t` einsetzen
+
+  * für etwaige Größenangaben von Objekten
+  * für Container-ähnliche Objekte und deren Größe
+  * für Array-Indizierung und Schleifenzähler
+
+
 ---
 
 ## Benutzerdefinierte Literale: Elementare Datentypen &bdquo;mit Bedeutung&rdquo;
@@ -388,26 +561,6 @@ Man muss in diesem Fall die *Literal*-Operatoren nur anders definieren:
 20:     auto totalHours = weeks + days + hours;
 21: }
 ```
-
----
-
-## Der Datentyp `size_t`
-
-Der Name `size_t` bedeutet im Wesentlichen &bdquo;*size type*&rdquo;,
-und man verwendet diesen Datentyp normalerweise dann,
-um die Größe oder Länge von Dingen anzugeben &ndash; wie beispielsweise die Länge einer C-Zeichenfolge,
-die von der Funktion `strlen()` zurückgegeben wird.
-
-`size_t` ist keiner der &bdquo;integrierten&rdquo; Datentypen von C/C++.
-Stattdessen wird er im Regelfall in Headerdateien mit `typedef` oder `using` definiert.
-
-Der genaue Datentyp ist implementierungsspezifisch, ist aber normalerweise eine Form eines vorzeichenlosen ganzzahligen Datentyps.
-
-Man sollte `size_t` einsetzen
-
-  * für etwaige Größenangaben von Objekten
-  * für Container-ähnliche Objekte und deren Größe
-  * für Array-Indizierung und Schleifenzähler
 
 ---
 

@@ -10,6 +10,7 @@
 
   * [Einige Eigenschaften der Programmiersprache C](#link)
   * [Einige Eigenschaften der Programmiersprache C++](#link)
+  * [Was unterscheidet C/C++ von anderen Programmiersprache wie z. B. Java oder C#](#link)
   * [Exploitability und Vulnerability](#link)
   * [Sicherheitslücken versus *Undefined Behaviour* (*UB*)](#link)
 
@@ -82,6 +83,19 @@
 ##### Zusammenfassung:
 
   * How to Shoot Yourself In the Foot using C:<br />*You accidentally create a dozen instances of yourself and shoot them all in the foot. Providing emergency medical care is impossible since you can't tell which are bitwise copies and which are just pointing at others and saying &bdquo;that's me, over there.&rdquo;*.
+
+---
+
+### Was unterscheidet C/C++ von anderen Programmiersprache wie z. B. Java oder C#
+
+  * Ein C/C++-Übersetzer generiert Maschinencode, so wie dieser vom Entwickler durch den vom ihm geschriebenen Quellcode angefordert wird,
+  *ohne* Sicherheitsprüfungen hinzuzufügen.
+
+  * In C# oder Java geschriebenen Programmen würde beispielsweise ein falscher Array-Zugriff zu einer Laufzeitausnahme (*Exception*) führen,
+  während dies in C++ zu einem falschen Speicherzugriff (Lesen) oder einer Speicherverletzung beim Schreiben führt.
+
+  * Falsches oder unvorsichtiges Programmieren in C/C++ kann zu Überläufen (Stack-, Heap- und Pufferüberläufen) führen,
+  die leicht für einen Angriff verwendet werden können.
 
 ---
 

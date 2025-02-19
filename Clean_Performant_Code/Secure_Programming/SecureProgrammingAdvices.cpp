@@ -47,9 +47,48 @@ namespace SecureProgrammingAdvices {
         }
     }
 
-    namespace TakeCareOfOverflow {
+    namespace TakeCareOfBufferOverflow {
 
-        static void test_take_care_of_overflow() {
+        static void test_take_care_of_buffer_overflow_01() {
+
+            char buffer[16];
+
+            const char* str = "This is way too long for this buffer";
+            std::println("Source:      >{}<", str);
+
+            auto length = strlen(str);
+            auto size = std::size(buffer);
+
+            // strncpy_s(buffer, size, str, length);      // crashes
+            strncpy_s(buffer, size, str, size - 1);       //  copy with adjusted boundary
+
+            buffer[size - 1] = '\0';
+
+            std::println("Destination: >{}<", buffer);
+        }
+
+        static void test_take_care_of_buffer_overflow_02() {
+
+            constexpr int Size = 64;
+
+            char buffer[Size];
+
+            auto bytesWritten = 0;
+
+            bytesWritten = snprintf(buffer, Size, "The half of %d is %d", 60, 60/2);
+
+            if (bytesWritten >= 0 && bytesWritten < Size) {    // check returned value
+
+                bytesWritten = snprintf(buffer + bytesWritten, Size - bytesWritten, ", and the half of that is %d.", 60/2/2);
+            }
+
+            std::println("Buffer: >{}< // Bytes written: {}", buffer, bytesWritten);
+        }
+    }
+
+    namespace TakeCareOfArithmeticOverflow {
+
+        static void test_take_care_of_arithmetic_overflow() {
 
             std::uint32_t a = std::numeric_limits<std::uint32_t>::max();
             std::uint32_t b = std::numeric_limits<std::uint32_t>::max() - 2;
@@ -110,7 +149,7 @@ namespace SecureProgrammingAdvices {
 
         static void test_use_algorithms_03() {
 
-            corrupt_stack("The quick brown fox jumps over the lazy dog");
+            corrupt_stack("This is way too long for this buffer");
         }
 
         static void test_use_algorithms() {
@@ -183,11 +222,52 @@ namespace SecureProgrammingAdvices {
 
     namespace GivePrimitiveDatatypesSemantics {
 
+        static void test_use_string_literals() {
+
+            using namespace std::literals::string_literals;
+
+            auto heroes = { "Spiderman"s, "Ironman"s, "Wonder Woman"s };
+
+            for (auto const& hero : heroes) {
+                std::println("{:12} ({})", hero, hero.size());
+            }
+        }
+
+        enum class RainbowColors : char
+        {
+            Violet = 'V',
+            Indigo = 'I',
+            Blue   = 'B',
+            Green  = 'G',
+            Yellow = 'Y',
+            Orange = 'O',
+            Red    = 'R'
+        };
+
+        enum class EyeColors
+        {
+            Blue,
+            Green,
+            Brown
+        };
+
+        static void test_use_class_enums() {
+
+            std::cout << static_cast<std::underlying_type_t<RainbowColors>>(RainbowColors::Green) << std::endl;
+            std::cout << static_cast<std::underlying_type_t<RainbowColors>>(RainbowColors::Orange) << std::endl;
+            std::cout << static_cast<std::underlying_type_t<EyeColors>>(EyeColors::Blue) << std::endl;
+            std::cout << static_cast<std::underlying_type_t<EyeColors>>(EyeColors::Green) << std::endl;
+        }
+    }
+
+    namespace GivePrimitiveDatatypesSemantics {
+
         // https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Renum-class
 
         // Enum.3: Prefer class enums over "plain" enums
 
-        enum class Direction : char {
+        enum class Direction : char
+        {
             NORTH = 'N',
             EAST = 'E',
             WEST = 'W',
@@ -235,20 +315,6 @@ namespace SecureProgrammingAdvices {
             std::println("{:>4}", Direction::EAST);
             std::println("{:>4}", Direction::WEST);
             std::println("{:>4}", Direction::SOUTH);
-        }
-    }
-
-    namespace UseStringLiterals {
-
-        static void test_use_string_Literals() {
-
-            using namespace std::literals::string_literals;
-
-            auto heroes = { "Spiderman"s, "Ironman"s, "Wonder Woman"s };
-
-            for (auto const& hero : heroes) {
-                std::println("{:12} ({})", hero, hero.size());
-            }
         }
     }
 
@@ -330,7 +396,6 @@ namespace SecureProgrammingAdvices {
             constexpr auto totalHours = weeks + days + hours; // 12 + 2*24 + 3*7*24 = 564
         }
     }
-
 
     namespace UseOverride {
 
@@ -422,17 +487,22 @@ void secure_programming_advices()
 {
     using namespace SecureProgrammingAdvices;
 
-    PreferCppToC::test_prefer_cpp_to_c();
-    TakeCareOfOverflow::test_take_care_of_overflow();
-    UseAlgorithms::test_use_algorithms();
-    SafeDowncasting::test_safe_downcasting();
-    DontUseNewExplicitely::test_dont_use_new_explicitely();
-    GivePrimitiveDatatypesSemantics::test_give_primitive_datatypes_semantics();
-    UseStringLiterals::test_use_string_Literals();
-    DeclareSingleArgumentConstructorsExplicit::test_declare_single_argument_constructors_explicit();
-    UseOverride::test_use_override();
-    UseConst::test_use_const();
-    UseNodiscardAttribute::test_use_nodiscard();
+    //PreferCppToC::test_prefer_cpp_to_c();
+
+    TakeCareOfBufferOverflow::test_take_care_of_buffer_overflow_01();
+    TakeCareOfBufferOverflow::test_take_care_of_buffer_overflow_02();
+
+    //TakeCareOfArithmeticOverflow::test_take_care_of_arithmetic_overflow();
+    //UseAlgorithms::test_use_algorithms();
+    //SafeDowncasting::test_safe_downcasting();
+    //DontUseNewExplicitely::test_dont_use_new_explicitely();
+    //GivePrimitiveDatatypesSemantics::test_use_string_literals();
+    //GivePrimitiveDatatypesSemantics::test_use_class_enums();
+    //GivePrimitiveDatatypesSemantics::test_give_primitive_datatypes_semantics();
+    //DeclareSingleArgumentConstructorsExplicit::test_declare_single_argument_constructors_explicit();
+    //UseOverride::test_use_override();
+    //UseConst::test_use_const();
+    //UseNodiscardAttribute::test_use_nodiscard();
 }
 
 // ===========================================================================
