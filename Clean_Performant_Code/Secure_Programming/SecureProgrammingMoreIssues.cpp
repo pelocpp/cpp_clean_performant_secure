@@ -86,6 +86,31 @@ namespace SecureProgrammingMoreIssues {
             std::memset(pwd, 0, sizeof(pwd)); // <- Removed by the optimizer !!!
         }
     }
+
+    namespace DanglingReferences {
+
+        struct Data {
+            Data(int& value) : m_value(value) {}
+            int& m_value;
+        };
+
+        static Data function() {
+
+            int value = 123;
+
+            Data data(value);
+
+            std::println("value: {}", value);
+
+            return data;                         // implicitly returning reference to local value
+        }
+
+        static void test_dangling_reference()
+        {
+            Data data = function();
+            std::println("{}", data.m_value);    // Oooooops
+        }
+    }
 }
 
 // =================================================================
@@ -94,8 +119,9 @@ void secure_programming_more_issues()
 {
     using namespace SecureProgrammingMoreIssues;
 
-   // UsingPointers::test_using_pointers();
-    MemsetIssue::test_disappearing_memset();
+    //UsingPointers::test_using_pointers();
+    //MemsetIssue::test_disappearing_memset();
+    DanglingReferences::test_dangling_reference();
 }
 
 // ===========================================================================

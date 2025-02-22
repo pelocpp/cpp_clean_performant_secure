@@ -1,12 +1,5 @@
 // ============================================================
 
-Tipps für Agenda:
-
-https://insights.sei.cmu.edu/blog/secure-coding-in-c11-and-c14/
-
-
-// ============================================================
-
 Sanitizers:
 
 https://learn.microsoft.com/en-us/cpp/sanitizers/asan?view=msvc-170
@@ -108,7 +101,6 @@ https://github.com/VioletGiraffe/cppcheck-vs-addin
 https://github.com/VioletGiraffe/cppcheck-vs-addin/releases/tag/1.5
 
 
-
 // =============================================================
 
 Type Punning
@@ -118,9 +110,5 @@ https://blog.hiebl.cc/posts/practical-type-punning-in-cpp/
 // =============================================================
 
 Die ganzen Cast Operatoren beschreiben !!!!!!!!!!!
-
-// =============================================================
-
-Dangling C++ Referenzen .. wie bekommt man die hin ...
 
 // =============================================================

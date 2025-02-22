@@ -6,7 +6,16 @@
 
 ## Inhalt
 
-#### Einige Schutzmaßnahmen
+### Einige wichtige Tipps zum Schreiben von sicherem C++&ndash;Code <!-- Zu den folgende Abschnitten gibt es keinen Quellcode -->
+
+  * [Verwende RAII](#link)
+  * [Verwende *Smart Pointer*](#link)
+  * [Verwende *Exception Handling*](#link)
+  * [Verwende die neuesten C++-Standards](#link)
+  * [Verwende sichere Bibliotheken](#link)
+  * [Verwende starke Typisierung](#link)
+
+### Einige konkrete Schutzmaßnahmen  <!-- Zu den folgende Abschnitten gibt es Quellcode -->
 
   * [Don't use C &ndash; use C++](#link)
   * [Verwende mehrere Compiler](#link)
@@ -38,6 +47,63 @@
 [*SecureProgrammingAdvices.cpp*](SecureProgrammingAdvices.cpp)<br />
 
 ---
+
+### Einige wichtige Tipps zum Schreiben von sicherem C++&ndash;Code
+
+## Verwenden Sie RAII
+
+RAII steht für *Resource Acquisition Is Initialization* (*Ressourcenerwerb ist Initialisierung*).
+
+Damit möchte man zum Ausdruck bringen, dass Ressourcen automatisch erworben werden,
+wenn ein Objekt erstellt wird, und automatisch freigegeben werden, wenn das Objekt zerstört wird.
+
+Verwenden Sie RAII, um Ressourcenlecks und Speicherfehler zu vermeiden.
+
+## Verwende *Smart Pointer*
+
+C++ *Smart Pointer* können durchauas mit dem RAII Prinzip verglichen werden.
+*Smart Pointer* Objekte verwalten die Speicherzuweisung und -freigabe automatisch.
+
+Verwenden Sie Smart Pointer, um Speicherlecks und &bdquo;dangling&rdquo;&ndash;Zeiger zu vermeiden.
+
+
+## Verwende *Exception Handling*
+
+Die Standard C++ Ausnahmebehandlung ist eine Möglichkeit, Fehler und Ausnahmen im laufenden Programm zu behandeln.
+
+Verwenden Sie die Ausnahmebehandlung, um Fehler abzufangen und zu behandeln und zu verhindern,
+dass Ihr Programm abstürzt.
+
+## Verwende die neuesten C++-Standards
+
+Die neuesten C++-Standards enthalten viele Sicherheitsverbesserungen gegenüber früheren Sprachversionen.
+
+Verwenden Sie immer die neuesten Standards, um diese Verbesserungen zu nutzen.
+
+## Verwende sichere Bibliotheken
+
+Verwenden Sie sichere Bibliotheken, die auf Sicherheit getestet und verifiziert wurden.
+
+Vermeiden Sie die Verwendung von Bibliotheken von Drittanbietern, die nicht auf Sicherheitslücken geprüft wurden.
+
+## Verwende starke Typisierung
+
+Starke Typisierung (*Strong Typing*) stellt sicher, dass Variablen nur für den vorgesehenen Zweck verwendet werden.
+
+Vorbei sind die Zeiten, in denen wir mit `void*` die Typprüfung umgangen haben.
+
+Vorbei sollte auch generell die Praxis sein, mit Hilfe des Castings eine strenge Typprüfung zu umgehen.
+
+Die unsachgemäße Verwendung von `void*` und Casting kann zum Lesen fehlerhafter Daten führen,
+was dann auch mit schlechten Intentionen ausgenutzt werden kann.
+
+Verwenden Sie starke Typisierung, um Typangriffe (zum Beispiel durch unsichere Cast-Operationen)
+und andere Sicherheitslücken zu verhindern.
+
+
+---
+
+### Einige konkrete Schutzmaßnahmen
 
 ## Don't use C &ndash; use C++
 

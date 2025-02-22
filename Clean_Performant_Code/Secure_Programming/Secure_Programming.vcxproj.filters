@@ -32,10 +32,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Readme_Secure_ProgrammingIssues.md">
+    <None Include="Readme_Secure_Programming_Issues.md">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Readme_Secure_ProgrammingAdvices.md">
+    <None Include="Readme_Secure_Programming_Advices.md">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="cpp_security_advice_no_new.svg">
@@ -54,6 +54,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Secure_Programming_in_C_Lef_Ioannidis.pdf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Readme_Secure_Programming_MoreIssues.md">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

@@ -4,13 +4,15 @@
 
 ---
 
-## [Klassische Probleme des *Secure Programming* in C/C++](../Secure_Programming/Readme_Secure_ProgrammingIssues.md)
+## [Klassische Probleme des C/C++ *Secure Programming*](../Secure_Programming/Readme_Secure_Programming_Issues.md)
 
-## [Schutzmaßnahmen für *Secure Programming*](../Secure_Programming/Readme_Secure_ProgrammingAdvices.md)
+## [Weitere Probleme des C/C++ *Secure Programmings*](../Secure_Programming/Readme_Secure_Programming_MoreIssues.md)
+
+## [Schutzmaßnahmen für *Secure Programming*](../Secure_Programming/Readme_Secure_Programming_Advices.md)
 
 ## [*SafeInt*: Eine Bibliothek zum Schutz vor Integer-Überläufen](../SafeInt/Readme_SafeInt.md)
 
-## [*BigInt*: Eine Bibliothek für sehr große Zahlen](../BigInt/Readme_BigInt.md.md)
+## [*BigInt*: Eine Bibliothek für sehr große Zahlen](../BigInt/Readme_BigInt.md)
 
 ---
 

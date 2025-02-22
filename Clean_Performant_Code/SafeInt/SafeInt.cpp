@@ -171,15 +171,16 @@ namespace SafeArithmetic {
 void clean_code_arithmetic()
 {
     using namespace SafeArithmetic;
-    //test_maximum_int16_t();
-    test_sum_unsave();
-    //test_sum_safe_hand_written();
-    //test_sum_safe();
-    //test_sum_more_safe();
 
-    //using namespace SafeFaculty;
-    //test_factorial_unsafe();
-    //test_factorial_safe();
+    test_maximum_int16_t();
+    test_sum_unsave();
+    test_sum_safe_hand_written();
+    test_sum_safe();
+    test_sum_more_safe();
+
+    using namespace SafeFaculty;
+    test_factorial_unsafe();
+    test_factorial_safe();
 }
 
 // ===========================================================================
