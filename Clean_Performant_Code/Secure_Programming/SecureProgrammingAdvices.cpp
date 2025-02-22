@@ -8,7 +8,6 @@
 #include <cstring>
 #include <cstdlib>
 
-
 #include <complex>
 #include <cstdint>
 #include <format>
@@ -169,7 +168,7 @@ namespace SecureProgrammingAdvices {
 
     namespace TakeCareOfArithmeticOverflow {
 
-        static void test_arithmetic_overflow_addition () {
+        static void test_arithmetic_overflow_addition() {
 
             std::uint32_t a;
             std::uint32_t b;
@@ -179,34 +178,126 @@ namespace SecureProgrammingAdvices {
             sum = a + b;
         }
 
-        static void test_arithmetic_overflow_addition_compliant() {
+        static void addition_compliant(std::uint32_t a, std::uint32_t b) {
 
-            std::uint32_t a;
-            std::uint32_t b;
-            std::uint32_t sum;
+            std::uint32_t sum = 0;
 
-            std::uint32_t scratch1 = std::numeric_limits<std::uint32_t>::max();
-
-
-            // for example
-            a = std::numeric_limits<std::uint32_t>::max() / 2;
-            b = std::numeric_limits<std::uint32_t>::max() / 2;
-
-            std::uint32_t scratch2 = std::numeric_limits<std::uint32_t>::max() - a;
-
-     //       if (std::numeric_limits<std::uint32_t>::max() - a < b)
-            if (scratch2 < b)
-
+            if (std::numeric_limits<std::uint32_t>::max() - a < b)
             {
-                /* handle error condition */
+                // test for UIntMax - a < b: handle error condition
+                std::println("Sum of {} and {} is too large, cannot add !", a, b);
             }
             else
             {
                 sum = a + b;
+                std::println("{} + {} = {}", a, b, sum);
             }
-
         }
 
+        static void test_arithmetic_overflow_addition_compliant() {
+
+            // for example
+            std::uint32_t a = std::numeric_limits<std::uint32_t>::max() / 2;
+            std::uint32_t b = std::numeric_limits<std::uint32_t>::max() / 2;
+
+            addition_compliant(a, b);
+        }
+
+        // ------------------------------------------
+
+        static void test_arithmetic_overflow_subtraction() {
+
+            std::int32_t a;
+            std::int32_t b;
+            std::int32_t sum;
+
+            // ....
+            sum = a - b;
+        }
+
+        static void subtraction_compliant(std::int32_t a, std::int32_t b) {
+
+            int32_t result = 0;
+
+            if (b > 0 && a < std::numeric_limits<std::int32_t>::max() + b ||
+                b < 0 && a > std::numeric_limits<std::int32_t>::max() + b)
+            {
+                std::println("Cannot subtract {} from {}! !", b, a);
+            }
+            else
+            {
+                result = a - b;
+                std::println("{} - {} = {}", a, b, result);
+            }
+        }
+
+        static void test_arithmetic_overflow_subtraction_compliant() {
+
+            // for example
+            std::uint32_t a = std::numeric_limits<std::int32_t>::min() / 2;
+            std::uint32_t b = std::numeric_limits<std::int32_t>::max() / 2;  // remove "/ 2"
+
+            subtraction_compliant(a, b);
+        }
+
+        // ------------------------------------------
+
+        static void test_arithmetic_overflow_multiplication() {
+
+            std::int32_t a;
+            std::int32_t b;
+            std::int32_t sum;
+
+            // ....
+            sum = a * b;
+        }
+
+        static int32_t multiplication_compliant(std::int32_t a, std::int32_t b) {
+
+            // wanto switch from 32-bit to 64-bit arithmetic
+            static_assert (sizeof (int64_t) >= 2 * sizeof(int32_t));
+
+            std::int32_t result = 0;
+
+            int64_t product = static_cast<int64_t>(a) * static_cast<int64_t>(b);
+
+            // result needs to be represented as a 32-bit (std::int32_t) integer value (!)
+            if (product > std::numeric_limits<std::int32_t>::max() || product < std::numeric_limits<std::int32_t>::min()) {
+
+                std::println("Cannot multiply {} with {}! !", a, b);
+            }
+            else {
+                result = static_cast<int32_t>(product);
+                std::println("{} * {} = {}", a, b, result);
+            }
+
+            return result;
+        }
+
+        static void test_arithmetic_overflow_multiplication_compliant() {
+
+            // for example
+            std::int32_t a = 2;
+            std::int32_t b = 1;
+
+            for (int i = 1; i < 32; ++i) {
+
+                //b = a * b;                       // remove comment
+                //std::println("{}", b);
+
+                b = multiplication_compliant(a, b);
+                std::println("{}", b);
+            }
+        }
+
+        // ------------------------------------------
+
+        static void test_arithmetic_overflow()
+        {
+            test_arithmetic_overflow_addition_compliant();
+            test_arithmetic_overflow_subtraction_compliant();
+            test_arithmetic_overflow_multiplication_compliant();
+        }
     }
 
     namespace TakeCareOfArithmeticOverflowUsingMidpoint {
@@ -691,29 +782,22 @@ void secure_programming_advices()
 {
     using namespace SecureProgrammingAdvices;
 
-    //PreferCppToC::test_prefer_cpp_to_c();
-    //TakeCareOfBufferOverflow::test_take_care_of_buffer_overflow();
-    //
-    
-
-    TakeCareOfArithmeticOverflow::test_arithmetic_overflow_addition_compliant();
-
-  //  TakeCareOfArithmeticOverflowUsingMidpoint::test_take_care_of_arithmetic_overflow();
-    
-    //
-    //TakeCareOfArithmeticOverflowUsingMidpoint::test_take_care_of_arithmetic_overflow();
-    //PreventInjectionOfAttacks::test_injection();
-    //PreventOffbyOneErrors::test_off_by_one_errors();
-    //UseAlgorithms::test_use_algorithms();
-    //SafeDowncasting::test_safe_downcasting();
-    //DontUseNewExplicitely::test_dont_use_new_explicitely();
-    //GivePrimitiveDatatypesSemantics::test_use_string_literals();
-    //GivePrimitiveDatatypesSemantics::test_use_class_enums();
-    //GivePrimitiveDatatypesSemantics::test_give_primitive_datatypes_semantics();
-    //DeclareSingleArgumentConstructorsExplicit::test_declare_single_argument_constructors_explicit();
-    //UseOverride::test_use_override();
-    //UseConst::test_use_const();
-    //UseNodiscardAttribute::test_use_nodiscard();
+    PreferCppToC::test_prefer_cpp_to_c();
+    TakeCareOfBufferOverflow::test_take_care_of_buffer_overflow();
+    TakeCareOfArithmeticOverflow::test_arithmetic_overflow();
+    TakeCareOfArithmeticOverflowUsingMidpoint::test_take_care_of_arithmetic_overflow();
+    PreventInjectionOfAttacks::test_injection();
+    PreventOffbyOneErrors::test_off_by_one_errors();
+    UseAlgorithms::test_use_algorithms();
+    SafeDowncasting::test_safe_downcasting();
+    DontUseNewExplicitely::test_dont_use_new_explicitely();
+    GivePrimitiveDatatypesSemantics::test_use_string_literals();
+    GivePrimitiveDatatypesSemantics::test_use_class_enums();
+    GivePrimitiveDatatypesSemantics::test_give_primitive_datatypes_semantics();
+    DeclareSingleArgumentConstructorsExplicit::test_declare_single_argument_constructors_explicit();
+    UseOverride::test_use_override();
+    UseConst::test_use_const();
+    UseNodiscardAttribute::test_use_nodiscard();
 }
 
 // ===========================================================================

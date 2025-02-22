@@ -15,14 +15,10 @@
   * [Typensicherheit: Datentypen sind unsere Freunde](#link)
   * [Erster Tipp für Pufferüberlauf: Exaktes Arbeiten](#link)
   * [Zweiter Tipp für Pufferüberlauf: Verwende ausschließlich &bdquo;*secure*&rdquo; Funktionen](#link)
-  
-     * [Drei Tipps für arithmetischen Überlauf](#link)
-    
-      * [Ein weiterer Tipp für arithmetischen Überlauf: `std::midpoint`](#link)
-  
+  * [Drei Tipps für arithmetischen Überlauf](#link)
+  * [Noch ein Tipp für arithmetischen Überlauf: `std::midpoint`](#link)
   * [Verhindere ungültige Zeichenketteninjektionen (so genannte *SQL Injections*)](#link)
   * [Vermeide &bdquo;*Off-by-One*&rdquo; Fehler!](#link)
-
   * [Verwende STL-Algorithmen](#link)
   * [Verwende STL-Container](#link)
   * [Achte auf sicheres *Downcasting*](#link)
@@ -284,7 +280,6 @@ Destination: >This is way too<
 Buffer: >The half of 60 is 30, and the half of that is 15.< // Bytes written: 29
 ```
 
-
 Es gibt für die CRT (*C-Runtime Library*) eine Überarbeitung der meisten Funktionen,
 um deren Parameter besser überprü+fen zu können:
 
@@ -298,7 +293,155 @@ Die Menge aller Modifikationen an den ursprünglichen Funktionen ist hier beschri
 
 ---
 
-## Ein weiterer Tipp für arithmetischen Überlauf: `std::midpoint`
+## Drei Tipps für arithmetischen Überlauf
+
+Für den arithmetischen Überlauf kann man &ndash; in einem ersten Ansatz &ndash;
+mit gewissen Ad-hoc-Lösungen reagieren.
+
+Ein vollständiger Lösungsansatz findet sich [hier](../SafeInt/Readme_SafeInt.md).
+
+Wir stellen nun drei Workarounds vor, um einen arithmetischen Überlauf zu verhindern.
+
+Im Großen und Ganzen kann man sagen, dass man die kritischen Operationen zunächst vermeiden oder
+umgehen muss. Bei der Addition und Subtraktion ist das durchaus möglich, man kann durch geschicktes Umordnen
+des arithmetischen Ausdrucks einen Überlauf verhindern.
+
+Bei der Multiplikation ist das etwas komplizierter. Ein Ansatz besteht darin, auf den nächstgrößeren Wertebereich umzusteigen,
+sofern dies möglich ist.
+
+
+*Beispiel*: Addition
+
+```cpp
+01: void overflow_addition() {
+02: 
+03:     std::uint32_t a;
+04:     std::uint32_t b;
+05:     std::uint32_t sum;
+06: 
+07:     // ....
+08:     sum = a + b;
+09: }
+10: 
+11: void addition_compliant(std::uint32_t a, std::uint32_t b) {
+12: 
+13:     std::uint32_t sum = 0;
+14: 
+15:     if (std::numeric_limits<std::uint32_t>::max() - a < b)
+16:     {
+17:         // test for UIntMax - a < b: handle error condition
+18:         std::println("Sum of {} and {} is too large, cannot add !", a, b);
+19:     }
+20:     else
+21:     {
+22:         sum = a + b;
+23:         std::println("{} + {} = {}", a, b, sum);
+24:     }
+25: }
+26: 
+27: void test() {
+28: 
+29:     // for example
+30:     std::uint32_t a = std::numeric_limits<std::uint32_t>::max() / 2;
+31:     std::uint32_t b = std::numeric_limits<std::uint32_t>::max() / 2;
+32: 
+33:     addition_compliant(a, b);
+34: }
+```
+
+
+
+*Beispiel*: Subtraktion
+
+```cpp
+01: void overflow_subtraction() {
+02: 
+03:     std::int32_t a;
+04:     std::int32_t b;
+05:     std::int32_t sum;
+06: 
+07:     // ....
+08:     sum = a - b;
+09: }
+10: 
+11: void subtraction_compliant(std::int32_t a, std::int32_t b) {
+12: 
+13:     int32_t result = 0;
+14: 
+15:     if (b > 0 && a < std::numeric_limits<std::int32_t>::max() + b ||
+16:         b < 0 && a > std::numeric_limits<std::int32_t>::max() + b)
+17:     {
+18:         std::println("Cannot subtract {} from {}! !", b, a);
+19:     }
+20:     else
+21:     {
+22:         result = a - b;
+23:         std::println("{} - {} = {}", a, b, result);
+24:     }
+25: }
+26: 
+27: void test() {
+28: 
+29:     // for example
+30:     std::uint32_t a = std::numeric_limits<std::int32_t>::min() / 2;
+31:     std::uint32_t b = std::numeric_limits<std::int32_t>::max() / 2;
+32: 
+33:     subtraction_compliant(a, b);
+34: }
+```
+
+*Beispiel*: Multiplikation
+
+```cpp
+01: void overflow_multiplication() {
+02: 
+03:     std::int32_t a;
+04:     std::int32_t b;
+05:     std::int32_t sum;
+06: 
+07:     // ....
+08:     sum = a * b;
+09: }
+10: 
+11: int32_t multiplication_compliant(std::int32_t a, std::int32_t b) {
+12: 
+13:     // wanto switch from 32-bit to 64-bit arithmetic
+14:     static_assert (sizeof (int64_t) >= 2 * sizeof(int32_t));
+15: 
+16:     std::int32_t result = 0;
+17: 
+18:     int64_t product = static_cast<int64_t>(a) * static_cast<int64_t>(b);
+19: 
+20:     // result needs to be represented as a 32-bit (std::int32_t) integer value (!)
+21:     if (product > std::numeric_limits<std::int32_t>::max() || product < std::numeric_limits<std::int32_t>::min()) {
+22: 
+23:         std::println("Cannot multiply {} with {}! !", a, b);
+24:     }
+25:     else {
+26:         result = static_cast<int32_t>(product);
+27:         std::println("{} * {} = {}", a, b, result);
+28:     }
+29: 
+30:     return result;
+31: }
+32: 
+33: void test() {
+34: 
+35:     // for example
+36:     std::int32_t a = 2;
+37:     std::int32_t b = 1;
+38: 
+39:     for (int i = 1; i < 32; ++i) {
+40: 
+41:         b = multiplication_compliant(a, b);
+42:         std::println("{}", b);
+43:     }
+44: }
+```
+
+---
+
+## Noch ein Tipp für arithmetischen Überlauf: `std::midpoint`
 
 Die Funktion `std::midpoint()` berechnet den Mittelpunkt von zwei ganzen Zahlen
 oder zwei Gleitkommazahlen:
