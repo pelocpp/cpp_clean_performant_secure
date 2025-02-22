@@ -144,6 +144,7 @@
     <None Include="Readme_Secure_ProgrammingIssues.md" />
     <None Include="Readme_Secure_ProgrammingAdvices.md" />
     <None Include="Readme_Secure_Tools.md" />
+    <None Include="Secure_Programming_in_C_Lef_Ioannidis.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Buch_Barr_Embedded_C_Coding_Standard.png" />

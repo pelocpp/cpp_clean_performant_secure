@@ -53,6 +53,9 @@
     <None Include="Readme_Secure_Tools.md">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Secure_Programming_in_C_Lef_Ioannidis.pdf">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="CppCheck_01.png">

@@ -105,9 +105,13 @@ Begleitmaterial:
 [C++ Performance Optimization: Best Practices](https://hackernoon.com/c-performance-optimization-best-practices) von Ivan Chiklikchi.<br />
 (abgerufen am 17.2.2025)
 
-
 [Format String Exploitation-Tutorial](https://www.exploit-db.com/docs/english/28476-linux-format-string-exploitation.pdf) von Saif El-Sherei.<br />
 (abgerufen am 17.2.2025)
+
+
+[Secure Programming in C](https://ocw.mit.edu/courses/6-s096-effective-programming-in-c-and-c-january-iap-2014/df281b9bb8aa5c4377567454bb839676_MIT6_S096IAP14_Lecture3S.pdf) von Lef Ioannidis.<br />
+oder auch [hier](Secure_Programming_in_C_Lef_Ioannidis.pdf).<br />
+(abgerufen am 22.2.2025)
 
 ---
 
