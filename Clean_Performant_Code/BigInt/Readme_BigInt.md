@@ -4,10 +4,18 @@
 
 ---
 
-## Literatur <a name="link6"></a>
 
-Eine gute Beschreibung der Begriffe *Kohäsion* und *Kopplung*  
-wird in [Cohesion and Coupling: the difference](https://enterprisecraftsmanship.com/posts/cohesion-coupling-difference/) gegeben.
+## Literatur <a name="link"></a>
+
+---
+
+  * [*BigInt &ndash; Arbitrary-sized integer class for C++*](https://faheel.github.io/BigInt/)<br/>
+    (abgerufen am 23.02.2025).
+
+    oder auf Github:
+   
+  * [*BigInt &ndash; Arbitrary-sized integer class for C++*](https://github.com/faheel/BigInt/)<br/>
+    (abgerufen am 23.02.2025).
 
 ---
 
