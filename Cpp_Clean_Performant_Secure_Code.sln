@@ -38,6 +38,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Clean_Code", "Clean_Perform
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Performance_Optimization", "Clean_Performant_Code\Performance_Optimization\Performance_Optimization.vcxproj", "{FC8126E0-F7F2-4DF2-9CAA-14A3E1E2AC8A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logger", "Logger", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		Clean_Performant_Code\LoggerUtility\Logger.cpp = Clean_Performant_Code\LoggerUtility\Logger.cpp
+		Clean_Performant_Code\LoggerUtility\Logger.h = Clean_Performant_Code\LoggerUtility\Logger.h
+		Clean_Performant_Code\LoggerUtility\ScopedTimer.h = Clean_Performant_Code\LoggerUtility\ScopedTimer.h
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

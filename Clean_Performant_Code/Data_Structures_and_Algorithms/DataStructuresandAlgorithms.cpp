@@ -2,30 +2,47 @@
 // DataStructuresAndAlgorithms.cpp
 // ===========================================================================
 
+#include "../LoggerUtility/ScopedTimer.h"
+
+#include <array>
 #include <iostream>
+#include <new>
 #include <print>
 #include <string>
 #include <unordered_map>
 
-namespace DataStructuresAndAlgorithms_Hashing {
+#include <cstdlib>
 
-    // =======================================================================
-    // Hashing
+//// #undef UNICODE
+//#include <libloaderapi.h>
+//#include <windows.h>
 
-    struct Person
-    {
-        std::string m_firstName;
-        std::string m_lastName;
-        size_t      m_age;
+#define WIN32_LEAN_AND_MEAN 
+#include <windows.h>
+#include <processthreadsapi.h>
 
-        bool operator== (const Person& other) const {
+namespace DataStructuresAndAlgorithms {
 
-            return 
-                m_firstName == other.m_firstName && 
-                m_lastName == other.m_lastName && 
-                m_age == other.m_age;
-        }
-    };
+    namespace Hashing {
+
+        // =======================================================================
+        // Hashing
+
+        struct Person
+        {
+            std::string m_firstName;
+            std::string m_lastName;
+            size_t      m_age;
+
+            bool operator== (const Person& other) const {
+
+                return
+                    m_firstName == other.m_firstName &&
+                    m_lastName == other.m_lastName &&
+                    m_age == other.m_age;
+            }
+        };
+    }
 }
 
 namespace std
@@ -33,7 +50,7 @@ namespace std
     // =======================================================================
     // std::hash
 
-    using namespace DataStructuresAndAlgorithms_Hashing;
+    using namespace DataStructuresAndAlgorithms::Hashing;
 
     template <>
     struct hash<Person>
@@ -55,7 +72,7 @@ namespace std
     // =======================================================================
     // std::println
 
-    using namespace DataStructuresAndAlgorithms_Hashing;
+    using namespace DataStructuresAndAlgorithms::Hashing;
 
     template <>
     struct formatter<Person>
@@ -79,33 +96,110 @@ namespace std
     };
 }
 
-namespace DataStructuresAndAlgorithms_Hashing {
+namespace DataStructuresAndAlgorithms {
 
-    // =======================================================================
-    // Use Cases
+    namespace Hashing {
 
-    static void hashing_01()
-    {
-        std::unordered_map<Person, size_t> phoneBook;
+        // =======================================================================
+        // Use Cases
 
-        Person sepp = { "Sepp", "Meier", 30 };
-        phoneBook[sepp] = 123456;
+        static void test_hashing_01()
+        {
+            std::unordered_map<Person, size_t> phoneBook;
 
-        // retrieving phone number of sepp
-        auto phone{ phoneBook[sepp] };
-        std::println("{} - Phone Number: {}", sepp, phone);
+            Person sepp = { "Sepp", "Meier", 30 };
+            phoneBook[sepp] = 123456;
+
+            // retrieving phone number of sepp
+            auto phone{ phoneBook[sepp] };
+            std::println("{} - Phone Number: {}", sepp, phone);
+        }
+
+        static void test_hashing_02()
+        {
+            std::unordered_map<Person, std::string> personJobs;
+
+            Person sepp = { "Sepp", "Meier", 30 };
+            personJobs[sepp] = "Entwickler";
+
+            // retrieving job description of sepp
+            auto job{ personJobs[sepp] };
+            std::println("{} - Job: {}", sepp, job);
+        }
     }
 
-    static void hashing_02()
-    {
-        std::unordered_map<Person, std::string> personJobs;
+    namespace CacheLines {
 
-        Person sepp = { "Sepp", "Meier", 30};
-        personJobs[sepp] = "Entwickler";
+        constexpr auto cachelineSize = std::hardware_destructive_interference_size;
 
-        // retrieving job description of sepp
-        auto job{ personJobs[sepp] };
-        std::println("{} - Job: {}", sepp, job);
+        constexpr auto capacityL1CacheSize = 32768; // L1 data cache size
+        
+        constexpr auto Size = capacityL1CacheSize / sizeof(int);
+        // constexpr auto Size = 10;
+
+        using MatrixType = std::array<std::array<size_t, Size>, Size>;
+
+        static MatrixType matrix;
+
+        static auto initMatrix(MatrixType& matrix) {
+
+            ScopedTimer watch{};
+
+            size_t value{};
+
+            for (size_t i{}; i != Size; ++i) {
+                for (size_t j{}; j != Size; ++j) {
+                    //matrix[i][j] = value++;      // no "cache thrashing"
+                    matrix[j][i] = value++;    // remove comment: demonstrates "cache thrashing"
+                }
+            }
+        }
+
+        static void test_cache_thrashing() {
+            initMatrix(matrix);
+        }
+    }
+
+    namespace CacheLines {
+
+        static void test_examine_cache_lines() {
+
+            // https://gist.github.com/kimwalisch/16c34ae16447b245464a
+
+            typedef BOOL(WINAPI* LPFN_GLPI)(PSYSTEM_LOGICAL_PROCESSOR_INFORMATION, PDWORD);
+
+            auto handle = GetModuleHandle(L"kernel32");
+
+            auto glpi = (LPFN_GLPI) GetProcAddress(handle, "GetLogicalProcessorInformation");
+            if (glpi == NULL)
+                return;
+
+            DWORD buffer_bytes = 0;
+            int cache_size = 0;
+
+            glpi(0, &buffer_bytes);
+            std::size_t size = buffer_bytes / sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION);
+            SYSTEM_LOGICAL_PROCESSOR_INFORMATION* buffer = new SYSTEM_LOGICAL_PROCESSOR_INFORMATION[size];
+            glpi(buffer, &buffer_bytes);
+
+            for (std::size_t i = 0; i < size; i++)
+            {
+                if (buffer[i].Relationship == RelationCache &&
+                    buffer[i].Cache.Level == 1)
+                {
+                    cache_size = (int)buffer[i].Cache.Size;
+                    break;
+                }
+            }
+
+            delete buffer;
+
+            auto result = cache_size / 1024;
+
+        }
+
+
+
     }
 }
 
@@ -113,10 +207,14 @@ namespace DataStructuresAndAlgorithms_Hashing {
 
 void data_structures_and_algorithms()
 {
-    using namespace DataStructuresAndAlgorithms_Hashing;
+//    using namespace DataStructuresAndAlgorithms::Hashing;
+//    test_hashing_01();
+//    test_hashing_02();
 
-    hashing_01();
-    hashing_02();
+    using namespace DataStructuresAndAlgorithms::CacheLines;
+    //test_cache_thrashing();
+    test_cache_thrashing();
+    // test_examine_cache_lines();
 }
 
 // ===========================================================================
