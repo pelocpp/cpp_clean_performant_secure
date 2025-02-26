@@ -6,16 +6,10 @@
 
 #include <array>
 #include <iostream>
-#include <new>
 #include <print>
 #include <string>
 #include <unordered_map>
-
-#include <cstdlib>
-
-#define WIN32_LEAN_AND_MEAN 
-#include <windows.h>
-#include <processthreadsapi.h>
+#include <vector>
 
 namespace DataStructuresAndAlgorithms {
 
@@ -123,93 +117,82 @@ namespace DataStructuresAndAlgorithms {
             std::println("{} - Job: {}", sepp, job);
         }
     }
+}
 
-    namespace CacheLines {
+namespace DataStructuresAndAlgorithms {
 
-        static void test_examine_cache_line_size() {
+    namespace UsingParallelArrays {
 
-            constexpr auto cachelineSize = std::hardware_destructive_interference_size;
+        //class SmallObject {
+        //private:
+        //    std::array<char, 4> m_data;
+        //    int m_score;
+        //public:
+        //    SmallObject() : m_data{}, m_score{ std::rand() } {}
+        //};
+        //
+        //class BigObject {
+        //private:
+        //    std::array<char, 256> m_data;
+        //    int m_score;
+        //public:
+        //    BigObject() : m_data{}, m_score{ std::rand() } {}
+        //};
 
-            std::println("Cache Line Size: {}", cachelineSize);
+
+        // =======================================================
+        // calculate sizes of SmallObject and BigObject objects
+
+        template <size_t Size>
+        class Object {
+        private:
+            std::array<char, Size> m_data;
+            size_t                 m_score;
+        public:
+            Object() : m_data{}, m_score{ static_cast<size_t>(std::rand()) } {}
+
+            auto getScore() const { return m_score; }
+        };
+
+        using SmallObject = Object<4>;
+        using BigObject = Object<128>;
+
+        static void test_parallel_arrays_01() {
+
+            std::println("{}", sizeof(SmallObject));
+            std::println("{}", sizeof(BigObject));
         }
 
-        static void test_examine_l1_cache_size() {
+        // =======================================================
+        // evaluating performance - need a lot of objects
 
-            // https://gist.github.com/kimwalisch/16c34ae16447b245464a
+        constexpr auto Size = 1'000'000;
 
-            typedef BOOL(WINAPI* LPFN_GLPI)(PSYSTEM_LOGICAL_PROCESSOR_INFORMATION, PDWORD);
+        auto smallObjects = std::vector<SmallObject>(Size);
+        auto bigObjects = std::vector<BigObject>(Size);
 
-            auto handle = GetModuleHandle(L"kernel32");
-
-            auto glpi = (LPFN_GLPI) GetProcAddress(handle, "GetLogicalProcessorInformation");
-            if (glpi == NULL)
-                return;
-
-            DWORD bufferBytes = 0;
-            int cacheSize = 0;
-
-            // calculate buffer length
-            BOOL ret = glpi(0, &bufferBytes);
-
-            std::size_t size = bufferBytes / sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION);
-            
-            SYSTEM_LOGICAL_PROCESSOR_INFORMATION* buffer = new SYSTEM_LOGICAL_PROCESSOR_INFORMATION[size];
-            
-            // retrieve array of SYSTEM_LOGICAL_PROCESSOR_INFORMATION structures
-            ret = glpi(buffer, &bufferBytes);
-
-            for (std::size_t i = 0; i < size; i++)
-            {
-                if (buffer[i].Relationship == RelationCache && buffer[i].Cache.Level == 1)
-                {
-                    cacheSize = (int)buffer[i].Cache.Size;
-                    break;
-                }
-            }
-
-            delete[] buffer;
-
-            auto cacheSizeKB = cacheSize / 1024;
-            std::println("L1 Cache Size: {} kB", cacheSizeKB);
-        }
-
-        static void test_examine_cache_sizes() {
-
-      //      test_examine_cache_line_size();
-            test_examine_l1_cache_size();
-        }
-
-    }
-
-    namespace CacheLinesAndCacheMisses {
-
-        constexpr auto cachelineSize = std::hardware_destructive_interference_size;
-
-        constexpr auto capacityL1CacheSize = 32768; // L1 data cache size
-        
-        constexpr auto Size = capacityL1CacheSize / sizeof(int);
-        // constexpr auto Size = 10;
-
-        using MatrixType = std::array<std::array<size_t, Size>, Size>;
-
-        static MatrixType matrix;
-
-        static auto initMatrix(MatrixType& matrix) {
+        template <class T>
+        auto sumScores(const std::vector<T>& objects) {
 
             ScopedTimer watch{};
 
-            size_t value{};
+            size_t sum{ 0 };
 
-            for (size_t i{}; i != Size; ++i) {
-                for (size_t j{}; j != Size; ++j) {
-                    //matrix[i][j] = value++;      // no "cache thrashing"
-                    matrix[j][i] = value++;    // remove comment: demonstrates "cache thrashing"
-                }
+            for (const auto& obj : objects) {
+                sum += obj.getScore();
             }
+
+            return sum;
         }
 
-        static void test_cache_thrashing() {
-            initMatrix(matrix);
+        static void test_parallel_arrays_02() {
+
+            std::srand(static_cast<unsigned int>(std::time({})));
+
+            size_t sum{ 0 };
+
+            sum += sumScores(smallObjects);
+            sum += sumScores(bigObjects);
         }
     }
 }
@@ -218,17 +201,13 @@ namespace DataStructuresAndAlgorithms {
 
 void data_structures_and_algorithms()
 {
-//    using namespace DataStructuresAndAlgorithms::Hashing;
-//    test_hashing_01();
-//    test_hashing_02();
+    //using namespace DataStructuresAndAlgorithms::Hashing;
+    //test_hashing_01();
+    //test_hashing_02();
 
-    using namespace DataStructuresAndAlgorithms::CacheLines;
-    test_examine_cache_sizes();
-
-    using namespace DataStructuresAndAlgorithms::CacheLines;
-    ////test_cache_thrashing();
-    //test_cache_thrashing();
-    //// test_examine_cache_lines();
+    using namespace DataStructuresAndAlgorithms::UsingParallelArrays;
+ //   test_parallel_arrays_01();
+    test_parallel_arrays_02();
 }
 
 // ===========================================================================

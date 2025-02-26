@@ -19,11 +19,14 @@
 
 ---
 
-Fehlemeldung
+Fehlermeldung
 
 
 'std::_Uhash_compare<_Kty,_Hasher,_Keyeq>::_Uhash_compare(const std::_Uhash_compare<_Kty,_Hasher,_Keyeq> &)':
 attempting to reference a deleted function
+
+
+Hierzu ist Text ui unordered map zu machen .....
 
 ---
 
@@ -39,15 +42,6 @@ attempting to reference a deleted function
 ```
 
 ---
-
-ENTFERNEN:
-
-https://www.elektronik-kompendium.de/sites/com/0309291.htm
-
-https://www.howtogeek.com/891526/l1-vs-l2-vs-l3-cache
-
-
-
 
 ## CPU-Cache-Speicher <a name="link2"></a>
 
@@ -108,17 +102,6 @@ In *Abbildung* 1 finden Sie die Cache-Größen auf meinem Rechner auf meinem Rechn
 
 *Abbildung* 1: Cache-Größen auf meinem Rechner
 
-### Cache-Fehler (*Cache Misses*)
-
-Wenn die CPU die benötigten Daten nicht im Cache-Speicher findet, muss sie die Daten stattdessen aus dem langsameren Systemspeicher anfordern.
-Dies wird als *Cache-Fehler* (*cache miss*) bezeichnet.
-Die Einführung des L3-Cache verringerte die Wahrscheinlichkeit eines Fehlers und trug somit zur Leistungssteigerung bei.
-
-<img src="cpp_l1_l2_l3_cache.svg" width="500">
-
-*Abbildung* 2: Übliche CPU-Architektur mit L1-, L2- und L3-Cache.
-
-
 ### *Cache Lines*
 
 Beim Zugriff auf ein Byte im Speicher holt die CPU nicht nur das angeforderte Byte,
@@ -147,6 +130,8 @@ Die Größe einer Cache Line ist in C++ einfach bestimmbar:
 ```
 Cache Line Size: 64
 ```
+
+### Größe des L1 Caches
 
 Wir berechnen nun die Größe des L1 Caches auf meinem Rechner (Windows Betriebssystem).
 Dazu kommen einige Win32-API Betriebssystemfunktionen ins Spiel: `GetModuleHandle`, `GetProcAddress` und `GetLogicalProcessorInformation`.
@@ -204,52 +189,50 @@ mein Rechner hat 8 Kerne, jeder Kern hat einen L1-Anweisungs- und Datencache.
 Macht zusammen 8 * 2 * 32 Kb = 512 kB.
 
 
-WEITER: Cache Misses
+### Cache-Fehler (*Cache Misses*)
 
+Wenn die CPU die benötigten Daten nicht im Cache-Speicher findet, muss sie die Daten stattdessen aus dem langsameren Systemspeicher anfordern.
+Dies wird als *Cache-Fehler* (*cache miss*) bezeichnet.
+Die Einführung des L3-Cache verringerte die Wahrscheinlichkeit eines Fehlers und trug somit zur Leistungssteigerung bei.
 
+<img src="cpp_l1_l2_l3_cache.svg" width="500">
 
+*Abbildung* 2: Übliche CPU-Architektur mit L1-, L2- und L3-Cache.
 
+Wir betrachten nun ein Beispiel,
+in dem wir auf viele Daten im Speicher zugreifen.
 
-
-
-
-
-
-
-
-
-
+Dies kann vor den soeben gestellten Überlegungen &ndash; Stichwort *Cache Misses* &ndash;
+geschickt oder ungeschickt erfolgen.
 
 
 *Beispiel*:
 
 ```cpp
-01: constexpr auto cachelineSize = std::hardware_destructive_interference_size;
-02: 
-03: constexpr auto capacityL1CacheSize = 32768; // L1 data cache size
-04:         
-05: constexpr auto Size = capacityL1CacheSize / sizeof(int);
+01: constexpr auto capacityL1CacheSize = 32768;  // L1 Data Cache Size
+02:         
+03: constexpr auto Size = capacityL1CacheSize / sizeof(int);
+04: 
+05: using MatrixType = std::array<std::array<size_t, Size>, Size>;
 06: 
-07: using MatrixType = std::array<std::array<size_t, Size>, Size>;
+07: static MatrixType matrix;
 08: 
-09: static MatrixType matrix;
+09: static auto initMatrix(MatrixType& matrix) {
 10: 
-11: static auto initMatrix(MatrixType& matrix) {
+11:     ScopedTimer watch{};
 12: 
-13:     ScopedTimer watch{};
+13:     size_t value{};
 14: 
-15:     size_t value{};
-16: 
-17:     for (size_t i{}; i != Size; ++i) {
-18:         for (size_t j{}; j != Size; ++j) {
-19:             matrix[i][j] = value++;      // no "cache thrashing" // exchange indices i and j
-20:         }
-21:     }
-22: }
-23: 
-24: static void test_cache_thrashing() {
-25:     initMatrix(matrix);
-26: }
+15:     for (size_t i{}; i != Size; ++i) {
+16:         for (size_t j{}; j != Size; ++j) {
+17:             matrix[i][j] = value++;          // no "cache thrashing"
+18:         }
+19:     }
+20: }
+21: 
+22: void test() {
+23:     initMatrix(matrix);
+24: }
 ```
 
 *Ausgabe*: Ohne &bdquo;Cache Thrashing&bdquo;
@@ -265,7 +248,6 @@ Elapsed time: 612 [milliseconds]
 ```
 
 Beide Ausführungen beziehen sich auf den *Release*-Mode.
-
 
 ---
 

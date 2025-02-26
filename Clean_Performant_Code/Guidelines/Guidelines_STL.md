@@ -146,8 +146,6 @@ Im Fall von `std::map` ist dies ein *Hinweis* darauf, wo das Element eingefügt w
 
 Das Lambda-Objekt führt die eigentliche Umwandlung eines `Employees`-Objekts in einen `std::map`-Eintrag durch-
 
-
-
 Es ist sehr interessant, die Gehälter aller Mitarbeiter aufgelistet zu haben,
 aber vielleicht möchten Ihre Manager nicht, dass Sie wissen, wie hoch ihr Gehaltsscheck aussieht.
 

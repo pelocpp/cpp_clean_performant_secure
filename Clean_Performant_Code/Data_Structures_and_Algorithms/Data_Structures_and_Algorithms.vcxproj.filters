@@ -24,6 +24,9 @@
     <ClCompile Include="..\LoggerUtility\Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Cache.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data_Structures_and_Algorithms.md">
