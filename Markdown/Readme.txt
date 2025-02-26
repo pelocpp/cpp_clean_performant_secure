@@ -112,12 +112,6 @@ https://brainly.in/question/60524086#:~:text=643%20people%20helped-,Answer%3A,in
 
 // =============================================================
 
-CACHE MISSES
-
-https://www.codewithc.com/profiling-cache-misses-in-c/#matrix-multiplication-algorithm
-
-// =============================================================
-
 
 Der hat auch ein Buch ????
  

@@ -13,10 +13,6 @@
 
 #include <cstdlib>
 
-//// #undef UNICODE
-//#include <libloaderapi.h>
-//#include <windows.h>
-
 #define WIN32_LEAN_AND_MEAN 
 #include <windows.h>
 #include <processthreadsapi.h>
@@ -130,6 +126,63 @@ namespace DataStructuresAndAlgorithms {
 
     namespace CacheLines {
 
+        static void test_examine_cache_line_size() {
+
+            constexpr auto cachelineSize = std::hardware_destructive_interference_size;
+
+            std::println("Cache Line Size: {}", cachelineSize);
+        }
+
+        static void test_examine_l1_cache_size() {
+
+            // https://gist.github.com/kimwalisch/16c34ae16447b245464a
+
+            typedef BOOL(WINAPI* LPFN_GLPI)(PSYSTEM_LOGICAL_PROCESSOR_INFORMATION, PDWORD);
+
+            auto handle = GetModuleHandle(L"kernel32");
+
+            auto glpi = (LPFN_GLPI) GetProcAddress(handle, "GetLogicalProcessorInformation");
+            if (glpi == NULL)
+                return;
+
+            DWORD bufferBytes = 0;
+            int cacheSize = 0;
+
+            // calculate buffer length
+            BOOL ret = glpi(0, &bufferBytes);
+
+            std::size_t size = bufferBytes / sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION);
+            
+            SYSTEM_LOGICAL_PROCESSOR_INFORMATION* buffer = new SYSTEM_LOGICAL_PROCESSOR_INFORMATION[size];
+            
+            // retrieve array of SYSTEM_LOGICAL_PROCESSOR_INFORMATION structures
+            ret = glpi(buffer, &bufferBytes);
+
+            for (std::size_t i = 0; i < size; i++)
+            {
+                if (buffer[i].Relationship == RelationCache && buffer[i].Cache.Level == 1)
+                {
+                    cacheSize = (int)buffer[i].Cache.Size;
+                    break;
+                }
+            }
+
+            delete[] buffer;
+
+            auto cacheSizeKB = cacheSize / 1024;
+            std::println("L1 Cache Size: {} kB", cacheSizeKB);
+        }
+
+        static void test_examine_cache_sizes() {
+
+      //      test_examine_cache_line_size();
+            test_examine_l1_cache_size();
+        }
+
+    }
+
+    namespace CacheLinesAndCacheMisses {
+
         constexpr auto cachelineSize = std::hardware_destructive_interference_size;
 
         constexpr auto capacityL1CacheSize = 32768; // L1 data cache size
@@ -159,48 +212,6 @@ namespace DataStructuresAndAlgorithms {
             initMatrix(matrix);
         }
     }
-
-    namespace CacheLines {
-
-        static void test_examine_cache_lines() {
-
-            // https://gist.github.com/kimwalisch/16c34ae16447b245464a
-
-            typedef BOOL(WINAPI* LPFN_GLPI)(PSYSTEM_LOGICAL_PROCESSOR_INFORMATION, PDWORD);
-
-            auto handle = GetModuleHandle(L"kernel32");
-
-            auto glpi = (LPFN_GLPI) GetProcAddress(handle, "GetLogicalProcessorInformation");
-            if (glpi == NULL)
-                return;
-
-            DWORD buffer_bytes = 0;
-            int cache_size = 0;
-
-            glpi(0, &buffer_bytes);
-            std::size_t size = buffer_bytes / sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION);
-            SYSTEM_LOGICAL_PROCESSOR_INFORMATION* buffer = new SYSTEM_LOGICAL_PROCESSOR_INFORMATION[size];
-            glpi(buffer, &buffer_bytes);
-
-            for (std::size_t i = 0; i < size; i++)
-            {
-                if (buffer[i].Relationship == RelationCache &&
-                    buffer[i].Cache.Level == 1)
-                {
-                    cache_size = (int)buffer[i].Cache.Size;
-                    break;
-                }
-            }
-
-            delete buffer;
-
-            auto result = cache_size / 1024;
-
-        }
-
-
-
-    }
 }
 
 // =================================================================
@@ -212,9 +223,12 @@ void data_structures_and_algorithms()
 //    test_hashing_02();
 
     using namespace DataStructuresAndAlgorithms::CacheLines;
+    test_examine_cache_sizes();
+
+    using namespace DataStructuresAndAlgorithms::CacheLines;
+    ////test_cache_thrashing();
     //test_cache_thrashing();
-    test_cache_thrashing();
-    // test_examine_cache_lines();
+    //// test_examine_cache_lines();
 }
 
 // ===========================================================================

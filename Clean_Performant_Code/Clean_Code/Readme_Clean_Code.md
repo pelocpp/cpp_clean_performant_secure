@@ -75,7 +75,6 @@ But only good programmer can write a code that human can understand.&rdquo;
   * Wenn Dein Code sauber ist, findest Du Fehler leicht.
   * Wenn Dein Code schmutzig ist, tummeln sich die Fehler überall!
 
-
 ---
 
 ## [Literatur](./Literature.md)
