@@ -143,6 +143,7 @@
     <None Include="cpp_stl_container_deque.svg" />
     <None Include="cpp_stl_container_forward_list.svg" />
     <None Include="cpp_stl_container_list.svg" />
+    <None Include="cpp_stl_container_tree.svg" />
     <None Include="cpp_stl_container_vector.svg" />
     <None Include="Data_Structures_and_Algorithms.md" />
   </ItemGroup>

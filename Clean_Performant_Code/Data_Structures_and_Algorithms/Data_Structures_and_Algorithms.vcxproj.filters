@@ -50,6 +50,9 @@
     <None Include="cpp_stl_container_list.svg">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="cpp_stl_container_tree.svg">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="L1_L2_L3_Cache.png">

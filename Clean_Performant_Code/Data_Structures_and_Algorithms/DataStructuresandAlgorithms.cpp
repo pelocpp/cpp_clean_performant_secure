@@ -6,6 +6,7 @@
 
 #include <algorithm>
 #include <array>
+#include <fstream>
 #include <iostream>
 #include <memory>
 #include <print>
@@ -498,6 +499,21 @@ namespace DataStructuresAndAlgorithms {
             }
         }
     }
+
+    namespace Strings {
+
+        static void test_strings() {
+
+            auto in = std::ifstream{ "../Data_Structures_and_Algorithms/Program.cpp", std::ios::binary | std::ios::ate };
+
+            if (in.is_open()) {
+                auto size = in.tellg();
+                auto content = std::string(size, '\0');
+                in.seekg(0);
+                in.read(&content[0], size);   // "content" now contains the entire file
+            }
+        }
+    }
 }
 
 // =================================================================
@@ -521,9 +537,12 @@ void data_structures_and_algorithms()
     //using namespace DataStructuresAndAlgorithms::UsingParallelArrays_ParallelUserData;
     //test_parallel_arrays_with_parallel_user_data();
 
-    using namespace DataStructuresAndAlgorithms::Vectors;
+    // using namespace DataStructuresAndAlgorithms::Vectors;
     // test_vectors();
-    test_arrays();
+    // test_arrays();
+
+    using namespace DataStructuresAndAlgorithms::Strings;
+    test_strings();
 
 }
 

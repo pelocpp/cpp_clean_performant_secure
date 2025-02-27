@@ -335,7 +335,7 @@ siehe dazu auch *Abbildung* 5:
 
 ### Doppelt verkettete Liste (`std::list`)
 
-Die `std::list` ist eine doppelt verkettete Liste, was bedeutet,
+Die Klasse `std::list` ist eine doppelt verkettete Liste, was bedeutet,
 dass jedes Element eine Verknüpfung zum nächsten Element und eine Verknüpfung zu seinem vorherigen Element hat.
 
 Dadurch ist es möglich, die Liste sowohl vorwärts als auch rückwärts zu durchlaufen.
@@ -348,7 +348,7 @@ zum Vektor höchstwahrscheinlich viel mehr Cache-Fehler erzeugt und damit langsam
 
 <img src="cpp_stl_container_list.svg" width="450">
 
-*Abbildung* 6: Beispiel eines `std::list`-Objekts mit Zeigern auf die jeweils nächste und vorherige Elemente.
+*Abbildung* 6: Beispiel eines `std::list`-Objekts mit Zeigern auf die jeweils nächsten und vorherigen Elemente.
 
 
 
@@ -357,7 +357,7 @@ zum Vektor höchstwahrscheinlich viel mehr Cache-Fehler erzeugt und damit langsam
 
 Es gibt auch eine einfach verkettete Liste namens `std::forward_list`.
 
-Der Grund, warum Sie die doppelt verknüpfte Liste nicht immer der `std::forward_list` vorziehen sollten,
+Der Grund, warum Sie die doppelt verknüpfte Listen nicht immer der `std::forward_list` vorziehen sollten,
 ist der übermäßige Speicher, der von den *Previous*-Zeigern in der doppelt verkettete Liste belegt wird.
 
 Wenn Sie die Liste also nicht rückwärts durchlaufen müssen, verwenden Sie die Klasse `std::forward_list`.
@@ -370,6 +370,7 @@ dass sie für sehr kurze Listen optimiert ist.
 *Abbildung* 7: Beispiel eines `std::forward_list`-Objekts mit Zeigern auf das jeweils nächste Element.
 
 
+### Klasse `std::string`
 
 
 ### Performanzbetrachtungen bei Objekten unterschiedlicher Größe
@@ -414,8 +415,55 @@ dass sie für sehr kurze Listen optimiert ist.
 37: }
 ```
 
+---
+
+### Assoziative Container (*Associative Containers*)
+
+Assoziative Container werden in der Informatik auch assoziative Arrays oder Maps oder Dictionaries genannt.
+
+Ein assoziativer Container stellt ein spezielle Variante eines Arrays dar,
+bei dem der Index nicht numerisch, sondern auch ein beliebiger anderen Datentyp (wie z. B. std::string) sein kann
+
+Die Indizes werden als Schlüssel (*Keys*) bezeichnet und die an dieser Position gespeicherten Daten
+als Wert (*Value*).
+
+Ein assoziativer Container repräsentiert folglich eine Menge von (Schlüssel, Wert)-Paaren.
 
 
+  * `std::set`
+  * `std::map`
+  * `std::multiset`
+  * `std::multimap`
+
+
+In einem assoziativen Container ist es  nicht möglich,
+ein Element hinten oder vorne hinzuzufügen,
+so wie wir es mit std::vector::push_back() oder std::list::push_front() tun würden.
+
+Stattdessen werden die Elemente so hinzugefügt, dass es möglich ist, das Element zu finden,
+ohne den gesamten Container durchsuchen zu müssen.
+
+Man unterscheidet zwei Kategorien von assoziativen Containern:
+
+
+  * Ordered associative containers
+  * Unordered associative containers:
+
+
+
+
+WEITER: Adaptoren
+
+
+flat_set
+flat_multiset
+flat_map
+flat_multimap
+
+
+
+
+ 
 ---
 
 ## Literatur <a name="link6"></a>
