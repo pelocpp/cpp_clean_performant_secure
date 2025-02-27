@@ -1,4 +1,4 @@
-# Daten Strukturen und Algorithmen
+# Datenstrukturen und Algorithmen
 
 [Zurück](../../Readme.md)
 
@@ -7,8 +7,15 @@
 ## Inhalt
 
   * [Allgemeines](#link1)
+  
+  * [CPU-Cache-Speicher](#link1)
+  
+  * [Performanzbetrachtungen bei Objekten unterschiedlicher Größe](#link1)
+
+  * [Datenstrukturen / STL Container](#link1)
+
   * [Hashing in C++ Standard Library](#link1)
-  * [XXX](#link1)
+  
   * [Literatur](#link7)
 
 ---
@@ -31,15 +38,6 @@ Hierzu ist Text ui unordered map zu machen .....
 ---
 
 ## Allgemeines <a name="link1"></a>
-
----
-
-## Metaprogrammierung mit Templates <a name="link2"></a>
-
-*Beispiel*:
-
-```cpp
-```
 
 ---
 
@@ -189,6 +187,7 @@ mein Rechner hat 8 Kerne, jeder Kern hat einen L1-Anweisungs- und Datencache.
 Macht zusammen 8 * 2 * 32 Kb = 512 kB.
 
 
+
 ### Cache-Fehler (*Cache Misses*)
 
 Wenn die CPU die benötigten Daten nicht im Cache-Speicher findet, muss sie die Daten stattdessen aus dem langsameren Systemspeicher anfordern.
@@ -251,6 +250,150 @@ Beide Ausführungen beziehen sich auf den *Release*-Mode.
 
 ---
 
+## Datenstrukturen / STL Container
+
+### Sequentielle Container (*Sequence Container*)
+
+Unter einem &bdquo;sequentielle Container&rdquo; verstehen wir, 
+dass auf die Elemente sequenziell zugegriffen werden kann.
+
+Dies kann mit einem Index erfolgen.
+
+Die STL kennt folgende sequentielle Container:
+
+  * `std::array`
+  * `std::vector`
+  * `std::list`
+  * `std::forward_list`
+  * `std::deque`
+
+### Vektoren (`std::vector`)
+
+Die Klasse `std::vector` ist der am häufigsten verwendete STL Container.
+
+Intern, also in Bezug auf die Ablage seiner Daten im Speicher, verhält sich ein Vektor wie ein Array,
+das bei Bedarf dynamisch wächst.
+
+Die einem Vektor hinzugefügten Elemente werden zusammenhängend im Speicher angeordnet.
+Dies bedeutet, dass man in konstanter Zeit auf jedes Element im Vektor über einen Index zugreifen kann.
+
+Die Daten eines Vektors befinden sich auf dem Heap (Halde).
+
+Will man die Elemente eines Vektors in der Reihenfolge durchlaufen,
+in der sie angeordnet sind, erzielt man eine hervorragende Performanz.
+
+Ein Vektor besitzt eine *Größe* (`length()`) und eine *Kapazität* (`capacity()`).
+Die Größe ist die Anzahl der Elemente, die aktuell im Container enthalten sind,
+die Kapazität beschreibt die Anzahl der Elemente, die der Vektor enthalten kann,
+bis er mehr Speicherplatz anfordern muss.
+
+<img src="cpp_stl_container_vector.svg" width="400">
+
+*Abbildung* 3: XXX
+
+### Arrays (`std::array`)
+
+Ein Feld (Array) ist ähnlich zu einem Vektor, nur ist sein Größe fest.
+
+Die Elemente eines Arrays liegen je nach der Örtlichkeit der Definition eines `std::array`-Objekts
+im globalen Datensegment oder auf dem Stack. Damit ist gesagt, dass sich ein `std::array`-Objekt
+per se nicht auf dem Heap befindet (es sein denn, es wird mittels `new` explizit dort hingelegt).
+
+In der STL ist die Klasse `std::array` ein Klassentemplate.
+Dies hat zur Folge, dass sowohl die Größe als auch der Typ der Elemente Teil des konkreten Typs sind.
+
+
+<img src="cpp_stl_container_array.svg" width="250">
+
+*Abbildung* 4: XXX
+
+
+### Double-ended Queue (`std::deque`)
+
+Muss man häufig Elemente sowohl am Anfang als auch am Ende eines Containers hinzufügen,
+ist die Klasse `std::vector` nicht die erste Wahl.
+
+Es bietet sich in diesem Fall die Klasse `std::deque` an,
+was die Abkürzung für Double-Ended Queue ist.
+
+
+Intern wird ein `std::deque`-Objekt normalerweise als Sammlung von Arrays mit fester Größe implementiert,
+was es ermöglicht, in konstanter Zeit auf Elemente über einen Index zuzugreifen.
+
+Es werden aber nicht alle Elemente zusammenhängend im Speicher gespeichert,
+so wie dies bei den Klassen `std::vector` und `std::array` der Fall ist.
+
+
+
+<img src="cpp_stl_container_deque.svg" width="250">
+
+*Abbildung* 5: XXX
+
+### Doppelt verkettete Liste (`std::list`)
+
+
+<img src="cpp_stl_container_list.svg" width="250">
+
+*Abbildung* 6: XXX
+
+
+
+### Vorwärts verkettete Liste (`std::forward_list`)
+
+
+<img src="cpp_stl_container_forward_list.svg" width="250">
+
+*Abbildung* 7: XXX
+
+
+
+
+### Performanzbetrachtungen bei Objekten unterschiedlicher Größe
+
+```cpp
+01: template <size_t Size>
+02: class Object {
+03: private:
+04:     std::array<char, Size> m_data{};
+05:     int m_score{ std::rand() };
+06: public:
+07:     auto getScore() const { return m_score; }
+08: };
+09: 
+10: using SmallObject = Object<4>;
+11: using BigObject = Object<256>;
+12: 
+13: constexpr auto Size = 1'000'000;
+14: 
+15: auto smallObjects = std::vector<SmallObject>(Size);
+16: auto bigObjects = std::vector<BigObject>(Size);
+17: 
+18: template <class T>
+19: auto sumScores(const std::vector<T>& objects) {
+20: 
+21:     ScopedTimer watch{};
+22: 
+23:     size_t sum{ 0 };
+24: 
+25:     for (const auto& obj : objects) {
+26:         sum += obj.getScore();
+27:     }
+28: 
+29:     return sum;
+30: }
+31: 
+32: static void test_parallel_arrays_02() {
+33: 
+34:     size_t sum{ 0 };
+35:     sum += sumScores(smallObjects);
+36:     sum += sumScores(bigObjects);
+37: }
+```
+
+
+
+---
+
 ## Literatur <a name="link6"></a>
 
 Ein interessanter Artikel zum Thema *Demystifying CPU Caches with Examples*
@@ -259,17 +402,8 @@ findet sich [hier](https://mecha-mind.medium.com/demystifying-cpu-caches-with-ex
 Eine *Gallery of Processor Cache Effects* beschreibt *Igor Ostrovsky*
 in seinem [Blog](https://igoro.com/archive/gallery-of-processor-cache-effects/).
 
-
-
-
----
-
-
-Die Anregungen zur Berechnung der L1 Cache Größe finden Sie unter dem Github Gist
-
+Die Anregungen zur Berechnung der L1 Cache Größe finden Sie unter dem Github Gist<br />
 [Get L1 data cache size on most operating systems](https://gist.github.com/kimwalisch/16c34ae16447b245464a)
-
-
 
 ---
 
