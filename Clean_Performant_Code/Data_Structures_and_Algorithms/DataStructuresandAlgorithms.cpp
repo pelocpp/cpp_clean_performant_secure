@@ -482,7 +482,7 @@ namespace DataStructuresAndAlgorithms {
         static void test_arrays()
         {
             {
-                auto a = std::array<int, 5>{};
+                auto a = std::array<int, 5>{ 1, 2, 3, 4, 5 };
 
                 for (auto elem : a) {
                     std::print("{} ", elem);

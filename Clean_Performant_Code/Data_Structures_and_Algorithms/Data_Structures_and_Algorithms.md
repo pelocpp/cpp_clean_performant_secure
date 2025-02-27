@@ -254,10 +254,8 @@ Beide Ausführungen beziehen sich auf den *Release*-Mode.
 
 ### Sequentielle Container (*Sequence Container*)
 
-Unter einem &bdquo;sequentielle Container&rdquo; verstehen wir, 
-dass auf die Elemente sequenziell zugegriffen werden kann.
-
-Dies kann mit einem Index erfolgen.
+Unter einem &bdquo;sequentiellen Container&rdquo; verstehen wir, 
+dass auf die Elemente des Containers sequenziell zugegriffen werden kann.
 
 Die STL kennt folgende sequentielle Container:
 
@@ -267,83 +265,109 @@ Die STL kennt folgende sequentielle Container:
   * `std::forward_list`
   * `std::deque`
 
+---
+
 ### Vektoren (`std::vector`)
 
 Die Klasse `std::vector` ist der am häufigsten verwendete STL Container.
 
 Intern, also in Bezug auf die Ablage seiner Daten im Speicher, verhält sich ein Vektor wie ein Array,
-das bei Bedarf dynamisch wächst.
+das allerdings bei Bedarf dynamisch wächst.
 
 Die einem Vektor hinzugefügten Elemente werden zusammenhängend im Speicher angeordnet.
 Dies bedeutet, dass man in konstanter Zeit auf jedes Element im Vektor über einen Index zugreifen kann.
 
-Die Daten eines Vektors befinden sich auf dem Heap (Halde).
+Die Daten eines Vektors befinden sich auf dem *Heap* (Halde).
 
 Will man die Elemente eines Vektors in der Reihenfolge durchlaufen,
-in der sie angeordnet sind, erzielt man eine hervorragende Performanz.
+in der sie angeordnet sind, erzielt man eine sehr gute Performanz.
 
 Ein Vektor besitzt eine *Größe* (`length()`) und eine *Kapazität* (`capacity()`).
-Die Größe ist die Anzahl der Elemente, die aktuell im Container enthalten sind,
+Die Größe beschreibt die Anzahl der Elemente, die aktuell im Container enthalten sind,
 die Kapazität beschreibt die Anzahl der Elemente, die der Vektor enthalten kann,
 bis er mehr Speicherplatz anfordern muss.
 
 <img src="cpp_stl_container_vector.svg" width="400">
 
-*Abbildung* 3: XXX
+*Abbildung* 3: Ein `std::vector`-Objekt mit den beiden Eigenschaften *Size* und *Capacity*.
 
 ### Arrays (`std::array`)
 
 Ein Feld (Array) ist ähnlich zu einem Vektor, nur ist sein Größe fest.
 
-Die Elemente eines Arrays liegen je nach der Örtlichkeit der Definition eines `std::array`-Objekts
+Die Elemente eines Arrays liegen je nach der Örtlichkeit der Definition 
 im globalen Datensegment oder auf dem Stack. Damit ist gesagt, dass sich ein `std::array`-Objekt
-per se nicht auf dem Heap befindet (es sein denn, es wird mittels `new` explizit dort hingelegt).
+*per se* nicht auf dem Heap befindet (es sein denn, es wird mittels `new` explizit dort hingelegt).
 
 In der STL ist die Klasse `std::array` ein Klassentemplate.
 Dies hat zur Folge, dass sowohl die Größe als auch der Typ der Elemente Teil des konkreten Typs sind.
 
+```cpp
+auto a = std::array<int, 5>{ 1, 2, 3, 4, 5 };
+```
+
+
 
 <img src="cpp_stl_container_array.svg" width="250">
 
-*Abbildung* 4: XXX
+*Abbildung* 4: Ein `std::array`-Objekt, die Länge *Size* (hier: 7) ist unveränderbar.
 
 
 ### Double-ended Queue (`std::deque`)
 
 Muss man häufig Elemente sowohl am Anfang als auch am Ende eines Containers hinzufügen,
-ist die Klasse `std::vector` nicht die erste Wahl.
+ist ein `std::vector`-Objekt nicht die erste Wahl.
 
 Es bietet sich in diesem Fall die Klasse `std::deque` an,
-was die Abkürzung für Double-Ended Queue ist.
-
+was die Abkürzung für &bdquo;*Double-Ended Queue*&rdquo; ist.
 
 Intern wird ein `std::deque`-Objekt normalerweise als Sammlung von Arrays mit fester Größe implementiert,
 was es ermöglicht, in konstanter Zeit auf Elemente über einen Index zuzugreifen.
 
 Es werden aber nicht alle Elemente zusammenhängend im Speicher gespeichert,
-so wie dies bei den Klassen `std::vector` und `std::array` der Fall ist.
+so wie dies bei den Klassen `std::vector` und `std::array` der Fall ist,
+siehe dazu auch *Abbildung* 5:
 
+<img src="cpp_stl_container_deque.svg" width="450">
 
+*Abbildung* 5: Mögliche interne Repräsentation eines `std::deque`-Objekts.
 
-<img src="cpp_stl_container_deque.svg" width="250">
-
-*Abbildung* 5: XXX
 
 ### Doppelt verkettete Liste (`std::list`)
 
+Die `std::list` ist eine doppelt verkettete Liste, was bedeutet,
+dass jedes Element eine Verknüpfung zum nächsten Element und eine Verknüpfung zu seinem vorherigen Element hat.
 
-<img src="cpp_stl_container_list.svg" width="250">
+Dadurch ist es möglich, die Liste sowohl vorwärts als auch rückwärts zu durchlaufen.
 
-*Abbildung* 6: XXX
+Beachten Sie, dass die Elemente, selbst wenn sie in einer Sequenz angeordnet sind,
+nicht wie bei einem Vektor und einem Array zusammenhängend im Speicher angeordnet sind.
+Das bedeutet, dass das Iterieren einer verketteten Liste im Vergleich
+zum Vektor höchstwahrscheinlich viel mehr Cache-Fehler erzeugt und damit langsamer ist.
+
+
+<img src="cpp_stl_container_list.svg" width="450">
+
+*Abbildung* 6: Beispiel eines `std::list`-Objekts mit Zeigern auf die jeweils nächste und vorherige Elemente.
 
 
 
 ### Vorwärts verkettete Liste (`std::forward_list`)
 
 
-<img src="cpp_stl_container_forward_list.svg" width="250">
+Es gibt auch eine einfach verkettete Liste namens `std::forward_list`.
 
-*Abbildung* 7: XXX
+Der Grund, warum Sie die doppelt verknüpfte Liste nicht immer der `std::forward_list` vorziehen sollten,
+ist der übermäßige Speicher, der von den *Previous*-Zeigern in der doppelt verkettete Liste belegt wird.
+
+Wenn Sie die Liste also nicht rückwärts durchlaufen müssen, verwenden Sie die Klasse `std::forward_list`.
+
+Ein weiteres interessantes Merkmal der Klasse `std::forward_list` ist,
+dass sie für sehr kurze Listen optimiert ist.
+
+<img src="cpp_stl_container_forward_list.svg" width="450">
+
+*Abbildung* 7: Beispiel eines `std::forward_list`-Objekts mit Zeigern auf das jeweils nächste Element.
 
 
 
