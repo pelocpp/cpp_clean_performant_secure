@@ -446,8 +446,17 @@ namespace DataStructuresAndAlgorithms {
 
     namespace Vectors {
 
-        static void test_vectors()
+        static void test_vector()
         {
+            {
+                auto vec = std::vector{ 1, 2, 3 };
+
+                vec.push_back(4);
+                vec.push_back(5);
+
+                std::println("Size: {} - Capacity: {}", vec.size(), vec.capacity());
+            }
+
             {
                 auto vec = std::vector{ 1, 2, 3, 4, 5 };
                 for (auto elem : vec) {
@@ -480,8 +489,14 @@ namespace DataStructuresAndAlgorithms {
             }
         }
 
-        static void test_arrays()
+        static void test_array()
         {
+            {
+                auto a = std::array<int, 5>{ 1, 2, 3, 4, 5 };
+
+                auto b = std::array{ 1, 2, 3, 4, 5 };
+            }
+
             {
                 auto a = std::array<int, 5>{ 1, 2, 3, 4, 5 };
 
@@ -537,12 +552,12 @@ void data_structures_and_algorithms()
     //using namespace DataStructuresAndAlgorithms::UsingParallelArrays_ParallelUserData;
     //test_parallel_arrays_with_parallel_user_data();
 
-    // using namespace DataStructuresAndAlgorithms::Vectors;
-    // test_vectors();
-    // test_arrays();
+     using namespace DataStructuresAndAlgorithms::Vectors;
+     test_vector();
+     //test_array();
 
-    using namespace DataStructuresAndAlgorithms::Strings;
-    test_strings();
+    //using namespace DataStructuresAndAlgorithms::Strings;
+    //test_strings();
 
 }
 

@@ -267,7 +267,7 @@ Die STL kennt folgende sequentielle Container:
 
 ---
 
-### Vektoren (`std::vector`)
+### Vektor (`std::vector`)
 
 Die Klasse `std::vector` ist der am häufigsten verwendete STL Container.
 
@@ -276,6 +276,20 @@ das allerdings bei Bedarf dynamisch wächst.
 
 Die einem Vektor hinzugefügten Elemente werden zusammenhängend im Speicher angeordnet.
 Dies bedeutet, dass man in konstanter Zeit auf jedes Element im Vektor über einen Index zugreifen kann.
+
+
+```cpp
+auto vec = std::vector{ 1, 2, 3 };
+vec.push_back(4);
+vec.push_back(5);
+std::println("Size: {} - Capacity: {}", vec.size(), vec.capacity());
+```
+
+*Ausgabe*:
+
+```
+Size: 5 - Capacity: 6
+```
 
 Die Daten eines Vektors befinden sich auf dem *Heap* (Halde).
 
@@ -291,11 +305,13 @@ bis er mehr Speicherplatz anfordern muss.
 
 *Abbildung* 3: Ein `std::vector`-Objekt mit den beiden Eigenschaften *Size* und *Capacity*.
 
-### Arrays (`std::array`)
+---
+
+### Array (`std::array`)
 
 Ein Feld (Array) ist ähnlich zu einem Vektor, nur ist sein Größe fest.
 
-Die Elemente eines Arrays liegen je nach der Örtlichkeit der Definition 
+Die Elemente eines Arrays liegen je nach Örtlichkeit der Definition 
 im globalen Datensegment oder auf dem Stack. Damit ist gesagt, dass sich ein `std::array`-Objekt
 *per se* nicht auf dem Heap befindet (es sein denn, es wird mittels `new` explizit dort hingelegt).
 
@@ -307,11 +323,18 @@ auto a = std::array<int, 5>{ 1, 2, 3, 4, 5 };
 ```
 
 
+Auf Grund der *Class Template Argument Deduction* (*CTAD*) 
+kann man auch schreiben:
+
+```cpp
+auto a = std::array{ 1, 2, 3, 4, 5 };
+```
 
 <img src="cpp_stl_container_array.svg" width="250">
 
 *Abbildung* 4: Ein `std::array`-Objekt, die Länge *Size* (hier: 7) ist unveränderbar.
 
+---
 
 ### Double-ended Queue (`std::deque`)
 
@@ -319,7 +342,7 @@ Muss man häufig Elemente sowohl am Anfang als auch am Ende eines Containers hinz
 ist ein `std::vector`-Objekt nicht die erste Wahl.
 
 Es bietet sich in diesem Fall die Klasse `std::deque` an,
-was die Abkürzung für &bdquo;*Double-Ended Queue*&rdquo; ist.
+was als Abkürzung für &bdquo;*Double-Ended Queue*&rdquo; steht.
 
 Intern wird ein `std::deque`-Objekt normalerweise als Sammlung von Arrays mit fester Größe implementiert,
 was es ermöglicht, in konstanter Zeit auf Elemente über einen Index zuzugreifen.
@@ -332,6 +355,7 @@ siehe dazu auch *Abbildung* 5:
 
 *Abbildung* 5: Mögliche interne Repräsentation eines `std::deque`-Objekts.
 
+---
 
 ### Doppelt verkettete Liste (`std::list`)
 
@@ -345,20 +369,18 @@ nicht wie bei einem Vektor und einem Array zusammenhängend im Speicher angeordne
 Das bedeutet, dass das Iterieren einer verketteten Liste im Vergleich
 zum Vektor höchstwahrscheinlich viel mehr Cache-Fehler erzeugt und damit langsamer ist.
 
-
 <img src="cpp_stl_container_list.svg" width="450">
 
-*Abbildung* 6: Beispiel eines `std::list`-Objekts mit Zeigern auf die jeweils nächsten und vorherigen Elemente.
+*Abbildung* 6: Beispiel eines `std::list`-Objekts mit Zeigern auf das jeweils nächste und vorherige Element.
 
-
+---
 
 ### Vorwärts verkettete Liste (`std::forward_list`)
 
-
 Es gibt auch eine einfach verkettete Liste namens `std::forward_list`.
 
-Der Grund, warum Sie die doppelt verknüpfte Listen nicht immer der `std::forward_list` vorziehen sollten,
-ist der übermäßige Speicher, der von den *Previous*-Zeigern in der doppelt verkettete Liste belegt wird.
+Der Grund, warum Sie die doppelt verkettete Listen nicht immer der `std::forward_list` vorziehen sollten,
+ist der übermäßige Speicher, der von den *Previous*-Zeigern (Zeiger auf das vorherige Element) in der doppelt verkettete Liste belegt wird.
 
 Wenn Sie die Liste also nicht rückwärts durchlaufen müssen, verwenden Sie die Klasse `std::forward_list`.
 
@@ -369,9 +391,155 @@ dass sie für sehr kurze Listen optimiert ist.
 
 *Abbildung* 7: Beispiel eines `std::forward_list`-Objekts mit Zeigern auf das jeweils nächste Element.
 
+---
 
 ### Klasse `std::string`
 
+---
+
+### Assoziative Container (*Associative Containers*)
+
+Assoziative Container werden in der Informatik auch *assoziative Arrays* oder *Maps* oder *Dictionaries* genannt.
+
+Ein assoziativer Container stellt ein spezielle Variante eines Arrays dar,
+bei dem der Index nicht numerisch, sondern auch ein beliebiger anderer Datentyp (wie z. B. `std::string`) sein kann.
+
+Dies bedeutet anders herum gesagt:
+In einem assoziativen Container ist es nicht möglich,
+ein Element hinten oder vorne hinzuzufügen,
+so wie wir es mit `push_back()` (Klasse `std::vector`) oder `push_front()` (Klasse `std::list`) tun würden.
+
+Stattdessen werden die Elemente so hinzugefügt, dass es möglich ist, ein Element zu finden,
+ohne den gesamten Container sequentiell durchlaufen zu müssen.
+
+Die Indizes werden als Schlüssel (*Keys*) bezeichnet und die an dieser Position gespeicherten Daten
+als Wert (*Value*).
+
+Ein assoziativer Container repräsentiert folglich eine Menge von {*Key*/*Value*}&ndash;Paaren.
+
+Man unterscheidet zwei Kategorien von assoziativen Containern:
+
+  * Geordnete assoziative Container
+  * Ungeordnete assoziative Container
+
+
+Folgende geordnete assoziative Container gibt es in der STL:
+
+  * `std::set`
+  * `std::map`
+  * `std::multiset`
+  * `std::multimap`
+
+Dazu gesellen sich die folgenden ungeordneten assoziative Container:
+
+  * `std::unordered_set`
+  * `std::unordered_map`
+  * `std::unordered_multiset`
+  * `std::unordered_multimap`
+
+
+
+
+---
+
+### Geordnete assoziative Container (`std::set`, `std::map`)
+
+Die geordneten assoziativen Container garantieren, dass die Operationen Einfügen, Löschen und Suchen
+in logarithmischer Zeit, *O(log n)*, durchgeführt werden können.
+
+Wie das erreicht wird, hängt von der jeweiligen Implementierung der Klassen in der STL ab.
+
+Die bekanntesten Implementierungen verwenden jedoch eine Art 
+&bdquo;Self-balancing Binary Search Tree&rdquo; (selbstbalancierender binärer Suchbaum).
+
+Die Tatsache, dass der Baum ungefähr ausgeglichen bleibt,
+ist notwendig, um die Höhe des Baums und damit auch die Laufzeit im schlimmsten Fall beim Zugriff
+auf Elemente zu kontrollieren.
+
+Der Baum muss keinen Speicher vorab reservieren.
+
+Daher reserviert ein Baum normalerweise jedes Mal, wenn ein Element eingefügt wird,
+Speicher in der Freispeicherverwaltung (*Heap*) und gibt auch Speicher frei, wenn Elemente gelöscht werden.
+
+Die folgende *Abbildung* 8 soll symbolisch einen balancierten Baum mit Höhe *O(log n)* demonstrieren:
+
+<img src="cpp_stl_container_tree.svg" width="450">
+
+*Abbildung* 8: Die Höhe des Baumes ist *O(log n)*, wenn er balanciert ist.
+
+---
+
+### Ungeordnete assoziative Container (`std::unordered_set`, `std::unordered_map`)
+
+Die ungeordneten Versionen von *Sets* und *Maps* bieten in der STL
+hashbasierte Alternativen zu den baumbasierten Versionen.
+
+Die Datenstrukturen, die sich hinter den Klassen `std::unordered_set` und `std::unordered_map` verbergen,
+werden als *Hash-Tabellen* bezeichnet.
+
+Hash-Tabellen stellen Einfüge-, Such- und Löschvorgänge in konstanter Zeit zur Verfügung,
+was im Mittel ein konstanter Zeitaufwand (*O(1)*) bedeutet.
+
+Einige Hinweise zu den Details einer *Hash-Tabelle*:
+
+  * Eine Hash-Tabelle speichert ihre Elemente in einer Art Array bestehend aus so genannten *Buckets*.
+
+  * Wenn ein Element zur Hash-Tabelle hinzugefügt wird, wird mithilfe einer Hash-Funktion ein `int`-Wert für das Element berechnet.
+
+  * Dieser Wert wird normalerweise als &bdquo;Hash-Wert&rdquo; des Elements bezeichnet.
+
+  * Der Hash-Wert wird dann auf die Größe des Arrays begrenzt (beispielsweise mithilfe der Modulo-Operation),
+   sodass der neue begrenzte Wert als Index im Array verwendet werden kann.
+
+  * Sobald der Index berechnet ist, kann die Hash-Tabelle das Element im Array an diesem Index speichern.
+
+  * Die Suche nach einem Element funktioniert auf ähnliche Weise, indem zuerst ein Hash-Wert für das gesuchte Element berechnet
+   und dann auf das Array zugegriffen wird.
+
+  * Abgesehen von der Berechnung des Hash-Werts ist nur noch ein unscheinbares Problem zu lösen:
+  Was passiert, wenn zwei verschiedene Elemente denselben Index generieren, entweder weil sie denselben Hash-Wert erzeugt haben oder weil zwei verschiedene Hash-Werte auf denselben Index heruntergerechnet werden?
+
+  * Man nennt diese Beobachtung eine *Hash-Kollision*:
+  Derartige Kollisionen können häufig passieren, zum Beispiel dann,
+  wenn das Array klein ist im Vergleich zur Anzahl der Elemente, die hinzugefügt werden.
+
+  * Es gibt verschiedene Möglichkeiten, mit Hash-Kollisionen umzugehen.
+  Ein bekannte Lösungsstrategie ist das so genannte *Separate Chaining* (*separate Verkettung*).
+
+  * *Separate Chaining* löst das Problem dadurch, dass ein Bucket als eine Art Container angesehen wird, z.B. als eine verkettete Liste.
+
+  * Das Auffinden eines Elements in einem bestimmten Bucket erfolgt damit so,
+  dass die Elemente eines Buckets linear gescannt werden müssen, bis das gesuchte Element gefunden wurde.
+
+
+Die folgende Abbildung zeigt eine Hash-Tabelle mit acht Buckets. Die Elemente sind in drei separaten Buckets gelandet.
+
+Der Bucket mit Index 2 enthält vier Elemente, der Bucket mit Index 4 enthält zwei Elemente und der Bucket mit Index 5 enthält nur ein Element.
+
+Die anderen Buckets sind leer.
+
+
+<img src="cpp_stl_container_hash_table.svg" width="450">
+
+*Abbildung* 9: Jeder Bucket enthält 0 oder mehr Elemente.
+
+
+
+---
+
+
+WEITER: Adaptoren
+
+
+flat_set
+flat_multiset
+flat_map
+flat_multimap
+
+
+
+
+ 
 
 ### Performanzbetrachtungen bei Objekten unterschiedlicher Größe
 
@@ -415,55 +583,6 @@ dass sie für sehr kurze Listen optimiert ist.
 37: }
 ```
 
----
-
-### Assoziative Container (*Associative Containers*)
-
-Assoziative Container werden in der Informatik auch assoziative Arrays oder Maps oder Dictionaries genannt.
-
-Ein assoziativer Container stellt ein spezielle Variante eines Arrays dar,
-bei dem der Index nicht numerisch, sondern auch ein beliebiger anderen Datentyp (wie z. B. std::string) sein kann
-
-Die Indizes werden als Schlüssel (*Keys*) bezeichnet und die an dieser Position gespeicherten Daten
-als Wert (*Value*).
-
-Ein assoziativer Container repräsentiert folglich eine Menge von (Schlüssel, Wert)-Paaren.
-
-
-  * `std::set`
-  * `std::map`
-  * `std::multiset`
-  * `std::multimap`
-
-
-In einem assoziativen Container ist es  nicht möglich,
-ein Element hinten oder vorne hinzuzufügen,
-so wie wir es mit std::vector::push_back() oder std::list::push_front() tun würden.
-
-Stattdessen werden die Elemente so hinzugefügt, dass es möglich ist, das Element zu finden,
-ohne den gesamten Container durchsuchen zu müssen.
-
-Man unterscheidet zwei Kategorien von assoziativen Containern:
-
-
-  * Ordered associative containers
-  * Unordered associative containers:
-
-
-
-
-WEITER: Adaptoren
-
-
-flat_set
-flat_multiset
-flat_map
-flat_multimap
-
-
-
-
- 
 ---
 
 ## Literatur <a name="link6"></a>

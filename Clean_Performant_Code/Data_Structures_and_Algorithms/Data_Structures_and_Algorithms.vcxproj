@@ -142,6 +142,7 @@
     <None Include="cpp_stl_container_array.svg" />
     <None Include="cpp_stl_container_deque.svg" />
     <None Include="cpp_stl_container_forward_list.svg" />
+    <None Include="cpp_stl_container_hash_table.svg" />
     <None Include="cpp_stl_container_list.svg" />
     <None Include="cpp_stl_container_tree.svg" />
     <None Include="cpp_stl_container_vector.svg" />
