@@ -513,11 +513,8 @@ Einige Hinweise zu den Details einer *Hash-Tabelle*:
 
 
 Die folgende *Abbildung* 9 zeigt eine Hash-Tabelle mit acht Buckets. Die Elemente sind in drei separaten Buckets gelandet.
-
 Der Bucket mit Index 2 enthält vier Elemente, der Bucket mit Index 4 enthält zwei Elemente und der Bucket mit Index 5 enthält nur ein Element.
-
 Die anderen Buckets sind leer.
-
 
 <img src="cpp_stl_container_hash_table.svg" width="300">
 
