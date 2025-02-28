@@ -415,7 +415,7 @@ ohne den gesamten Container sequentiell durchlaufen zu müssen.
 Die Indizes werden als Schlüssel (*Keys*) bezeichnet und die an dieser Position gespeicherten Daten
 als Wert (*Value*).
 
-Ein assoziativer Container repräsentiert folglich eine Menge von {*Key*/*Value*}&ndash;Paaren.
+Ein assoziativer Container repräsentiert folglich eine Menge von *Key*&ndash;*Value*-Paaren.
 
 Man unterscheidet zwei Kategorien von assoziativen Containern:
 
@@ -430,7 +430,7 @@ Folgende geordnete assoziative Container gibt es in der STL:
   * `std::multiset`
   * `std::multimap`
 
-Dazu gesellen sich die folgenden ungeordneten assoziative Container:
+Dazu gesellen sich die folgenden ungeordneten assoziativen Container:
 
   * `std::unordered_set`
   * `std::unordered_map`
@@ -449,12 +449,12 @@ in logarithmischer Zeit, *O(log n)*, durchgeführt werden können.
 
 Wie das erreicht wird, hängt von der jeweiligen Implementierung der Klassen in der STL ab.
 
-Die bekanntesten Implementierungen verwenden jedoch eine Art 
-&bdquo;Self-balancing Binary Search Tree&rdquo; (selbstbalancierender binärer Suchbaum).
+Die bekanntesten Implementierungen verwenden eine Art 
+&bdquo;*Self-balancing Binary Search Tree*&rdquo; (selbstbalancierender binärer Suchbaum).
 
-Die Tatsache, dass der Baum ungefähr ausgeglichen bleibt,
-ist notwendig, um die Höhe des Baums und damit auch die Laufzeit im schlimmsten Fall beim Zugriff
-auf Elemente zu kontrollieren.
+Die Tatsache, dass der Baum in ungefähr ausgeglichen bleibt,
+ist notwendig, um die Höhe des Baums und damit auch die Laufzeit beim Zugriff
+auf Elemente auch im schlimmsten Fall kontrollieren zu können.
 
 Der Baum muss keinen Speicher vorab reservieren.
 
@@ -478,7 +478,7 @@ Die Datenstrukturen, die sich hinter den Klassen `std::unordered_set` und `std::
 werden als *Hash-Tabellen* bezeichnet.
 
 Hash-Tabellen stellen Einfüge-, Such- und Löschvorgänge in konstanter Zeit zur Verfügung,
-was im Mittel ein konstanter Zeitaufwand (*O(1)*) bedeutet.
+was im Mittel einen konstanten Zeitaufwand (*O(1)*) bedeutet.
 
 Einige Hinweise zu den Details einer *Hash-Tabelle*:
 
@@ -501,28 +501,27 @@ Einige Hinweise zu den Details einer *Hash-Tabelle*:
 
   * Man nennt diese Beobachtung eine *Hash-Kollision*:
   Derartige Kollisionen können häufig passieren, zum Beispiel dann,
-  wenn das Array klein ist im Vergleich zur Anzahl der Elemente, die hinzugefügt werden.
+  wenn das Array klein ist im Vergleich zur Anzahl der Elemente, die man zur Tabelle hinzufügen möchte.
 
   * Es gibt verschiedene Möglichkeiten, mit Hash-Kollisionen umzugehen.
-  Ein bekannte Lösungsstrategie ist das so genannte *Separate Chaining* (*separate Verkettung*).
+  Ein bekannte Lösungsstrategie ist das so genannte *Separate Chaining* (*Separate Verkettung*).
 
   * *Separate Chaining* löst das Problem dadurch, dass ein Bucket als eine Art Container angesehen wird, z.B. als eine verkettete Liste.
 
-  * Das Auffinden eines Elements in einem bestimmten Bucket erfolgt damit so,
-  dass die Elemente eines Buckets linear gescannt werden müssen, bis das gesuchte Element gefunden wurde.
+  * Das Auffinden eines Elements in einem bestimmten Bucket erfolgt dann so,
+  dass die Elemente eines Buckets linear betrachtet werden, bis das gesuchte Element gefunden wurde.
 
 
-Die folgende Abbildung zeigt eine Hash-Tabelle mit acht Buckets. Die Elemente sind in drei separaten Buckets gelandet.
+Die folgende *Abbildung* 9 zeigt eine Hash-Tabelle mit acht Buckets. Die Elemente sind in drei separaten Buckets gelandet.
 
 Der Bucket mit Index 2 enthält vier Elemente, der Bucket mit Index 4 enthält zwei Elemente und der Bucket mit Index 5 enthält nur ein Element.
 
 Die anderen Buckets sind leer.
 
 
-<img src="cpp_stl_container_hash_table.svg" width="450">
+<img src="cpp_stl_container_hash_table.svg" width="300">
 
 *Abbildung* 9: Jeder Bucket enthält 0 oder mehr Elemente.
-
 
 
 ---
