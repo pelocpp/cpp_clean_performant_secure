@@ -1,128 +1,15 @@
 // ===========================================================================
-// DataStructuresAndAlgorithms.cpp
+// ParallelArrays.cpp
 // ===========================================================================
 
 #include "../LoggerUtility/ScopedTimer.h"
 
 #include <algorithm>
 #include <array>
-#include <fstream>
-#include <iostream>
 #include <memory>
 #include <print>
 #include <string>
-#include <unordered_map>
 #include <vector>
-
-// https://github.com/PacktPublishing/Cpp-High-Performance-Second-Edition
-
-namespace DataStructuresAndAlgorithms {
-
-    namespace Hashing {
-
-        // =======================================================================
-        // Hashing
-
-        struct Person
-        {
-            std::string m_firstName;
-            std::string m_lastName;
-            size_t      m_age;
-
-            bool operator== (const Person& other) const {
-
-                return
-                    m_firstName == other.m_firstName &&
-                    m_lastName == other.m_lastName &&
-                    m_age == other.m_age;
-            }
-        };
-    }
-}
-
-namespace std
-{
-    // =======================================================================
-    // std::hash
-
-    using namespace DataStructuresAndAlgorithms::Hashing;
-
-    template <>
-    struct hash<Person>
-    {
-        size_t operator()(const Person& p) const {
-
-            auto hash1 { std::hash<std::string>() (p.m_firstName) };
-            auto hash2 { std::hash<size_t>() (p.m_age) };
-            auto hash3 { std::hash<std::string>() (p.m_lastName) };
-
-            size_t hash{ hash1 ^ (hash2 << 1) ^ (hash3 << 2) };  // combine these hash values
-            return hash;
-        }
-    };
-}
-
-namespace std
-{
-    // =======================================================================
-    // std::println
-
-    using namespace DataStructuresAndAlgorithms::Hashing;
-
-    template <>
-    struct formatter<Person>
-    {
-        constexpr auto parse(std::format_parse_context& ctx) {
-            return ctx.begin();
-        }
-
-        auto format(const Person& person, std::format_context& ctx) const {
-
-            auto firstName{ person.m_firstName };
-            auto lastName{ person.m_lastName };
-            auto age{ person.m_age };
-
-            return std::format_to(
-                ctx.out(),
-                "Person {} {} [Age: {}]",
-                firstName, lastName, age
-            );
-        }
-    };
-}
-
-namespace DataStructuresAndAlgorithms {
-
-    namespace Hashing {
-
-        // =======================================================================
-        // Use Cases
-
-        static void test_hashing_01()
-        {
-            std::unordered_map<Person, size_t> phoneBook;
-
-            Person sepp = { "Sepp", "Meier", 30 };
-            phoneBook[sepp] = 123456;
-
-            // retrieving phone number of sepp
-            auto phone{ phoneBook[sepp] };
-            std::println("{} - Phone Number: {}", sepp, phone);
-        }
-
-        static void test_hashing_02()
-        {
-            std::unordered_map<Person, std::string> personJobs;
-
-            Person sepp = { "Sepp", "Meier", 30 };
-            personJobs[sepp] = "Entwickler";
-
-            // retrieving job description of sepp
-            auto job{ personJobs[sepp] };
-            std::println("{} - Job: {}", sepp, job);
-        }
-    }
-}
 
 namespace DataStructuresAndAlgorithms {
 
@@ -192,7 +79,7 @@ namespace DataStructuresAndAlgorithms {
     constexpr size_t NumObjects{ 10 };
 
     namespace UsingParallelArrays_OriginalUser {
-    
+
         struct User
         {
             std::string m_name;
@@ -224,7 +111,7 @@ namespace DataStructuresAndAlgorithms {
 
             ScopedTimer watch{};
 
-            auto result{ 
+            auto result{
                 std::count_if(
                     users.begin(),
                     users.end(),
@@ -250,8 +137,8 @@ namespace DataStructuresAndAlgorithms {
             std::generate(
                 users.begin(),
                 users.end(),
-                [] () { 
-                    return User{ "AnyName", "", "", "", "", genLevel() , genIsPlaying() }; 
+                []() {
+                    return User{ "AnyName", "", "", "", "", genLevel() , genIsPlaying() };
                 }
             );
 
@@ -347,7 +234,7 @@ namespace DataStructuresAndAlgorithms {
             std::generate(
                 users.begin(),
                 users.end(),
-                [] () { 
+                []() {
                     return User{ "AnyName",  std::make_unique<AuthInfo>(), genLevel() , genIsPlaying() };
                 }
             );
@@ -443,122 +330,24 @@ namespace DataStructuresAndAlgorithms {
             std::println("n: {}\n", n);
         }
     }
-
-    namespace Vectors {
-
-        static void test_vector()
-        {
-            {
-                auto vec = std::vector{ 1, 2, 3 };
-
-                vec.push_back(4);
-                vec.push_back(5);
-
-                std::println("Size: {} - Capacity: {}", vec.size(), vec.capacity());
-            }
-
-            {
-                auto vec = std::vector{ 1, 2, 3, 4, 5 };
-                for (auto elem : vec) {
-                    std::print("{} ", elem);
-                }
-                std::println();
-            }
-
-            {
-                auto vec = std::vector{ -1, 5, 2, -3, 4, -5, 5 };
-
-                std::erase(vec, 5);                                 // v: [-1, 2, -3, 4, -5]
-                for (auto elem : vec) {
-                    std::print("{} ", elem);
-                }
-                std::println();
-
-                std::erase_if(vec, [] (auto x) { return x < 0; });  // v: [2, 4]
-                for (auto elem : vec) {
-                    std::print("{} ", elem);
-                }
-                std::println();
-            }
-        }
-
-        static auto print(const std::array<int, 10>& a) {
-
-            for (auto elem : a) {
-                std::print("{} ", elem);
-            }
-        }
-
-        static void test_array()
-        {
-            {
-                auto a = std::array<int, 5>{ 1, 2, 3, 4, 5 };
-
-                auto b = std::array{ 1, 2, 3, 4, 5 };
-            }
-
-            {
-                auto a = std::array<int, 5>{ 1, 2, 3, 4, 5 };
-
-                for (auto elem : a) {
-                    std::print("{} ", elem);
-                }
-            }
-
-            {
-                auto a = std::array<int, 10>{};
-                auto b = std::array<int, 20>{};
-
-                print(a);
-                // print(b); // does not compile, print requires an int array of size 10
-            }
-        }
-    }
-
-    namespace Strings {
-
-        static void test_strings() {
-
-            auto in = std::ifstream{ "../Data_Structures_and_Algorithms/Program.cpp", std::ios::binary | std::ios::ate };
-
-            if (in.is_open()) {
-                auto size = in.tellg();
-                auto content = std::string(size, '\0');
-                in.seekg(0);
-                in.read(&content[0], size);   // "content" now contains the entire file
-            }
-        }
-    }
 }
 
 // =================================================================
 
-void data_structures_and_algorithms()
+void test_parallel_arrays()
 {
-    //using namespace DataStructuresAndAlgorithms::Hashing;
-    //test_hashing_01();
-    //test_hashing_02();
+    using namespace DataStructuresAndAlgorithms::UsingParallelArrays;
+    test_parallel_arrays_01();
+    test_parallel_arrays_02();
 
-    //using namespace DataStructuresAndAlgorithms::UsingParallelArrays;
-    //test_parallel_arrays_01();
-    //test_parallel_arrays_02();
+    using namespace DataStructuresAndAlgorithms::UsingParallelArrays_OriginalUser;
+    test_parallel_arrays_with_original_users();
 
-    //using namespace DataStructuresAndAlgorithms::UsingParallelArrays_OriginalUser;
-    //test_parallel_arrays_with_original_users();
+    using namespace DataStructuresAndAlgorithms::UsingParallelArrays_ImprovedUser;
+    test_parallel_arrays_with_improved_users();
 
-    //using namespace DataStructuresAndAlgorithms::UsingParallelArrays_ImprovedUser;
-    //test_parallel_arrays_with_improved_users();
-
-    //using namespace DataStructuresAndAlgorithms::UsingParallelArrays_ParallelUserData;
-    //test_parallel_arrays_with_parallel_user_data();
-
-     using namespace DataStructuresAndAlgorithms::Vectors;
-     test_vector();
-     //test_array();
-
-    //using namespace DataStructuresAndAlgorithms::Strings;
-    //test_strings();
-
+    using namespace DataStructuresAndAlgorithms::UsingParallelArrays_ParallelUserData;
+    test_parallel_arrays_with_parallel_user_data();
 }
 
 // ===========================================================================

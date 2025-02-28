@@ -1,5 +1,5 @@
 // ===========================================================================
-// DataStructuresAndAlgorithms.cpp
+// Caches.cpp
 // ===========================================================================
 
 #include "../LoggerUtility/ScopedTimer.h"
@@ -96,7 +96,7 @@ namespace DataStructuresAndAlgorithms {
 
 // =================================================================
 
-void caches()
+void test_caches()
 {
     using namespace DataStructuresAndAlgorithms::CacheLinesAndCacheSizes;
     test_examine_cache_line_size();

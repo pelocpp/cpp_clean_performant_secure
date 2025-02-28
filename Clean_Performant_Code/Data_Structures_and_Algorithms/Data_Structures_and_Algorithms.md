@@ -2,6 +2,8 @@
 
 [Zurück](../../Readme.md)
 
+// https://github.com/PacktPublishing/Cpp-High-Performance-Second-Edition
+
 ---
 
 ## Inhalt
@@ -397,7 +399,7 @@ dass sie für sehr kurze Listen optimiert ist.
 
 ---
 
-### Assoziative Container (*Associative Containers*)
+### Assoziative Container (*Associative Container*)
 
 Assoziative Container werden in der Informatik auch *assoziative Arrays* oder *Maps* oder *Dictionaries* genannt.
 
@@ -437,9 +439,6 @@ Dazu gesellen sich die folgenden ungeordneten assoziativen Container:
   * `std::unordered_multiset`
   * `std::unordered_multimap`
 
-
-
-
 ---
 
 ### Geordnete assoziative Container (`std::set`, `std::map`)
@@ -463,7 +462,7 @@ Speicher in der Freispeicherverwaltung (*Heap*) und gibt auch Speicher frei, wen
 
 Die folgende *Abbildung* 8 soll symbolisch einen balancierten Baum mit Höhe *O(log n)* demonstrieren:
 
-<img src="cpp_stl_container_tree.svg" width="450">
+<img src="cpp_stl_container_tree.svg" width="400">
 
 *Abbildung* 8: Die Höhe des Baumes ist *O(log n)*, wenn er balanciert ist.
 
@@ -522,6 +521,247 @@ Die anderen Buckets sind leer.
 
 
 ---
+
+### Berechnung von Hash-Werten für benutzerdefinierte Typen
+
+Eine gute Hashfunktion sorgt dafür, dass die Elemente gleichmäßig auf die Buckets verteilt werden, um Hashkollisionen zu minimieren.
+
+Für die elementaren Datentypen in C++ (`int`, `long`, `char`, ...) stellt die STL Hashfunktionen zur Verfügung.
+Für benutzerdefinierte Typen ist dies nicht der Fall.
+
+Dies erklärt Fehlermeldungen der Gestalt 
+
+```
+'std::_Uhash_compare<_Kty,_Hasher,_Keyeq>::_Uhash_compare(const std::_Uhash_compare<_Kty,_Hasher,_Keyeq> &)':
+attempting to reference a deleted function
+```
+
+Das ist zunächst einmal sehr schwer zu lesen als auch zu verstehen,
+der Umstand des Fehlers ist aber vergleichsweise einfach zu erklären.
+
+Wollten wir eine benutzerdefinierte Klasse, wie zum Beispiel die Klasse `Person`
+
+```cpp
+01: struct Person
+02: {
+03:     std::string m_firstName;
+04:     std::string m_lastName;
+05:     size_t      m_age;
+06: };
+```
+
+als Schlüssel für eine Hashtabelle verwenden, also etwa auf die Weise
+
+```cpp
+std::unordered_map<Person, size_t> phoneBook;
+```
+
+dann ist der C++ Compiler nicht in der Lage, Hash-Werte für `Person`-Objekte zu berechnen.
+
+Die Lösung des Problems besteht darin, dass wir im Namensraum std eine Spezialisierung
+der Klasse `hash` vornehmen müssen. Diese Spezialsierung muss den Aufrufoperator `operator()`
+mit `Person`-Objekten als Parameter realisieren, zum Beispiel so:
+
+
+```cpp
+01: namespace std
+02: {
+03:     template <>
+04:     struct hash<Person>
+05:     {
+06:         size_t operator()(const Person& p) const {
+07: 
+08:             auto hash1{ std::hash<std::string>() (p.m_firstName) };
+09:             auto hash2{ std::hash<size_t>() (p.m_age) };
+10:             auto hash3{ std::hash<std::string>() (p.m_lastName) };
+11: 
+12:             size_t hash{ hash1 ^ (hash2 << 1) ^ (hash3 << 2) };
+13:             return hash;
+14:         }
+15:     };
+16: }
+```
+
+Nun lassen sich beispielsweise `std::unordered_map<Person, size_t>`-Objekte erzeugen:
+
+```cpp
+01: void test()
+02: {
+03:     std::unordered_map<Person, size_t> phoneBook;
+04: 
+05:     Person sepp = { "Sepp", "Meier", 30 };
+06:     phoneBook[sepp] = 123456;
+07: 
+08:     // retrieving phone number of sepp
+09:     auto phone{ phoneBook[sepp] };
+10:     std::println("{} - Phone Number: {}", sepp, phone);
+11: }
+```
+
+---
+
+### Container Adapter
+
+In der STL gibt es drei so genannte *Container Adapter*:
+
+  * `std::stack`
+  * `std::queue`
+  * `std::priority_queue`
+
+Containeradapter unterscheiden sich erheblich von sequentiellen und assoziativen Containern,
+da sie abstrakte Datentypen darstellen, die von einem zugrunde liegenden sequentiellen Container implementiert werden können.
+
+Beispielsweise kann ein Stapel (`std::stack`), eine **Last-In-First-Out**-Datenstruktur (LIFO)
+mit den beiden Operationen *Push* und *Pop* mithilfe eines Vektors
+oder eines beliebigen anderen benutzerdefinierten sequentiellen Containern implementiert werden.
+
+Dasselbe gilt für eine Warteschlange (`std::queue`), die eine **First-In-First-Out**-Datenstruktur (FIFO) ist.
+
+Nicht vergessen sollten wir die dritte Datenstruktur, eine so genannte Prioritätswarteschlange.
+Jedes Element in einer Prioritätswarteschlange hat eine zugeordnete Priorität.
+In einer Prioritätswarteschlange werden Elemente mit hoher Priorität vor Elementen mit niedriger Priorität bedient.
+
+
+---
+
+### Container Adapter `std::stack`
+
+In der Realisierung der Klasse `std::stack` (*Visual C++*)
+finden wir einen Hinweis vor, dass als zu Grunde liegende Adapterklasse die `std::deque<T>`-Klasse
+verwendet wird:
+
+```cpp
+01: template <class T>
+02: class stack {
+03: public:
+04:     using container_type = deque<T>;
+05: ...
+```
+
+
+*Beispiel*:
+
+```cpp
+01: void test()
+02: {
+03:     std::stack<int> s;
+04: 
+05:     s.push(1);
+06:     s.push(2);
+07:     s.push(3);
+08:     s.push(4);
+09:     s.push(5);
+10: 
+11:     std::println("Size of stack: {} ", s.size());
+12:     std::println("Elements:");
+13: 
+14:     while (!s.empty()) {
+15:         std::print("{} ", s.top());
+16:         s.pop();
+17:     }
+18: }
+```
+
+*Ausgabe*:
+
+```
+Size of stack: 5
+Elements:
+5 4 3 2 1
+```
+
+<img src="cpp_stl_container_stack.svg" width="200">
+
+*Abbildung* 10: Container Adapter `std::stack`
+
+---
+
+### Container Adapter `std::queue`
+
+In der Realisierung der Klasse `std::queue` (*Visual C++*)
+finden wir einen Hinweis vor, dass als zu Grunde liegende Adapterklasse die `std::deque<T>`-Klasse
+verwendet wird:
+
+```cpp
+01: template <class T>
+02: class queue {
+03: public:
+04:     using container_type = deque<T>;
+05: ...
+```
+
+*Beispiel*:
+
+```cpp
+01: void test()
+02: {
+03:     std::queue<int> q;
+04: 
+05:     q.push(1);
+06:     q.push(2);
+07:     q.push(3);
+08:     q.push(4);
+09:     q.push(5);
+10: 
+11:     std::println("Size of queue: {} ", q.size());
+12:     std::println("Elements:");
+13: 
+14:     while (! q.empty()) {
+15:         std::print("{} ", q.front());
+16:         q.pop();
+17:     }
+18: }
+```
+
+*Ausgabe*:
+
+```
+Size of queue: 5
+Elements:
+1 2 3 4 5
+```
+
+<img src="cpp_stl_container_queue.svg" width="350">
+
+*Abbildung* 11: Container Adapter `std::queue`
+
+---
+
+### Container Adapter `std::priority_queue`
+
+*Beispiel*:
+
+```cpp
+01: static void test_priority_queue()
+02: {
+03:     std::priority_queue<int> pq;
+04: 
+05:     pq.push(3);
+06:     pq.push(1);
+07:     pq.push(2);
+08:     pq.push(5);
+09:     pq.push(4);
+10: 
+11:     std::println("Size of priority queue: {} ", pq.size());
+12:     std::println("Elements:");
+13: 
+14:     while (! pq.empty()) {
+15:         std::print("{} ", pq.top());
+16:         pq.pop();
+17:     }
+18: }
+```
+
+*Ausgabe*:
+
+```
+Size of priority queue: 5
+Elements:
+5 4 3 2 1
+```
+
+---
+
 
 
 WEITER: Adaptoren

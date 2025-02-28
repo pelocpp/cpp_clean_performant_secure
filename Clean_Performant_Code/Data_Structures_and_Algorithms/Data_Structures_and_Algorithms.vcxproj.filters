@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DataStructuresAndAlgorithms.cpp">
+    <ClCompile Include="DataStructures.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Program.cpp">
@@ -24,7 +24,13 @@
     <ClCompile Include="..\LoggerUtility\Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Cache.cpp">
+    <ClCompile Include="Caches.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Hashing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ParallelArrays.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -54,6 +60,12 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="cpp_stl_container_hash_table.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="cpp_stl_container_queue.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="cpp_stl_container_stack.svg">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

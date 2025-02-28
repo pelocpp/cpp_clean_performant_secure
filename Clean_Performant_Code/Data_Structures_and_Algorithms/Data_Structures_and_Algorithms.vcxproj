@@ -133,9 +133,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\LoggerUtility\Logger.cpp" />
-    <ClCompile Include="DataStructuresAndAlgorithms.cpp" />
+    <ClCompile Include="DataStructures.cpp" />
+    <ClCompile Include="Hashing.cpp" />
+    <ClCompile Include="ParallelArrays.cpp" />
     <ClCompile Include="Program.cpp" />
-    <ClCompile Include="Cache.cpp" />
+    <ClCompile Include="Caches.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp_l1_l2_l3_cache.svg" />
@@ -144,6 +146,8 @@
     <None Include="cpp_stl_container_forward_list.svg" />
     <None Include="cpp_stl_container_hash_table.svg" />
     <None Include="cpp_stl_container_list.svg" />
+    <None Include="cpp_stl_container_queue.svg" />
+    <None Include="cpp_stl_container_stack.svg" />
     <None Include="cpp_stl_container_tree.svg" />
     <None Include="cpp_stl_container_vector.svg" />
     <None Include="Data_Structures_and_Algorithms.md" />
