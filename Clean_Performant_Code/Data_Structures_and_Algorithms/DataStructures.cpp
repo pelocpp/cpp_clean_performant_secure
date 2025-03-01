@@ -163,6 +163,13 @@ namespace DataStructuresAndAlgorithms {
             }
         }
     }
+
+    namespace FlatMap {
+
+        //void xxx() {
+        //    std::flat_map<int> fm;
+        //}
+    }
 }
 
 // =================================================================
@@ -184,7 +191,6 @@ void test_data_structures()
 
     using namespace DataStructuresAndAlgorithms::PriorityQueues;
     test_priority_queue();
-
 }
 
 // ===========================================================================

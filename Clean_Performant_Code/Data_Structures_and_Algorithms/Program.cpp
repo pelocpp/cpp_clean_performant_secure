@@ -10,8 +10,8 @@ void test_parallel_arrays();
 int main()
 {
     //test_caches();
-    test_data_structures();
-    //test_hashing();
+    //test_data_structures();
+    test_hashing();
     //test_parallel_arrays();
 
     return 0;
