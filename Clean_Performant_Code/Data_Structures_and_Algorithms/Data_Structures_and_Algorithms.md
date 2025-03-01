@@ -6,12 +6,22 @@
 
 WEITER:
 
+// Hier mit Source Code:
+https://ruthhaephrati.medium.com/the-world-is-flat-the-new-c-23-flat-containers-db3a2d05d933
+
+
 https://www.sandordargo.com/blog/2022/10/05/cpp23-flat_map
 
 https://schmollf.github.io/2022/10/26/cpp-flat-map.html
 
+https://learnmoderncpp.com/2024/01/30/exploring-c23s-flat_map/
+
+// ----------
+
 https://simontoth.substack.com/p/daily-bite-of-c-optimizing-code-to
 
+// Support C:
+// https://github.com/dannyvankooten/1brc
 
 
 ---
