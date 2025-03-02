@@ -6,16 +6,6 @@
 
 WEITER:
 
-// Hier mit Source Code:
-https://ruthhaephrati.medium.com/the-world-is-flat-the-new-c-23-flat-containers-db3a2d05d933
-
-
-https://www.sandordargo.com/blog/2022/10/05/cpp23-flat_map
-
-https://schmollf.github.io/2022/10/26/cpp-flat-map.html
-
-https://learnmoderncpp.com/2024/01/30/exploring-c23s-flat_map/
-
 // ----------
 
 https://simontoth.substack.com/p/daily-bite-of-c-optimizing-code-to
@@ -871,19 +861,78 @@ Elements:
 
 ---
 
+### Vier weitere Container Adapter  in C++ 23
 
 
-WEITER: Adaptoren
+Ab C++ 23 definiert der Standart vier weitere Container Adapter:
+
+  * `std::flat_map`
+  * `std::flat_set`
+  * `std::flat_multimap`
+  * `std::flat_multiset`
+
+Was ist der Unterschied zu den herkömmlichen Adapterklassen?
+Wir betrachten dies am Beispiel der Klasse `std::flat_map`:
+
+Wie `std::map` ist `std::flat_map` ein assoziativ geordneter Container. Es lassen sich Schlüssel-Wert-Paare einfügen, über die Schlüssel kann man später die Werte nachschlagen.
+
+Während `std::map`-Objekte mithilfe ausgeglichener Binärbäume implementiert sind, verwaltet `std::flat_map` ein Paar sortierter Vektoren,
+einen ersten für Schlüssel und einen zweiten für Werte.
+
+Das bedeutet, dass `std::map` eine bessere *asymptotische Komplexität* (Laufzeitverhalten eines Algorithmus in Bezug auf den Umfang seiner Eingabedaten) hat,
+aber `std::flat_map` aufgrund der Cachefreundlichkeit des zusammenhängenden Speichers möglicherweise immer noch eine bessere Performanz bietet.
+
+Wie wird `std::flat_map` implementiert?
+
+`std::flat_map` wird mithilfe von zwei sequentiellen Containern implementiert (typischerweise `std::vector`).
+
+Ein Container enthält die Schlüssel in sortierter Reihenfolge und der zweite Container verwaltet alle Werte in der entsprechenden Reihenfolge.
+
+Das bedeutet, dass das Einfügen ein Laufzeitverhalten von *O(n)* hat, denn wenn man vorne einfügt, müssen wir alle vorherigen Elemente nach hinten verschoben werden.
+
+Fügt man hinten ein, hat man *O(1)* &ndash; wenn intern keine Speicher-Reallokation erfolgen muss.
+
+Sollten die Eingabedaten bereits sortiert vorliegen, ist die Performanz ebenfalls erheblich besser.
+
+Ähnliche Überlegungen gelten für das Löschen von Schlüssel-Wert-Paaren.
 
 
-flat_set
-flat_multiset
-flat_map
-flat_multimap
+*Beispiel*:
 
+```cpp
+01: void test() {
+02: 
+03:     std::flat_map<std::string, int> people;
+04: 
+05:     people["Alice"] = 25;
+06:     people["Bob"] = 30;
+07:     people["Carol"] = 35;
+08: 
+09:     for (const std::pair<std::string, int>& pair : people) {
+10:         std::println("{} is {} years old.", pair.first, pair.second);
+11:     }
+12: 
+13:     int aliceAge{ people["Alice"] };
+14:     std::println("Alice is {} years old.", aliceAge);
+15: 
+16:     people.erase("Alice");
+17: 
+18:     bool aliceExists{ people.contains("Alice") };
+19:     std::println("Alice exists in the flat_map: {}.", aliceExists);
+20: }
+```
 
+*Ausgabe*:
 
+```
+Alice is 25 years old.
+Bob is 30 years old.
+Carol is 35 years old.
+Alice is 25 years old.
+Alice exists in the flat_map: false.
+```
 
+---
  
 
 ### Performanzbetrachtungen bei Objekten unterschiedlicher Größe
@@ -961,7 +1010,13 @@ gegeben.
 
 ### Flache STL Container (*Flat Container*)
 
+&bdquo;[C++23: `std::flat_map`, `std::flat_set`, et al.](https://www.sandordargo.com/blog/2022/10/05/cpp23-flat_map)&rdquo; von Sandor Dargo<br />(abgerufen am 2.3.2025)
 
+&bdquo;[`std::flat_map` in C++](https://schmollf.github.io/2022/10/26/cpp-flat-map.html)&rdquo; von *cpptutor*<br />(abgerufen am 2.3.2025)
+
+&bdquo;[Exploring C++23’s `std::flat_map`](https://learnmoderncpp.com/2024/01/30/exploring-c23s-flat_map/)&rdquo; von Sandor Dargo<br />(abgerufen am 2.3.2025)
+
+&bdquo;[The world is flat: The new C++23 flat containers](https://ruthhaephrati.medium.com/the-world-is-flat-the-new-c-23-flat-containers-db3a2d05d933)&rdquo; von Ruth Haephrati<br />(abgerufen am 2.3.2025)
 
 ---
 

@@ -4,8 +4,10 @@
 
 #include <array>
 #include <fstream>
+#include <map>
 #include <print>
 #include <queue>
+#include <span>
 #include <stack>
 #include <string>
 #include <vector>
@@ -166,9 +168,90 @@ namespace DataStructuresAndAlgorithms {
 
     namespace FlatMap {
 
-        //void xxx() {
-        //    std::flat_map<int> fm;
+        static void test_flat_map() {
+
+            std::map<std::string, int> people;   // replace 'std::map' with 'flat_map', add "#include <flat_map>"
+
+            people["Alice"] = 25;
+            people["Bob"] = 30;
+            people["Carol"] = 35;
+
+            for (const std::pair<std::string, int>& pair : people) {
+                std::println("{} is {} years old.", pair.first, pair.second);
+            }
+
+            int aliceAge{ people["Alice"] };
+            std::println("Alice is {} years old.", aliceAge);
+
+            people.erase("Alice");
+
+            bool aliceExists{ people.contains("Alice") };
+            std::println("Alice exists in the flat_map: {}.", aliceExists);
+        }
+    }
+
+    namespace Span {
+
+        //static auto func1(double buffer[]) {
+
+        //    const auto n = std::size(buffer);   // does not compile!
+        //    
+        //    for (auto i = 0u; i < n; ++i) {     // size is lost!
+        //        std::println("{}: {}.", i, buffer[i]);
+        //    }
         //}
+
+        static auto func(double buffer[], size_t n) {
+
+            for (auto i = 0u; i < n; ++i) {                // using classic for-loop - indices necessary
+                std::println("{}: {}.", i, buffer[i]);
+            }
+        }
+
+        static void test_array() {
+
+            double a[5] = { 1.5, 2.5, 3.5 , 4.5 , 5.5 };
+
+            func(a, 5);                           // smells
+            func(a, sizeof(a) / sizeof(a[0]));    // a common tedious pattern
+            func(a, std::size(a));                // better
+        }
+
+        static auto funcSpan(std::span<double> buffer) {       // Pass by value
+
+            for (auto elem : buffer) {                         // Range-based for-loop
+                std::print("{} ", elem);
+            }
+            std::println();
+        }
+
+        static void test_span() {
+
+            double a[5] { 1.5, 2.5, 3.5 , 4.5 , 5.5 };
+            //std::array arr{ 6.5, 7.5, 8.5 , 9.5 , 10.5 };
+            //std::vector vec { 1.1, 2.2, 3.3, 4.4, 5.5 };
+
+            auto a = double[]{ 6.5, 7.5, 8.5 , 9.5 , 10.5 };
+
+            auto arr = std::array{ 6.5, 7.5, 8.5 , 9.5 , 10.5 };
+            auto vec = std::vector{ 1.1, 2.2, 3.3, 4.4, 5.5 };
+
+
+            std::span sp{ a };       // constructs span from array
+            funcSpan(sp);
+            // or shorter
+            funcSpan(a);
+
+            std::span spa{ arr };    // constructs span from std::array
+            funcSpan(spa);
+            // or shorter
+            funcSpan(arr);
+
+            std::span spv{ vec };    // constructs span from std::vector
+            funcSpan(spv);
+            // or shorter
+            funcSpan(vec);
+        }
     }
 }
 
@@ -189,8 +272,15 @@ void test_data_structures()
     //using namespace DataStructuresAndAlgorithms::Queues;
     //test_queue();
 
-    using namespace DataStructuresAndAlgorithms::PriorityQueues;
-    test_priority_queue();
+    //using namespace DataStructuresAndAlgorithms::PriorityQueues;
+    //test_priority_queue();
+
+    //using namespace DataStructuresAndAlgorithms::FlatMap;
+    //test_flat_map();
+
+    using namespace DataStructuresAndAlgorithms::Span;
+    test_array();
+    test_span();
 }
 
 // ===========================================================================
