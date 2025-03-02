@@ -67,22 +67,76 @@
 
 Beachten Sie folgende Hinweise bei der Wahl eines Containers:
 
+  * Verwenden Sie einen sequentiellen Container, wenn Sie auf die Elemente per Position (Index) zugreifen müssen/können.
+
+  * Verwenden Sie assoziative Container, wenn Sie auf die Elemente per Schlüssel zugreifen müssen/können.
+
+
+### Sollte die Wahl auf einen sequentiellen Container fallen:
+
+  * Verwenden Sie die Klasse `std:vector` als quasi standardmäßigen (sequentiellen) Container,
+  insbesondere als Alternative zu C-Style Arrays.
+  * Wenn die Größe im Voraus bekannt ist, verwenden Sie die Klasse `std::array`.
+  Vermeiden Sie C-Style Arrays.
+  * Wenn Sie häufig Elemente sowohl am Anfang als auch am Ende eines Containers hinzufügen oder entfernen, verwenden Sie die Klasse `std::deque`.
+  * Verwenden Sie ein `std::list`-Objekt (nicht: `std::deque`), wenn Sie Elemente in der Mitte des Containers einfügen/entfernen müssen.
+  * Verwenden Sie nicht die Klasse `std::list`, wenn Sie wahlfreien Zugriff auf Objekte benötigen (Zugriff mit einem Index).
+  * Bevorzugen Sie die Klasse `std::vector` gegenüber der Klasse `std::list`, wenn Ihr System einen Cache verwendet &ndash;
+  siehe hierzu auch [CPU-Cache-Speicher](Readme_Caches.md).
+  * Die Klasse `std::string` ist fast immer besser als eine  C-Style Zeichenkette.
+
+
+### Sollte die Wahl auf einen assoziativen Container fallen:
+
+
+  * Für Schlüssel/Wert-Paare verwenden Sie standardmäßig die Klasse `std::unordered_map` oder,
+  wenn die Reihenfolge der Elemente wichtig ist, die Klasse `std::map`.
+  * Wenn Sie mehrere Einträge für denselben Schlüssel benötigen, verwenden Sie `std::unordered_multimap` oder,
+  wenn die Reihenfolge der Elemente wichtig ist, `std::multimap`.
+
+
+### `std::map` versus `std::unordered_map`
+
+Eine der am häufigsten gestellten Fragen im Umfeld von assoziativen Containern lautet:<br />
+&bdquo;Wann soll ich die Klasse `std::map` und wann die Klasse `std::unordered_map` verwenden?&rdquo;
+
+#### Sie sollten einen geordneten assoziativen Container verwenden, wenn:
+
+  * Sie bevorzugen eine baumartige Datenstruktur.
+  * Sie möchten den Speicheroverhead, der beim Speichern einer Hash-Tabelle entsteht, vermeiden.
+  * Die Reihenfolge oder eine Traversierung durch einen geordneten Datensatz ist wichtig.
+  * Die Realisierung einer guten Hash-Funktion für die Schlüsseldaten ist nicht möglich oder zu kompliziert.
+  * Sie bevorzugen die Realisierung eines Vergleichsoperators für Ihre benutzerdefinierten Datentypen an Stelle des Aufwands, eine gute Hashing-Funktion schreiben zu müssen.
+  * Sie benötigen eine garantierte Performanz (z. B. Software für Embedded Systems).
+  * Ungeordnete Container haben im schlimmsten Fall bei Kollisionen eine Worst-Case-Komplexität von O(n).
+
+#### Sie sollten einen ungeordneten assoziativen Container verwenden, wenn:
+ 
+  * Der Speicherplatzaufwand für die Hash-Tabelle spielt keine Rolle.
+  * Das Programm kann gelegentliche längere Operationen akzeptieren (Auflösen von Hash-Kollisionen).
+  * Sie verfügen über eine gute Hash-Funktion, um Kollisionen zu reduzieren.
+  * Sie können den Datentyp `std::string` für die Schlüsseldaten verwenden.
+
+
+#### Und noch einige Hinweise bei der Wahl eines Containers:
+
   * Müssen Sie in der Lage sein, ein neues Element an einer beliebigen Position im Container einzufügen?<br />Wenn ja, benötigen Sie einen sequentiellen Container.
-
   * Ist Ihnen wichtig, wie die Elemente im Container angeordnet sind (Reihenfolge)?<br />Wenn nicht, sind Hash-basierte Container eine praktikable Wahl, andernfalls verwenden Sie geordnete assoziative Container.
-
   * Wollen Sie Kopiertätigkeiten vorhandener Containerelemente vermeiden, wenn Einfügungen und Löschungen stattfinden?<br />Vermeiden Sie die Verwendung sequentieller (zusammenhängender / konsekutiver) Container.
-
   * Verfügt Ihr Code über viele `push_back()`-Methodenaufrufe?<br />Verwenden Sie `std::deque` an Stelle von `std::vector`, da `std::deque` intern in Summe weniger Datenblöcke umkopiert / verschiebt.
-
   * Bestehen strenge Anforderungen an die Speichernutzung?<br />Ein Einsatz von Hash-Tabelle ist mit Vorsicht zu genießen, da derartige Container intern zusätzlichen, für Nutzdaten nicht verfügbaren Speicherplatz allokieren.
-
   * Müssen Sie einen *Map*-Container traversieren?<br />Verwende `std::map` an Stelle von `std::unordered__map`.
-
   * Soll die Größe eines Container fest (unveränderlich) sein?<br />Wähle `std::array` an Stelle von `std::vector`.
-
   * Gibt es häufig Einfüge- und Lösch-Operationen in der Mitte des Containers?<br />Verwende `std::list` statt `std::vector` oder `std::deque`.
 
+### Rolle des Speicherplatzmanagements bei der Wahl eines Containers
+
+Hier sind die allgemeinen Faustregeln für das Speicherplatzmanagement in den verschiedenen sequentiellen Containern:
+
+  * `std:vector`, `std::array` und `std::string` besitzen für ihre Daten zusammenhängenden (konsekutiben) Speicher.
+  Sie sind mit APIs im C-Stil kompatibel (siehe zum Beispiel die `data()`-Methode an den zuvor erwähnten Klassen).
+  * `std::deque` weist Speicher in Blöcken zu.
+  * `std::list` weist Speicher pro Knoten zu.
 
 ---
 
@@ -98,6 +152,9 @@ Die STL kennt folgende sequentielle Container:
   * `std::list`
   * `std::forward_list`
   * `std::deque`
+
+*Beachte*:<br />
+Die Klassen `std::array` und `std::vector` ermöglichen einen schnellen Zugriff auf ihre Elemente (*O(1)*).
 
 ---
 
@@ -252,7 +309,6 @@ Man unterscheidet zwei Kategorien von assoziativen Containern:
   * Geordnete assoziative Container
   * Ungeordnete assoziative Container
 
-
 Folgende geordnete assoziative Container gibt es in der STL:
 
   * `std::set`
@@ -266,6 +322,10 @@ Dazu gesellen sich die folgenden ungeordneten assoziativen Container:
   * `std::unordered_map`
   * `std::unordered_multiset`
   * `std::unordered_multimap`
+
+
+*Beachte*:<br />
+Assoziative geordnete Container ermöglichen mit Hilfe der Schlüssel (*Keys*) einen schnellen Zugriff auf ihre Elemente (*O(log(n))*).
 
 ---
 
@@ -305,7 +365,8 @@ Die Datenstrukturen, die sich hinter den Klassen `std::unordered_set` und `std::
 werden als *Hash-Tabellen* bezeichnet.
 
 Hash-Tabellen stellen Einfüge-, Such- und Löschvorgänge in konstanter Zeit zur Verfügung,
-was im Mittel einen konstanten Zeitaufwand (*O(1)*) bedeutet.
+was im Mittel einen konstanten Zeitaufwand (*O(k)*) bedeutet.
+*k* ist im optimalen Fall gleich 1, kann aber auch schlechter sein &ndash; im Extremfall gilt *k* = *n*.
 
 Einige Hinweise zu den Details einer *Hash-Tabelle*:
 

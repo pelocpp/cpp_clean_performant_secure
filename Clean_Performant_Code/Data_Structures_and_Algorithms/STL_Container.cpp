@@ -3,7 +3,6 @@
 // ===========================================================================
 
 #include <array>
-#include <fstream>
 #include <map>
 #include <print>
 #include <queue>
@@ -81,21 +80,6 @@ namespace STLContainer {
 
                 print(a);
                 // print(b); // does not compile, print requires an int array of size 10
-            }
-        }
-    }
-
-    namespace Strings {
-
-        static void test_strings() {
-
-            auto in = std::ifstream{ "../Data_Structures_and_Algorithms/Program.cpp", std::ios::binary | std::ios::ate };
-
-            if (in.is_open()) {
-                auto size = in.tellg();
-                auto content = std::string(size, '\0');
-                in.seekg(0);
-                in.read(&content[0], size);   // "content" now contains the entire file
             }
         }
     }
@@ -255,9 +239,6 @@ void test_stl_container()
     using namespace STLContainer::Vectors;
     test_vector();
     test_std_array();
-
-    using namespace STLContainer::Strings;
-    test_strings();
 
     using namespace STLContainer::Stacks;
     test_stack();
