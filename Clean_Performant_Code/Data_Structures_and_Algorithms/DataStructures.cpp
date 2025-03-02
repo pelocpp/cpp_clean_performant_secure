@@ -192,8 +192,7 @@ namespace DataStructuresAndAlgorithms {
 
     namespace Span {
 
-        //static auto func1(double buffer[]) {
-
+        //static void func1(double buffer[]) {
         //    const auto n = std::size(buffer);   // does not compile!
         //    
         //    for (auto i = 0u; i < n; ++i) {     // size is lost!
@@ -201,7 +200,7 @@ namespace DataStructuresAndAlgorithms {
         //    }
         //}
 
-        static auto func(double buffer[], size_t n) {
+        static void func(double buffer[], size_t n) {
 
             for (auto i = 0u; i < n; ++i) {                // using classic for-loop - indices necessary
                 std::println("{}: {}.", i, buffer[i]);
@@ -212,12 +211,12 @@ namespace DataStructuresAndAlgorithms {
 
             double a[5] = { 1.5, 2.5, 3.5 , 4.5 , 5.5 };
 
-            func(a, 5);                           // smells
-            func(a, sizeof(a) / sizeof(a[0]));    // a common tedious pattern
-            func(a, std::size(a));                // better
+            func(a, 5);                              // smells (length 5 is explicitly used)
+            func(a, sizeof(a) / sizeof(a[0]));       // correct, but a tedious pattern
+            func(a, std::size(a));                   // better
         }
 
-        static auto funcSpan(std::span<double> buffer) {       // Pass by value
+        static void funcSpan(std::span<double> buffer) {       // Pass by value - one single parameter
 
             for (auto elem : buffer) {                         // Range-based for-loop
                 std::print("{} ", elem);
@@ -228,14 +227,8 @@ namespace DataStructuresAndAlgorithms {
         static void test_span() {
 
             double a[5] { 1.5, 2.5, 3.5 , 4.5 , 5.5 };
-            //std::array arr{ 6.5, 7.5, 8.5 , 9.5 , 10.5 };
-            //std::vector vec { 1.1, 2.2, 3.3, 4.4, 5.5 };
-
-            auto a = double[]{ 6.5, 7.5, 8.5 , 9.5 , 10.5 };
-
             auto arr = std::array{ 6.5, 7.5, 8.5 , 9.5 , 10.5 };
             auto vec = std::vector{ 1.1, 2.2, 3.3, 4.4, 5.5 };
-
 
             std::span sp{ a };       // constructs span from array
             funcSpan(sp);

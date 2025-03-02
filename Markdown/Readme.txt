@@ -1,13 +1,15 @@
 // =============================================================
 
-Einleitung
+// https://github.com/PacktPublishing/Cpp-High-Performance-Second-Edition
+
+Das gehört zu dem Buch von Andrist / Sehr:
+
+// =============================================================
+
+Einleitung zu Clean Code:
 
 https://github.com/wongjiahau/Clean-Code
-
     
-<sup>[Hier gefunden](https://www.osnews.com/story/19266/wtfsm/)</sup>
-[Gefunden hier](https://www.osnews.com/story/19266/wtfsm/)
-
 
 // =============================================================
 
@@ -38,6 +40,20 @@ Marc Gregoire
 Chapter 9: Optimal Way to Pass Arguments to Functions
 
 // =============================================================
+
+Ein Beispiel - neben Advent of Code - zum Instrumentieren // Zeit messen:
+
+https://simontoth.substack.com/p/daily-bite-of-c-optimizing-code-to
+
+// Support C:
+// https://github.com/dannyvankooten/1brc
+
+Da geht es um eine 1 Billion Datei mit vielen Zeilen:
+
+Die Datei wird mit dem C-Tool erzeugt ... (Support C) ... Simon Toth beschreibt die Verbesserungen
+
+// =============================================================
+
 
 Clean Code
 
@@ -77,8 +93,6 @@ https://brevzin.github.io/archives/
 // etwas verschwurbelter Artikel
 https://nixiz.github.io/yazilim-notlari/2020/12/17/cpp20-ranges
 
-https://github.com/wongjiahau/Clean-Code
-
 https://www.youtube.com/watch?v=9ch7tZN4jeI
 
 https://www.youtube.com/watch?v=dPULxf6f-vs
@@ -94,7 +108,6 @@ https://www.heise.de/select/ix/2021/3
 
 https://www.youtube.com/watch?v=wSDyiEjhp8k
     
-
 
 // =============================================================
 
@@ -148,11 +161,6 @@ https://stackoverflow.com/questions/1739259/how-to-use-queryperformancecounter
 
 // =============================================================
 
-
-2. Dieses bench_mark tool !!!
-
-// =============================================================
-
 3. Profile Your Code
 
 // =============================================================
@@ -171,13 +179,5 @@ Optimize for cache efficiency by minimizing cache misses. Access data sequential
 // =============================================================
 
 Benchmark and Iterate
-
-// =============================================================
-
-Big Integer:
-
-https://faheel.github.io/BigInt/
-
-https://github.com/faheel/BigInt
 
 // =============================================================

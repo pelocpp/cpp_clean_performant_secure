@@ -71,6 +71,18 @@
     <None Include="cpp_stl_container_overview.svg">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Readme_Caches.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Readme_Big_O_Notation.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Readme_ParallelArrays.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Readme_STL_Container.md">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="L1_L2_L3_Cache.png">
