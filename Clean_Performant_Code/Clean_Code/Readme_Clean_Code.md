@@ -6,7 +6,7 @@
 
 ## [Grundlegende Richtlinien für C++ Clean Code](../../Clean_Performant_Code/Guidelines/Readme_Guidelines.md)
 
-## [Klassische Prinzipien der Clean Code Programmierung](../../Clean_Performant_Code/Principles/Readme_Principles.md)
+## [Klassische Prinzipien der Clean Code Programmierung](../../Clean_Performant_Code/Clean_Code_Principles/Readme_Principles.md)
 
 ## [Besserer Code mit der `std::ranges`-Bibliothek](../../Clean_Performant_Code/Ranges/Readme_Ranges.md)
 

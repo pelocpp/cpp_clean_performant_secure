@@ -151,7 +151,7 @@
     <None Include="cpp_stl_container_stack.svg" />
     <None Include="cpp_stl_container_tree.svg" />
     <None Include="cpp_stl_container_vector.svg" />
-    <None Include="Data_Structures_and_Algorithms.md" />
+    <None Include="Readme_Data_Structures_and_Algorithms.md" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="cpp_stl_big_o_notation.png" />

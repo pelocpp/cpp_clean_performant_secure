@@ -1,4 +1,4 @@
-# Datenstrukturen und Algorithmen
+# Effizientes Verwenden der STL-Komponenten in C++
 
 [Zurück](../../Readme.md)
 
