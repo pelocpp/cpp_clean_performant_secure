@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DataStructures.cpp">
+    <ClCompile Include="STL_Container.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Program.cpp">
@@ -31,6 +31,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ParallelArrays.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="STL_Algorithms.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -81,6 +84,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Readme_STL_Container.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Readme_STL_Algorithms.md">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

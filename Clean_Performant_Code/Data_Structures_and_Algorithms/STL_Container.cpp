@@ -1,5 +1,5 @@
 // ===========================================================================
-// DataStructures.cpp
+// STL_Container.cpp
 // ===========================================================================
 
 #include <array>
@@ -12,7 +12,7 @@
 #include <string>
 #include <vector>
 
-namespace DataStructuresAndAlgorithms {
+namespace STLContainer {
 
     namespace Vectors {
 
@@ -59,7 +59,7 @@ namespace DataStructuresAndAlgorithms {
             }
         }
 
-        static void test_array()
+        static void test_std_array()
         {
             {
                 auto a = std::array<int, 5>{ 1, 2, 3, 4, 5 };
@@ -250,28 +250,28 @@ namespace DataStructuresAndAlgorithms {
 
 // =================================================================
 
-void test_data_structures()
+void test_stl_container()
 {
-    //using namespace DataStructuresAndAlgorithms::Vectors;
-    //test_vector();
-    //test_array();
+    using namespace STLContainer::Vectors;
+    test_vector();
+    test_std_array();
 
-    //using namespace DataStructuresAndAlgorithms::Strings;
-    //test_strings();
+    using namespace STLContainer::Strings;
+    test_strings();
 
-    //using namespace DataStructuresAndAlgorithms::Stacks;
-    //test_stack();
+    using namespace STLContainer::Stacks;
+    test_stack();
 
-    //using namespace DataStructuresAndAlgorithms::Queues;
-    //test_queue();
+    using namespace STLContainer::Queues;
+    test_queue();
 
-    //using namespace DataStructuresAndAlgorithms::PriorityQueues;
-    //test_priority_queue();
+    using namespace STLContainer::PriorityQueues;
+    test_priority_queue();
 
-    //using namespace DataStructuresAndAlgorithms::FlatMap;
-    //test_flat_map();
+    using namespace STLContainer::FlatMap;
+    test_flat_map();
 
-    using namespace DataStructuresAndAlgorithms::Span;
+    using namespace STLContainer::Span;
     test_array();
     test_span();
 }

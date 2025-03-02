@@ -2,7 +2,6 @@
 // Hashing.cpp
 // ===========================================================================
 
-#include <iostream>
 #include <print>
 #include <string>
 #include <unordered_map>
@@ -120,7 +119,6 @@ namespace DataStructuresAndAlgorithms {
 void test_hashing()
 {
     using namespace DataStructuresAndAlgorithms::Hashing;
-
     test_hashing_01();
     test_hashing_02();
 }

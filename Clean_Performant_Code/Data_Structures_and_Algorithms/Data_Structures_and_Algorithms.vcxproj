@@ -133,7 +133,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\LoggerUtility\Logger.cpp" />
-    <ClCompile Include="DataStructures.cpp" />
+    <ClCompile Include="STL_Algorithms.cpp" />
+    <ClCompile Include="STL_Container.cpp" />
     <ClCompile Include="Hashing.cpp" />
     <ClCompile Include="ParallelArrays.cpp" />
     <ClCompile Include="Program.cpp" />
@@ -155,6 +156,7 @@
     <None Include="Readme_Caches.md" />
     <None Include="Readme_Data_Structures_and_Algorithms.md" />
     <None Include="Readme_ParallelArrays.md" />
+    <None Include="Readme_STL_Algorithms.md" />
     <None Include="Readme_STL_Container.md" />
   </ItemGroup>
   <ItemGroup>

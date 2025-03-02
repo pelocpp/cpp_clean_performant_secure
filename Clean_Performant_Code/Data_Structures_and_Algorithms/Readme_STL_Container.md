@@ -29,7 +29,7 @@
 
 #### Quellcode
 
-[*DataStructures.cpp*](DataStructures.cpp)<br />
+[*STL_Container.cpp*](STL_Container.cpp)<br />
 
 ---
 
@@ -69,13 +69,13 @@ Beachten Sie folgende Hinweise bei der Wahl eines Containers:
 
   * Müssen Sie in der Lage sein, ein neues Element an einer beliebigen Position im Container einzufügen?<br />Wenn ja, benötigen Sie einen sequentiellen Container.
 
-  * Ist Ihnen wichtig, wie die Elemente im Container angeordnet sind (Reihenfolge)?<br />Wenn nicht, sind Hash-basioerte Container eine praktikable Wahl, andernfalls verwenden Sie geordnete assoziative Container.
+  * Ist Ihnen wichtig, wie die Elemente im Container angeordnet sind (Reihenfolge)?<br />Wenn nicht, sind Hash-basierte Container eine praktikable Wahl, andernfalls verwenden Sie geordnete assoziative Container.
 
-  * Wollen Sie Kopiertätigkeiten vorhandener Containerelemente vermeiden, wenn Einfügungen und Löschungen stattfinden?<br />Vermeiden Sie die Verwendung sequentiellen (zusammenhängender / konsekutiver) Container.
+  * Wollen Sie Kopiertätigkeiten vorhandener Containerelemente vermeiden, wenn Einfügungen und Löschungen stattfinden?<br />Vermeiden Sie die Verwendung sequentieller (zusammenhängender / konsekutiver) Container.
 
   * Verfügt Ihr Code über viele `push_back()`-Methodenaufrufe?<br />Verwenden Sie `std::deque` an Stelle von `std::vector`, da `std::deque` intern in Summe weniger Datenblöcke umkopiert / verschiebt.
 
-  * Bestehen strenge Anforderungen an die Speichernutzun?<br />Ein Einsatz von Hash-Tabelle ist mit Vorsicht zu genießen, da derartige Container intern zusätzlichen, für Nutzdaten nicht verfügbaren Speicherplatz benötigen.
+  * Bestehen strenge Anforderungen an die Speichernutzung?<br />Ein Einsatz von Hash-Tabelle ist mit Vorsicht zu genießen, da derartige Container intern zusätzlichen, für Nutzdaten nicht verfügbaren Speicherplatz allokieren.
 
   * Müssen Sie einen *Map*-Container traversieren?<br />Verwende `std::map` an Stelle von `std::unordered__map`.
 
