@@ -8,6 +8,8 @@
 #include <print>
 #include <vector>
 
+#include <iterator>
+
 namespace STLAlgorithms {
 
     static void test_initializing()
@@ -113,6 +115,111 @@ namespace STLAlgorithms {
             std::println("{} ", *it);
         }
     }
+
+    static void test_finding_binary()
+    {
+        auto values = std::list{ 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
+
+        if (!is_sorted(values.begin(), values.end())) {
+            std::println("Container is not sorted!");
+            return;
+        }
+
+        auto elem{ 3 };
+
+        auto found = std::binary_search(
+            values.begin(),
+            values.end(),
+            elem
+        );
+
+        if (found) {
+            std::println("Found {} ", elem);
+        }
+    }
+
+    //static void test_finding_lower_bound()
+    //{
+    //    auto values = std::list{ 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
+
+    //    if (!is_sorted(values.begin(), values.end())) {
+    //        std::println("Container is not sorted!");
+    //        return;
+    //    }
+
+    //    auto elem{ 3 };
+
+    //    auto it = std::lower_bound(
+    //        values.begin(),
+    //        values.end(),
+    //        elem
+    //    );
+
+    //    if (it != values.end()) {
+
+    //        auto index{ std::distance(values.begin(), it) };
+    //        std::println("Found element {} at position {}", *it, index);
+    //    }
+    //}
+
+    //static void test_finding_upper_bound()
+    //{
+    //    auto values = std::list{ 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
+
+    //    if (!is_sorted(values.begin(), values.end())) {
+    //        std::println("Container is not sorted!");
+    //        return;
+    //    }
+
+    //    auto elem{ 5 };
+
+    //    auto it = std::upper_bound(
+    //        values.begin(),
+    //        values.end(),
+    //        elem
+    //    );
+
+    //    if (it != values.end()) {
+
+    //        auto index{ std::distance(values.begin(), it) };
+    //        std::println("Found element {} at position {}", *it, index);
+    //    }
+    //}
+
+    static void test_some_condition()
+    {
+        const auto values = std::vector{ 3, 2, 2, -1, 0, 2, 1 };
+
+        auto noNegative = std::none_of(
+            values.begin(),
+            values.end(),
+            [](int n) { return n < 0; }
+        );
+
+        if (noNegative) {
+            std::println("Contains only positive numbers");
+        }
+
+        auto allPositive = std::all_of(
+            values.begin(),
+            values.end(),
+            [](int n) { return n >= 0; }
+        );
+
+        if (allPositive) {
+            std::println("Contains only positive numbers");
+        }
+
+        auto anyNegative = std::any_of(
+            values.begin(),
+            values.end(),
+            [](int n) { return n < 0; }
+        );
+
+        if (anyNegative) {
+            std::println("Contains at least one negative number");
+        }
+    }
 }
 
 // =================================================================
@@ -121,12 +228,16 @@ void test_algorithms()
 {
     using namespace STLAlgorithms;
 
-    test_initializing();
-    test_iterating();
-    test_generating();
-    test_generating_indices();
-    test_sorting();
-    test_finding();
+    //test_initializing();
+    //test_iterating();
+    //test_generating();
+    //test_generating_indices();
+    //test_sorting();
+    //test_finding();
+
+   // test_finding_binary();
+
+    test_some_condition();
 }
 
 // ===========================================================================
