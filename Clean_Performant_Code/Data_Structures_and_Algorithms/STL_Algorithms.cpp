@@ -2,6 +2,8 @@
 // STL_Algorithms.cpp
 // ===========================================================================
 
+#include "../LoggerUtility/ScopedTimer.h"
+
 #include <algorithm>
 #include <forward_list>
 #include <iterator>
@@ -105,7 +107,7 @@ namespace STLAlgorithms {
 
     static void test_transforming()
     {
-        std::list<std::string> source {
+        const std::list<std::string> source {
             "1.5", "2.5", "3.5", "4.5", "5.5", "6.5", "7.5", "8.5", "9.5", "10.5"
         };
         
@@ -203,7 +205,7 @@ namespace STLAlgorithms {
     {
         const auto values = std::list{ 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
 
-        if (!is_sorted(values.begin(), values.end())) {
+        if (!std::is_sorted(values.begin(), values.end())) {
             std::println("Container is not sorted!");
             return;
         }
@@ -280,7 +282,7 @@ namespace STLAlgorithms {
     {
         const auto values = std::list{ 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 };
 
-        if (!is_sorted(values.begin(), values.end())) {
+        if (!std::is_sorted(values.begin(), values.end())) {
             std::println("Container is not sorted!");
             return;
         }
@@ -346,12 +348,209 @@ namespace STLAlgorithms {
     }
 }
 
+namespace STLAlgorithms_BestPractices {
+
+    // -----------------------------------------------------------------------
+    // non-generic vs. generic functions
+
+    static auto contains(const std::vector<int>& vec, int elem) {
+
+        for (size_t i{}; i != vec.size(); ++i) {
+            if (vec[i] == elem) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    template <typename TIterator, typename TValue>
+    static auto contains(TIterator begin, TIterator end, const TValue& x) {
+
+        for (auto it{ begin }; it != end; ++it) {
+            if (*it == x) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static void test_non_generic_vs_generic_function ()
+    {
+        const auto values1{ std::vector{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 } };
+        const auto values2{ std::list{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 } };
+        std::list<std::string> values3{ "1.5", "2.5", "3.5", "4.5", "5.5" };
+
+        bool result1{ contains (values1, 3)};
+        //bool result2{ contains(values2, 3) };
+        //bool result3{ contains(values3, 3) };
+
+        bool found1{ contains(values1.begin(), values1.end(), 3) };
+        bool found2{ contains(values2.begin(), values2.end(), 3) };
+        bool found3{ contains(values3.begin(), values3.end(), "3.5")};
+
+        std::println("Found: {}", found1);
+        std::println("Found: {}", found2);
+        std::println("Found: {}", found3);
+    }
+
+    // -----------------------------------------------------------------------
+    // Data structures exposing the begin() and end() iterators
+
+    class Grid
+    {
+    public:
+        Grid() : Grid{ 0, 0} {}
+
+        Grid(size_t width, size_t height) : m_width{ width }, m_height{ height }
+        {
+            m_data.resize(width * height);
+        }
+
+        auto getData() // returns whole grid as iterator pairs
+        {
+            auto left = m_data.begin();
+            auto right = m_data.begin() + m_width * m_height;
+            return std::make_pair(left, right);
+        }
+
+        auto getRow(size_t i) // returns iterator pair for corresponding row
+        {
+            auto left = m_data.begin() + m_width * i;
+            auto right = left + m_width;
+            return std::make_pair(left, right);
+        }
+        
+        auto print() 
+        {
+            std::for_each(
+                m_data.begin(),
+                m_data.end(),
+                [this, i=0, j=0] (auto elem) mutable {
+                
+                    std::print("[{}:{}] {:2}  ", i, j, m_data[m_width * i + j]);
+
+                    ++j;
+                    if (j == m_width) {
+                        ++i;
+                        j = 0;
+                        std::println();
+                    }
+                }
+            );
+        }
+
+        auto getWidth() const { return m_width; }
+        auto getHeight() const { return m_height; }
+
+    private:
+        std::vector<int> m_data;
+        size_t           m_width;
+        size_t           m_height;
+    };
+
+    static void test_grid_01()
+    {
+        auto grid = Grid{ 5, 5 };
+
+        auto data{ grid.getData() };
+        auto& [begin, end] = data;
+
+        std::iota(begin, end, 1);
+        grid.print();
+
+        auto numFives = std::count(begin, end, 5);
+        std::println("Found {} fives.", numFives);
+    }
+
+    static void test_grid_02()
+    {
+        auto grid = Grid{ 5, 5 };
+
+        auto data{ grid.getData() };
+        auto& [begin, end] = data;
+
+        std::generate(begin, end, [] () { return 1; });
+
+        auto row = grid.getRow(2);
+        auto& [rowBegin, rowEnd] = row;
+        std::generate(rowBegin, rowEnd, []() { return 2; });
+        grid.print();
+
+        auto numTwos = std::count(begin, end, 2);
+        std::println("Found {} two's.", numTwos);
+    }
+
+    static void test_grid()
+    {
+        test_grid_01();
+        test_grid_02();
+    }
+
+    // -----------------------------------------------------------------------
+    // Optimization Techniques of STL algorithms
+
+    template <typename TIterator, typename TValue>
+    auto find_slow(TIterator first, TIterator last, const TValue& value) {
+        for (auto it = first; it != last; ++it) {
+            if (*it == value) {
+                return it;
+            }
+        }
+        return last;
+    }
+
+    template <typename TIterator, typename TValue>
+    auto find_fast(TIterator first, TIterator last, const TValue& value) {
+        
+        // main loop unrolled into chunks of four
+        auto num_trips = (last - first) / 4;
+        for (auto trip_count = num_trips; trip_count > 0; --trip_count) {
+
+            if (*first == value) { return first; } ++first;
+            if (*first == value) { return first; } ++first;
+            if (*first == value) { return first; } ++first;
+            if (*first == value) { return first; } ++first;
+        }
+
+        // handle the remaining elements
+        switch (last - first) {
+            case 3: if (*first == value) { return first; } ++first;
+            case 2: if (*first == value) { return first; } ++first;
+            case 1: if (*first == value) { return first; } ++first;
+            case 0:
+            default: return last;
+        }
+    }
+
+    static void test_optimization_techniques()
+    {
+        constexpr size_t Size = 10'000'000;      // debug mode
+        // constexpr size_t Size = 500'000'000;  // release mode
+        //constexpr size_t Size = 10;            // test mode
+
+        std::vector <int> vec;
+        vec.resize(Size, 123);
+
+        {
+            ScopedTimer watch;
+            auto found{ find_slow(vec.begin(), vec.end(), 1'000)};
+            std::println("find_slow: {}", (found == vec.end()) ? "Not found" : "Found!");
+        }
+
+        {
+            ScopedTimer watch;
+            auto found{ find_fast(vec.begin(), vec.end(), 1'000) };
+            std::println("find_fast: {}", (found == vec.end()) ? "Not found" : "Found!");
+        }
+    }
+
+}
+
 // =================================================================
 
-void test_algorithms()
+void test_algorithms_introduction()
 {
     using namespace STLAlgorithms;
-
     test_initializing();
     test_iterating();
     test_generating();
@@ -367,6 +566,20 @@ void test_algorithms()
     test_counting_binary();
     test_min_max_clamp();
     test_min_max();
+}
+
+void test_algorithms_best_practices()
+{
+    using namespace STLAlgorithms_BestPractices;
+    // test_non_generic_vs_generic_function();
+    //test_grid();
+    test_optimization_techniques();
+}
+
+void test_algorithms()
+{
+  //  test_algorithms_introduction();
+    test_algorithms_best_practices();
 }
 
 // ===========================================================================
