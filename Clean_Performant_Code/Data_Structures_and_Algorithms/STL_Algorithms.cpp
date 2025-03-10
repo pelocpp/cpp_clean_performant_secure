@@ -364,10 +364,10 @@ namespace STLAlgorithms_BestPractices {
     }
 
     template <typename TIterator, typename TValue>
-    static auto contains(TIterator begin, TIterator end, const TValue& x) {
+    static auto contains(TIterator begin, TIterator end, const TValue& elem) {
 
         for (auto it{ begin }; it != end; ++it) {
-            if (*it == x) {
+            if (*it == elem) {
                 return true;
             }
         }

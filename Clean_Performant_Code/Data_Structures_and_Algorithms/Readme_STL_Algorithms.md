@@ -93,14 +93,14 @@ Es werden folgenden STL-Algorithmen an Hand von einfachen Beispielen vorgestellt
     <td><i>true</i></td>
   </tr>
   <tr>
-    <td style='text-align:center;'>std::any_of</td>
+    <td style='text-align:center;'><pre>std::any_of</pre></td>
     <td><i>true</i></td>
     <td><i>true</i></td>
     <td><i>false</i></td>
     <td><i>false</i></td>
   </tr>
   <tr>
-    <td style='text-align:center;'>std::none_of</td>
+    <td style='text-align:center;'><pre>std::none_of</pre></td>
     <td><i>false</i></td>
     <td><i>false</i></td>
     <td><i>true</i></td>
@@ -128,7 +128,7 @@ Betrachten Sie die folgende Funktion `contains`:
 ```
 
 Um das gesuchte Element zu finden, verlassen wir uns auf die Schnittstelle von `std::vector`,
-die uns die Funktion `size()` und den Indexoperator (`operator[]()`) zur Verfügung stellt.
+die uns die Funktion `size()` und den Indexoperator (`operator[]`) zur Verfügung stellt.
 
 Allerdings stellen uns nicht alle Container diese Funktionen zur Verfügung,
 damit ist eine derartige `for`-Wiederholungsschleife nicht sehr empfehlenswert!
@@ -138,10 +138,10 @@ Auf diese Weise erhalten wir eine `contains`-Funktion, die mit unterschiedlichen
 
 ```cpp
 01: template <typename TIterator, typename T>
-02: auto contains(TIterator begin, TIterator end, const T& x) {
+02: auto contains(TIterator begin, TIterator end, const T& elem) {
 03: 
 04:     for (auto it{ begin }; it != end; ++it) {
-05:         if (*it == x) {
+05:         if (*it == elem) {
 06:             return true;
 07:         }
 08:     }
@@ -168,12 +168,12 @@ Auf diese Weise erhalten wir eine `contains`-Funktion, die mit unterschiedlichen
 
 ## Best Practice: Benutzerdefinierte Datentypen mit `begin()` und `end()` <a name="link5"></a>
 
-Wir wir im letzten Abschnitt gesehen haben, können neue benutzerdefinierte Datentypen,
-die wir erstellen, von den standardmäßigen generischen Algorithmen verwendet werden können,
-solange sie die Iteratoren `begin()` und `end()` verfügbar machen.
+Wie wir im letzten Abschnitt gesehen haben, können neue benutzerdefinierte Datentypen,
+die wir erstellen, von den standardmäßigen generischen Algorithmen verwendet werden,
+solange sie die beiden Methoden `begin()` und `end()` zur Verfügung stellen.
 
-Als einfaches Beispiel implementieren wir eine zweidimensionale `Grid`-Struktur,
-bei der Zeilen als Iteratorenpaar verfügbar gemacht werden, wie folgt:
+Als einfaches Beispiel implementieren wir eine zweidimensionale `Grid`-Struktur wie folgt,
+die ihre Zeilen durch ein Iteratorenpaar veröffentlicht:
 
 ```cpp
 01: class Grid
@@ -186,7 +186,7 @@ bei der Zeilen als Iteratorenpaar verfügbar gemacht werden, wie folgt:
 08:         m_data.resize(width * height);
 09:     }
 10: 
-11:     auto getData() // returns whole grid as iterator pairs
+11:     auto getData() // returns whole grid as iterator pair
 12:     {
 13:         auto left = m_data.begin();
 14:         auto right = m_data.begin() + m_width * m_height;
@@ -318,7 +318,6 @@ ist der im Einsatz befindliche Iterator (`it`) nicht mehr gültig!
 
 Wenn der Algorithmus versucht, auf einen ungültigen Iterator zuzugreifen,
 liegt *Undefined Behavior* vor, das Programm stürzt im besten Fall ab.
-
 Wir schreiben Funktion `move_n_elements_to_back` neu &ndash; Variante `move_n_elements_to_back_safe`:
 
 *Quellcode*:
@@ -340,7 +339,7 @@ Wir schreiben Funktion `move_n_elements_to_back` neu &ndash; Variante `move_n_el
 14: }
 ```
 
-Die Lösung funktioniert; sie stürzt nicht mehr ab. Aber jetzt hat sie ein subtiles Leistungsproblem.
+Die Lösung funktioniert &ndash; sie stürzt nicht mehr ab. Aber jetzt hat sie ein subtiles Leistungsproblem.
 
 Der Algorithmus agiert auf Containerobjekten des Typs `std::list` deutlich langsamer als auf `std::vector`-Objekten.
 
@@ -348,7 +347,7 @@ Der Grund dafür ist, dass *std::next(it, n)* in Verbindung mit `std::list::itera
 *O(1)* bei Einsatz eines `std::vector::iterator`-Objekts ist.
 
 Da *std::next(it, n)* in jedem Schritt der `for`-Schleife aufgerufen wird,
-hat dieser Algorithmus bei Verwendung von Containern wie `std::list` eine Zeitkomplexität von *O(n2)*.
+hat dieser Algorithmus bei Verwendung von Containern wie `std::list` eine Zeitkomplexität von *O(n<sup>2</sup>)*.
 
 Abgesehen von dieser Leistungsbeschränkung hat der vorangehende Code auch noch die folgenden Einschränkungen:
 
