@@ -351,11 +351,10 @@ hat dieser Algorithmus bei Verwendung von Containern wie `std::list` eine Zeitko
 
 Abgesehen von dieser Leistungsbeschränkung hat der vorangehende Code auch noch die folgenden Einschränkungen:
 
-  * Funktioniert aufgrund von `emplace_back()` nicht mit Containern mit statischer Größe, wie z. B. `std::array`.
+  * Er funktioniert aufgrund von `emplace_back()` nicht mit Containern mit statischer Größe, wie z. B. `std::array`.
 
   * Die Funktion kann eine Ausnahme auslösen, da `emplace_back()` Speicher allokiert und fehlschlagen kann
    (auch wenn dies möglicherweise selten der Fall ist).
-
 
 Wenn wir dieses Stadium erreicht haben, sollten wir die Standardbibliothek durchsuchen und prüfen,
 ob sie einen geeigneten Algorithmus enthält, der als Baustein verwendet werden kann.
@@ -377,7 +376,7 @@ Hier ist unsere endgültige Version mit dem `std::rotate()`-Algorithmus &ndash; V
 06: }
 ```
 
-Schauen wir uns die Vorteile von std::rotate() an:
+Schauen wir uns die Vorteile von `std::rotate()` an:
 
   * Der Algorithmus löst keine Ausnahmen aus, da er keine Speicherallokationen vornimmt (das enthaltene Objekt kann jedoch Ausnahmen auslösen).
   * Er funktioniert auch mit Containern, deren Größe nicht änderbar ist, wie z. B. `std::array`.
@@ -438,7 +437,7 @@ Wir betrachten als Beispiel den Algorithmus `std::find()`:
 
 Worin liegt der Unterschied der beiden Realisierungen?
 
-Bei genauerer Betrachtung der optimierten Implementierung ist jedoch festzustellen,
+Bei genauerer Betrachtung der optimierten Implementierung ist festzustellen,
 dass diese bei Verwendung mit `std::random_access_iterator` (also `std::vector`, `std::string`, `std::deque` und `std::array`)
 die Hauptschleife in Abschnitte von jeweils vier Blöcken aufteilt,
 was dazu führt, dass der Vergleich (`it != last`) nur ein Viertel so oft ausgeführt wird.

@@ -29,6 +29,16 @@
 
 ---
 
+  * [*Daily bit(e) of C++ | Optimizing code to run 87x faster*](https://simontoth.substack.com/p/daily-bite-of-c-optimizing-code-to/)<br/>
+    (abgerufen am 10.03.2025).
+
+    Die *One Billion Row Challenge* (*1BRC*) war ursprünglich eine Herausforderung für Java-Entwickler.
+    Ziel war es, einen Parser für eine Datei mit einer Milliarde Datensätze zu entwickeln und zu optimieren.
+
+    Obwohl die ursprüngliche Herausforderung für Java gedacht war, ist diese Herausforderung eine hervorragende Gelegenheit,
+    die Optimierung von C++-Code und den zugehörigen Performance Tools zu demonstrieren.
+
+---
 
 [Zurück](./Readme_Performance_Optimization.md)
 

@@ -37,10 +37,7 @@
 ## Allgemeines <a name="link1"></a>
 
 Wir geben in diesem Tutorial keinen vollständigen Überblick über die `std::ranges` Bibliothek:
-Es sollen vielmehr einige erste Beispiele für Neueinsteiger einen Einstieg in modernes C++20 liefern.
-
-An Hand einer Reihe von Beispielen zeigen wir auf, welche Rolle der Einsatz dieser Bibliothek in
-*Modern C++* spielt.
+Es sollen vielmehr einige erste Beispiele für einen Neueinsteiger in *Modern C++ 20* gegeben werden.
 
 Erfahren Sie, wie Sie `std::ranges` für besser lesbaren und effizienteren Code nutzen können,
 also für *Clean Code*.
@@ -74,7 +71,7 @@ also für *Clean Code*.
 
   * Traditionelle STL-Algorithmen verwenden Iteratorenpaare zur Bezeichnung von Bereichen.
 
-  * Dies kann fehleranfällig sein und ist darüber hinaus etwas &bdquo;*verbose*&rdquo;.
+  * Dies kann fehleranfällig sein und ist darüber hinaus etwas &bdquo;*geschwätzig*&rdquo; (&bdquo;*verbose*&rdquo;).
 
 *Beispiel*:
 
@@ -90,34 +87,34 @@ also für *Clean Code*.
 *Beispiel*:
 
 ```cpp
-std::vector<int> numbers{ 1, 4, 2, 7, 9, 3, 5 };
-std::ranges::sort(numbers);
+01: std::vector<int> numbers{ 1, 4, 2, 7, 9, 3, 5 };
+02: std::ranges::sort(numbers);
 ```
 
 ---
 
 ## Ranges und Concepts (Konzepte) <a name="link4"></a>
 
-  * Der Gebrauch von Range Concepts trägt dazu bei, bessere und verständlichere Fehlermeldungen zu generieren.
+  * Der Gebrauch von *Range Concepts* trägt dazu bei, bessere und verständlichere Fehlermeldungen zu generieren.
   Die Fehlermeldungen, die bei klassischem C++ und der STL erscheinen,
   sind manchmal absolut unverständlich und sie treten vor allem in Dateien in Erscheinung,
   die korrekt sind. Der Fehler wäre im Regelfall in der Nähe der Template Instanziierung zu suchen,
   was für einen C++ Compiler zunächst einmal nicht die Fehlerursache ist.
   Das **reagierde** Verhalten im Falle von Fehlern tritt an anderen Stellen zu Tage.
 
-  * Bei Gebrauch von Range Concepts haben wir es mit einem **proaktiven** Verhalten zu tun,
-  es wird die Stelle der Template Instanziierung in Übereinstimmung mit dem Concept analysiert,
+  * Bei Gebrauch von *Range Concepts* haben wir es mit einem **proaktiven** Verhalten zu tun:
+  Es wird die Stelle der Template Instanziierung in Übereinstimmung mit dem Concept analysiert,
   im Fehlerfall erfolgt die Fehlermeldung an der Stelle des Fehlers.
 
 *Beispiel*:
 
 ```cpp
-std::list<int> numbers{ 5, 6, 1, 3, 7 };
-
-std::sort(
-    numbers.begin(),
-    numbers.end()
-);
+01: std::list<int> numbers{ 5, 6, 1, 3, 7 };
+02: 
+03: std::sort(
+04:     numbers.begin(),
+05:     numbers.end()
+06: );
 ```
 
 Die Fehlermeldung lautet
@@ -133,9 +130,8 @@ und sie wird aus der Datei *algorithm.h* in Zeile 8244 gemeldet!
 *Beispiel*:
 
 ```cpp
-std::list<int> numbers{ 5, 6, 1, 3, 7 };
-
-std::ranges::sort(numbers);
+01: std::list<int> numbers{ 5, 6, 1, 3, 7 };
+02: std::ranges::sort(numbers);
 ```
 
 Die Fehlermeldung lautet nun
@@ -796,11 +792,11 @@ Sum: 30
 
 ## Das Trio `std::all_of`, `std::any_of` und `std::none_of` <a name="link17"></a>
 
-  * Das Trio der booleschen Algorithmen  `std::all_of`, `std::any_of` und `std::none_of`
+  * Das Trio der booleschen Algorithmen `std::all_of`, `std::any_of` und `std::none_of`
   liefert die entsprechenden booleschen Reduktionen auf der Grundlage eines unären Prädikats.
 
-  * Während `std::all_of` und `std::none_of` für leere Bereiche true* zurückgeben,
-  erfordert `std::any_of` mindestens ein Argumnet und gibt für einen leeren Bereich *false* zurück.
+  * Während `std::all_of` und `std::none_of` für leere Bereiche *true* zurückgeben,
+  erfordert `std::any_of` mindestens ein Argument und gibt für einen leeren Bereich *false* zurück.
 
 
 *Beispiel*:
@@ -836,7 +832,7 @@ Wir beenden unsere *Ranges*-Betrachtungen mit zwei Beispielen:
 #### Beispiel mit der Klasse `std::variant`
 
   * Erstellung eines Vektors mit Zahlen und Zeichenfolgen.
-  * Die Zeichenfolgen werden mit std::views::filter herausgefiltert.
+  * Die Zeichenfolgen werden mit `std::views::filter` herausgefiltert.
 
 
 *Beispiel*:
@@ -858,7 +854,6 @@ Wir beenden unsere *Ranges*-Betrachtungen mit zwei Beispielen:
 ```
 three five six
 ```
-
 
 #### Beispiel mit der Klasse `std::unordered_map`
 
