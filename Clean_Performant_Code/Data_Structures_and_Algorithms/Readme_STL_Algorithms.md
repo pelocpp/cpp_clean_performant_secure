@@ -45,50 +45,50 @@ Es werden folgenden STL-Algorithmen an Hand von einfachen Beispielen vorgestellt
 
 ---
 
+
+
+
 ## Best Practice: Nicht-generische versus generische Funktionen <a name="link1"></a>
 
 <table>
-  <tr>
-    <th>Has true element</th>
+ <thead>
+   <tr>
+    <th>Has <i>true</i> element</th>
     <th colspan="2">Yes</th>
     <th colspan="2">No</th>
   </tr>
   <tr>
-    <td>Has false element</td>
+    <td><b>Has false element</b></td>
     <td>Yes</td>
     <td>No</td>
     <td>Yes</td>
     <td>No</td>
   </tr>
-  <tr>
+ </thead>
+ <tbody>
+   <tr>
     <td style='text-align:center;'>all_of</td>
-    <td>false</td>
-    <td>true</td>
-    <td>false</td>
-    <td>true</td>
+    <td><i>false</i></td>
+    <td><i>true</i></td>
+    <td><i>false</i></td>
+    <td><i>true</i></td>
   </tr>
   <tr>
     <td style='text-align:center;'>any_of</td>
-    <td>true</td>
-    <td>true</td>
-    <td>false</td>
-    <td>false</td>
+    <td><i>true</i></td>
+    <td><i>true</i></td>
+    <td><i>false</i></td>
+    <td><i>false</i></td>
   </tr>
   <tr>
     <td style='text-align:center;'>none_of</td>
-    <td>false</td>
-    <td>false</td>
-    <td>true</td>
-    <td>true</td>
+    <td><i>false</i></td>
+    <td><i>false</i></td>
+    <td><i>true</i></td>
+    <td><i>true</i></td>
   </tr>
+ </tbody>
 </table>
-
-
-Has true element	Yes	No
- Has false element 	Yes	No	Yes	    No
-all_of	false	true	false	true
-any_of	true	true	  false  	  false  
-none_of	  false  	  false  	true	true
 
 
 ---
