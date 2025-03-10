@@ -27,15 +27,15 @@
 ## Allgemeines <a name="link1"></a>
 
 Die Verwendung von Containern aus der Standardbibliothek ist unter C++-Programmierern weit verbreitet.
-
 Es ist selten, C++-Codebasen ohne Verweise auf `std::vector` oder `std::string` zu finden.
+
 Interessanterweise kann man jedoch die Beobachtung machen, dass Algorithmen aus der Standardbibliothek viel seltener verwendet werden,
 obwohl sie dieselben Vorteile wie Container bieten:
 
   * Sie können als Bausteine zur Lösung komplexer Probleme verwendet werden.
-  * Ihr Speicherplatz- und Laufzeitaufwendungen sind bekannt (Komplexitätsgarantien).
+  * Ihre Speicherplatz- und Laufzeitaufwände sind bekannt (Komplexitätsgarantien).
   * Ihre Implementierungen sind gut ausgearbeitet und effizient.
-  * Sie sind gut dokumentiert (einschließlich Referenzen, Bücher und Videos).
+  * Sie sind gut dokumentiert.
 
 ---
 
@@ -86,21 +86,21 @@ Es werden folgenden STL-Algorithmen an Hand von einfachen Beispielen vorgestellt
  </thead>
  <tbody>
    <tr>
-    <td style='text-align:center;'>all_of</td>
+    <td style='text-align:center;'><pre>std::all_of</pre></td>
     <td><i>false</i></td>
     <td><i>true</i></td>
     <td><i>false</i></td>
     <td><i>true</i></td>
   </tr>
   <tr>
-    <td style='text-align:center;'>any_of</td>
+    <td style='text-align:center;'>std::any_of</td>
     <td><i>true</i></td>
     <td><i>true</i></td>
     <td><i>false</i></td>
     <td><i>false</i></td>
   </tr>
   <tr>
-    <td style='text-align:center;'>none_of</td>
+    <td style='text-align:center;'>std::none_of</td>
     <td><i>false</i></td>
     <td><i>false</i></td>
     <td><i>true</i></td>
