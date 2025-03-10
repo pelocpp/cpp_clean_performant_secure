@@ -544,6 +544,57 @@ namespace STLAlgorithms_BestPractices {
         }
     }
 
+    // -----------------------------------------------------------------------
+    // Unexpected exceptions and performance problems
+
+    template <typename TContainer>
+    auto move_n_elements_to_back(TContainer& cont, std::size_t n) {
+
+        // copy the first n elements to the end of the container
+        for (auto it = cont.begin(); it != std::next(cont.begin(), n); ++it) {
+            cont.emplace_back(std::move(*it));
+        }
+
+        // erase the copied elements from front of container
+        cont.erase(cont.begin(), std::next(cont.begin(), n));
+    }
+
+    template <typename TContainer>
+    auto move_n_elements_to_back_safe(TContainer& cont, std::size_t n) {
+
+        // copy the first n elements to the end of the container
+        for (size_t i{}; i != n; ++i) {
+
+            auto pos{ std::next(cont.begin(), i) };
+            auto value = *pos;
+            cont.emplace_back(std::move(value));
+        }
+
+        // erase the copied elements from front of container
+        cont.erase(cont.begin(), std::next(cont.begin(), n));
+    }
+
+    template <typename TContainer>
+    auto move_n_elements_to_back_safe_and_fast(TContainer& cont, std::size_t n) {
+
+        auto newBegin = std::next(cont.begin(), n);
+        std::rotate(cont.begin(), newBegin, cont.end());
+    }
+
+    static void test_move_n_elements_to_back()
+    {
+        auto values = std::vector{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+        // move_n_elements_to_back<std::vector<int>>(values, 3); // remove comment // crashes (!!!)
+        move_n_elements_to_back_safe<std::vector<int>>(values, 3);
+
+        std::for_each(
+            values.begin(),
+            values.end(),
+            [](auto n) { std::print("{} ", n); }
+        );
+        std::println();
+    }
 }
 
 // =================================================================
@@ -573,7 +624,8 @@ void test_algorithms_best_practices()
     using namespace STLAlgorithms_BestPractices;
     // test_non_generic_vs_generic_function();
     //test_grid();
-    test_optimization_techniques();
+    test_move_n_elements_to_back();
+    //test_optimization_techniques();
 }
 
 void test_algorithms()

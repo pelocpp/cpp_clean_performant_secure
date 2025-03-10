@@ -42,9 +42,58 @@ Es werden folgenden STL-Algorithmen an Hand von einfachen Beispielen vorgestellt
   * `std::clamp`
   * `std::minmax_element`
 
+
 ---
 
-## Best Practice: Nicht-generische versus generische Funktion <a name="link1"></a>
+## Best Practice: Nicht-generische versus generische Funktionen <a name="link1"></a>
+
+<table>
+  <tr>
+    <th>Has true element</th>
+    <th colspan="2">Yes</th>
+    <th colspan="2">No</th>
+  </tr>
+  <tr>
+    <td>Has false element</td>
+    <td>Yes</td>
+    <td>No</td>
+    <td>Yes</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td style='text-align:center;'>all_of</td>
+    <td>false</td>
+    <td>true</td>
+    <td>false</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td style='text-align:center;'>any_of</td>
+    <td>true</td>
+    <td>true</td>
+    <td>false</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td style='text-align:center;'>none_of</td>
+    <td>false</td>
+    <td>false</td>
+    <td>true</td>
+    <td>true</td>
+  </tr>
+</table>
+
+
+Has true element	Yes	No
+ Has false element 	Yes	No	Yes	    No
+all_of	false	true	false	true
+any_of	true	true	  false  	  false  
+none_of	  false  	  false  	true	true
+
+
+---
+
+## Best Practice: Nicht-generische versus generische Funktionen <a name="link1"></a>
 
 ```cpp
 01: auto contains(const std::vector<int>& vec, int elem) {
@@ -174,6 +223,20 @@ Wir betrachten als Beispiel den Algorithmus `std::find()`:
 WEITER WEITER
 
 ---
+
+## Best Practice: Unerwartete Ausnahmen und Performanzprobleme <a name="link1"></a>
+
+<img src="cpp_stl_algorithms_unexpected_exceptions_01.svg" width="500">
+
+*Abbildung* 1: Verschieben der ersten drei Elemente an das Ende eines Containers.
+
+<img src="cpp_stl_algorithms_unexpected_exceptions_02.svg" width="530">
+
+*Abbildung* 2: Speicherzuweisung und -freigabe, um Elemente an das Ende eines Containers zu verschieben.
+
+---
+
+
 
 [Zurück](Readme_Data_Structures_and_Algorithms.md)
 
