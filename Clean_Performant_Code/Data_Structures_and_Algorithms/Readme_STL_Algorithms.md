@@ -5,8 +5,16 @@
 ---
 
 ## Inhalt
+  
+  * [Allgemeines](#link1)
+  * [Überblick über die populärsten STL-Algorithmen](#link2)
+  * [`std::all_of`, `std::any_of` und `std::none_of` im Vergleich](#link3)
+  * [Best Practice: Nicht-generische versus generische Funktionen](#link4)
+  * [Best Practice: Benutzerdefinierte Datentypen mit `begin()` und `end()`](#link5)
+  * [Best Practice: Verwenden Sie Standardalgorithmen anstelle von einfachen `for`-Schleifen](#link6)
+  * [Best Practice: Unerwartete Ausnahmen und Performanzprobleme](#link7)
+  * [Best Practice: Optimierungstechniken der STL](#link8)
 
-  * [Allgemeines](#link)
 
 ---
 
@@ -17,6 +25,21 @@
 ---
 
 ## Allgemeines <a name="link1"></a>
+
+Die Verwendung von Containern aus der Standardbibliothek ist unter C++-Programmierern weit verbreitet.
+
+Es ist selten, C++-Codebasen ohne Verweise auf `std::vector` oder `std::string` zu finden.
+Interessanterweise kann man jedoch die Beobachtung machen, dass Algorithmen aus der Standardbibliothek viel seltener verwendet werden,
+obwohl sie dieselben Vorteile wie Container bieten:
+
+  * Sie können als Bausteine zur Lösung komplexer Probleme verwendet werden.
+  * Ihr Speicherplatz- und Laufzeitaufwendungen sind bekannt (Komplexitätsgarantien).
+  * Ihre Implementierungen sind gut ausgearbeitet und effizient.
+  * Sie sind gut dokumentiert (einschließlich Referenzen, Bücher und Videos).
+
+---
+
+## Überblick über die populärsten STL-Algorithmen <a name="link2"></a>
 
 Es werden folgenden STL-Algorithmen an Hand von einfachen Beispielen vorgestellt:
 
@@ -44,7 +67,7 @@ Es werden folgenden STL-Algorithmen an Hand von einfachen Beispielen vorgestellt
 
 ---
 
-## `std::all_of`, `std::any_of` und `std::none_of` im Vergleich<a name="link1"></a>
+## `std::all_of`, `std::any_of` und `std::none_of` im Vergleich <a name="link3"></a>
 
 <table>
  <thead>
@@ -88,7 +111,7 @@ Es werden folgenden STL-Algorithmen an Hand von einfachen Beispielen vorgestellt
 
 ---
 
-## Best Practice: Nicht-generische versus generische Funktionen <a name="link1"></a>
+## Best Practice: Nicht-generische versus generische Funktionen <a name="link4"></a>
 
 Betrachten Sie die folgende Funktion `contains`:
 
@@ -143,7 +166,7 @@ Auf diese Weise erhalten wir eine `contains`-Funktion, die mit unterschiedlichen
 
 ---
 
-## Best Practice: Benutzerdefinierte Datentypen mit `begin()` und `end()` <a name="link1"></a>
+## Best Practice: Benutzerdefinierte Datentypen mit `begin()` und `end()` <a name="link5"></a>
 
 Wir wir im letzten Abschnitt gesehen haben, können neue benutzerdefinierte Datentypen,
 die wir erstellen, von den standardmäßigen generischen Algorithmen verwendet werden können,
@@ -208,7 +231,7 @@ bei der Zeilen als Iteratorenpaar verfügbar gemacht werden, wie folgt:
 
 ---
 
-## Best Practice: Verwenden Sie Standardalgorithmen anstelle von einfachen `for`-Schleifen. <a name="link1"></a>
+## Best Practice: Verwenden Sie Standardalgorithmen anstelle von einfachen `for`-Schleifen <a name="link6"></a>
 
 Wir stellen einen Vergleich an:
 
@@ -250,10 +273,9 @@ Wir stellen einen Vergleich an:
 09: }
 ```
 
-
 ---
 
-## Best Practice: Unerwartete Ausnahmen und Performanzprobleme <a name="link1"></a>
+## Best Practice: Unerwartete Ausnahmen und Performanzprobleme <a name="link7"></a>
 
 Um die Bedeutung der Verwendung von Algorithmen anstelle von einfachen `for`-Schleifen noch weiter zu unterstreichen,
 zeigen wir einige weitere, nicht ganz so offensichtliche Probleme auf,
@@ -269,7 +291,6 @@ an das Ende verschiebt, und zwar wie folgt:
 Ein naiver Ansatz wäre, die ersten *n* Elemente während einer Iteration nach hinten zu kopieren
 und dann die ersten *n* Elemente zu löschen:
 
-
 <img src="cpp_stl_algorithms_unexpected_exceptions_02.svg" width="530">
 
 *Abbildung* 2: Speicherzuweisung und -freigabe, um Elemente an das Ende eines Containers zu verschieben.
@@ -278,6 +299,17 @@ und dann die ersten *n* Elemente zu löschen:
 *Quellcode*:
 
 ```cpp
+01: template <typename TContainer>
+02: auto move_n_elements_to_back(TContainer& cont, std::size_t n) {
+03: 
+04:     // copy the first n elements to the end of the container
+05:     for (auto it = cont.begin(); it != std::next(cont.begin(), n); ++it) {
+06:         cont.emplace_back(std::move(*it));
+07:     }
+08: 
+09:     // erase the copied elements from front of container
+10:     cont.erase(cont.begin(), std::next(cont.begin(), n));
+11: }
 ```
 
 Auf den ersten Blick mag das plausibel erscheinen, aber bei näherer Betrachtung offenbart sich ein schwerwiegendes Problem:
@@ -287,11 +319,25 @@ ist der im Einsatz befindliche Iterator (`it`) nicht mehr gültig!
 Wenn der Algorithmus versucht, auf einen ungültigen Iterator zuzugreifen,
 liegt *Undefined Behavior* vor, das Programm stürzt im besten Fall ab.
 
-Wir schreiben Funktion `move_n_elements_to_back` neu:
+Wir schreiben Funktion `move_n_elements_to_back` neu &ndash; Variante `move_n_elements_to_back_safe`:
 
 *Quellcode*:
 
 ```cpp
+01: template <typename TContainer>
+02: auto move_n_elements_to_back_safe(TContainer& cont, std::size_t n) {
+03: 
+04:     // copy the first n elements to the end of the container
+05:     for (size_t i{}; i != n; ++i) {
+06: 
+07:         auto pos{ std::next(cont.begin(), i) };
+08:         auto value = *pos;
+09:         cont.emplace_back(std::move(value));
+10:     }
+11: 
+12:     // erase the copied elements from front of container
+13:     cont.erase(cont.begin(), std::next(cont.begin(), n));
+14: }
 ```
 
 Die Lösung funktioniert; sie stürzt nicht mehr ab. Aber jetzt hat sie ein subtiles Leistungsproblem.
@@ -312,12 +358,36 @@ Abgesehen von dieser Leistungsbeschränkung hat der vorangehende Code auch noch d
    (auch wenn dies möglicherweise selten der Fall ist).
 
 
+Wenn wir dieses Stadium erreicht haben, sollten wir die Standardbibliothek durchsuchen und prüfen,
+ob sie einen geeigneten Algorithmus enthält, der als Baustein verwendet werden kann.
 
- WEITER: Dritte Variante mit Quellcode
+Praktischerweise stellt der <algorithm>-Header einen Algorithmus namens `std::rotate()` bereit,
+der genau das tut, was wir suchen, und dabei alle zuvor genannten Nachteile vermeidet.
+
+Hier ist unsere endgültige Version mit dem `std::rotate()`-Algorithmus &ndash; Variante `move_n_elements_to_back_safe_and_fast`:
+
+
+*Quellcode*:
+
+```cpp
+01: template <typename TContainer>
+02: auto move_n_elements_to_back_safe_and_fast(TContainer& cont, std::size_t n) {
+03: 
+04:     auto newBegin = std::next(cont.begin(), n);
+05:     std::rotate(cont.begin(), newBegin, cont.end());
+06: }
+```
+
+Schauen wir uns die Vorteile von std::rotate() an:
+
+  * Der Algorithmus löst keine Ausnahmen aus, da er keine Speicherallokationen vornimmt (das enthaltene Objekt kann jedoch Ausnahmen auslösen).
+  * Er funktioniert auch mit Containern, deren Größe nicht änderbar ist, wie z. B. `std::array`.
+  * Die Leistung ist *O(n)*, unabhängig vom Container, auf dem er ausgeführt wird.
+  * Die Implementierung kann unter Berücksichtigung spezifischer Hardware weiter optimiert werden.
 
 ---
 
-## Best Practice: Optimierungstechniken der STL <a name="link1"></a>
+## Best Practice: Optimierungstechniken der STL <a name="link8"></a>
 
 Die Realisierung der STL ist immer für Überraschungen gut:
 
@@ -325,6 +395,61 @@ Selbst scheinbar sehr einfache Algorithmen können Optimierungen enthalten,
 die man normalerweise nicht in Betracht ziehen würde.
 
 Wir betrachten als Beispiel den Algorithmus `std::find()`:
+
+*Quellcode*: Klassische Realisierung
+
+```cpp
+01: template <typename TIterator, typename TValue>
+02: auto find_slow(TIterator first, TIterator last, const TValue& value) {
+03:     for (auto it = first; it != last; ++it) {
+04:         if (*it == value) {
+05:             return it;
+06:         }
+07:     }
+08:     return last;
+09: }
+```
+
+*Quellcode*: Optimierte Realisierung
+
+```cpp
+01: template <typename TIterator, typename TValue>
+02: auto find_fast(TIterator first, TIterator last, const TValue& value) {
+03:         
+04:     // main loop unrolled into chunks of four
+05:     auto num_trips = (last - first) / 4;
+06:     for (auto trip_count = num_trips; trip_count > 0; --trip_count) {
+07: 
+08:         if (*first == value) { return first; } ++first;
+09:         if (*first == value) { return first; } ++first;
+10:         if (*first == value) { return first; } ++first;
+11:         if (*first == value) { return first; } ++first;
+12:     }
+13: 
+14:     // handle the remaining elements
+15:     switch (last - first) {
+16:         case 3: if (*first == value) { return first; } ++first;
+17:         case 2: if (*first == value) { return first; } ++first;
+18:         case 1: if (*first == value) { return first; } ++first;
+19:         case 0:
+20:         default: return last;
+21:     }
+22: }
+```
+
+Worin liegt der Unterschied der beiden Realisierungen?
+
+Bei genauerer Betrachtung der optimierten Implementierung ist jedoch festzustellen,
+dass diese bei Verwendung mit `std::random_access_iterator` (also `std::vector`, `std::string`, `std::deque` und `std::array`)
+die Hauptschleife in Abschnitte von jeweils vier Blöcken aufteilt,
+was dazu führt, dass der Vergleich (`it != last`) nur ein Viertel so oft ausgeführt wird.
+
+*Ausgabe*:
+
+```
+find_slow: Elapsed time: 445 [milliseconds]
+find_fast: Elapsed time: 249 [milliseconds]
+```
 
 ---
 

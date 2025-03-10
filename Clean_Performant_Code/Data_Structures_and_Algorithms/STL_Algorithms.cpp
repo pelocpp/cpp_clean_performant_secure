@@ -544,7 +544,7 @@ namespace STLAlgorithms_BestPractices {
     // Unexpected exceptions and performance problems
 
     template <typename TContainer>
-    auto move_n_elements_to_back(TContainer& cont, std::size_t n) {
+    static auto move_n_elements_to_back(TContainer& cont, std::size_t n) {
 
         // copy the first n elements to the end of the container
         for (auto it = cont.begin(); it != std::next(cont.begin(), n); ++it) {
@@ -556,7 +556,7 @@ namespace STLAlgorithms_BestPractices {
     }
 
     template <typename TContainer>
-    auto move_n_elements_to_back_safe(TContainer& cont, std::size_t n) {
+    static auto move_n_elements_to_back_safe(TContainer& cont, std::size_t n) {
 
         // copy the first n elements to the end of the container
         for (size_t i{}; i != n; ++i) {
@@ -571,7 +571,7 @@ namespace STLAlgorithms_BestPractices {
     }
 
     template <typename TContainer>
-    auto move_n_elements_to_back_safe_and_fast(TContainer& cont, std::size_t n) {
+    static auto move_n_elements_to_back_safe_and_fast(TContainer& cont, std::size_t n) {
 
         auto newBegin = std::next(cont.begin(), n);
         std::rotate(cont.begin(), newBegin, cont.end());
@@ -591,13 +591,12 @@ namespace STLAlgorithms_BestPractices {
         );
         std::println();
     }
-}
 
-// -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     // Optimization Techniques of STL algorithms
 
     template <typename TIterator, typename TValue>
-    auto find_slow(TIterator first, TIterator last, const TValue& value) {
+    static auto find_slow(TIterator first, TIterator last, const TValue& value) {
         for (auto it = first; it != last; ++it) {
             if (*it == value) {
                 return it;
@@ -607,10 +606,11 @@ namespace STLAlgorithms_BestPractices {
     }
 
     template <typename TIterator, typename TValue>
-    auto find_fast(TIterator first, TIterator last, const TValue& value) {
+    static auto find_fast(TIterator first, TIterator last, const TValue& value) {
         
-        // main loop unrolled into chunks of four
+        // main loop unrolled into chunks of four (std::random_access_iterator needed)
         auto num_trips = (last - first) / 4;
+
         for (auto trip_count = num_trips; trip_count > 0; --trip_count) {
 
             if (*first == value) { return first; } ++first;
@@ -650,7 +650,7 @@ namespace STLAlgorithms_BestPractices {
             std::println("find_fast: {}", (found == vec.end()) ? "Not found" : "Found!");
         }
     }
-
+}
 
 // =================================================================
 
@@ -678,22 +678,16 @@ static void test_algorithms_best_practices()
 {
     using namespace STLAlgorithms_BestPractices;
 
-    test_non_generic_vs_generic_function();
-    test_grid();
-
-
-
+    //test_non_generic_vs_generic_function();
+    //test_grid();
     //test_use_standard_algorithms_over_raw_for_loops();
-
-
     //test_move_n_elements_to_back();
-    //test_optimization_techniques();
-    test_compare_with_zero();
+    test_optimization_techniques();
 }
 
 void test_algorithms()
 {
-  //  test_algorithms_introduction();
+    //test_algorithms_introduction();
     test_algorithms_best_practices();
 }
 
