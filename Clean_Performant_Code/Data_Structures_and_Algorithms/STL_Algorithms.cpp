@@ -487,6 +487,113 @@ namespace STLAlgorithms_BestPractices {
     }
 
     // -----------------------------------------------------------------------
+    // Use standard algorithms over raw for-loops
+
+    static bool varies(const auto& n) {
+        return false;
+    }
+
+    static void test_using_raw_for_loop(const auto& infos, const auto& output) {
+
+        // original version using a for-loop
+        auto conflicting = false;
+        for (const auto& info : infos) {
+            if (info.params() == output.params()) {
+                if (varies(info.flags())) {
+                    conflicting = true;
+                    break;
+                }
+            }
+            else {
+                conflicting = true;
+                break;
+            }
+        }
+    }
+
+    static void test_using_standard_algorithms(const auto& infos, const auto& output) {
+
+        // version using standard algorithms
+        const auto in_conflict = [&](const auto& info) {
+            return info.params() != output.params() || varies(info.flags());
+        };
+
+        const auto conflicting = std::any_of(infos.begin(), infos.end(), in_conflict);
+    }
+
+    static void test_use_standard_algorithms_over_raw_for_loops() {
+
+        struct Input
+        {
+            auto params() const { return 0; }
+            auto flags() const { return 0ul; }
+        };
+
+        struct Output
+        {
+            int params() const { return 0; }
+        };
+
+        const std::vector<Input> input{ 0 };
+
+        test_using_raw_for_loop(input, Output{});
+        test_using_standard_algorithms(input, Output{});
+    }
+
+    // -----------------------------------------------------------------------
+    // Unexpected exceptions and performance problems
+
+    template <typename TContainer>
+    auto move_n_elements_to_back(TContainer& cont, std::size_t n) {
+
+        // copy the first n elements to the end of the container
+        for (auto it = cont.begin(); it != std::next(cont.begin(), n); ++it) {
+            cont.emplace_back(std::move(*it));
+        }
+
+        // erase the copied elements from front of container
+        cont.erase(cont.begin(), std::next(cont.begin(), n));
+    }
+
+    template <typename TContainer>
+    auto move_n_elements_to_back_safe(TContainer& cont, std::size_t n) {
+
+        // copy the first n elements to the end of the container
+        for (size_t i{}; i != n; ++i) {
+
+            auto pos{ std::next(cont.begin(), i) };
+            auto value = *pos;
+            cont.emplace_back(std::move(value));
+        }
+
+        // erase the copied elements from front of container
+        cont.erase(cont.begin(), std::next(cont.begin(), n));
+    }
+
+    template <typename TContainer>
+    auto move_n_elements_to_back_safe_and_fast(TContainer& cont, std::size_t n) {
+
+        auto newBegin = std::next(cont.begin(), n);
+        std::rotate(cont.begin(), newBegin, cont.end());
+    }
+
+    static void test_move_n_elements_to_back()
+    {
+        auto values = std::vector{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+        // move_n_elements_to_back<std::vector<int>>(values, 3); // remove comment // crashes (!!!)
+        move_n_elements_to_back_safe<std::vector<int>>(values, 3);
+
+        std::for_each(
+            values.begin(),
+            values.end(),
+            [](auto n) { std::print("{} ", n); }
+        );
+        std::println();
+    }
+}
+
+// -----------------------------------------------------------------------
     // Optimization Techniques of STL algorithms
 
     template <typename TIterator, typename TValue>
@@ -544,62 +651,10 @@ namespace STLAlgorithms_BestPractices {
         }
     }
 
-    // -----------------------------------------------------------------------
-    // Unexpected exceptions and performance problems
-
-    template <typename TContainer>
-    auto move_n_elements_to_back(TContainer& cont, std::size_t n) {
-
-        // copy the first n elements to the end of the container
-        for (auto it = cont.begin(); it != std::next(cont.begin(), n); ++it) {
-            cont.emplace_back(std::move(*it));
-        }
-
-        // erase the copied elements from front of container
-        cont.erase(cont.begin(), std::next(cont.begin(), n));
-    }
-
-    template <typename TContainer>
-    auto move_n_elements_to_back_safe(TContainer& cont, std::size_t n) {
-
-        // copy the first n elements to the end of the container
-        for (size_t i{}; i != n; ++i) {
-
-            auto pos{ std::next(cont.begin(), i) };
-            auto value = *pos;
-            cont.emplace_back(std::move(value));
-        }
-
-        // erase the copied elements from front of container
-        cont.erase(cont.begin(), std::next(cont.begin(), n));
-    }
-
-    template <typename TContainer>
-    auto move_n_elements_to_back_safe_and_fast(TContainer& cont, std::size_t n) {
-
-        auto newBegin = std::next(cont.begin(), n);
-        std::rotate(cont.begin(), newBegin, cont.end());
-    }
-
-    static void test_move_n_elements_to_back()
-    {
-        auto values = std::vector{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-
-        // move_n_elements_to_back<std::vector<int>>(values, 3); // remove comment // crashes (!!!)
-        move_n_elements_to_back_safe<std::vector<int>>(values, 3);
-
-        std::for_each(
-            values.begin(),
-            values.end(),
-            [](auto n) { std::print("{} ", n); }
-        );
-        std::println();
-    }
-}
 
 // =================================================================
 
-void test_algorithms_introduction()
+static void test_algorithms_introduction()
 {
     using namespace STLAlgorithms;
     test_initializing();
@@ -619,13 +674,21 @@ void test_algorithms_introduction()
     test_min_max();
 }
 
-void test_algorithms_best_practices()
+static void test_algorithms_best_practices()
 {
     using namespace STLAlgorithms_BestPractices;
-    // test_non_generic_vs_generic_function();
-    //test_grid();
-    test_move_n_elements_to_back();
+
+    test_non_generic_vs_generic_function();
+    test_grid();
+
+
+
+    //test_use_standard_algorithms_over_raw_for_loops();
+
+
+    //test_move_n_elements_to_back();
     //test_optimization_techniques();
+    test_compare_with_zero();
 }
 
 void test_algorithms()

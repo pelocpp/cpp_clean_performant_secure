@@ -42,13 +42,9 @@ Es werden folgenden STL-Algorithmen an Hand von einfachen Beispielen vorgestellt
   * `std::clamp`
   * `std::minmax_element`
 
-
 ---
 
-
-
-
-## Best Practice: Nicht-generische versus generische Funktionen <a name="link1"></a>
+## `std::all_of`, `std::any_of` und `std::none_of` im Vergleich<a name="link1"></a>
 
 <table>
  <thead>
@@ -59,10 +55,10 @@ Es werden folgenden STL-Algorithmen an Hand von einfachen Beispielen vorgestellt
   </tr>
   <tr>
     <td><b>Has false element</b></td>
-    <td>Yes</td>
-    <td>No</td>
-    <td>Yes</td>
-    <td>No</td>
+    <td><b>Yes</b></td>
+    <td><b>No</b></td>
+    <td><b>Yes</b></td>
+    <td><b>No</b></td>
   </tr>
  </thead>
  <tbody>
@@ -90,10 +86,11 @@ Es werden folgenden STL-Algorithmen an Hand von einfachen Beispielen vorgestellt
  </tbody>
 </table>
 
-
 ---
 
 ## Best Practice: Nicht-generische versus generische Funktionen <a name="link1"></a>
+
+Betrachten Sie die folgende Funktion `contains`:
 
 ```cpp
 01: auto contains(const std::vector<int>& vec, int elem) {
@@ -211,6 +208,115 @@ bei der Zeilen als Iteratorenpaar verfügbar gemacht werden, wie folgt:
 
 ---
 
+## Best Practice: Verwenden Sie Standardalgorithmen anstelle von einfachen `for`-Schleifen. <a name="link1"></a>
+
+Wir stellen einen Vergleich an:
+
+#### Beispiel einer Funktion mit einfacher `for`-Schleife
+
+```cpp
+01: void test (const auto& infos, const auto& output) {
+02: 
+03:     // original version using a for-loop
+04:     auto conflicting = false;
+05:     for (const auto& info : infos) {
+06:         if (info.params() == output.params()) {
+07:             if (varies(info.flags())) {
+08:                 conflicting = true;
+09:                 break;
+10:             }
+11:         }
+12:         else {
+13:             conflicting = true;
+14:             break;
+15:         }
+16:     }
+17: }
+```
+
+
+#### Beispiel einer Funktion unter Verwendung von Standardalgorithmen
+
+
+```cpp
+01: void test (const auto& infos, const auto& output) {
+02: 
+03:     // version using standard algorithms
+04:     const auto in_conflict = [&](const auto& info) {
+05:         return info.params() != output.params() || varies(info.flags());
+06:     };
+07: 
+08:     const auto conflicting = std::any_of(infos.begin(), infos.end(), in_conflict);
+09: }
+```
+
+
+---
+
+## Best Practice: Unerwartete Ausnahmen und Performanzprobleme <a name="link1"></a>
+
+Um die Bedeutung der Verwendung von Algorithmen anstelle von einfachen `for`-Schleifen noch weiter zu unterstreichen,
+zeigen wir einige weitere, nicht ganz so offensichtliche Probleme auf,
+auf die man stoßen kann, wenn man handgefertigte `for`-Schleifen anstelle von Standardalgorithmen verwendet.
+
+Nehmen wir an, wir benötigen eine Funktion, die die ersten *n* Elemente vom Anfang des Containers
+an das Ende verschiebt, und zwar wie folgt:
+
+<img src="cpp_stl_algorithms_unexpected_exceptions_01.svg" width="500">
+
+*Abbildung* 1: Verschieben der ersten drei Elemente an das Ende eines Containers.
+
+Ein naiver Ansatz wäre, die ersten *n* Elemente während einer Iteration nach hinten zu kopieren
+und dann die ersten *n* Elemente zu löschen:
+
+
+<img src="cpp_stl_algorithms_unexpected_exceptions_02.svg" width="530">
+
+*Abbildung* 2: Speicherzuweisung und -freigabe, um Elemente an das Ende eines Containers zu verschieben.
+
+
+*Quellcode*:
+
+```cpp
+```
+
+Auf den ersten Blick mag das plausibel erscheinen, aber bei näherer Betrachtung offenbart sich ein schwerwiegendes Problem:
+Wenn der Container während der Iteration aufgrund von `emplace_back()` intern neuen Speicher allokiert,
+ist der im Einsatz befindliche Iterator (`it`) nicht mehr gültig!
+
+Wenn der Algorithmus versucht, auf einen ungültigen Iterator zuzugreifen,
+liegt *Undefined Behavior* vor, das Programm stürzt im besten Fall ab.
+
+Wir schreiben Funktion `move_n_elements_to_back` neu:
+
+*Quellcode*:
+
+```cpp
+```
+
+Die Lösung funktioniert; sie stürzt nicht mehr ab. Aber jetzt hat sie ein subtiles Leistungsproblem.
+
+Der Algorithmus agiert auf Containerobjekten des Typs `std::list` deutlich langsamer als auf `std::vector`-Objekten.
+
+Der Grund dafür ist, dass *std::next(it, n)* in Verbindung mit `std::list::iterator` *O(n)* im Gegensatz zu
+*O(1)* bei Einsatz eines `std::vector::iterator`-Objekts ist.
+
+Da *std::next(it, n)* in jedem Schritt der `for`-Schleife aufgerufen wird,
+hat dieser Algorithmus bei Verwendung von Containern wie `std::list` eine Zeitkomplexität von *O(n2)*.
+
+Abgesehen von dieser Leistungsbeschränkung hat der vorangehende Code auch noch die folgenden Einschränkungen:
+
+  * Funktioniert aufgrund von `emplace_back()` nicht mit Containern mit statischer Größe, wie z. B. `std::array`.
+
+  * Die Funktion kann eine Ausnahme auslösen, da `emplace_back()` Speicher allokiert und fehlschlagen kann
+   (auch wenn dies möglicherweise selten der Fall ist).
+
+
+
+ WEITER: Dritte Variante mit Quellcode
+
+---
+
 ## Best Practice: Optimierungstechniken der STL <a name="link1"></a>
 
 Die Realisierung der STL ist immer für Überraschungen gut:
@@ -220,23 +326,7 @@ die man normalerweise nicht in Betracht ziehen würde.
 
 Wir betrachten als Beispiel den Algorithmus `std::find()`:
 
-WEITER WEITER
-
 ---
-
-## Best Practice: Unerwartete Ausnahmen und Performanzprobleme <a name="link1"></a>
-
-<img src="cpp_stl_algorithms_unexpected_exceptions_01.svg" width="500">
-
-*Abbildung* 1: Verschieben der ersten drei Elemente an das Ende eines Containers.
-
-<img src="cpp_stl_algorithms_unexpected_exceptions_02.svg" width="530">
-
-*Abbildung* 2: Speicherzuweisung und -freigabe, um Elemente an das Ende eines Containers zu verschieben.
-
----
-
-
 
 [Zurück](Readme_Data_Structures_and_Algorithms.md)
 
