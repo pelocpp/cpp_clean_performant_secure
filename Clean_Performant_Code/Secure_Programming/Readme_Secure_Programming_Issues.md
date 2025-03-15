@@ -39,17 +39,17 @@
 
   * Passen C und &bdquo;Secure Programming&rdquo; zusammen? Nein!
 
-  * Ist C als sichere, robuste Programmiersprache konzipert: Nein!
+  * Ist C als sichere, robuste Programmiersprache konzipiert: Nein!
 
   * Ist es möglich, in C sichere und robuste Programme zu schreiben: Ja!
 
-  * Gibt es ein Motto für C Programmierung: Ja: &bdquo;A Programmer knows what he does&rdquo;.
+  * Gibt es ein Motto für die Programmierung in C: Ja: &bdquo;*A Programmer knows what he does*&rdquo;.
 
   * Warum ist C so unglaublich erfolgreich: Weil man nahezu jedes erdenkliche Programm in C schreiben kann.
 
 ##### Zusammenfassung:
 
-  * How to Shoot Yourself In the Foot using C:<br />*You shoot yourself in the foot*.
+  * How to shoot yourself in the foot using C: *You shoot yourself in the foot*.
 
 ---
 
@@ -61,75 +61,78 @@
 
   * Ist es möglich, in C++ sichere und robuste Programme zu schreiben: Ja!
 
-  * Gibt es ein Motto für C++ Programmierung: Ja: &bdquo;Never trust a programmer who says he knows C++&rdquo;.
+  * Gibt es ein Motto für die Programmierung in C++: Ja: &bdquo;*Never trust a programmer who says he knows C++*&rdquo;.
 
   * Warum ist C++ so unglaublich erfolgreich: Performanz!
 
 ##### Zusammenfassung:
 
-  * How to Shoot Yourself In the Foot using C:<br />*You accidentally create a dozen instances of yourself and shoot them all in the foot. Providing emergency medical care is impossible since you can't tell which are bitwise copies and which are just pointing at others and saying &bdquo;that's me, over there.&rdquo;*.
+  * How to shoot yourself in the foot using C++:<br />*You accidentally create a dozen instances of yourself and shoot them all in the foot. Providing emergency medical care is impossible since you can't tell which are bitwise copies and which are just pointing at others and saying &bdquo;that's me, over there.&rdquo;*.
 
 ---
 
-### Was unterscheidet C/C++ von anderen Programmiersprache wie z. B. Java oder C#
+### Was unterscheidet C/C++ von anderen Programmiersprache wie z. B. Java, C# oder Python
 
   * Ein C/C++-Übersetzer generiert Maschinencode, so wie dieser vom Entwickler durch den vom ihm geschriebenen Quellcode angefordert wird,
   *ohne* Sicherheitsprüfungen hinzuzufügen.
 
-  * In C# oder Java geschriebenen Programmen würde beispielsweise ein falscher Array-Zugriff zu einer Laufzeitausnahme (*Exception*) führen,
+  * In C# oder Java geschriebenen Programmen würde beispielsweise ein falscher Array-Zugriff zu einer Laufzeitausnahme führen (*Exception*),
   während dies in C++ zu einem falschen Speicherzugriff (Lesen) oder einer Speicherverletzung beim Schreiben führt.
 
   * Falsches oder unvorsichtiges Programmieren in C/C++ kann zu Überläufen (Stack-, Heap- und Pufferüberläufen) führen,
   die leicht für einen Angriff verwendet werden können.
 
+  * Bei konsequentem Einsatz der C++&ndash;Bibliothek (*STL*, *Standard Template Library*) lassen sich all diese Nachteile umgehen.
+  Die Verwendung der STL zieht robusten, absturzsicheren und performanten Code nach sich.
+
 ---
 
 ### Exploitability und Vulnerability
 
-##### Was versteht man unter einem *Exploit*?
+#### Was versteht man unter einem *Exploit*?
 
-Ein Exploit zeigt Sicherheitslücken von Software auf und ermöglicht deren Ausnutzung.
+Ein *Exploit* zeigt Sicherheitslücken von Software auf und ermöglicht deren Ausnutzung.
 Exploits stellen ein Werkzeug für Hacker dar, um in Computersysteme einzudringen und sie zu manipulieren.
 Sie können auch zur Beseitigung der Schwachstellen genutzt werden.
 
-Der Begriff Exploit kommt vom englischen &bdquo;to exploit&rdquo;, zu Deutsch &bdquo;ausnutzen&rdquo;.
+Der Begriff *Exploit* kommt vom englischen &bdquo;to exploit&rdquo;, zu deutsch etwa &bdquo;ausnutzen&rdquo;.
 Ein Exploit stellt eine systematische Möglichkeit dar, aufgrund von Schwachstellen oder Sicherheitslücken
 der Software in Computersysteme &ndash; in unserem Fall: in C/C++ Programme &ndash; einzudringen.
 
-
-Welche Arten von Exploits gibt es?
+##### Welche Arten von Exploits gibt es?
 
 Es existiert eine Vielzahl verschiedener Exploits. Abhängig von der verwendeten Angriffsart
-und zeitlichen Aspekten lassen sich die Exploits unterschiedlich klassifizieren.
+und von zeitlichen Aspekten lassen sich Exploits unterschiedlich klassifizieren.
 Oft genannte Exploit-Arten sind beispielsweise:
 
   * Remote ausgeführte Exploits
   * Lokale ausgeführte Exploits
-  * Denial-of-Service-Exploits (DoS-Exploits)
+  * *Denial-of-Service*-Exploits (*DoS*-Exploits)
   * SQL-Injection-Exploits
   * Command-Execution-Exploits
   * Zero-Day-Exploits
 
+##### Der berühmteste Exploit
 
-Der berühmteste Exploit: *Off-by-one Exploit*
+Der berühmteste Exploit ist der *Off-by-one Exploit*.
 
-Ein häufiger Programmierfehler beim Berechnen von Array-Grenzen.
+Dieser Exploit beschreibt einen häufigen Programmierfehler beim Berechnen von Array-Grenzen.
 In Little-Endian-Architekturen kann dies zum Überschreiben des niederwertigsten Bytes führen.
 
-##### Was versteht man unter *Vulnerability*?
+#### Was versteht man unter *Vulnerability*?
 
 Unter dem Begriff *Vulnerability* versteht man Schwachstellen,
 möglicherweise etwas drastischer übersetzt *Hochrisiko-Schwachstellen*.
 
 Wie kommt es dazu?
 
-C/C++ sind so genannte *Low-Level*-Programmiersprachen.
+C und C++ sind so genannte *Low-Level*-Programmiersprachen.
 
 Das Speichermanagement ist also anders geregelt als bei High-Level-Sprachen wie JavaScript oder Python.
-Bei diesen wird die Zuweisung, Nutzung und Bereitstellung implizit verwaltet (zum Beispiel mit *Garbage Collection*)
+Bei diesen wird die Zuweisung, Nutzung und Bereitstellung implizit verwaltet (zum Beispiel durch *Garbage Collection*).
 
 Bei C/C++ muss dies entwicklerseitig geschehen. 
-Performance und Implementierung lassen sich so zwar äußerst feinstufig optimieren, zugleich ist dieses Programmierkonzept aber auch mit sehr spezifischen Problematiken verbunden.
+Performanz und Implementierung lassen sich so zwar äußerst feinstufig optimieren, zugleich ist dieses Programmierkonzept aber auch mit sehr spezifischen Problematiken verbunden.
 
 *Buffer-Overflows* (CWE-121) und *Out-of-Bounds Write* (CWE-787) sind einige der bekanntesten
 *Vulnerabilities* in C/C++.
@@ -142,21 +145,17 @@ In C/C++ gibt es sowohl Sicherheitslücken als auch das sogenannte *Undefined Beh
 
 Beide Begriffe liegen eng beieinander.
 
-##### Beispiel für eine Sicherheitslücke: &bdquo;Use After Free&rdquo;
+##### Beispiel für eine Sicherheitslücke: &bdquo;*Use After Free*&rdquo;
 
 Es gibt den Datentyp Pointer in C/C++. Mit der Funktion `malloc` / dem Operator `new`
-kann man Speicher reservieren, um ihn anschließend verwenden zu können.
+kann man Speicher reservieren, um ihn anschließend zu verwenden.
 
-Der Name &bdquo;Use After Free&rdquo; verrät eigentlich schon alles. Hierbei geht es darum, dass ein Zeiger auf eine Variable
+Der Name &bdquo;*Use After Free*&rdquo; verrät eigentlich schon alles. Hierbei geht es darum, dass ein Zeiger auf eine Variable
 nach seiner Freigabe weiterhin genutzt wird.
 
 Es ist dem Compiler nicht möglich, zur Übersetzungszeit zu überprüfen,
 ob Variablen, die nur via Zeiger erreichbar sind (`malloc`, `new`), noch verfügbar sind (`free`, `delete`).
 Dies ist eine Sicherheitslücke in der Definition der Programmiersprache.
-
-Andere Programmiersprachen gehen hier einen anderen Weg wie z. B. C# oder Java.
-Hier wird vormals reservierter Speicher,
-der im Programm keine Verwendung mehr findet, durch die Laufzeitumgtebung wieder freigegeben (*Garbage Collection*)
 
 Die damit verbundene Anfälligkeit (Sicherheitslücke) hängt mit einem Fehler im Zusammenhang
 mit dem Speichermanagement im Ablauf des Programms zusammen:
@@ -164,6 +163,10 @@ mit dem Speichermanagement im Ablauf des Programms zusammen:
 Aus der Nutzung der Variable nach ihrer Freigabe resultieren im Programm
 unerwartete Aktionen oder andere unerwünschte Effekte. Dies bezeichnet man als *Undefined Behaviour*.
 Häufig macht man die Beobachtung, dass *Undefined Behaviour* zu einem Absturz des Programms führt.
+
+Andere Programmiersprachen gehen hier einen anderen Weg wie z. B. C# oder Java.
+Hier wird vormals reservierter Speicher,
+der im Programm keine Verwendung mehr findet, durch die Laufzeitumgebung wieder freigegeben (*Garbage Collection*).
 
 ---
 

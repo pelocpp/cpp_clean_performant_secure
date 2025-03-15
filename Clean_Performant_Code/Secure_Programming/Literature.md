@@ -6,24 +6,31 @@
 
 ## *Websites* / *Coding Standards*
 
-[*Common Weakness Enumeration (CWE)*](https://cwe.mitre.org/index.html)
+### *Common Weakness Enumeration (CWE)*
 
-  * Die *Common Weakness Enumeration* ist eine frei zugängliche Auflistung typischer Schwachstellen in Software und Hardware. Sie kategorisiert die Schwachstellen und dient als Basis und gemeinsame Sprache zur Identifizierung sicherheitsrelevanter Schwächen.
+  * Die [*Common Weakness Enumeration (CWE)*](https://cwe.mitre.org/index.html) ist eine frei zugängliche Auflistung typischer Schwachstellen in Software und Hardware. Sie kategorisiert die Schwachstellen und dient als Basis und gemeinsame Plattform zur Identifizierung sicherheitsrelevanter Schwächen.
 
-  * Wichtigstes Ziel der Common Weakness Enumeration ist es, durch Auflistung der Schwachstellen die typische Fehler und Schwächen in Hard- und Software zu vermeiden, noch bevor die betroffenen Produkte in Umlauf kommen. Sicherheitsanalysten, Programmierer oder Entwickler können sich der Liste bedienen und sie für ihre Arbeit verwenden.
+  * Wichtigstes Ziel der Common Weakness Enumeration ist es, durch Auflistung der Schwachstellen die typischen Fehler und Schwächen in Hard- und Software zu vermeiden, noch bevor die betroffenen Produkte in Umlauf kommen. Sicherheitsanalysten, Programmierer oder Entwickler können sich der Liste bedienen und sie für ihre Arbeit verwenden.
 
+---
 
 ### *C++ Core Guidelines*
+
+<img src="cpp_core_guidelines.png" width="450">
+
+  * Diese Website stellt eine Reihe von Kernrichtlinien für modernes C++ zusammen.
+
+  * Ziel ist es, C++-Programmierern zu helfen, einfacheren, effizienteren und wartungsfreundlicheren Code zu schreiben.
 
 [*C++ Core Guidelines Introduction*](https://isocpp.github.io/CppCoreGuidelines/)
 
 [*C++ Core Guidelines*](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
 
-<img src="cpp_core_guidelines.png" width="450">
+  * Einziger Wermutstropfen dieser exzellenten Website:
+    Nicht alle Guidelines sind einfach zu Lesen, eine gewisse Erfahrung
+    in der C++&ndash;Programmierung ist Vorraussetzung.
 
-  * Diese Website stellt eine Reihe von Kernrichtlinien für modernes C++ zusammen,
-
-  * Ziel ist es, C++-Programmierern zu helfen, einfacheren, effizienteren und wartungsfreundlicheren Code zu schreiben.
+---
 
 ### *Software Engineering Institute (SEI)*
 
@@ -33,13 +40,19 @@
 
 [*SEI CERT C++ Coding Standard*](https://wiki.sei.cmu.edu/confluence/pages/viewpage.action?pageId=88046682)
 
-  * Die C++ Core Guidelines sind ein portabler Satz von Richtlinien, Regeln und
-    Best Practices zum Programmieren in C++, der von C++&ndash;Experten und &ndash;Designern erstellt wurde.
+  * Der *SEI CERT C bzw. C++ Coding* Standard enthält Regeln für sicheres Programmieren in den Programmiersprache C und C++.
 
-  * Einziger Wermutstropfen dieser exzellenten Website:
-    Nicht alle Guidelines sind einfach zu Lesen, eine gewisse Erfahrung
-    in der C++&ndash;Programmierung ist Vorraussetzung.
+  * Ziel dieser Regeln und Empfehlungen ist die Entwicklung sicherer, zuverlässiger und geschützter Systeme, beispielsweise durch die Beseitigung undefinierter Verhaltensweisen, die zu undefiniertem Programmverhalten und ausnutzbaren Schwachstellen führen können.
 
+  * Die Einhaltung der in diesem Standard definierten Programmierregeln ist notwendig (aber nicht ausreichend), um die Sicherheit und Zuverlässigkeit von in der Programmiersprache C entwickelten Softwaresystemen zu gewährleisten.
+
+  * Notwendig ist beispielsweise auch ein sicheres Design.
+
+  * Sicherheitskritische Systeme unterliegen in der Regel strengeren Anforderungen als dieser Programmierstandard, beispielsweise der Anforderung, dass der gesamte Speicher statisch zugewiesen werden muss.
+
+  * Die Anwendung dieses Programmierstandards führt jedoch zu hochwertigen Systemen, die zuverlässig, robust und widerstandsfähig gegen Angriffe sind.
+
+---
 
 ### *MISRA*
 
@@ -90,7 +103,7 @@
 
 ---
 
-## *Youtube*
+## *YouTube*
 
 [NDC Conferences / Oslo / Secure Programming Practices in C++ - Patricia Aas](https://www.youtube.com/watch?v=gHGMDFm2MVs)
 
@@ -109,8 +122,7 @@ Begleitmaterial:
 (abgerufen am 17.2.2025)
 
 
-[Secure Programming in C](https://ocw.mit.edu/courses/6-s096-effective-programming-in-c-and-c-january-iap-2014/df281b9bb8aa5c4377567454bb839676_MIT6_S096IAP14_Lecture3S.pdf) von Lef Ioannidis.<br />
-oder auch [hier](Secure_Programming_in_C_Lef_Ioannidis.pdf).<br />
+[Secure Programming in C](https://ocw.mit.edu/courses/6-s096-effective-programming-in-c-and-c-january-iap-2014/df281b9bb8aa5c4377567454bb839676_MIT6_S096IAP14_Lecture3S.pdf) von Lef Ioannidis oder auch [hier](Secure_Programming_in_C_Lef_Ioannidis.pdf).<br />
 (abgerufen am 22.2.2025)
 
 ---
