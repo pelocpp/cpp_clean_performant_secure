@@ -38,6 +38,14 @@ namespace SecureProgrammingTools {
             test_infinite_loop_with_sanitizer();
         }
     }
+
+    namespace UsingClangTidy{
+
+        static void test_clang_tidy()
+        {
+            int numbers[10];
+        }
+    }
 }
 
 // ===========================================================================
@@ -47,6 +55,7 @@ void secure_programming_tools()
     using namespace SecureProgrammingTools;
 
     UsingAddressSanitizer::test_sanitizer();
+    UsingClangTidy::test_clang_tidy();
 }
 
 // ===========================================================================

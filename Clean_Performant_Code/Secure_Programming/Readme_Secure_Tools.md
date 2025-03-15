@@ -12,13 +12,13 @@
   * [Visual Studio Integration Add-In für *Cppcheck*](#link2)
   * [Visual Studio Address Sanitizer](#link3)
   * [Installation des Address Sanitizers](#link4)
-  * [Clang-Tidy](#link5)  To be Done
+  * [Clang-Tidy](#link5)
 
 ---
 
 #### Quellcode
 
-[*SecureProgrammingAdvices.cpp*](SecureProgrammingAdvices.cpp)<br />
+[*SecureProgrammingTools.cpp*](SecureProgrammingTools.cpp)<br />
 
 ---
 
@@ -36,7 +36,7 @@ Mehrere Möglichkeiten zum Download finden sich [hier](https://cppcheck.sourcefor
 
 <img src="CppCheck_01.png" width="600">
 
-*Abbildung* 4: [https://cppcheck.sourceforge.io](https://cppcheck.sourceforge.io) Website.
+*Abbildung* 1: [https://cppcheck.sourceforge.io](https://cppcheck.sourceforge.io) Website.
 
 *Cppcheck* ist sowohl als Open Source ([hier](https://cppcheck.sourceforge.io)) als auch als *Cppcheck Premium Paket*
 mit erweiterter Funktionalität verfügbar.
@@ -47,13 +47,12 @@ Weitere Informationen und Kaufoptionen für die kommerzielle Version finden Sie u
 
 ## Visual Studio Integration Add-In für Cppcheck <a name="link2"></a>
 
-Um *Cppcheck* mit Visual Studio zusammen betreiben zu können,
-greift man am besten auf
+Um *Cppcheck* mit Visual Studio zusammen betreiben zu können, greift man am besten auf
 das [Visual Studio Integration Add-In](https://github.com/VioletGiraffe/cppcheck-vs-addin) für Cppcheck zurück.
 
 <img src="CppCheck_Extension_01.png" width="700">
 
-*Abbildung* 5: [https://github.com/VioletGiraffe/cppcheck-vs-addin](https://github.com/VioletGiraffe/cppcheck-vs-addin) Website.
+*Abbildung* 2: [https://github.com/VioletGiraffe/cppcheck-vs-addin](https://github.com/VioletGiraffe/cppcheck-vs-addin) Website.
 
 *Hinweis*:
 
@@ -65,15 +64,15 @@ um das aktuelle Projekt überprüfen zu können:
 
 <img src="CppCheck_Extension_03.png" width="300">
 
-*Abbildung* 6: Erweiterungen im Menü &bdquo;*Tools*&rdquo;
+*Abbildung* 3: Erweiterungen im Menü &bdquo;*Tools*&rdquo;
 
-Zum Abschluss finden Sie in *Abbildung* 7 das *Settings*-Dialogfenster vor:
+Zum Abschluss finden Sie in *Abbildung* 4 das *Settings*-Dialogfenster vor:
 
 <img src="CppCheck_Extension_04.png" width="700">
 
-*Abbildung* 7: Spezifische Parametrierung des *Cppcheck*-Tools.
+*Abbildung* 4: Spezifische Parametrierung des *Cppcheck*-Tools.
 
-In diesem Fenster kann man spezfische Einstellungen vornehmen,
+In diesem Fenster kann man spezifische Einstellungen vornehmen,
 welche Meldungen man haben möchte &ndash; und welche vielleicht auch nicht.
 
 ---
@@ -91,12 +90,12 @@ Der Visual C++ Sanitizer kann folgende Fehlerursachen aufspüren:
 
  * Alloc/dealloc mismatches and new/delete type mismatches
  * Allocations too large for the heap
- * calloc overflow and alloca overflow
- * Double free and use after free
+ * `calloc` overflow and `alloca` overflow
+ * *Double free* and use after free
  * Global variable overflow
  * Heap buffer overflow
  * Invalid alignment of aligned values
- * memcpy and strncat parameter overlap
+ * `memcpy` and `strncat` parameter overlap
  * Stack buffer overflow and underflow
  * Stack use after return and use after scope
  * Memory use after it's poisoned
@@ -109,13 +108,13 @@ Grundlegende Vorraussetzung ist natürlich, dass der Sanitizer bei der Visual Stu
 
 <img src="VisualStudio_AddressSanitizer_02.png" width="300">
 
-*Abbildung* 8: Installation des Address Sanitizers in den Einstellungen des *Visual Studio Installers*.
+*Abbildung* 5: Installation des Address Sanitizers in den Einstellungen des *Visual Studio Installers*.
 
 Dann muss man den Sanitizer pro Projekt in den *Projekt Eigenschaften* aktivieren:
 
 <img src="VisualStudio_AddressSanitizer_01.png" width="700">
 
-*Abbildung* 9: *Enable Address Sanitizer*-Einstellung in den Einstellungen des Projekts.
+*Abbildung* 6: *Enable Address Sanitizer*-Einstellung in den Einstellungen des Projekts.
 
 
 *Hinweis*:<br />
@@ -206,6 +205,24 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
 ---
 
 ## Clang-Tidy <a name="link5"></a>
+
+*Clang-Tidy* ist ein Clang-basiertes C++-Linter-Tool.
+Es bietet ein erweiterbares Framework zur Diagnose und Behebung typischer Programmierfehler,
+wie z. B. Stilverstöße, Schnittstellenmissbrauch oder Fehler, die durch statische Analyse abgeleitet werden können.
+
+Die Visual C++ Codeanalyse unterstützt Clang-Tidy nativ für MSBuild- und CMake-Projekte,
+unabhängig davon, ob Clang- oder MSVC-Toolsets verwendet werden.
+
+*Clang-Tidy*-Prüfungen werden im Rahmen der Codeanalyse im Hintergrund ausgeführt.
+
+Sie werden als Warnungen im Editor (&bdquo;*Squiggles*&rdquo;, Schnörkel) und in der Fehlerliste angezeigt.
+
+Clang-Tidy-Unterstützung ist ab Visual Studio 2019 Version 16.4 verfügbar.
+Sie wird automatisch aktiviert, wenn Sie im Visual Studio Installer eine C++-Workload auswählen.
+
+<img src="ClangTidy.png" width="400">
+
+*Abbildung* 7: Beispiel einer *Clang-Tidy*-Meldung mit &bdquo;*Squiggles*&rdquo;.
 
 ---
 

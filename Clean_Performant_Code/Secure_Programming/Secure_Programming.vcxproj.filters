@@ -106,5 +106,8 @@
     <Image Include="Buch_LeBlanc_Writing_Secure_Code.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="ClangTidy.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

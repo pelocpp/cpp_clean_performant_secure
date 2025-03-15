@@ -150,6 +150,7 @@
   <ItemGroup>
     <Image Include="Buch_Barr_Embedded_C_Coding_Standard.png" />
     <Image Include="Buch_LeBlanc_Writing_Secure_Code.png" />
+    <Image Include="ClangTidy.png" />
     <Image Include="CppCheck_01.png" />
     <Image Include="CppCheck_Extension_01.png" />
     <Image Include="CppCheck_Extension_02.png" />
