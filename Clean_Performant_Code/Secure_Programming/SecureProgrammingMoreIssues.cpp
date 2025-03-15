@@ -119,8 +119,8 @@ void secure_programming_more_issues()
 {
     using namespace SecureProgrammingMoreIssues;
 
-    //UsingPointers::test_using_pointers();
-    //MemsetIssue::test_disappearing_memset();
+    UsingPointers::test_using_pointers();
+    MemsetIssue::test_disappearing_memset();
     DanglingReferences::test_dangling_reference();
 }
 

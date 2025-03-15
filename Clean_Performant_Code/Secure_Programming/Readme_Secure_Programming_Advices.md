@@ -8,37 +8,37 @@
 
 ### Einige wichtige Tipps zum Schreiben von sicherem C++&ndash;Code <!-- Zu den folgende Abschnitten gibt es keinen Quellcode -->
 
-  * [Verwende RAII](#link)
-  * [Verwende *Smart Pointer*](#link)
-  * [Verwende *Exception Handling*](#link)
-  * [Verwende die neuesten C++-Standards](#link)
-  * [Verwende sichere Bibliotheken](#link)
-  * [Verwende starke Typisierung](#link)
+  * [Verwende RAII](#link1)
+  * [Verwende *Smart Pointer*](#link2)
+  * [Verwende *Exception Handling*](#link3)
+  * [Verwende die neuesten C++-Standards](#link4)
+  * [Verwende sichere Bibliotheken](#link5)
+  * [Verwende starke Typisierung](#link6)
 
 ### Einige konkrete Schutzmaßnahmen  <!-- Zu den folgende Abschnitten gibt es Quellcode -->
 
-  * [Don't use C &ndash; use C++](#link)
-  * [Verwende mehrere Compiler](#link)
-  * [*Warnings* und *Errors*](#link)
-  * [Warning Level](#link)
-  * [Typensicherheit: Datentypen sind unsere Freunde](#link)
-  * [Erster Tipp für Pufferüberlauf: Exaktes Arbeiten](#link)
-  * [Zweiter Tipp für Pufferüberlauf: Verwende ausschließlich &bdquo;*secure*&rdquo; Funktionen](#link)
-  * [Drei Tipps für arithmetischen Überlauf](#link)
-  * [Noch ein Tipp für arithmetischen Überlauf: `std::midpoint`](#link)
-  * [Verhindere ungültige Zeichenketteninjektionen (so genannte *SQL Injections*)](#link)
-  * [Vermeide &bdquo;*Off-by-One*&rdquo; Fehler!](#link)
-  * [Verwende STL-Algorithmen](#link)
-  * [Verwende STL-Container](#link)
-  * [Achte auf sicheres *Downcasting*](#link)
-  * [Verzichte auf die direkte Verwendung des `new`-Operators](#link)
-  * [Deklariere Konstruktoren mit einem einzigen Argument mit `explicit`](#link)
-  * [Elementare Datentypen haben keine Bedeutung (*Semantics*), nur Wertebereiche](#link)
-  * [Der Datentyp `size_t`](#link)
-  * [Benutzerdefinierte Literale: Elementare Datentypen &bdquo;mit Bedeutung&rdquo;](#link)
-  * [Virtuelle Methoden sollten genau eines der drei Schlüsselwörter `virtual`, `override` oder `final` verwenden.](#link)
-  * [Setze standardmäßig Methoden auf `const`, soweit möglich](#link)
-  * [Verwende das Attribut `[[nodiscard]]`](#link)
+  * [Don't use C &ndash; use C++](#link77)
+  * [Verwende mehrere Compiler](#link8)
+  * [*Warnings* und *Errors*](#link9)
+  * [Warning Level](#link10)
+  * [Typensicherheit: Datentypen sind unsere Freunde](#link11)
+  * [Erster Tipp für Pufferüberlauf: Exaktes Arbeiten](#link12)
+  * [Zweiter Tipp für Pufferüberlauf: Verwende ausschließlich &bdquo;*secure*&rdquo; Funktionen](#link13)
+  * [Drei Tipps für arithmetischen Überlauf](#link14)
+  * [Noch ein Tipp für arithmetischen Überlauf: `std::midpoint`](#link15)
+  * [Verhindere ungültige Zeichenketteninjektionen (so genannte *SQL Injections*)](#link16)
+  * [Vermeide &bdquo;*Off-by-One*&rdquo; Fehler!](#link17)
+  * [Verwende STL-Algorithmen](#link18)
+  * [Verwende STL-Container](#link19)
+  * [Achte auf sicheres *Downcasting*](#link20)
+  * [Verzichte auf die direkte Verwendung des `new`-Operators](#link21)
+  * [Deklariere Konstruktoren mit einem einzigen Argument mit `explicit`](#link22)
+  * [Elementare Datentypen haben keine Bedeutung (*Semantics*), nur Wertebereiche](#link23)
+  * [Der Datentyp `size_t`](#link24)
+  * [Benutzerdefinierte Literale: Elementare Datentypen &bdquo;mit Bedeutung&rdquo;](#link25)
+  * [Schlüsselwörter `virtual`, `override` oder `final`](#link26)
+  * [Setze standardmäßig Methoden auf `const`, soweit möglich](#link27)
+  * [Verwende das Attribut `[[nodiscard]]`](#link28)
 
 ---
 
@@ -48,9 +48,9 @@
 
 ---
 
-### Einige wichtige Tipps zum Schreiben von sicherem C++&ndash;Code
+## Einige wichtige Tipps zum Schreiben von sicherem C++&ndash;Code
 
-## Verwenden Sie RAII
+### Verwenden Sie RAII <a name="link1"></a>
 
 RAII steht für *Resource Acquisition Is Initialization* (*Ressourcenerwerb ist Initialisierung*).
 
@@ -59,7 +59,7 @@ wenn ein Objekt erstellt wird, und automatisch freigegeben werden, wenn das Obje
 
 Verwenden Sie RAII, um Ressourcenlecks und Speicherfehler zu vermeiden.
 
-## Verwende *Smart Pointer*
+### Verwende *Smart Pointer* <a name="link2"></a>
 
 C++ *Smart Pointer* können durchauas mit dem RAII Prinzip verglichen werden.
 *Smart Pointer* Objekte verwalten die Speicherzuweisung und -freigabe automatisch.
@@ -67,26 +67,26 @@ C++ *Smart Pointer* können durchauas mit dem RAII Prinzip verglichen werden.
 Verwenden Sie Smart Pointer, um Speicherlecks und &bdquo;dangling&rdquo;&ndash;Zeiger zu vermeiden.
 
 
-## Verwende *Exception Handling*
+### Verwende *Exception Handling* <a name="link3"></a>
 
 Die Standard C++ Ausnahmebehandlung ist eine Möglichkeit, Fehler und Ausnahmen im laufenden Programm zu behandeln.
 
 Verwenden Sie die Ausnahmebehandlung, um Fehler abzufangen und zu behandeln und zu verhindern,
 dass Ihr Programm abstürzt.
 
-## Verwende die neuesten C++-Standards
+### Verwende die neuesten C++-Standards <a name="link4"></a>
 
 Die neuesten C++-Standards enthalten viele Sicherheitsverbesserungen gegenüber früheren Sprachversionen.
 
 Verwenden Sie immer die neuesten Standards, um diese Verbesserungen zu nutzen.
 
-## Verwende sichere Bibliotheken
+### Verwende sichere Bibliotheken <a name="link5"></a>
 
 Verwenden Sie sichere Bibliotheken, die auf Sicherheit getestet und verifiziert wurden.
 
 Vermeiden Sie die Verwendung von Bibliotheken von Drittanbietern, die nicht auf Sicherheitslücken geprüft wurden.
 
-## Verwende starke Typisierung
+### Verwende starke Typisierung <a name="link6"></a>
 
 Starke Typisierung (*Strong Typing*) stellt sicher, dass Variablen nur für den vorgesehenen Zweck verwendet werden.
 
@@ -100,12 +100,11 @@ was dann auch mit schlechten Intentionen ausgenutzt werden kann.
 Verwenden Sie starke Typisierung, um Typangriffe (zum Beispiel durch unsichere Cast-Operationen)
 und andere Sicherheitslücken zu verhindern.
 
-
 ---
 
-### Einige konkrete Schutzmaßnahmen
+## Einige konkrete Schutzmaßnahmen
 
-## Don't use C &ndash; use C++
+### Don't use C &ndash; use C++ <a name="link7"></a>
 
 *Beschreibung*:
 
@@ -125,7 +124,7 @@ Einmal in C++ geschrieben und ein zweites Mal in C:
 
 *Beispiel*: C++
 
-```c
+```cpp
 01: std::string first{ "Hello " };
 02: std::string second{ "World" };
 03: std::string result{ first + second };
@@ -146,7 +145,7 @@ Einmal in C++ geschrieben und ein zweites Mal in C:
 
 ---
 
-## Verwende mehrere Compiler
+### Verwende mehrere Compiler <a name="link8"></a>
 
 Alle C/++ Compiler übersetzen lt. Definition C/C++&ndash;Quellcode in Maschinencode.
 Dennoch bedeutet das noch lange nicht, dass es hier keine Unterschiede gibt.
@@ -159,7 +158,7 @@ Dies minimiert mögliche Nischenprobleme des einen oder anderen Übersetzers.
  
 ---
 
-## *Warnings* und *Errors*
+### *Warnings* und *Errors* <a name="link9"></a>
 
 Vermutlich durften Sie diesen Hinweis schon oft über sich ergehen lassen:
 Vermeiden Sie &ndash; so gut es geht &ndash; jegliche Warnungen, die ihr Übersetzer in ihrem Projekt erzeugt.
@@ -179,7 +178,7 @@ Dies wird zwar vom C/C++ Compiler als Warnung eingestuft, es handelt sich hierbe
 
 ---
 
-## Warning Level
+### Warning Level <a name="link10"></a>
 
 Der *Warning Level* gibt an, welche Compilerwarnungen angezeigt werden sollen und welches Warnverhalten während der gesamten Kompilierung gelten soll.
 
@@ -195,7 +194,7 @@ ein zu großer Warning Level kann zu viele Warnungen erzeugen, die nicht unbeding
 
 ---
 
-## Typensicherheit: Datentypen sind unsere Freunde
+### Typensicherheit: Datentypen sind unsere Freunde <a name="link11"></a>
 
 Eine Stärke der beiden Programmiersprachen C/C++ ist, dass beide das Konzept von &bdquo;Datentypen&rdquo; beherzigen.
 
@@ -213,7 +212,7 @@ Eine Stärke der beiden Programmiersprachen C/C++ ist, dass beide das Konzept von
 
 ---
 
-## Erster Tipp für Pufferüberlauf: Exaktes Arbeiten
+### Erster Tipp für Pufferüberlauf: Exaktes Arbeiten <a name="link12"></a>
 
 Wir betrachten diese &ndash; leicht ironische, aber dennoch ernst gemeinte &ndash; Aussage
 an einem Beispiel:
@@ -288,7 +287,7 @@ cmdLine: >one two three four <
 
 ---
 
-## Zweiter Tipp für Pufferüberlauf: Verwende ausschließlich &bdquo;*secure*&rdquo; Funktionen
+### Zweiter Tipp für Pufferüberlauf: Verwende ausschließlich &bdquo;*secure*&rdquo; Funktionen <a name="link13"></a>
 
 *Beispiel*: `strncpy_s`
 
@@ -359,7 +358,7 @@ Die Menge aller Modifikationen an den ursprünglichen Funktionen ist hier beschri
 
 ---
 
-## Drei Tipps für arithmetischen Überlauf
+## Drei Tipps für arithmetischen Überlauf <a name="link14"></a>
 
 Für den arithmetischen Überlauf kann man &ndash; in einem ersten Ansatz &ndash;
 mit gewissen Ad-hoc-Lösungen reagieren.
@@ -507,7 +506,7 @@ sofern dies möglich ist.
 
 ---
 
-## Noch ein Tipp für arithmetischen Überlauf: `std::midpoint`
+### Noch ein Tipp für arithmetischen Überlauf: `std::midpoint` <a name="link15"></a>
 
 Die Funktion `std::midpoint()` berechnet den Mittelpunkt von zwei ganzen Zahlen
 oder zwei Gleitkommazahlen:
@@ -539,7 +538,7 @@ Correct:                           4294967294
 
 ---
 
-## Verhindere ungültige Zeichenketteninjektionen (so genannte *SQL Injections*)
+### Verhindere ungültige Zeichenketteninjektionen (so genannte *SQL Injections*) <a name="link16"></a>
 
 Das Durchreichen von Zeichenketten an Subsysteme ist mit äußerster Vorsicht zu bewerkstelligen.
 
@@ -636,7 +635,7 @@ Buffer (Cleaned): _bin_mail_bogus@addr_com__cat__etc_passwd___mail_somebadguy_ne
 
 ---
 
-## Vermeide &bdquo;*Off-by-One*&rdquo; Fehler!
+### Vermeide &bdquo;*Off-by-One*&rdquo; Fehler! <a name="link17"></a>
 
 Vermeiden Sie &bdquo;*Off-by-One*&rdquo; Fehler!
 Natürlich ist das leichter getan als gesagt. 
@@ -669,7 +668,7 @@ jede Zeile des Quellcodes mit dem Debugger zu durchlaufen!
 
 ---
 
-## Verwende STL-Algorithmen
+### Verwende STL-Algorithmen <a name="link18"></a>
 
 Algorithmen der STL sind robuster im Gebrauch als CRT-Bibliotheksfunktionen oder selbst geschriebene Funktionen.
 
@@ -694,7 +693,7 @@ Algorithmen der STL sind robuster im Gebrauch als CRT-Bibliotheksfunktionen oder
 
 *Beispiel*:
 
-```c
+```cpp
 01: char str[] = "Hello World";    // use also "Hello:World"
 02: std::printf("%s\n", str);
 03: 
@@ -718,7 +717,7 @@ Beide kommen ohne Schleifen-Indizes aus, die eine häufige Ursache von Fehlerquel
 
 ---
 
-## Verwende STL-Container
+### Verwende STL-Container <a name="link19"></a>
 
 
   * `std::string`
@@ -726,7 +725,7 @@ Beide kommen ohne Schleifen-Indizes aus, die eine häufige Ursache von Fehlerquel
 
 ---
 
-## Achte auf sicheres *Downcasting*
+### Achte auf sicheres *Downcasting* <a name="link20"></a>
 
 An Stelle der unsicheren C-Cast Operatoren sollten man die sicheren C++-Cast Operatoren verwenden.
 
@@ -750,7 +749,7 @@ Ein Beispiel ist der Gebrauch von `static_cast`:
 
 *Beispiel*:
 
-```c
+```cpp
 01: class Spiderman {};
 02: class Ironman {};
 03: 
@@ -766,7 +765,7 @@ Ein Beispiel ist der Gebrauch von `static_cast`:
 
 ---
 
-## Verzichte auf die direkte Verwendung des `new`-Operators
+### Verzichte auf die direkte Verwendung des `new`-Operators <a name="link21"></a>
 
 Siehe hierzu das entsprechende 
 [C++ Core Guideline](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
@@ -786,7 +785,7 @@ Wer hat wann und wo `delete` aufgerufen?
 
 ---
 
-## Deklariere Konstruktoren mit einem einzigen Argument mit `explicit`
+### Deklariere Konstruktoren mit einem einzigen Argument mit `explicit` <a name="link22"></a>
 
 Standardmäßig sollten Konstruktoren mit einem Argument als  `explicit` deklariert werden.
 Damit kann man unbeabsichtige Konvertierungen &ndash; und damit Überraschungen &ndash; vermeiden:
@@ -816,7 +815,7 @@ explicit String(size_t length) : m_length{ length } {};
 
 ---
 
-## Elementare Datentypen haben keine Bedeutung (*Semantics*), nur Wertebereiche
+### Elementare Datentypen haben keine Bedeutung (*Semantics*), nur Wertebereiche <a name="link23"></a>
 
 Ein Datentyp wie `int` hat keine Bedeutung (*Semantik*).
 
@@ -889,7 +888,7 @@ O
 
 ---
 
-## Der Datentyp `size_t`
+### Der Datentyp `size_t` <a name="link24"></a>
 
 Der Name `size_t` bedeutet im Wesentlichen &bdquo;*size type*&rdquo;,
 und man verwendet diesen Datentyp normalerweise dann,
@@ -910,7 +909,7 @@ Man sollte `size_t` einsetzen
 
 ---
 
-## Benutzerdefinierte Literale: Elementare Datentypen &bdquo;mit Bedeutung&rdquo;
+### Benutzerdefinierte Literale: Elementare Datentypen &bdquo;mit Bedeutung&rdquo; <a name="link25"></a>
 
 In C++ lassen sich `int`-Werte (oder auch Werte anderen Datentyps) durch die so genannte *User Defined Literal* Syntax
 erheblich lesbarer gestalten:
@@ -986,7 +985,9 @@ Man muss in diesem Fall die *Literal*-Operatoren nur anders definieren:
 
 ---
 
-## Virtuelle Methoden sollten genau eines der drei Schlüsselwörter `virtual`, `override` oder `final` verwenden.
+### Schlüsselwörter `virtual`, `override` oder `final` <a name="link26"></a>
+
+Virtuelle Methoden sollten genau eines der drei Schlüsselwörter `virtual`, `override` oder `final` verwenden.
 
 *Beschreibung*:
 
@@ -994,7 +995,7 @@ Man muss in diesem Fall die *Literal*-Operatoren nur anders definieren:
 
 *Beispiel*:
 
-```c
+```cpp
 01: struct Button {
 02:     // ...
 03:     virtual void onClick() { 
@@ -1020,7 +1021,7 @@ Man muss in diesem Fall die *Literal*-Operatoren nur anders definieren:
 
 ---
 
-## Setze standardmäßig Methoden auf `const`, soweit möglich
+### Setze standardmäßig Methoden auf `const`, soweit möglich <a name="link27"></a>
 
 *Beschreibung*:
 
@@ -1028,7 +1029,7 @@ Man muss in diesem Fall die *Literal*-Operatoren nur anders definieren:
 
 *Beispiel*:
 
-```c
+```cpp
 01: class Point {
 02: private:
 03:     int m_x = 0;
@@ -1054,41 +1055,7 @@ Man muss in diesem Fall die *Literal*-Operatoren nur anders definieren:
 
 ---
 
-## Setze standardmäßig Memberfunktionen auf `const`, soweit möglich
-
-*Beschreibung*:
-
-[Con.2: By default, make member functions `const`](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#con2-by-default-make-member-functions-const)
-
-*Beispiel*:
-
-```c
-01: class Point {
-02: private:
-03:     int m_x = 0;
-04:     int m_y = 0;
-05: 
-06: public:
-07:     Point() : Point{ 0, 0 } {};
-08:     Point(int x, int y) : m_x{ x }, m_y{ y } {}
-09: 
-10:     int x() const { return m_x; }
-11:     int y() const { return m_y; }
-12: 
-13:     bool is_valid() const {
-14:         return m_x >= 0 && m_y >= 0;
-15:     }
-16: };
-17: 
-18: void test() {
-19:     Point point;
-20:     point.is_valid();
-21: }
-```
-
----
-
-## Verwende das Attribut `[[nodiscard]]`
+### Verwende das Attribut `[[nodiscard]]` <a name="link28"></a>
 
 *Beschreibung*:
 
@@ -1099,7 +1066,7 @@ Die Annotation `[[nodiscard]]` hilft Programmierern, die mit Ihrem Code interagi
 
 *Beispiel*:
 
-```c
+```cpp
 01: class Point {
 02: private:
 03:     int m_x = 0;

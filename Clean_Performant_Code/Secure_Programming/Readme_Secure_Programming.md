@@ -12,6 +12,8 @@
 
 ### [Schutzmaßnahmen für *Secure Programming*](../Secure_Programming/Readme_Secure_Programming_Advices.md)
 
+### [Tools für Code-Analyse und -Bewertung](../Secure_Programming/Readme_Secure_Tools.md)
+
 ### [*SafeInt*: Eine Bibliothek zum Schutz vor Integer-Überläufen](../SafeInt/Readme_SafeInt.md)
 
 ### [*BigInt*: Eine Bibliothek für sehr große Zahlen](../BigInt/Readme_BigInt.md)

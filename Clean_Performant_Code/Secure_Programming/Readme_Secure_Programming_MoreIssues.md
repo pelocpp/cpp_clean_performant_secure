@@ -8,15 +8,15 @@
 
 ### Weitere Probleme des *Secure Programming* in C/C++
 
-  * [Vorsicht in der Verwendung von Zeigern](#link)
-  * [Auch C++ Referenze sind nicht zu 100% sicher](#link)
-  * [Verschwindendes `std::memset`](#link)
-  
-  * [Speicherlecks (*Memory Leaks*)](#link)
-  * [Race Conditions](#link)
-  * [Injection attacks](#link)
-  * [Input validation and sanitization](#link)
-  * [Memory management](#link)
+  * [Vorsicht in der Verwendung von Zeigern](#link1)
+  * [Auch C++ Referenzen sind nicht zu 100% sicher](#link2)
+  * [Verschwindendes `std::memset`](#link3)
+
+  * [Speicherlecks (*Memory Leaks*)](#link4)
+  * [Race Conditions](#link5)
+  * [Injection attacks](#link6)
+  * [Input validation and sanitization](#link7)
+  * [Memory management](#link8)
 
 ---
 
@@ -28,7 +28,8 @@
 
 ## Weitere Probleme des *Secure Programming* in C/C++
 
-### Vorsicht in der Verwendung von Zeigern
+### Vorsicht in der Verwendung von Zeigern <a name="link1"></a>
+
 
 *Beispiel*:
 
@@ -73,7 +74,7 @@ Man beachte den Gebrauch zweier systemnaher Funktionen:
 
 ---
 
-### Auch C++ Referenze sind nicht zu 100% sicher
+### Auch C++ Referenzen sind nicht zu 100% sicher <a name="link2"></a>
 
 *Beispiel*:
 
@@ -110,7 +111,7 @@ value: 123
 
 ---
 
-### Verschwindendes `std::memset`
+### Verschwindendes `std::memset` <a name="link3"></a>
 
 *Beschreibung*:
 

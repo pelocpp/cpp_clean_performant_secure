@@ -8,11 +8,11 @@
 
 #### Tools / Code-Analyse und -Bewertung
   
-  * [Tool *Cppcheck*](#link)
-  * [Visual Studio Integration Add-In für *Cppcheck*](#link)
-  * [Visual Studio Address Sanitizer](#link)
-  * [Installation des Address Sanitizers](#link)
-  * [Clang-Tidy](#link)  To be Done
+  * [Tool *Cppcheck*](#link1)
+  * [Visual Studio Integration Add-In für *Cppcheck*](#link2)
+  * [Visual Studio Address Sanitizer](#link3)
+  * [Installation des Address Sanitizers](#link4)
+  * [Clang-Tidy](#link5)  To be Done
 
 ---
 
@@ -22,7 +22,7 @@
 
 ---
 
-## Tool *Cppcheck*
+## Tool *Cppcheck* <a name="link1"></a>
 
 *Cppcheck* ist ein statisches Analysetool für C/C++-Quellcode.
 Es bietet eine einzigartige Codeanalyse zum Erkennen von Fehlern und konzentriert sich auf das Erkennen undefinierten Verhaltens
@@ -45,7 +45,7 @@ Weitere Informationen und Kaufoptionen für die kommerzielle Version finden Sie u
 
 ---
 
-## Visual Studio Integration Add-In für Cppcheck
+## Visual Studio Integration Add-In für Cppcheck <a name="link2"></a>
 
 Um *Cppcheck* mit Visual Studio zusammen betreiben zu können,
 greift man am besten auf
@@ -78,7 +78,7 @@ welche Meldungen man haben möchte &ndash; und welche vielleicht auch nicht.
 
 ---
 
-## Visual Studio Address Sanitizer
+## Visual Studio Address Sanitizer <a name="link3"></a>
 
 So genannte *Address Sanitizer* sind eine Compiler- und Laufzeittechnologie,
 die schwer zu findende Fehler aufdecken.
@@ -101,7 +101,7 @@ Der Visual C++ Sanitizer kann folgende Fehlerursachen aufspüren:
  * Stack use after return and use after scope
  * Memory use after it's poisoned
 
-#### Installation des Address Sanitizers
+#### Installation des Address Sanitizers <a name="link4"></a>
 
 Zur Installation des Address Sanitizers finden sich [hier](https://learn.microsoft.com/en-us/cpp/sanitizers/asan?view=msvc-170) Hinweise.
 
@@ -202,6 +202,10 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   Right alloca redzone:    cb
 ==16452==ABORTING
 ```
+
+---
+
+## Clang-Tidy <a name="link5"></a>
 
 ---
 

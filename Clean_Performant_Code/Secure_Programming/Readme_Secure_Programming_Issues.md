@@ -8,24 +8,24 @@
 
 ### Allgemeines
 
-  * [Einige Eigenschaften der Programmiersprache C](#link)
-  * [Einige Eigenschaften der Programmiersprache C++](#link)
-  * [Was unterscheidet C/C++ von anderen Programmiersprache wie z. B. Java oder C#](#link)
-  * [Exploitability und Vulnerability](#link)
-  * [Sicherheitslücken versus *Undefined Behaviour* (*UB*)](#link)
+  * [Einige Eigenschaften der Programmiersprache C](#link1)
+  * [Einige Eigenschaften der Programmiersprache C++](#link2)
+  * [Was unterscheidet C/C++ von anderen Programmiersprache wie z. B. Java, C# oder Python](#link3)
+  * [Exploitability und Vulnerability](#link4)
+  * [Sicherheitslücken versus *Undefined Behaviour* (*UB*)](#link5)
 
 ### Die häufigsten *Exploits* und *Vulnerabilities*
 
-  * [Unsigned Integer Wraparound](#link)
-  * [Signed Integer Overflow](#link)
-  * [Numeric Truncation](#link)
-  * [Stack Buffer Overflow](#link)
-  * [Heap Buffer Overflow](#link)
-  * [Buffer Underflow](#link)
-  * [Use after Free](#link)
-  * [Double Free](#link)
-  * [Incorrect Type Conversion / Type Punning](#link)
-  * [Uncontrolled Format String](#link)
+  * [Unsigned Integer Wraparound](#link6)
+  * [Signed Integer Overflow](#link7)
+  * [Numeric Truncation](#link8)
+  * [Stack Buffer Overflow](#link9)
+  * [Heap Buffer Overflow](#link10)
+  * [Buffer Underflow](#link11)
+  * [Use after Free](#link12)
+  * [Double Free](#link13)
+  * [Incorrect Type Conversion / Type Punning](#link14)
+  * [Uncontrolled Format String](#link15)
 
 ---
 
@@ -35,7 +35,9 @@
 
 ---
 
-### Einige Eigenschaften der Programmiersprache C
+## Allgemeines
+
+### Einige Eigenschaften der Programmiersprache C <a name="link1"></a>
 
   * Passen C und &bdquo;Secure Programming&rdquo; zusammen? Nein!
 
@@ -53,7 +55,7 @@
 
 ---
 
-### Einige Eigenschaften der Programmiersprache C++
+### Einige Eigenschaften der Programmiersprache C++ <a name="link2"></a>
 
   * Passen C++ und &bdquo;Secure Programming&rdquo; zusammen? Durchaus!
 
@@ -71,7 +73,7 @@
 
 ---
 
-### Was unterscheidet C/C++ von anderen Programmiersprache wie z. B. Java, C# oder Python
+### Was unterscheidet C/C++ von anderen Programmiersprache wie z. B. Java, C# oder Python <a name="link3"></a>
 
   * Ein C/C++-Übersetzer generiert Maschinencode, so wie dieser vom Entwickler durch den vom ihm geschriebenen Quellcode angefordert wird,
   *ohne* Sicherheitsprüfungen hinzuzufügen.
@@ -87,7 +89,7 @@
 
 ---
 
-### Exploitability und Vulnerability
+### Exploitability und Vulnerability <a name="link4"></a>
 
 #### Was versteht man unter einem *Exploit*?
 
@@ -139,7 +141,7 @@ Performanz und Implementierung lassen sich so zwar äußerst feinstufig optimieren
 
 ---
 
-### Sicherheitslücken versus *Undefined Behaviour* (*UB*)
+### Sicherheitslücken versus *Undefined Behaviour* (*UB*) <a name="link5"></a>
 
 In C/C++ gibt es sowohl Sicherheitslücken als auch das sogenannte *Undefined Behaviour* (kurz: *UB*).
 
@@ -172,7 +174,7 @@ der im Programm keine Verwendung mehr findet, durch die Laufzeitumgebung wieder 
 
 ## Die häufigsten *Exploits* und *Vulnerabilities*
 
-### &bdquo;*Unsigned Integer Wraparound*&rdquo;
+### &bdquo;*Unsigned Integer Wraparound*&rdquo; <a name="link6"></a>
 
 *Beschreibung*:
 
@@ -187,7 +189,7 @@ In diesem Fall kann der Wert eine sehr kleine oder negative Zahl werden.
 
 
 
-### &bdquo;*Signed Integer Overflow*&rdquo;
+### &bdquo;*Signed Integer Overflow*&rdquo; <a name="link7"></a>
 
 *Beschreibung*:
 
@@ -195,7 +197,7 @@ In diesem Fall kann der Wert eine sehr kleine oder negative Zahl werden.
 
 Siehe &bdquo;*Unsigned Integer Wraparound*&rdquo;.
 
-### &bdquo;*Numeric Truncation*&rdquo;
+### &bdquo;*Numeric Truncation*&rdquo; <a name="link"></a>
 
 *Beschreibung*:
 
@@ -212,9 +214,7 @@ Dieser Wert kann als Index in einem Puffer, als Schleifenindex oder einfach als 
 
 In jedem Fall ist der Wert nicht vertrauenswürdig und das System befindet sich in einem undefinierten Zustand.
 
-
-
-### &bdquo;*Stack Buffer Overflow*&rdquo;
+### &bdquo;*Stack Buffer Overflow*&rdquo; <a name="link8"></a>
 
 *Beschreibung*:
 
@@ -266,7 +266,7 @@ Das Produkt schreibt Daten über das Ende oder vor den Anfang des vorgesehenen Pu
 ```
 
 
-### &bdquo;*Heap Buffer Overflow*&rdquo;
+### &bdquo;*Heap Buffer Overflow*&rdquo; <a name="link9"></a>
 
 *Beschreibung*:
 
@@ -279,7 +279,7 @@ Dies bedeutet im Allgemeinen, dass der Puffer mithilfe einer Routine wie `malloc
 
 
 
-### &bdquo;*Buffer Underflow*&rdquo;
+### &bdquo;*Buffer Underflow*&rdquo; <a name="link10"></a>
 
 *Beschreibung*:
 
@@ -289,7 +289,7 @@ Das Problem schreibt in einen Puffer mithilfe eines Index oder Zeigers,
 der auf einen Speicherort vor dem Anfang des Puffers verweist.
 
 
-### &bdquo;*Use after Free*&rdquo;
+### &bdquo;*Use after Free*&rdquo; <a name="link11"></a>
 
 *Beschreibung*:
 
@@ -302,8 +302,7 @@ während der ursprüngliche Zeiger auf einen Speicherort irgendwo innerhalb der ne
 Alle Vorgänge, die den ursprünglichen Zeiger verwenden, sind nicht mehr gültig, da der Speicher dem Code &bdquo;gehört&rdquo;,
 der mit dem neuen Zeiger arbeitet.
 
-
-### &bdquo;*Double Free*&rdquo;
+### &bdquo;*Double Free*&rdquo; <a name="link12"></a>
 
 *Beschreibung*:
 
@@ -314,7 +313,7 @@ Das Problem ruft `free()` / `delete` zweimal für dieselbe Speicheradresse auf,
 was möglicherweise zur Änderung unerwarteter Speicherorte führt.
 
 
-### &bdquo;*Incorrect Type Conversion*&rdquo; / &bdquo;*Type Punning*&rdquo;
+### &bdquo;*Incorrect Type Conversion*&rdquo; / &bdquo;*Type Punning*&rdquo; <a name="link13"></a>
 
 *Beschreibung*:
 
@@ -330,7 +329,7 @@ Der Compiler behandelt beide &bdquo;Punnings&rdquo; als nicht verwandte Zeiger.
 
 *Type Punnings* können Abhängigkeitsprobleme für alle Daten verursachen, auf die über beide Zeiger zugegriffen wird.&rdquo;
 
-### &bdquo;*Uncontrolled Format String*&rdquo;
+### &bdquo;*Uncontrolled Format String*&rdquo; <a name="link15"></a>
 
 *Beschreibung*:
 
