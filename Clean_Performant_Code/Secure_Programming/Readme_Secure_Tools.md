@@ -88,17 +88,17 @@ die das vorhandene Build-System und die vorhandenen Testressourcen direkt nutzen
 
 Der Visual C++ Sanitizer kann folgende Fehlerursachen aufspüren:
 
- * Alloc/dealloc mismatches and new/delete type mismatches
- * Allocations too large for the heap
- * `calloc` overflow and `alloca` overflow
- * *Double free* and use after free
- * Global variable overflow
- * Heap buffer overflow
- * Invalid alignment of aligned values
- * `memcpy` and `strncat` parameter overlap
- * Stack buffer overflow and underflow
- * Stack use after return and use after scope
- * Memory use after it's poisoned
+ * Alloc/dealloc mismatches and new/delete type mismatches.
+ * Allocations too large for the heap.
+ * `calloc` overflow and `alloca` overflow.
+ * *Double free* and use after free.
+ * Global variable overflow.
+ * Heap buffer overflow.
+ * Invalid alignment of aligned values.
+ * `memcpy` and `strncat` parameter overlap.
+ * Stack buffer overflow and underflow.
+ * Stack use after return and use after scope.
+ * Memory use after it's poisoned.
 
 #### Installation des Address Sanitizers <a name="link4"></a>
 
@@ -108,7 +108,7 @@ Grundlegende Vorraussetzung ist natürlich, dass der Sanitizer bei der Visual Stu
 
 <img src="VisualStudio_AddressSanitizer_02.png" width="300">
 
-*Abbildung* 5: Installation des Address Sanitizers in den Einstellungen des *Visual Studio Installers*.
+*Abbildung* 5: Installation des *Address Sanitizers* in den Einstellungen des *Visual Studio Installers*.
 
 Dann muss man den Sanitizer pro Projekt in den *Projekt Eigenschaften* aktivieren:
 

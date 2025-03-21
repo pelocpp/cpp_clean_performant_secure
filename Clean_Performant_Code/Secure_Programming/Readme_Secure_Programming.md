@@ -8,7 +8,7 @@
 
 ### [Klassische Probleme des C/C++ *Secure Programming*](../Secure_Programming/Readme_Secure_Programming_Issues.md)
 
-### [Weitere Probleme des C/C++ *Secure Programmings*](../Secure_Programming/Readme_Secure_Programming_MoreIssues.md)
+### [Weitere Probleme des C/C++ *Secure Programming*](../Secure_Programming/Readme_Secure_Programming_MoreIssues.md)
 
 ### [Schutzmaßnahmen für *Secure Programming*](../Secure_Programming/Readme_Secure_Programming_Advices.md)
 

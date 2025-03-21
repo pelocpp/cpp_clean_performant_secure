@@ -8,7 +8,7 @@
 ## Inhalt
 
   * [Überlauf ganzzahliger Variablen](#link1)
-  * [Literatur](#link7)
+  * [Literatur](#link2)
 
 ---
 
@@ -30,11 +30,11 @@ Man hat es in C/C++ versäumt, den Datentyp `int` rechnerunabhängig zu definieren
 Okay, wir sollten an dieser Stelle hinzufügen, das dies nie das Ziel in der Konzeption
 von C/C++ gewesen ist, sondern ganz im Gegenteil: Auf vielen Rechnersystem sollte &ndash; historisch betrachtet &ndash; 
 die Bitbreite einer  `int`-Variablen mit der Bitbreite des Akkumulators  zusammenpassen.
-Der Akkumulator ist das zentale Register innerhalb einer CPU,
+Der Akkumulator ist das zentrale Register innerhalb einer CPU,
 in dem Ergebnisse der Recheneinheit gespeichert werden.
 
-In Sprachen wir C# oder Java hat man hier einen anderen Weg eingeschlagen:
-`int`-Variablen in einem C#-Programm nehmen in jedem Programm 4 Byte in Abspruch,
+In Sprachen wie C# oder Java hat man hier einen anderen Weg eingeschlagen:
+`int`-Variablen in einem C#-Programm nehmen in jedem Programm 4 Byte in Anspruch,
 egal, auf welchem Zielsystem das Programm ausgeführt wird.
 
 Zur Wahrheit gehört auch, dass es in C# den `int`-Datentyp so nicht wirklich gibt:
@@ -93,7 +93,7 @@ Welche Lösungen bieten sich an:
 
 ---
 
-## Literatur <a name="link6"></a>
+## Literatur <a name="link2"></a>
 
 ---
 

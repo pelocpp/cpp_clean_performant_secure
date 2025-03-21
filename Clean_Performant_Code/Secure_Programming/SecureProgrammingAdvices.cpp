@@ -5,8 +5,8 @@
 
 // don't use the secure versions of the CRT library functions
 #define _CRT_SECURE_NO_WARNINGS 
-#include <cstring>
 #include <cstdlib>
+#include <cstring>
 
 #include <complex>
 #include <cstdint>
@@ -76,7 +76,7 @@ namespace SecureProgrammingAdvices {
 
         static void test_take_care_of_buffer_overflow_02() {
 
-            constexpr int Size = 64;
+            const int Size = 64;
 
             char buffer[Size];
 
@@ -94,7 +94,6 @@ namespace SecureProgrammingAdvices {
 
         // -------------------------------------------------------------------------
         // work precisely
-
 
         static void evaluateArgsSloppy(int argc, const char* argv[])
         {
@@ -136,7 +135,8 @@ namespace SecureProgrammingAdvices {
 
                 memcpy(cmdLine + buflen, argv[i], len);
                 buflen += len;
-                cmdLine[buflen++] = ' ';
+                cmdLine[buflen] = ' ';
+                buflen++;
             }
 
             if (cmdLine != NULL) {
@@ -201,6 +201,14 @@ namespace SecureProgrammingAdvices {
             std::uint32_t b = std::numeric_limits<std::uint32_t>::max() / 2;
 
             addition_compliant(a, b);
+
+            a = a + 1;
+
+            addition_compliant(a, b);
+
+            a = a + 1;
+
+            addition_compliant(a, b);
         }
 
         // ------------------------------------------
@@ -235,7 +243,11 @@ namespace SecureProgrammingAdvices {
 
             // for example
             std::uint32_t a = std::numeric_limits<std::int32_t>::min() / 2;
-            std::uint32_t b = std::numeric_limits<std::int32_t>::max() / 2;  // remove "/ 2"
+            std::uint32_t b = std::numeric_limits<std::int32_t>::max() / 2;
+
+            subtraction_compliant(a, b);
+
+            b = std::numeric_limits<std::int32_t>::max();     // removed "/ 2"
 
             subtraction_compliant(a, b);
         }
@@ -254,7 +266,7 @@ namespace SecureProgrammingAdvices {
 
         static int32_t multiplication_compliant(std::int32_t a, std::int32_t b) {
 
-            // wanto switch from 32-bit to 64-bit arithmetic
+            // want to switch from 32-bit to 64-bit arithmetic
             static_assert (sizeof (int64_t) >= 2 * sizeof(int32_t));
 
             std::int32_t result = 0;
@@ -286,7 +298,6 @@ namespace SecureProgrammingAdvices {
                 //std::println("{}", b);
 
                 b = multiplication_compliant(a, b);
-                std::println("{}", b);
             }
         }
 
@@ -457,22 +468,22 @@ namespace SecureProgrammingAdvices {
 
     namespace SafeDowncasting {
 
-        class Spiderman {};
-        class Ironman {};
+        struct Spiderman {};
+        struct Ironman {};
 
         static void test_safe_downcasting_01() {
 
-            Spiderman* ptr = new Spiderman;
+            struct Spiderman* ptr = (struct Spiderman*) malloc(sizeof(struct Spiderman));
+            struct Ironman* ptr2 = NULL;
 
-            Ironman* ptr2 = NULL;
-
-            ptr = (Spiderman*)ptr;
+            // warning C4133: '=': incompatible types - from 'Spiderman *' to 'Ironman *'
+            // this line compiles (!!!) using a C Compiler (needs a file with extension .c)
+            // ptr2 = (struct Spiderman*)ptr;
         }
 
         static void test_safe_downcasting_02() {
 
             Spiderman* ptr = new Spiderman;
-
             Ironman* ptr2 = nullptr;
 
             // compile error: 'static_cast': cannot convert from 'Spiderman *' to 'Ironman *'
@@ -655,17 +666,15 @@ namespace SecureProgrammingAdvices {
 
     namespace UseUserDefinedLiteralsWithConversion {
 
-        using hours = unsigned long long;
-
-        static constexpr hours operator"" _hours(unsigned long long hours) {
+        static constexpr unsigned long long operator"" _hours(unsigned long long hours) {
             return hours;
         }
 
-        static constexpr hours operator"" _days(unsigned long long hours) {
+        static constexpr unsigned long long operator"" _days(unsigned long long hours) {
             return hours * 24;
         }
 
-        static constexpr hours operator"" _weeks(unsigned long long hours) {
+        static constexpr unsigned long long operator"" _weeks(unsigned long long hours) {
             return hours * 7 * 24;
         }
 
@@ -673,22 +682,22 @@ namespace SecureProgrammingAdvices {
 
             auto hours = 12_hours;
 
-            auto days = 2_days;
+            auto dayHours = 2_days;
 
-            auto weeks = 3_weeks;
+            auto weekHours = 3_weeks;
 
-            auto totalHours = weeks + days + hours;
+            auto totalHours = weekHours + dayHours + hours;
         }
 
         static void test_use_user_defined_literals_constexpr() {
 
             constexpr auto hours = 12_hours;
 
-            constexpr auto days = 2_days;
+            constexpr auto dayHours = 2_days;
 
-            constexpr auto weeks = 3_weeks;
+            constexpr auto weekHours = 3_weeks;
 
-            constexpr auto totalHours = weeks + days + hours; // 12 + 2*24 + 3*7*24 = 564
+            constexpr auto totalHours = weekHours + dayHours + hours; // 12 + 2*24 + 3*7*24 = 564
         }
     }
 
@@ -787,7 +796,7 @@ void secure_programming_advices()
     TakeCareOfArithmeticOverflow::test_arithmetic_overflow();
     TakeCareOfArithmeticOverflowUsingMidpoint::test_take_care_of_arithmetic_overflow();
     PreventInjectionOfAttacks::test_injection();
-    PreventOffbyOneErrors::test_off_by_one_errors();
+    // PreventOffbyOneErrors::test_off_by_one_errors();  // crashes
     UseAlgorithms::test_use_algorithms();
     SafeDowncasting::test_safe_downcasting();
     DontUseNewExplicitely::test_dont_use_new_explicitely();
