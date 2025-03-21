@@ -8,7 +8,8 @@
 ## Inhalt
 
   * [Überlauf ganzzahliger Variablen](#link1)
-  * [Literatur](#link2)
+  * [*SafeInt*-Bibliothek](#link2)
+  * [Literatur](#link3)
 
 ---
 
@@ -79,21 +80,137 @@ so hingegen erhalten wir das Ergebnis
 Sum: -32768
 ```
 
-Hmm, dies ist offentlich falsch, wie haben es mit einem Überlauf in der Arithmetik
+Hmm, dies ist offentlich falsch, wir haben es mit einem Überlauf in der Arithmetik
 einer 16-Bit-Ganzzahl mit Vorzeichen zu tun.
 
 Natürlich könnten wir dieses Problem lösen, indem wir von 16-Bit-Ganzzahlen zu 32-Bit-Ganzzahlen
-wechseln. Aber auch hier könnten wir ein ähnlich gelagertes Problem generieren.
+wechseln. Aber auch hier könnten wir ein ähnlich gelagertes Problem bekommen.
 
 Welche Lösungen bieten sich an:
 
-  * Möchte man die standardmäßig in C/C++ eingebauten arithmetischen Operationen nicht verlassen,
-   dann gibt es nur eine Vorgehensweise: Man muss die Wertebereiche überprügen.
-  * Big Integer Arithmetik
+  * Möchte man die standardmäßig in C/C++ eingebauten arithmetischen Operationen verwenden,
+   dann gibt es nur eine Vorgehensweise: Man muss die Wertebereiche überprüfen.
+  * Einsatz einer Spezialbibliothek für &bdquo;*Big Integer*&rdquo; Arithmetik.
+
+
+## *SafeInt*-Bibliothek <a name="link2"></a>
+
+
+*SafeInt* ist eine portable Bibliothek, die mit MSVC, GCC oder Clang verwendet werden kann,
+um Ganzzahlüberläufe zu verhindern, die möglicherweise aus von der Anwendung durchgeführten
+mathematischen Operationen resultieren könnten.
+
+Die neueste Version dieser Bibliothek befindet sich unter [https://github.com/dcleblanc/SafeInt](https://github.com/dcleblanc/SafeInt).
+
+*Beispiel*:
+
+```cpp
+01: int16_t sum_safe(const std::vector<int16_t>& values)
+02: {
+03:     // use SafeInt to check against integer overflow
+04:     SafeInt<int16_t> sum{};    // = 0;   <-- automatically initialized to 0
+05:     for (auto num : values)
+06:     {
+07:         sum += num;   // <-- *automatically* checked against integer overflow!!
+08:     }
+09: 
+10:     return sum;
+11: }
+```
+
+Und noch ein zweites Beispiel:
+
+```cpp
+01: size_t factorial(size_t x) {
+02: 
+03:     size_t ret{ 1 };
+04: 
+05:     for (size_t i{ 1 }; i <= x; ++i) {
+06:         ret *= i;
+07:     }
+08: 
+09:     return ret;
+10: }
+11: 
+12: size_t factorial_safe(size_t x) {
+13: 
+14:     SafeInt<size_t> ret{ 1 };
+15: 
+16:     for (size_t i{ 1 }; i <= x; ++i) {
+17:         ret *= i;
+18:     }
+19: 
+20:     return ret;
+21: }
+```
+
+*Ausgabe*:
+
+```
+Factorial of  1: 1
+Factorial of  2: 2
+Factorial of  3: 6
+Factorial of  4: 24
+Factorial of  5: 120
+Factorial of  6: 720
+Factorial of  7: 5040
+Factorial of  8: 40320
+Factorial of  9: 362880
+Factorial of 10: 3628800
+Factorial of 11: 39916800
+Factorial of 12: 479001600
+Factorial of 13: 6227020800
+Factorial of 14: 87178291200
+Factorial of 15: 1307674368000
+Factorial of 16: 20922789888000
+Factorial of 17: 355687428096000
+Factorial of 18: 6402373705728000
+Factorial of 19: 121645100408832000
+Factorial of 20: 2432902008176640000
+Factorial of 21: 14197454024290336768
+Factorial of 22: 17196083355034583040
+Factorial of 23: 8128291617894825984
+Factorial of 24: 10611558092380307456
+Factorial of 25: 7034535277573963776
+Factorial of 26: 16877220553537093632
+Factorial of 27: 12963097176472289280
+Factorial of 28: 12478583540742619136
+Factorial of 29: 11390785281054474240
+```
+
+und
+
+```
+Factorial of  1: 1
+Factorial of  2: 2
+Factorial of  3: 6
+Factorial of  4: 24
+Factorial of  5: 120
+Factorial of  6: 720
+Factorial of  7: 5040
+Factorial of  8: 40320
+Factorial of  9: 362880
+Factorial of 10: 3628800
+Factorial of 11: 39916800
+Factorial of 12: 479001600
+Factorial of 13: 6227020800
+Factorial of 14: 87178291200
+Factorial of 15: 1307674368000
+Factorial of 16: 20922789888000
+Factorial of 17: 355687428096000
+Factorial of 18: 6402373705728000
+Factorial of 19: 121645100408832000
+Factorial of 20: 2432902008176640000
+No more correct Factorial values available!
+```
+
 
 ---
 
-## Literatur <a name="link2"></a>
+## Literatur <a name="link3"></a>
+
+
+[SafeInt-Bibliothek](https://learn.microsoft.com/de-de/cpp/safeint/safeint-library?view=msvc-170)
 
 ---
 

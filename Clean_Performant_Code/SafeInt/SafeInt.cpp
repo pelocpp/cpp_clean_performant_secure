@@ -8,57 +8,6 @@
 #include <print>
 #include <vector>
 
-namespace SafeFaculty {
-
-    static size_t factorial (size_t x) {
-
-        size_t ret{ 1 };
-
-        for (size_t i{ 1 }; i <= x; ++i) {
-            ret *= i;
-        } 
-        
-        return ret;
-    }
-
-    static size_t factorial_safe(size_t x) {
-
-        SafeInt<size_t> ret{ 1 };
-
-        for (size_t i{ 1 }; i <= x; ++i) {
-            ret *= i;
-        }
-
-        return ret;
-    }
-
-    static void test_factorial_unsafe()
-    {
-        for (size_t i{ 1 }; i != 30; ++i) {
-            auto result{ factorial (i) };
-            std::println("Factorial of {:2}: {}", i, result);
-        }
-    }
-
-    static void test_factorial_safe()
-    {
-        try
-        {
-            for (size_t i{ 1 }; i != 30; ++i) {
-                auto result{ factorial_safe(i) };
-                std::println("Factorial of {:2}: {}", i, result);
-            }
-        }
-        catch (const SafeIntException& ex)
-        {
-            if (ex.m_code == SafeIntArithmeticOverflow)
-            {
-                std::println("No more correct Factorial values available!");
-            }
-        }
-    }
-}
-
 namespace SafeArithmetic {
 
     // sum the 16-bit signed integers stored in the values vector
@@ -81,7 +30,7 @@ namespace SafeArithmetic {
         for (auto num : values)
         {
             //
-            // Check for integer overflow *before* doing the sum
+            // Check for integer overflow *before* doing the sum operation
             //
             if (num > 0 && result > std::numeric_limits<int16_t>::max() - num)
             {
@@ -91,7 +40,9 @@ namespace SafeArithmetic {
             {
                 throw std::overflow_error("Overflow in Sum function when adding a negative number.");
             }
-            result += num;
+            else {
+                result += num;
+            }
         }
 
         return result;
@@ -99,25 +50,18 @@ namespace SafeArithmetic {
 
     static int16_t sum_safe(const std::vector<int16_t>& values)
     {
-        int16_t result{};
+        // use SafeInt to check against integer overflow
+
+        SafeInt<int16_t> sum{};    // = 0; <-- automatically initialized to 0
 
         for (auto num : values)
         {
-            // Use SafeInt to check against integer overflow
-
-            SafeInt<int16_t> sum{};    // = 0; <-- automatically init to 0
-
-            for (auto num : values)
-            {
-                sum += num;   // <-- *automatically* checked against integer overflow!!
-            }
-
-            return sum;
+            sum += num;   // <-- *automatically* checked against integer overflow!!
         }
 
-        return result;
+        return sum;
     }
-
+    
     // ===========================================================================
 
     static void test_maximum_int16_t()
@@ -149,10 +93,9 @@ namespace SafeArithmetic {
 
     static void test_sum_more_safe()
     {
-        std::vector<int16_t> vec{  30'000, 2'000, 700, 60, 7, 1 };
-        
         try
         {
+            std::vector<int16_t> vec{ 30'000, 2'000, 700, 60, 7, 1 };
             auto result{ sum_safe(vec) };
             std::println("Sum: {}", result);
         }
@@ -166,16 +109,66 @@ namespace SafeArithmetic {
     }
 }
 
+namespace SafeFaculty {
+
+    static size_t factorial(size_t x) {
+
+        size_t ret{ 1 };
+
+        for (size_t i{ 1 }; i <= x; ++i) {
+            ret *= i;
+        }
+
+        return ret;
+    }
+
+    static size_t factorial_safe(size_t x) {
+
+        SafeInt<size_t> ret{ 1 };
+
+        for (size_t i{ 1 }; i <= x; ++i) {
+            ret *= i;
+        }
+
+        return ret;
+    }
+
+    static void test_factorial_unsafe()
+    {
+        for (size_t i{ 1 }; i != 30; ++i) {
+            auto result{ factorial(i) };
+            std::println("Factorial of {:2}: {}", i, result);
+        }
+    }
+
+    static void test_factorial_safe()
+    {
+        try
+        {
+            for (size_t i{ 1 }; i != 30; ++i) {
+                auto result{ factorial_safe(i) };
+                std::println("Factorial of {:2}: {}", i, result);
+            }
+        }
+        catch (const SafeIntException& ex)
+        {
+            if (ex.m_code == SafeIntArithmeticOverflow)
+            {
+                std::println("No more correct Factorial values available!");
+            }
+        }
+    }
+}
+
 // =================================================================
 
 void clean_code_arithmetic()
 {
     using namespace SafeArithmetic;
-
     test_maximum_int16_t();
     test_sum_unsave();
-    test_sum_safe_hand_written();
-    test_sum_safe();
+    test_sum_safe_hand_written();   // crashes
+    test_sum_safe();                // crashes
     test_sum_more_safe();
 
     using namespace SafeFaculty;
