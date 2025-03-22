@@ -6,9 +6,11 @@
 // don't use the secure versions of the CRT library functions
 #define _CRT_SECURE_NO_WARNINGS 
 
+#include <atomic>
 #include <cstring>
 #include <iostream>
 #include <print>
+#include <thread>
 #include <vector>
 
 namespace SecureProgrammingMoreIssues {
@@ -56,6 +58,31 @@ namespace SecureProgrammingMoreIssues {
         }
     }
 
+    namespace DanglingReferences {
+
+        struct Data {
+            Data(int& value) : m_value(value) {}
+            int& m_value;
+        };
+
+        static Data function() {
+
+            int value = 123;
+
+            Data data(value);
+
+            std::println("value: {}", value);
+
+            return data;                         // implicitly returning reference to local value
+        }
+
+        static void test_dangling_reference()
+        {
+            Data data = function();
+            std::println("{}", data.m_value);    // Oooooops
+        }
+    }
+
     namespace MemsetIssue {
 
         // https://cwe.mitre.org/data/definitions/14.html
@@ -87,28 +114,65 @@ namespace SecureProgrammingMoreIssues {
         }
     }
 
-    namespace DanglingReferences {
+    namespace MemoryLeaks {
 
-        struct Data {
-            Data(int& value) : m_value(value) {}
-            int& m_value;
-        };
+        static void test_memory_leaks()
+        {
+            int* ptr = new int[10]; // memory allocated but never deallocated
+        }
+    }
 
-        static Data function() {
+    namespace RaceConditions {
 
-            int value = 123;
+        const int MaxCount = 100'000;
 
-            Data data(value);
+        long counter{};
+        std::atomic<long> atomicCounter{};
 
-            std::println("value: {}", value);
+        static void increment() {
 
-            return data;                         // implicitly returning reference to local value
+            for (int i = 0; i != MaxCount; ++i) {
+                ++counter;
+            }
         }
 
-        static void test_dangling_reference()
+        static void incrementAtomic() {
+
+            for (int i = 0; i != MaxCount; ++i) {
+                ++atomicCounter;
+            }
+        }
+
+        static void test_race_conditions_unsafe()
         {
-            Data data = function();
-            std::println("{}", data.m_value);    // Oooooops
+            std::println("Counter: {}", counter);
+
+            std::thread t1{ increment };
+            std::thread t2{ increment };
+
+            t1.join();
+            t2.join();
+
+            std::println("Counter: {}", counter); // expected 200000, but result is non-deterministic
+        }
+
+        static void test_race_conditions_safe()
+        {
+            std::println("Counter: {}", atomicCounter.load());
+
+            std::thread t1{ incrementAtomic };
+            std::thread t2{ incrementAtomic };
+
+            t1.join();
+            t2.join();
+
+            std::println("Counter: {}", atomicCounter.load());
+        }
+
+        static void test_race_conditions()
+        {
+            test_race_conditions_unsafe();
+            test_race_conditions_safe();
         }
     }
 }
@@ -119,9 +183,11 @@ void secure_programming_more_issues()
 {
     using namespace SecureProgrammingMoreIssues;
 
-    UsingPointers::test_using_pointers();
-    MemsetIssue::test_disappearing_memset();
-    DanglingReferences::test_dangling_reference();
+    //UsingPointers::test_using_pointers();
+    //DanglingReferences::test_dangling_reference();
+    //MemsetIssue::test_disappearing_memset();
+    //MemoryLeaks::test_memory_leaks();
+    RaceConditions::test_race_conditions();
 }
 
 // ===========================================================================

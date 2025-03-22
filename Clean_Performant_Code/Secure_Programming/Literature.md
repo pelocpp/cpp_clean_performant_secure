@@ -113,17 +113,30 @@ Begleitmaterial:
 
 ---
 
+## *Sanitizer*
+
+[AddressSanitizer, ThreadSanitizer, MemorySanitizer and more](https://github.com/google/sanitizers) von Google<br />
+(abgerufen am 22.3.2025).
+
+
+[Visual Studio C/C++ Address Sanitizer ](https://learn.microsoft.com/en-us/cpp/sanitizers/asan?view=msvc-170) von Microsoft<br />
+(abgerufen am 22.3.2025).
+
+---
+
 ## *Verschiedenes*
 
-[C++ Performance Optimization: Best Practices](https://hackernoon.com/c-performance-optimization-best-practices) von Ivan Chiklikchi.<br />
-(abgerufen am 17.2.2025)
+[C++ Performance Optimization: Best Practices](https://hackernoon.com/c-performance-optimization-best-practices) von Ivan Chiklikchi<br />
+(abgerufen am 17.2.2025).
 
-[Format String Exploitation-Tutorial](https://www.exploit-db.com/docs/english/28476-linux-format-string-exploitation.pdf) von Saif El-Sherei.<br />
-(abgerufen am 17.2.2025)
+[Format String Exploitation-Tutorial](https://www.exploit-db.com/docs/english/28476-linux-format-string-exploitation.pdf) von Saif El-Sherei<br />
+(abgerufen am 17.2.2025).
 
+[Secure Programming in C](https://ocw.mit.edu/courses/6-s096-effective-programming-in-c-and-c-january-iap-2014/df281b9bb8aa5c4377567454bb839676_MIT6_S096IAP14_Lecture3S.pdf) von Lef Ioannidis oder auch [hier](Secure_Programming_in_C_Lef_Ioannidis.pdf)<br />
+(abgerufen am 22.2.2025).
 
-[Secure Programming in C](https://ocw.mit.edu/courses/6-s096-effective-programming-in-c-and-c-january-iap-2014/df281b9bb8aa5c4377567454bb839676_MIT6_S096IAP14_Lecture3S.pdf) von Lef Ioannidis oder auch [hier](Secure_Programming_in_C_Lef_Ioannidis.pdf).<br />
-(abgerufen am 22.2.2025)
+[Secure Coding Practices in C++](https://medium.com/@AlexanderObregon/secure-coding-practices-in-c-12b756af90fe) von Alexander Obregon<br />
+(abgerufen am 22.2.2025).
 
 ---
 

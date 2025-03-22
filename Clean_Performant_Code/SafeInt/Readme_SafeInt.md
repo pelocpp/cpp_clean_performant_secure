@@ -204,11 +204,9 @@ Factorial of 20: 2432902008176640000
 No more correct Factorial values available!
 ```
 
-
 ---
 
 ## Literatur <a name="link3"></a>
-
 
 [SafeInt-Bibliothek](https://learn.microsoft.com/de-de/cpp/safeint/safeint-library?view=msvc-170)
 

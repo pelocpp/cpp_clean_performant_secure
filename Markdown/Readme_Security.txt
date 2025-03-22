@@ -1,15 +1,5 @@
 // ============================================================
 
-Sanitizers:
-
-https://learn.microsoft.com/en-us/cpp/sanitizers/asan?view=msvc-170
-
-Home of the Sanitizers:
-
-https://github.com/google/sanitizers
-
-------------------------
-
 https://learn.microsoft.com/en-us/cpp/code-quality/build-reliable-secure-programs?view=msvc-170
 
 HIER:
@@ -45,15 +35,6 @@ Master Secure C/C++ Programming: Uncover Flaws, Learn Defensive Programming Tech
 
 // =============================================================
 
-
-Artikel:
-
-https://www.mayhem.security/blog/best-practices-for-secure-programming-in-c
-
-https://medium.com/@AlexanderObregon/secure-coding-practices-in-c-12b756af90fe
-
-// =============================================================
-
 Youtube:
 
 https://www.youtube.com/watch?v=mdBhb1CkOws
@@ -85,20 +66,6 @@ https://github.com/dcleblanc/SafeInt
 https://giodicanio.com/2023/11/13/protecting-your-c-plus-plus-code-against-integer-overflow-made-easy-by-safeint/
 
 https://www.nuonsoft.com/blog/2009/06/09/safeint-in-visual-c-2010/
-
-
-
-// =============================================================
-
-Hier muss das Tool Cppcheck  herunter geladen werden ... und danach instlliert werden:
-
-https://cppcheck.sourceforge.io/
-
-Dann muss für Visual Studio ein PluhgIn geladen werden:
-
-https://github.com/VioletGiraffe/cppcheck-vs-addin
-
-https://github.com/VioletGiraffe/cppcheck-vs-addin/releases/tag/1.5
 
 
 // =============================================================

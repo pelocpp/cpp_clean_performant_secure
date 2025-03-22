@@ -11,11 +11,8 @@
   * [Vorsicht in der Verwendung von Zeigern](#link1)
   * [Auch C++ Referenzen sind nicht zu 100% sicher](#link2)
   * [Verschwindendes `std::memset`](#link3)
-  * [Speicherlecks (*Memory Leaks*)](#link4) <!-- ab hier kein Text -->
+  * [Speicherlecks (*Memory Leaks*)](#link4)
   * [Race Conditions](#link5)
-  * [Injection attacks](#link6)
-  * [Input validation and sanitization](#link7)
-  * [Memory management](#link8)
 
 ---
 
@@ -28,7 +25,6 @@
 ## Weitere Probleme des *Secure Programming* in C/C++
 
 ### Vorsicht in der Verwendung von Zeigern <a name="link1"></a>
-
 
 *Beispiel*:
 
@@ -55,7 +51,6 @@
 20:     decay(ages);
 21: }
 ```
-
 
 *Ausgabe*:
 
@@ -157,9 +152,112 @@ Aus diesem Grund kann diese Funktion *nicht* zum Bereinigen des Speichers verwen
 Diese Optimierung ist für `std::memset_explicit` und `std::memset_s` verboten:
 Sie führen garantiert den Speicherschreibvorgang aus.
 
-
 *Beachte*:<br />
 Visual C++ stellt diese beiden Funktionen nicht zur Verfügung!
+
+---
+
+### Speicherlecks (*Memory Leaks*) <a name="link4"></a>
+
+Speicherlecks (*Memory Leaks*) treten auf, wenn dynamisch zugewiesener Speicher nicht ordnungsgemäß freigegeben wird.
+
+Dies führt mit der Zeit zu Ressourcenmangel und Leistungseinbußen.
+
+Bei Anwendungen mit langer Laufzeit können Speicherlecks dazu führen, dass die Anwendung immer mehr Speicher verbraucht,
+was schließlich zu Systemabstürzen oder -verlangsamungen führt.
+
+```cpp
+01: void test()
+02: {
+03:     int* ptr = new int[10]; // memory allocated but never deallocated
+04: }
+```
+
+---
+
+### Race Conditions <a name="link5"></a>
+
+*Race Conditions* treten auf, wenn mehrere Threads gleichzeitig auf gemeinsam genutzte Daten zugreifen.
+
+Dies kann zu unvorhersehbarem und fehlerhaftem Verhalten führen.
+
+*Race Conditions* ziehen sporadische Fehler nach sich, diese sind extrem schwer zu debuggen.
+
+*Beispiel*:
+
+```cpp
+01: const int MaxCount = 100'000;
+02: 
+03: long counter{};
+04: 
+05: static void increment() {
+06: 
+07:     for (int i = 0; i != MaxCount; ++i) {
+08:         ++counter;
+09:     }
+10: }
+11: 
+12: static void test_race_conditions_unsafe()
+13: {
+14:     std::println("Counter: {}", counter);
+15: 
+16:     std::thread t1{ increment };
+17:     std::thread t2{ increment };
+18: 
+19:     t1.join();
+20:     t2.join();
+21: 
+22:     std::println("Counter: {}", counter); // expected 200000, but result is non-deterministic
+23: }
+```
+
+
+*Ausgabe*:
+
+```
+Counter: 0
+Counter: 128278
+```
+
+Ein Lösungsansatz, um kontrolliert auf gemeinsam genutzte Daten korrekt zugreifen zu können,
+besteht im Gebrauch von Synchronisierungshilfsmitteln wie z.B. *Mutex*-Objekten (`std::mutex`)
+oder atomar geschützten Daten (`std::atomic<T>`).
+
+
+*Beispiel*:
+
+```cpp
+01: const int MaxCount = 100'000;
+02: 
+03: std::atomic<long> atomicCounter{};
+04: 
+05: static void incrementAtomic() {
+06: 
+07:     for (int i = 0; i != MaxCount; ++i) {
+08:         ++atomicCounter;
+09:     }
+10: }
+11: 
+12: static void test_race_conditions_safe()
+13: {
+14:     std::println("Counter: {}", atomicCounter.load());
+15: 
+16:     std::thread t1{ incrementAtomic };
+17:     std::thread t2{ incrementAtomic };
+18: 
+19:     t1.join();
+20:     t2.join();
+21: 
+22:     std::println("Counter: {}", atomicCounter.load());
+23: }
+```
+
+*Ausgabe*:
+
+```
+Counter: 0
+Counter: 200000
+```
 
 ---
 

@@ -48,13 +48,17 @@ Embedded Artistry Artikel Serie:
 
 ### Flache STL Container (*Flat Container*)
 
-&bdquo;[C++23: `std::flat_map`, `std::flat_set`, et al.](https://www.sandordargo.com/blog/2022/10/05/cpp23-flat_map)&rdquo; von Sandor Dargo.<br />(abgerufen am 2.3.2025)
+&bdquo;[C++23: `std::flat_map`, `std::flat_set`, et al.](https://www.sandordargo.com/blog/2022/10/05/cpp23-flat_map)&rdquo; von Sandor Dargo<br />
+(abgerufen am 2.3.2025).
 
-&bdquo;[`std::flat_map` in C++](https://schmollf.github.io/2022/10/26/cpp-flat-map.html)&rdquo; von Felix Schmoll.<br />(abgerufen am 2.3.2025)
+&bdquo;[`std::flat_map` in C++](https://schmollf.github.io/2022/10/26/cpp-flat-map.html)&rdquo; von Felix Schmoll<br />
+(abgerufen am 2.3.2025).
 
-&bdquo;[Exploring C++23’s `std::flat_map`](https://learnmoderncpp.com/2024/01/30/exploring-c23s-flat_map/)&rdquo; von *cpptutor*.<br />(abgerufen am 2.3.2025)
+&bdquo;[Exploring C++23’s `std::flat_map`](https://learnmoderncpp.com/2024/01/30/exploring-c23s-flat_map/)&rdquo; von *cpptutor*<br />
+(abgerufen am 2.3.2025).
 
-&bdquo;[The world is flat: The new C++23 flat containers](https://ruthhaephrati.medium.com/the-world-is-flat-the-new-c-23-flat-containers-db3a2d05d933)&rdquo; von Ruth Haephrati.<br />(abgerufen am 2.3.2025)
+&bdquo;[The world is flat: The new C++23 flat containers](https://ruthhaephrati.medium.com/the-world-is-flat-the-new-c-23-flat-containers-db3a2d05d933)&rdquo; von Ruth Haephrati<br />
+(abgerufen am 2.3.2025).
 
 ---
 

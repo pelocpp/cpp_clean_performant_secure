@@ -81,7 +81,7 @@
   * In C# oder Java geschriebenen Programmen würde beispielsweise ein falscher Array-Zugriff zu einer Laufzeitausnahme führen (*Exception*),
   während dies in C++ zu einem falschen Speicherzugriff (Lesen) oder einer Speicherverletzung beim Schreiben führt.
 
-  * Falsches oder unvorsichtiges Programmieren in C/C++ kann zu Überläufen (Stack-, Heap- und Pufferüberläufen) führen,
+  * Falsches oder unvorsichtiges Programmieren in C/C++ kann zu Überläufen (Stack-, Heap- oder Pufferüberlauf) führen,
   die leicht für einen Angriff verwendet werden können.
 
   * Bei konsequentem Einsatz der C++&ndash;Bibliothek (*STL*, *Standard Template Library*) lassen sich all diese Nachteile umgehen.
