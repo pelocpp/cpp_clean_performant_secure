@@ -11,8 +11,7 @@
   * [Vorsicht in der Verwendung von Zeigern](#link1)
   * [Auch C++ Referenzen sind nicht zu 100% sicher](#link2)
   * [Verschwindendes `std::memset`](#link3)
-
-  * [Speicherlecks (*Memory Leaks*)](#link4)
+  * [Speicherlecks (*Memory Leaks*)](#link4) <!-- ab hier kein Text -->
   * [Race Conditions](#link5)
   * [Injection attacks](#link6)
   * [Input validation and sanitization](#link7)
