@@ -189,6 +189,53 @@ um in der zugehörigen Darstellung gespeichert werden zu können.
 
 In diesem Fall kann der Wert eine sehr kleine oder negative Zahl werden.
 
+*Beispiel*:
+
+```cpp
+01: // wrap around - well defined behaviour
+02: unsigned int n = UINT_MAX - 1;
+03: printf("%u\n", n);
+04: 
+05: n++;
+06: printf("%u\n", n);
+07: 
+08: n++;    /* <- unsigned arithmetic, overflows, wraps around */
+09: printf("%u\n", n);
+10: 
+11: n++;
+12: printf("%u\n", n);
+```
+
+*Ausgabe*:
+
+```
+4294967294
+4294967295
+0
+1
+```
+
+
+*Beispiel*:
+
+```cpp
+01: // undefined behavior
+02: unsigned short n = USHRT_MAX;
+03: printf("%hu\n", n);
+04: 
+05: // n *= INT_MAX;
+06: n *= 12345;
+07: printf("%hu\n", n);
+```
+
+*Ausgabe*:
+
+```
+65535
+53191
+```
+
+
 *Bemerkung*:
 Es wird bei der Überlauf-Problematik sehr genau zwischen *Wraparound* und *Undefined Behaviour* unterschieden.
 
@@ -215,7 +262,7 @@ von vorzeichenlosen und vorzeichenbehafteten Integer-Typen:
 
 Noch eine abschließende Bemerkung: 
 
-Gibt es eine `short int`-Arithmetik?
+Gibt es eine `short`-Arithmetik?
 
 *Antwort*:<br />
 Nein! Der Maschinencode eines C-Programms führt niemal arithmetische Berechnungen in Bereichen durch,
@@ -224,9 +271,9 @@ die kleiner sind als die von `signed int`/`unsigned int`.
 Eine `short int`-Variable wird in Ausdrücken typischerweise vor Beginn der Berechnungen in den Typ `int` umgewandelt.
 Das bedeutet:
 
-  * Berechnungen mit `unsigned short int` / `signed short int` werden im Bereich von `int` durchgeführt, wobei es zu einem Überlauf kommt, wenn `int` überläuft.
+  * Berechnungen mit `unsigned short int` / `signed short int` werden im Bereich von `unsigned int` / `signed int` durchgeführt, wobei es zu einem Überlauf kommt, wenn `unsigned int` / `signed int` überläuft.
   * Ein Überlauf während solcher Berechnungen führt zu undefiniertem Verhalten, nicht zu einem Wrap-Around-Verhalten.
-  * Das im `int`-Bereich Ergebnis wird in eine `unsigned short int` / `signed short int` zurückkonvertiert. Hier kann es zu einem Konvertierungsfehler kommen.
+  * Das im `unsigned int` / `signed int`-Bereich berechnete Ergebnis wird in eine `unsigned short int` / `signed short int` zurückkonvertiert. Hier kann es zu einem Konvertierungsfehler kommen.
 
 ### &bdquo;*Signed Integer Overflow*&rdquo; <a name="link7"></a>
 
@@ -253,6 +300,30 @@ was möglicherweise zu einem unerwarteten Wert führt, der nicht dem ursprüngliche
 Dieser Wert kann als Index eines Puffers, als Schleifenindex oder einfach als normale Variable erforderlich sein.
 
 In jedem Fall ist der Wert nicht vertrauenswürdig und das System befindet sich in einem undefinierten Zustand.
+
+*Beispiel*:
+
+```cpp
+01: int intPrimitive = 0;
+02: short shortPrimitive = 0;
+03: intPrimitive = INT_MAX;
+04: shortPrimitive = intPrimitive;   // Numeric Truncation Error
+05: 
+06: printf("Integer MAXINT: %d\n", intPrimitive);
+07: printf("Short   MAXINT: %d\n", shortPrimitive);
+08: 
+09: shortPrimitive = SHRT_MAX;
+10: printf("Short   MAXINT: %d\n", shortPrimitive);
+```
+
+*Ausgabe*:
+
+```
+Integer MAXINT: 2147483647
+Short   MAXINT: -1
+Short   MAXINT: 32767
+```
+
 
 ### &bdquo;*Stack Buffer Overflow*&rdquo; <a name="link9"></a>
 
@@ -328,6 +399,21 @@ Dies bedeutet im Allgemeinen, dass der Puffer mithilfe einer Routine wie `malloc
 Die Schwachstelle schreibt in einen Puffer mithilfe eines Index oder Zeigers,
 der auf einen Speicherort vor dem Anfang des Puffers verweist.
 
+*Beispiel*:
+
+```cpp
+01: char src[12];
+02: 
+03: strncpy(src, "Hello World", sizeof(src));
+04: 
+05: size_t length = strlen(src);
+06: 
+07: int index = (length - 1);
+08: while (src[index] != ':') {
+09:     src[index] = '\0';
+10:     index--;
+11: }
+```
 
 ### &bdquo;*Use after Free*&rdquo; <a name="link12"></a>
 
@@ -342,6 +428,25 @@ während der ursprüngliche Zeiger auf einen Speicherort irgendwo innerhalb der ne
 Alle Vorgänge, die den ursprünglichen Zeiger verwenden, sind nicht mehr gültig, da der Speicher dem Code &bdquo;gehört&rdquo;,
 der mit dem neuen Zeiger arbeitet.
 
+*Beispiel*:
+
+```cpp
+01: char* buffer = new char[256];
+02: memset(buffer, '!', 256);
+03: 
+04: bool error = true;
+05: if (error)
+06:     delete[] buffer;
+07: 
+08: if (error) {
+09:     // Use after free when error is true
+10:     // printf("%lu\n", strlen(buffer));
+11: 
+12:     size_t len = strlen(buffer);   // use after free
+13: }
+```
+
+
 ### &bdquo;*Double Free*&rdquo; <a name="link13"></a>
 
 *Beschreibung*:
@@ -350,6 +455,21 @@ der mit dem neuen Zeiger arbeitet.
 
 Die Schwachstelle ruft `free()` / `delete` zweimal für dieselbe Speicheradresse auf,
 was möglicherweise zur Änderung unerwarteter Speicherorte führt.
+
+*Beispiel*:
+
+```cpp
+01: char* buffer = new char[256];
+02: memset(buffer, '!', 256);
+03: 
+04: bool error = true;
+05: if (error)
+06:     delete[] buffer;
+07: 
+08: // ....
+09: 
+10: delete[] buffer; // second free
+```
 
 
 ### &bdquo;*Incorrect Type Conversion*&rdquo; / &bdquo;*Type Punning*&rdquo; <a name="link14"></a>
@@ -368,6 +488,19 @@ diese Stelle aber aus der Sichtweise unterschiedlicher Datentypen betrachten&rdq
 Der Compiler behandelt beide &bdquo;*Type Punnings*&rdquo; als nicht verwandte Zeiger.
 
 *Type Punnings* können Abhängigkeitsprobleme für alle Daten verursachen, auf die über beide Zeiger zugegriffen wird.&rdquo;
+
+*Beispiel*:
+
+```cpp
+01: struct A {};
+02: struct B {};
+03: 
+04: struct A* a = (struct A*) malloc(sizeof(struct A));
+05: 
+06: // cast to unrelated type
+07: struct B* b = (struct B*) a;
+```
+
 
 ### &bdquo;*Uncontrolled Format String*&rdquo; <a name="link15"></a>
 

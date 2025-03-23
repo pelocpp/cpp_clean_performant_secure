@@ -45,7 +45,6 @@ namespace SecureProgrammingExploitability {
 
             {
                 // undefined behavior
-
                 unsigned short n = USHRT_MAX;
                 printf("%hu\n", n);
 

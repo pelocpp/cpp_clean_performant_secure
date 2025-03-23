@@ -18,9 +18,7 @@
 
 ### [*BigInt*: Eine Bibliothek für sehr große Zahlen](../BigInt/Readme_BigInt.md)
 
----
-
-## [Literatur](./Literature.md)
+### [Literatur](./Literature.md)
 
 ---
 
