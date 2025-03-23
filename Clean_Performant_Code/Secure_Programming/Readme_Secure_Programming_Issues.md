@@ -41,15 +41,15 @@
 
   * Passen C und &bdquo;Secure Programming&rdquo; zusammen? Nein!
 
-  * Ist C als sichere, robuste Programmiersprache konzipiert: Nein!
+  * Ist C als sichere, robuste Programmiersprache konzipiert? Nein!
 
-  * Ist es möglich, in C sichere und robuste Programme zu schreiben: Ja!
+  * Ist es möglich, in C sichere und robuste Programme zu schreiben? Ja!
 
-  * Gibt es ein Motto für die Programmierung in C: Ja: &bdquo;*A Programmer knows what he does*&rdquo;.
+  * Gibt es ein Motto für die Programmierung in C? Ja: &bdquo;*A Programmer knows what he does*&rdquo;.
 
-  * Warum ist C so unglaublich erfolgreich: Weil man nahezu jedes erdenkliche Programm in C schreiben kann.
+  * Warum ist C so unglaublich erfolgreich? Weil man nahezu jedes erdenkliche Programm in C schreiben kann.
 
-##### Zusammenfassung:
+#### Zusammenfassung:
 
   * How to shoot yourself in the foot using C: *You shoot yourself in the foot*.
 
@@ -59,17 +59,17 @@
 
   * Passen C++ und &bdquo;Secure Programming&rdquo; zusammen? Durchaus!
 
-  * Ist C++ als sichere, robuste Programmiersprache konzipert? Ja!
+  * Ist C++ als sichere, robuste Programmiersprache konzipiert? Ja!
 
   * Ist es möglich, in C++ sichere und robuste Programme zu schreiben? Ja!
 
   * Ist C++ eine Sprache für Einsteiger oder Experten? Für Experten! Sie gibt Ihnen die volle Kontrolle über Ihren Rechner, die Sie sich wünschen, aber mit der Macht geht auch Verantwortung einher!
 
-  * Gibt es ein Motto für die Programmierung in C++: Ja: &bdquo;*Never trust a programmer who says he knows C++*&rdquo;.
+  * Gibt es ein Motto für die Programmierung in C++? Ja: &bdquo;*Never trust a programmer who says he knows C++*&rdquo;.
 
-  * Warum ist C++ so unglaublich erfolgreich: Performanz!
+  * Warum ist C++ so unglaublich erfolgreich? Performanz!
 
-##### Zusammenfassung:
+#### Zusammenfassung:
 
   * How to shoot yourself in the foot using C++:<br />*You accidentally create a dozen instances of yourself and shoot them all in the foot. Providing emergency medical care is impossible since you can't tell which are bitwise copies and which are just pointing at others and saying &bdquo;that's me, over there.&rdquo;*.
 
@@ -77,13 +77,13 @@
 
 ### Was unterscheidet C/C++ von anderen Programmiersprache wie z. B. Java, C# oder Python <a name="link3"></a>
 
-  * Ein C/C++-Übersetzer generiert Maschinencode, so wie dieser vom Entwickler durch den vom ihm geschriebenen Quellcode angefordert wird,
-  *ohne* Sicherheitsprüfungen hinzuzufügen.
+  * Ein C/C++-Übersetzer generiert Maschinencode, so wie dieser vom Entwickler durch den von ihm geschriebenen Quellcode angefordert wird,
+  *ohne* Sicherheitsprüfungen hinzuzufügen (es gibt Ausnahmen in C++).
 
-  * In C# oder Java geschriebenen Programmen würde beispielsweise ein falscher Array-Zugriff zu einer Laufzeitausnahme führen (*Exception*),
+  * Bei in C# oder Java geschriebenen Programmen würde beispielsweise ein falscher Array-Zugriff zu einer Laufzeitausnahme führen (*Exception*),
   während dies in C++ zu einem falschen Speicherzugriff (Lesen) oder einer Speicherverletzung beim Schreiben führt.
 
-  * Falsches oder unvorsichtiges Programmieren in C/C++ kann zu Überläufen (Stack-, Heap- oder Pufferüberlauf) führen,
+  * Falsches oder unvorsichtiges Programmieren in C/C++ kann zu Überläufen (Stack-, Heap- oder globale Datenbereiche) führen,
   die leicht für einen Angriff verwendet werden können.
 
   * Bei konsequentem Einsatz der C++&ndash;Bibliothek (*STL*, *Standard Template Library*) lassen sich all diese Nachteile umgehen.
@@ -105,7 +105,7 @@ der Software in Computersysteme &ndash; in unserem Fall: in C/C++ Programme &nda
 
 ##### Welche Arten von Exploits gibt es?
 
-Es existiert eine Vielzahl verschiedener Exploits. Abhängig von der verwendeten Angriffsart
+Es existieren eine Vielzahl verschiedener Exploits. Abhängig von der verwendeten Angriffsart
 und von zeitlichen Aspekten lassen sich Exploits unterschiedlich klassifizieren.
 Oft genannte Exploit-Arten sind beispielsweise:
 
@@ -118,7 +118,7 @@ Oft genannte Exploit-Arten sind beispielsweise:
 
 ##### Der berühmteste Exploit
 
-Der berühmteste Exploit ist der *Off-by-one Exploit*.
+Der berühmteste Exploit ist der *Off-by-One Exploit*.
 
 Dieser Exploit beschreibt einen häufigen Programmierfehler beim Berechnen von Array-Grenzen.
 In Little-Endian-Architekturen kann dies zum Überschreiben des niederwertigsten Bytes führen.
@@ -130,7 +130,7 @@ möglicherweise etwas drastischer übersetzt *Hochrisiko-Schwachstellen*.
 
 Wie kommt es dazu?
 
-C und C++ sind so genannte *Low-Level*-Programmiersprachen.
+C und C++ sind sogenannte *Low-Level*-Programmiersprachen.
 
 Das Speichermanagement ist also anders geregelt als bei High-Level-Sprachen wie JavaScript oder Python.
 Bei diesen wird die Zuweisung, Nutzung und Bereitstellung implizit verwaltet (zum Beispiel durch *Garbage Collection*).
@@ -182,14 +182,48 @@ der im Programm keine Verwendung mehr findet, durch die Laufzeitumgebung wieder 
 
 [CWE-190: Integer Overflow or Wraparound](https://cwe.mitre.org/data/definitions/190.html)
 
-Das Produkt führt eine Berechnung durch, die einen Integer-Überlauf oder Wraparound erzeugen kann.
+Die Schwachstelle führt eine Berechnung durch, die einen Integer-Überlauf oder Wraparound erzeugen kann.
 
 Dies tritt auf, wenn ein Integer-Wert auf einen Wert erhöht wird, der zu groß ist,
 um in der zugehörigen Darstellung gespeichert zu werden.
 
 In diesem Fall kann der Wert eine sehr kleine oder negative Zahl werden.
 
+*Bemerkung*:
+Es wird bei der Überlauf-Problematik sehr genau zwischen *Wraparound* und *Undefined Behaviour* unterschieden.
 
+Warum?
+
+  * Vorzeichenlose Integer-Typen:<br />
+  Vorzeichenlose Integer-Typen implementieren Modulo-Arithmetik.
+  Das Modulo ist gleich 2<sup>*N*</sup>, wobei *N* die Anzahl der Bits in der Binärdarstellung des Datentyps ist.
+  Aus diesem Grund scheinen vorzeichenlose Integer-Typen bei einem Überlauf tatsächlich umzubrechen.
+  Dieses Verhalten ist für vorzeichenlose Typen eindeutig definiert.
+
+  * Vorzeichenbehaftete Integer-Variablen:<br />
+  Vorzeichenbehaftete Integer-Variablen kennen in der Programmiersprache C kein *Wraparound*-Verhalten.
+  Ein Überlauf von vorzeichenbehafteten Integer-Typen während arithmetischer Berechnungen führt zu undefiniertem Verhalten (*Undefined Behaviour*).<br />
+  Für vorzeichenbehaftete Typen ist es eben nicht eindeutig definiert,
+  wie eine derartige Zahl intern (Binärdarstellung) dargestellt wird.
+  Es gibt mehrere Methoden zur Darstellung vorzeichenbehafteter Zahlen:
+  Einer-Komplement: der negative Wert ist das bitweise Inverse des positiven Wertes.
+  Zweier-Komplement: der negative Wert ist das bitweise Inverse des positiven Wertes plus 1.
+
+
+Noch eine abschließende Bemerkung: 
+
+Gibt es eine `short int`-Arithmetik?
+
+*Antwort*:<br />
+Nein! Der Maschinencode eines C-Programms führt niemal arithmetische Berechnungen in Bereichen durch,
+die kleiner sind als die von `signed int`/`unsigned int`.
+
+Eine `short int`-Variable wird in Ausdrücken typischerweise vor Beginn der Berechnungen in den Typ `int` umgewandelt.
+Das bedeutet:
+
+  * Berechnungen mit `unsigned short int` / `signed short int` werden im Bereich von `int` durchgeführt, wobei es zu einem Überlauf kommt, wenn `int` überläuft.
+  * Ein Überlauf während solcher Berechnungen führt zu undefiniertem Verhalten, nicht zu einem Wrap-Around-Verhalten.
+  * Das im `int`-Bereich Ergebnis wird in eine `unsigned short int` / `signed short int` zurückkonvertiert. Hier kann es zu einem Konvertierungsfehler kommen.
 
 ### &bdquo;*Signed Integer Overflow*&rdquo; <a name="link7"></a>
 
@@ -199,49 +233,50 @@ In diesem Fall kann der Wert eine sehr kleine oder negative Zahl werden.
 
 Siehe &bdquo;*Unsigned Integer Wraparound*&rdquo;.
 
-### &bdquo;*Numeric Truncation*&rdquo; <a name="link"></a>
+
+### &bdquo;*Numeric Truncation*&rdquo; <a name="link8"></a>
 
 *Beschreibung*:
 
 [CWE-197: Numeric Truncation Error](https://cwe.mitre.org/data/definitions/197.html)
 
-  * Implementation Defined Behaviour (IDB)
-  * Integer Conversions do result in lost or misinterpreted data
+  * Implementierungsdefiniertes Verhalten (*Implementation Defined Behaviour*, *IDB*)
+  * Ganzzahlkonvertierungen führen zu Datenverlust oder Fehlinterpretationen
 
 Wenn Werte eines elementaren Datentyps in einen Wert eines kleineren elementaren Datentyps umgewandelt werden,
 gehen die höherwertigen Bits des größeren Werts bei der Konvertierung verloren,
 was möglicherweise zu einem unerwarteten Wert führt, der nicht dem ursprünglichen Wert entspricht.
 
-Dieser Wert kann als Index in einem Puffer, als Schleifenindex oder einfach als normale Variable erforderlich sein.
+Dieser Wert kann als Index eines Puffers, als Schleifenindex oder einfach als normale Variable erforderlich sein.
 
 In jedem Fall ist der Wert nicht vertrauenswürdig und das System befindet sich in einem undefinierten Zustand.
 
-### &bdquo;*Stack Buffer Overflow*&rdquo; <a name="link8"></a>
+### &bdquo;*Stack Buffer Overflow*&rdquo; <a name="link9"></a>
 
 *Beschreibung*:
 
 [CWE-121: Stack-based Buffer Overflow](https://cwe.mitre.org/data/definitions/121.html)
 
-&bdquo;*Stack Overflow*&bdquo;, auch als &bdquo;*Stack Exhaustion*&bdquo; bezeichnet, 
+&bdquo;*Stack Overflow*&rdquo;, auch als &bdquo;*Stack Exhaustion*&rdquo; bezeichnet, 
 ist normalerweise das Ergebnis von übermäßig vielen geschachtelten Funktionsaufrufen,
 bisweilen auch rekursiven Funktionsaufrufen.
 
 Ebenfalls kritisch für den Stapel sind zu viele große Datenmengen,
-die in Funktionen als &bdquo;*Stack*&bdquo;-Variablen angelegt werden.
+die in Funktionen als &bdquo;*Stack*&rdquo;-Variablen angelegt werden.
 
 
 *Beschreibung*:
 
 [CWE-242: Use of Inherently Dangerous Function](https://cwe.mitre.org/data/definitions/242.html)
 
-Das Produkt ruft eine Funktion auf, deren sichere Funktion nie garantiert werden kann.
+Die Schwachstelle ruft eine Funktion auf, deren sichere Funktion nie garantiert werden kann.
 
 
 *Beschreibung*:
 
 [CWE-787: Out-of-bounds Write](https://cwe.mitre.org/data/definitions/787.html)
 
-Das Produkt schreibt Daten über das Ende oder vor den Anfang des vorgesehenen Puffers hinaus.
+Die Schwachstelle schreibt Daten über das Ende oder vor den Anfang des vorgesehenen Puffers hinaus.
 
 *Beispiel*:
 
@@ -268,66 +303,66 @@ Das Produkt schreibt Daten über das Ende oder vor den Anfang des vorgesehenen Pu
 ```
 
 
-### &bdquo;*Heap Buffer Overflow*&rdquo; <a name="link9"></a>
+### &bdquo;*Heap Buffer Overflow*&rdquo; <a name="link10"></a>
 
 *Beschreibung*:
 
 [CWE-122: Heap-based Buffer Overflow](https://cwe.mitre.org/data/definitions/122.html)
 
 Bei einem Heap-Überlauf handelt es sich um einen Pufferüberlauf, bei dem der Puffer, der überschrieben werden kann,
-im Heap-Bereich des Speichers zugewiesen wird.
+im Heap-Bereich des Speichers liegt.
 
 Dies bedeutet im Allgemeinen, dass der Puffer mithilfe einer Routine wie `malloc()` / `new` zugewiesen wurde.
 
 
 
-### &bdquo;*Buffer Underflow*&rdquo; <a name="link10"></a>
+### &bdquo;*Buffer Underflow*&rdquo; <a name="link11"></a>
 
 *Beschreibung*:
 
 [CWE-124: Buffer Underwrite ('Buffer Underflow')](https://cwe.mitre.org/data/definitions/124.html)
 
-Das Problem schreibt in einen Puffer mithilfe eines Index oder Zeigers,
+Die Schwachstelle schreibt in einen Puffer mithilfe eines Index oder Zeigers,
 der auf einen Speicherort vor dem Anfang des Puffers verweist.
 
 
-### &bdquo;*Use after Free*&rdquo; <a name="link11"></a>
+### &bdquo;*Use after Free*&rdquo; <a name="link12"></a>
 
 *Beschreibung*:
 
 [CWE-416: Use After Free](https://cwe.mitre.org/data/definitions/416.html)
 
-Das Problem verwendet den Speicher erneut oder verweist auf ihn, nachdem er freigegeben wurde.
+Die Schwachstelle verwendet den Speicher erneut oder verweist auf ihn, nachdem er freigegeben wurde.
 Irgendwann danach kann der Speicher erneut zugewiesen und in einem anderen Zeiger gespeichert werden,
 während der ursprüngliche Zeiger auf einen Speicherort irgendwo innerhalb der neuen Zuweisung verweist.
 
 Alle Vorgänge, die den ursprünglichen Zeiger verwenden, sind nicht mehr gültig, da der Speicher dem Code &bdquo;gehört&rdquo;,
 der mit dem neuen Zeiger arbeitet.
 
-### &bdquo;*Double Free*&rdquo; <a name="link12"></a>
+### &bdquo;*Double Free*&rdquo; <a name="link13"></a>
 
 *Beschreibung*:
 
 [CWE-415: Double Free](https://cwe.mitre.org/data/definitions/415.html)
 
-
-Das Problem ruft `free()` / `delete` zweimal für dieselbe Speicheradresse auf,
+Die Schwachstelle ruft `free()` / `delete` zweimal für dieselbe Speicheradresse auf,
 was möglicherweise zur Änderung unerwarteter Speicherorte führt.
 
 
-### &bdquo;*Incorrect Type Conversion*&rdquo; / &bdquo;*Type Punning*&rdquo; <a name="link13"></a>
+### &bdquo;*Incorrect Type Conversion*&rdquo; / &bdquo;*Type Punning*&rdquo; <a name="link14"></a>
 
 *Beschreibung*:
 
 [CWE-704: Incorrect Type Conversion or Cast](https://cwe.mitre.org/data/definitions/704.html)
 
-Das Problem konvertiert ein Objekt, eine Ressource oder eine Struktur nicht ordnungsgemäß von einem Typ in einen anderen Typ.
+Die Schwachstelle konvertiert ein Objekt, eine Ressource oder eine Struktur nicht ordnungsgemäß von einem Typ in einen anderen Typ.
 
 Was bezeichnet man als *Type Punning*?
 
 &bdquo;Eine Form des Zeigeraliasings, bei der zwei Zeiger auf dieselbe Stelle im Speicher verweisen,
-diese Stelle aber aus der Sichtweise unterschiedlicher Datentypen betrachten.<br />
-Der Compiler behandelt beide &bdquo;Punnings&rdquo; als nicht verwandte Zeiger.
+diese Stelle aber aus der Sichtweise unterschiedlicher Datentypen betrachten&rdquo;<br />.
+
+Der Compiler behandelt beide &bdquo;*Type Punnings*&rdquo; als nicht verwandte Zeiger.
 
 *Type Punnings* können Abhängigkeitsprobleme für alle Daten verursachen, auf die über beide Zeiger zugegriffen wird.&rdquo;
 
@@ -337,7 +372,7 @@ Der Compiler behandelt beide &bdquo;Punnings&rdquo; als nicht verwandte Zeiger.
 
 [CWE-134: Use of Externally-Controlled Format String](https://cwe.mitre.org/data/definitions/134.html)
 
-Das Problem verwendet eine Funktion,
+Die Schwachstelle verwendet eine Funktion,
 die eine Formatzeichenfolge als Argument akzeptiert, die Formatzeichenfolge stammt jedoch aus einer externen Quelle.
 
 ---

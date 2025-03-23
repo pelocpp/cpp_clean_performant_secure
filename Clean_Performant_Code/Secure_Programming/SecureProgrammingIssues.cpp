@@ -20,26 +20,38 @@
 namespace SecureProgrammingExploitability {
 
     namespace UnsignedIntegerWraparound {
-    
-        // https://cwe.mitre.org/data/definitions/190.html
-
-        // Unsigned Integer Wraparound
-        // Defined behaviour: Wrapping
-
-        static const unsigned short first_len = SHRT_MAX;
-        static const unsigned short second_len = 256;
-        static const unsigned short buf_len = 256;
-
-        static char first[first_len];
-        static char second[second_len];
-        static char buf[buf_len];
 
         static void test_unsigned_integer_wraparound() {
 
-            unsigned short len = first_len + second_len;  // < -sum == 255
+            // https://cwe.mitre.org/data/definitions/190.html
 
-            if (len <= 256) {
-                memcpy(buf, first, first_len);
+            // Unsigned Integer Wraparound
+            // Defined behaviour: Wrapping
+
+            {
+                // wrap around - well defined behaviour
+                unsigned int n = UINT_MAX - 1;
+                printf("%u\n", n);
+
+                n++;
+                printf("%u\n", n);
+
+                n++;    /* <- unsigned arithmetic, overflows, wraps around */
+                printf("%u\n", n);
+
+                n++;
+                printf("%u\n", n);
+            }
+
+            {
+                // undefined behavior
+
+                unsigned short n = USHRT_MAX;
+                printf("%hu\n", n);
+
+                // n *= INT_MAX;
+                n *= 12345;
+                printf("%hu\n", n);
             }
         }
     }
@@ -56,7 +68,6 @@ namespace SecureProgrammingExploitability {
         static const signed short buf_len = 256;
 
         static char first[first_len];
-        static char second[second_len];
         static char buf[buf_len];
 
         static void test_signed_integer_overflow() {
@@ -77,21 +88,40 @@ namespace SecureProgrammingExploitability {
         // Implementation Defined Behaviour (IDB):
         // Integer Conversions do result in lost or misinterpreted data
 
+        static void test_numeric_truncation_error_01()
+        {
+            int intPrimitive = 0;
+            short shortPrimitive = 0;
+            intPrimitive = INT_MAX;
+            shortPrimitive = intPrimitive;   // Numeric Truncation Error
+
+            printf("Integer MAXINT: %d\n", intPrimitive);
+            printf("Short   MAXINT: %d\n", shortPrimitive);
+
+            shortPrimitive = SHRT_MAX;
+            printf("Short   MAXINT: %d\n", shortPrimitive);
+        }
+
         static const unsigned short first_len = USHRT_MAX - 256;
         static const unsigned short second_len = 256;
         static const unsigned short buf_len = 256;
 
         static char first[first_len];
-        static char second[second_len];
         static char buf[buf_len];
 
-        static void test_numeric_Truncation_error() {
+        static void test_numeric_truncation_error_02() {
 
             signed short len = first_len + second_len;  // <- IDB (negative) // unsigned sum is assigned to signed variable (!)
 
             if (len <= 256) {
                 memcpy(buf, first, first_len);
             }
+        }
+
+        static void test_numeric_truncation_error() {
+
+            test_numeric_truncation_error_01();
+            test_numeric_truncation_error_02();
         }
     }
 
@@ -296,7 +326,7 @@ void secure_programming_issues()
 
     UnsignedIntegerWraparound::test_unsigned_integer_wraparound();
     SignedIntegerOverflow::test_signed_integer_overflow();
-    NumericTruncationError::test_numeric_Truncation_error();
+    NumericTruncationError::test_numeric_truncation_error();
     StackBasedBufferOverflow::test_stack_based_buffer_overflow();
     HeapBasedBufferOverflow::test_heap_based_buffer_overflow();
     BufferUnderwriteUnderflow::test_buffer_underwrite_underflow();

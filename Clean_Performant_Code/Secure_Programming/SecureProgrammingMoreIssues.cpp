@@ -183,10 +183,10 @@ void secure_programming_more_issues()
 {
     using namespace SecureProgrammingMoreIssues;
 
-    //UsingPointers::test_using_pointers();
-    //DanglingReferences::test_dangling_reference();
-    //MemsetIssue::test_disappearing_memset();
-    //MemoryLeaks::test_memory_leaks();
+    UsingPointers::test_using_pointers();
+    DanglingReferences::test_dangling_reference();
+    MemsetIssue::test_disappearing_memset();
+    MemoryLeaks::test_memory_leaks();
     RaceConditions::test_race_conditions();
 }
 
