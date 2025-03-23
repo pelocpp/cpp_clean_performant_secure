@@ -220,7 +220,7 @@ Counter: 128278
 ```
 
 Ein Lösungsansatz, um kontrolliert auf gemeinsam genutzte Daten korrekt zugreifen zu können,
-besteht im Gebrauch von Synchronisierungshilfsmitteln wie z.B. *Mutex*-Objekten (`std::mutex`)
+besteht im Gebrauch von Synchronisierungs-Hilfsmitteln wie z.B. *Mutex*-Objekten (`std::mutex`)
 oder atomar geschützten Daten (`std::atomic<T>`).
 
 

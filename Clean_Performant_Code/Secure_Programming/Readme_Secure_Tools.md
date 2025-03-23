@@ -104,7 +104,7 @@ Der Visual C++ Sanitizer kann folgende Fehlerursachen aufspüren:
 
 Zur Installation des Address Sanitizers finden sich [hier](https://learn.microsoft.com/en-us/cpp/sanitizers/asan?view=msvc-170) Hinweise.
 
-Grundlegende Vorraussetzung ist natürlich, dass der Sanitizer bei der Visual Studio Installation mit berücksichtigt wurde:
+Grundlegende Voraussetzung ist natürlich, dass der Sanitizer bei der Visual Studio Installation mit berücksichtigt wurde:
 
 <img src="VisualStudio_AddressSanitizer_02.png" width="300">
 
