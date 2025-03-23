@@ -15,31 +15,32 @@
   * [Verwende die neuesten C++-Standards](#link5)
   * [Verwende sichere Bibliotheken](#link6)
   * [Verwende starke Typisierung](#link7)
+  * [Verwende nur *Named Casts* bzw. *New-Style-Casts* zur Typkonvertierung](#link8)
 
 ### Einige konkrete Schutzmaßnahmen  <!-- Zu den folgende Abschnitten gibt es Quellcode -->
 
-  * [Don't use C &ndash; use C++](#link8)
-  * [Verwende mehrere Compiler](#link9)
-  * [*Warnings* und *Errors*](#link10)
-  * [Warning Level](#link11)
-  * [Typensicherheit: Datentypen sind unsere Freunde](#link12)
-  * [Erster Tipp für Pufferüberlauf: Exaktes Arbeiten](#link13)
-  * [Zweiter Tipp für Pufferüberlauf: Verwende ausschließlich &bdquo;*secure*&rdquo; Funktionen](#link14)
-  * [Drei Tipps für arithmetischen Überlauf](#link15)
-  * [Noch ein Tipp für arithmetischen Überlauf: `std::midpoint`](#link16)
-  * [Verhindere ungültige Zeichenketteninjektionen (so genannte *SQL Injections*)](#link17)
-  * [Vermeide &bdquo;*Off-by-One*&rdquo; Fehler!](#link18)
-  * [Verwende STL-Algorithmen](#link19)
-  * [Verwende STL-Container](#link20)
-  * [Achte auf sicheres *Downcasting*](#link21)
-  * [Verzichte auf die direkte Verwendung des `new`-Operators](#link22)
-  * [Deklariere Konstruktoren mit einem einzigen Argument mit `explicit`](#link23)
-  * [Elementare Datentypen haben keine Bedeutung (*Semantics*), nur Wertebereiche](#link24)
-  * [Der Datentyp `size_t`](#link25)
-  * [Benutzerdefinierte Literale: Elementare Datentypen &bdquo;mit Bedeutung&rdquo;](#link26)
-  * [Schlüsselwörter `virtual`, `override` oder `final`](#link27)
-  * [Setze standardmäßig Methoden auf `const`, soweit möglich](#link28)
-  * [Verwende das Attribut `[[nodiscard]]`](#link29)
+  * [Don't use C &ndash; use C++](#link9)
+  * [Verwende mehrere Compiler](#link10)
+  * [*Warnings* und *Errors*](#link11)
+  * [Warning Level](#link12)
+  * [Typensicherheit: Datentypen sind unsere Freunde](#link13)
+  * [Erster Tipp für Pufferüberlauf: Exaktes Arbeiten](#link14)
+  * [Zweiter Tipp für Pufferüberlauf: Verwende ausschließlich &bdquo;*secure*&rdquo; Funktionen](#link15)
+  * [Drei Tipps für arithmetischen Überlauf](#link16)
+  * [Noch ein Tipp für arithmetischen Überlauf: `std::midpoint`](#link17)
+  * [Verhindere ungültige Zeichenketteninjektionen (so genannte *SQL Injections*)](#link18)
+  * [Vermeide &bdquo;*Off-by-One*&rdquo; Fehler!](#link19)
+  * [Verwende STL-Algorithmen](#link20)
+  * [Verwende STL-Container](#link21)
+  * [Achte auf sicheres *Downcasting*](#link22)
+  * [Verzichte auf die direkte Verwendung des `new`-Operators](#link23)
+  * [Deklariere Konstruktoren mit einem einzigen Argument mit `explicit`](#link24)
+  * [Elementare Datentypen haben keine Bedeutung (*Semantics*), nur Wertebereiche](#link25)
+  * [Der Datentyp `size_t`](#link26)
+  * [Benutzerdefinierte Literale: Elementare Datentypen &bdquo;mit Bedeutung&rdquo;](#link27)
+  * [Schlüsselwörter `virtual`, `override` oder `final`](#link28)
+  * [Setze standardmäßig Methoden auf `const`, soweit möglich](#link29)
+  * [Verwende das Attribut `[[nodiscard]]`](#link30)
 
 ---
 
@@ -106,11 +107,39 @@ was dann auch mit schlechten Intentionen ausgenutzt werden kann.
 Verwenden Sie starke Typisierung, um Typangriffe (zum Beispiel durch unsichere Cast-Operationen)
 und andere Sicherheitslücken zu verhindern.
 
+### Verwende nur *Named Casts* bzw. *New-Style-Casts* zur Typkonvertierung <a name="link8"></a>
+
+C++ kennt fünf verschiedene Typkonvertierungsmöglichkeiten:
+
+  * `static_cast`:<br />Am wenigsten schädlich, kann Zeiger downcasten.
+
+  * `const_cast`:<br />Entfernt den `const`-Modifikator. Bei falscher Anwendung kann dies fatal sein, da das Ziel möglicherweise tatsächlich `const` ist und ungültige Zugriffsfehler auftreten.
+
+  * `dynamic_cast`:<br />Sicheres Down-/Cross-Casting zwischen Klassen, erfordert *RTTI* (Run-Time Type Information) &ndash; und RTTI ist in C++ oft gar nicht aktiviert.
+
+  * `reinterpret_cast`:<br />Castet alles mit gleicher Größe, z. B. `int` in `MyClass*` auf 32-Bit-Rechnern.
+    Dies ist kein echter Cast mehr, sondern nur eine Möglichkeit, dem Compiler mitzuteilen, dass er Typinformationen verwerfen und die Daten anders behandeln soll.
+
+  * *C-Style-Casting* unter Verwendung der `(type) variable` Syntax:<br />
+  Die problematischste Erfindung aller Zeiten. Es werden die folgenden Casts in dieser Reihenfolge versucht:<br />
+  `const_cast`<br />
+  `static_cast`<br />
+  `static_cast` gefolgt von `const_cast`<br />
+  `reinterpret_cast`<br />
+  `reinterpret_cast` gefolgt von `const_cast`
+
+Die Faustregel lautet:
+
+  * Verwenden Sie niemals `reinterpret_cast` oder *C-Style-Casting*!
+
+  * Wenn Sie Zeiger konvertieren müssen, casten Sie diese über `void*` und verwenden Sie `reinterpret_cast` nur,
+  wenn es unbedingt nötig ist &ndash; das heißt, wenn Sie die Daten wirklich neu interpretieren müssen.
+
 ---
 
 ## Einige konkrete Schutzmaßnahmen
 
-### Don't use C &ndash; use C++ <a name="link8"></a>
+### Don't use C &ndash; use C++ <a name="link9"></a>
 
 *Beschreibung*:
 
@@ -151,7 +180,7 @@ Einmal in C++ geschrieben und ein zweites Mal in C:
 
 ---
 
-### Verwende mehrere Compiler <a name="link9"></a>
+### Verwende mehrere Compiler <a name="link10"></a>
 
 Alle C/++ Compiler übersetzen lt. Definition C/C++&ndash;Quellcode in Maschinencode.
 Dennoch bedeutet das noch lange nicht, dass es hier keine Unterschiede gibt.
@@ -164,7 +193,7 @@ Dies minimiert mögliche Nischenprobleme des einen oder anderen Übersetzers.
  
 ---
 
-### *Warnings* und *Errors* <a name="link10"></a>
+### *Warnings* und *Errors* <a name="link11"></a>
 
 Vermutlich durften Sie diesen Hinweis schon oft über sich ergehen lassen:
 Vermeiden Sie &ndash; so gut es geht &ndash; jegliche Warnungen, die ihr Übersetzer in ihrem Projekt erzeugt.
@@ -184,7 +213,7 @@ Dies wird zwar vom C/C++ Compiler als Warnung eingestuft, es handelt sich hierbe
 
 ---
 
-### Warning Level <a name="link11"></a>
+### Warning Level <a name="link12"></a>
 
 Der *Warning Level* gibt an, welche Compilerwarnungen angezeigt werden sollen und welches Warnverhalten während der gesamten Kompilierung gelten soll.
 
@@ -200,7 +229,7 @@ ein zu großer Warning Level kann zu viele Warnungen erzeugen, die nicht unbeding
 
 ---
 
-### Typensicherheit: Datentypen sind unsere Freunde <a name="link12"></a>
+### Typensicherheit: Datentypen sind unsere Freunde <a name="link13"></a>
 
 Eine Stärke der beiden Programmiersprachen C/C++ ist, dass beide das Konzept von &bdquo;Datentypen&rdquo; beherzigen.
 
@@ -218,7 +247,7 @@ Eine Stärke der beiden Programmiersprachen C/C++ ist, dass beide das Konzept von
 
 ---
 
-### Erster Tipp für Pufferüberlauf: Exaktes Arbeiten <a name="link13"></a>
+### Erster Tipp für Pufferüberlauf: Exaktes Arbeiten <a name="link14"></a>
 
 Wir betrachten diese &ndash; leicht ironische, aber dennoch ernst gemeinte &ndash; Aussage
 an einem Beispiel:
@@ -303,7 +332,7 @@ Eine optimale Lösung lässt sich nur unter Einsatz der dynamischen Datenverwaltun
 
 ---
 
-### Zweiter Tipp für Pufferüberlauf: Verwende ausschließlich &bdquo;*secure*&rdquo; Funktionen <a name="link14"></a>
+### Zweiter Tipp für Pufferüberlauf: Verwende ausschließlich &bdquo;*secure*&rdquo; Funktionen <a name="link15"></a>
 
 *Beispiel*: `strncpy_s` an Stelle von `strncpy`
 
@@ -374,7 +403,7 @@ Die Menge aller Modifikationen an den ursprünglichen Funktionen ist hier beschri
 
 ---
 
-## Drei Tipps für arithmetischen Überlauf <a name="link15"></a>
+## Drei Tipps für arithmetischen Überlauf <a name="link16"></a>
 
 Für den arithmetischen Überlauf kann man &ndash; in einem ersten Ansatz &ndash;
 mit gewissen Ad-hoc-Lösungen reagieren.
@@ -582,7 +611,7 @@ Cannot multiply 2 with 1073741824! !
 
 ---
 
-### Noch ein Tipp für arithmetischen Überlauf: `std::midpoint` <a name="link16"></a>
+### Noch ein Tipp für arithmetischen Überlauf: `std::midpoint` <a name="link17"></a>
 
 Die Funktion `std::midpoint()` berechnet den Mittelpunkt von zwei ganzen Zahlen
 oder zwei Gleitkommazahlen:
@@ -614,7 +643,7 @@ Correct:                           4294967294
 
 ---
 
-### Verhindere ungültige Zeichenketteninjektionen (so genannte *SQL Injections*) <a name="link17"></a>
+### Verhindere ungültige Zeichenketteninjektionen (so genannte *SQL Injections*) <a name="link18"></a>
 
 Das Durchreichen von Zeichenketten an Subsysteme ist mit äußerster Vorsicht zu bewerkstelligen.
 
@@ -711,7 +740,7 @@ Buffer (Cleaned): _bin_mail_bogus@addr_com__cat__etc_passwd___mail_somebadguy_ne
 
 ---
 
-### Vermeide &bdquo;*Off-by-One*&rdquo; Fehler! <a name="link18"></a>
+### Vermeide &bdquo;*Off-by-One*&rdquo; Fehler! <a name="link19"></a>
 
 Vermeiden Sie &bdquo;*Off-by-One*&rdquo; Fehler!
 Natürlich ist das leichter getan als gesagt. 
@@ -752,7 +781,7 @@ Die folgenden Zeilen sind entweder falsch oder extrem unsicher geschrieben:
 
 ---
 
-### Verwende STL-Algorithmen <a name="link19"></a>
+### Verwende STL-Algorithmen <a name="link20"></a>
 
 Algorithmen der STL sind robuster im Gebrauch als CRT-Bibliotheksfunktionen oder selbst geschriebene Funktionen.
 
@@ -801,7 +830,7 @@ Beide kommen ohne Schleifen-Indizes aus, die eine häufige Ursache von Fehlerquel
 
 ---
 
-### Verwende STL-Container <a name="link20"></a>
+### Verwende STL-Container <a name="link21"></a>
 
 *Beispiel*:
 
@@ -810,7 +839,7 @@ Beide kommen ohne Schleifen-Indizes aus, die eine häufige Ursache von Fehlerquel
 
 ---
 
-### Achte auf sicheres *Downcasting* <a name="link21"></a>
+### Achte auf sicheres *Downcasting* <a name="link22"></a>
 
 An Stelle der unsicheren C-Cast Operatoren sollten man die sicheren C++-Cast Operatoren verwenden.
 
@@ -856,7 +885,7 @@ Dieselben Anweisung sind in C++ nicht übersetzungsfähig!
 
 ---
 
-### Verzichte auf die direkte Verwendung des `new`-Operators <a name="link22"></a>
+### Verzichte auf die direkte Verwendung des `new`-Operators <a name="link23"></a>
 
 Siehe hierzu das entsprechende 
 [C++ Core Guideline](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
@@ -876,7 +905,7 @@ Wer hat wann und wo `delete` aufgerufen?
 
 ---
 
-### Deklariere Konstruktoren mit einem einzigen Argument mit `explicit` <a name="link23"></a>
+### Deklariere Konstruktoren mit einem einzigen Argument mit `explicit` <a name="link24"></a>
 
 Standardmäßig sollten Konstruktoren mit einem Argument als `explicit` deklariert werden.
 Damit kann man unbeabsichtige Konvertierungen &ndash; und damit Überraschungen &ndash; vermeiden:
@@ -906,7 +935,7 @@ explicit String(size_t length) : m_length{ length } {};
 
 ---
 
-### Elementare Datentypen haben keine Bedeutung (*Semantics*), nur Wertebereiche <a name="link24"></a>
+### Elementare Datentypen haben keine Bedeutung (*Semantics*), nur Wertebereiche <a name="link25"></a>
 
 Ein Datentyp wie `int` hat keine Bedeutung (*Semantik*).
 
@@ -979,7 +1008,7 @@ O
 
 ---
 
-### Der Datentyp `size_t` <a name="link25"></a>
+### Der Datentyp `size_t` <a name="link26"></a>
 
 Der Name `size_t` bedeutet im Wesentlichen &bdquo;*size type*&rdquo;,
 und man verwendet diesen Datentyp normalerweise dann,
@@ -1000,7 +1029,7 @@ Man sollte `size_t` einsetzen
 
 ---
 
-### Benutzerdefinierte Literale: Elementare Datentypen &bdquo;mit Bedeutung&rdquo; <a name="link26"></a>
+### Benutzerdefinierte Literale: Elementare Datentypen &bdquo;mit Bedeutung&rdquo; <a name="link27"></a>
 
 In C++ lassen sich `int`-Werte (oder auch Werte anderen Datentyps) durch die so genannte *User Defined Literal* Syntax
 erheblich lesbarer gestalten:
@@ -1088,7 +1117,7 @@ Man muss in diesem Fall die *Literal*-Operatoren nur anders definieren:
 
 ---
 
-### Schlüsselwörter `virtual`, `override` oder `final` <a name="link27"></a>
+### Schlüsselwörter `virtual`, `override` oder `final` <a name="link28"></a>
 
 Virtuelle Methoden sollten genau eines der drei Schlüsselwörter `virtual`, `override` oder `final` verwenden.
 
@@ -1124,7 +1153,7 @@ Virtuelle Methoden sollten genau eines der drei Schlüsselwörter `virtual`, `over
 
 ---
 
-### Setze standardmäßig Methoden auf `const`, soweit möglich <a name="link28"></a>
+### Setze standardmäßig Methoden auf `const`, soweit möglich <a name="link29"></a>
 
 *Beschreibung*:
 
@@ -1158,7 +1187,7 @@ Virtuelle Methoden sollten genau eines der drei Schlüsselwörter `virtual`, `over
 
 ---
 
-### Verwende das Attribut `[[nodiscard]]` <a name="link29"></a>
+### Verwende das Attribut `[[nodiscard]]` <a name="link30"></a>
 
 *Beschreibung*:
 
