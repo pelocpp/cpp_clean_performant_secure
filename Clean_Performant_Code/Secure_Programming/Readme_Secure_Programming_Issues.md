@@ -59,9 +59,11 @@
 
   * Passen C++ und &bdquo;Secure Programming&rdquo; zusammen? Durchaus!
 
-  * Ist C++ als sichere, robuste Programmiersprache konzipert: Ja!
+  * Ist C++ als sichere, robuste Programmiersprache konzipert? Ja!
 
-  * Ist es möglich, in C++ sichere und robuste Programme zu schreiben: Ja!
+  * Ist es möglich, in C++ sichere und robuste Programme zu schreiben? Ja!
+
+  * Ist C++ eine Sprache für Einsteiger oder Experten? Für Experten! Sie gibt Ihnen die volle Kontrolle über Ihren Rechner, die Sie sich wünschen, aber mit der Macht geht auch Verantwortung einher!
 
   * Gibt es ein Motto für die Programmierung in C++: Ja: &bdquo;*Never trust a programmer who says he knows C++*&rdquo;.
 
