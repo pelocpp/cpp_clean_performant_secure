@@ -185,7 +185,7 @@ der im Programm keine Verwendung mehr findet, durch die Laufzeitumgebung wieder 
 Die Schwachstelle führt eine Berechnung durch, die einen Integer-Überlauf oder Wraparound erzeugen kann.
 
 Dies tritt auf, wenn ein Integer-Wert auf einen Wert erhöht wird, der zu groß ist,
-um in der zugehörigen Darstellung gespeichert zu werden.
+um in der zugehörigen Darstellung gespeichert werden zu können.
 
 In diesem Fall kann der Wert eine sehr kleine oder negative Zahl werden.
 
@@ -194,20 +194,23 @@ Es wird bei der Überlauf-Problematik sehr genau zwischen *Wraparound* und *Undef
 
 Warum?
 
+Eigentlich geht es bei dieser Betrachtung um die Unterscheidung
+von vorzeichenlosen und vorzeichenbehafteten Integer-Typen:
+
   * Vorzeichenlose Integer-Typen:<br />
   Vorzeichenlose Integer-Typen implementieren Modulo-Arithmetik.
   Das Modulo ist gleich 2<sup>*N*</sup>, wobei *N* die Anzahl der Bits in der Binärdarstellung des Datentyps ist.
   Aus diesem Grund scheinen vorzeichenlose Integer-Typen bei einem Überlauf tatsächlich umzubrechen.
   Dieses Verhalten ist für vorzeichenlose Typen eindeutig definiert.
 
-  * Vorzeichenbehaftete Integer-Variablen:<br />
+  * Vorzeichenbehaftete Integer-Typen:<br />
   Vorzeichenbehaftete Integer-Variablen kennen in der Programmiersprache C kein *Wraparound*-Verhalten.
   Ein Überlauf von vorzeichenbehafteten Integer-Typen während arithmetischer Berechnungen führt zu undefiniertem Verhalten (*Undefined Behaviour*).<br />
   Für vorzeichenbehaftete Typen ist es eben nicht eindeutig definiert,
   wie eine derartige Zahl intern (Binärdarstellung) dargestellt wird.
-  Es gibt mehrere Methoden zur Darstellung vorzeichenbehafteter Zahlen:
-  Einer-Komplement: der negative Wert ist das bitweise Inverse des positiven Wertes.
-  Zweier-Komplement: der negative Wert ist das bitweise Inverse des positiven Wertes plus 1.
+  Es gibt mehrere Methoden zur Darstellung vorzeichenbehafteter Zahlen im Speicher:
+    * Einer-Komplement: der negative Wert ist das bitweise Inverse des positiven Wertes.
+    * Zweier-Komplement: der negative Wert ist das bitweise Inverse des positiven Wertes plus 1.
 
 
 Noch eine abschließende Bemerkung: 
