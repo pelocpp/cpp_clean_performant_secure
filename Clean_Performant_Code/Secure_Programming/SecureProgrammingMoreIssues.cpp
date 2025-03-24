@@ -25,7 +25,7 @@ namespace SecureProgrammingMoreIssues {
             // std::cout << std::size(ages) << '\n';
         }
 
-        static void test_using_pointers_demstrating_decay() {
+        static void test_using_pointers_demonstrating_decay() {
 
             int ages[] = { 15, 30, 50 };
             // Number of elements = 3
@@ -38,6 +38,46 @@ namespace SecureProgrammingMoreIssues {
             std::println("Number of bytes used by this array: {}", sizeof(ages));
             decay(ages);
         }
+
+        // ===============================================================================
+
+        struct Numbers
+        {
+            int m_numbers[1000];
+        };
+
+        static void funcA(int* ptr) {
+            ptr[0] = 123;                    // watch this array entry in the calling function
+        }
+
+        static void funcB(struct Numbers numbers) {
+
+            size_t s = sizeof(numbers);
+            s = sizeof(struct Numbers);
+            numbers.m_numbers[0] = 123;      // watch this array entry in the calling function
+        }
+
+        static void funcC(struct Numbers* pNumbers) {
+
+            size_t s = sizeof(pNumbers);
+            s = sizeof(struct Numbers);
+            (*pNumbers).m_numbers[0] = 123;  // watch this array entry in the calling function
+            // oder etwas geschmeidiger
+            pNumbers->m_numbers[0] = 123;
+        }
+
+        static void test_calling_conventions()
+        {
+            int numbers[1000] = {};
+            funcA(numbers);                  // passing an array
+
+            struct Numbers num = {};
+            funcB(num);                      // passing a structure variable
+
+            funcC(&num);                     // passing a structure variable
+        }
+
+        // ===============================================================================
 
         static void test_using_pointers_std_size() {
 
@@ -53,7 +93,8 @@ namespace SecureProgrammingMoreIssues {
 
         static void test_using_pointers() {
 
-            test_using_pointers_demstrating_decay();
+            test_using_pointers_demonstrating_decay();
+            test_calling_conventions();
             test_using_pointers_std_size();
         }
     }

@@ -135,14 +135,27 @@ namespace SecureProgrammingExploitability {
         // https://cwe.mitre.org/data/definitions/787.html
         // Out-of-bounds Write
 
+        static void call_myself(int depth) {
+
+            // int data[50];    // remove comment
+
+            depth++;
+            call_myself(depth);
+        }
+
         static void test_stack_based_buffer_overflow_01() {
+
+            call_myself(1);
+        }
+        
+        static void test_stack_based_buffer_overflow_02() {
 
             const int Size = 32;
             char password[Size];
             // gets(password); // <- Write outside  // Deprecated in C++ 11 // Removed in C++ 14
         }
 
-        static void test_stack_based_buffer_overflow_02() {
+        static void test_stack_based_buffer_overflow_03() {
 
             const int Size = 32;
             char password[Size];
@@ -162,7 +175,7 @@ namespace SecureProgrammingExploitability {
             std::println("{}", buffer);
         }
 
-        static void test_stack_based_buffer_overflow_03() {
+        static void test_stack_based_buffer_overflow_04() {
 
             corrupt_stack("This is way too long for this buffer");
         }
@@ -172,6 +185,7 @@ namespace SecureProgrammingExploitability {
             test_stack_based_buffer_overflow_01();
             test_stack_based_buffer_overflow_02();
             test_stack_based_buffer_overflow_03();
+            test_stack_based_buffer_overflow_04();
         }
     }
 
@@ -191,9 +205,29 @@ namespace SecureProgrammingExploitability {
             delete[] buffer;                // crashes due to outside write of 'strcpy'
         }
 
-        static void test_heap_based_buffer_overflow() {
+        static void test_heap_based_buffer_overflow_01() {
 
             test_heap_based_buffer_overflow_internal("This is way too long for this buffer");
+        }
+
+        static void test_heap_based_buffer_overflow_02() {
+
+            int* ip = (int*) malloc(32);
+
+            int nichtErnst1 = ip[-1];
+            int nichtErnst2 = ip[-2];
+            int nichtErnst3 = ip[-3];
+            int nichtErnst4 = ip[-4];   // have a look at this value
+
+            // ip[-4] = 9999;           // remove comment
+
+            free(ip);
+        }
+
+        static void test_heap_based_buffer_overflow()
+        {
+            test_heap_based_buffer_overflow_01();
+            test_heap_based_buffer_overflow_02();
         }
     }
 
@@ -323,16 +357,16 @@ void secure_programming_issues()
 {
     using namespace SecureProgrammingExploitability;
 
-    UnsignedIntegerWraparound::test_unsigned_integer_wraparound();
-    SignedIntegerOverflow::test_signed_integer_overflow();
-    NumericTruncationError::test_numeric_truncation_error();
+    //UnsignedIntegerWraparound::test_unsigned_integer_wraparound();
+    //SignedIntegerOverflow::test_signed_integer_overflow();
+    //NumericTruncationError::test_numeric_truncation_error();
     StackBasedBufferOverflow::test_stack_based_buffer_overflow();
-    HeapBasedBufferOverflow::test_heap_based_buffer_overflow();
-    BufferUnderwriteUnderflow::test_buffer_underwrite_underflow();
-    UseAfterFree::test_use_after_free();
-    DoubleFree::test_double_free();
-    IncorrectTypeConversion::test_incorrect_type_conversion();
-    UseOfExternalFormatString::test_use_of_external_format_string();
+    //HeapBasedBufferOverflow::test_heap_based_buffer_overflow();
+    //BufferUnderwriteUnderflow::test_buffer_underwrite_underflow();
+    //UseAfterFree::test_use_after_free();
+    //DoubleFree::test_double_free();
+    //IncorrectTypeConversion::test_incorrect_type_conversion();
+    //UseOfExternalFormatString::test_use_of_external_format_string();
 }
 
 // ===========================================================================

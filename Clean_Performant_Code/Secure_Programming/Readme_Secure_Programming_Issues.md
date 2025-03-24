@@ -161,9 +161,6 @@ Es ist dem Compiler nicht möglich, zur Übersetzungszeit zu überprüfen,
 ob Variablen, die nur via Zeiger erreichbar sind (`malloc`, `new`), noch verfügbar sind (`free`, `delete`).
 Dies ist eine Sicherheitslücke in der Definition der Programmiersprache.
 
-Die damit verbundene Anfälligkeit (Sicherheitslücke) hängt mit einem Fehler im Zusammenhang
-mit dem Speichermanagement im Ablauf des Programms zusammen:
-
 Aus der Nutzung der Variable nach ihrer Freigabe resultieren im Programm
 unerwartete Aktionen oder andere unerwünschte Effekte. Dies bezeichnet man als *Undefined Behaviour*.
 Häufig macht man die Beobachtung, dass *Undefined Behaviour* zu einem Absturz des Programms führt.
@@ -260,12 +257,13 @@ von vorzeichenlosen und vorzeichenbehafteten Integer-Typen:
     * Zweier-Komplement: der negative Wert ist das bitweise Inverse des positiven Wertes plus 1.
 
 
-Noch eine abschließende Bemerkung: 
+Noch eine abschließende Bemerkung:<br />
+Der Prozessor (CPU) ist die wichtigste Komponente eines Rechners:
+Besitzen gängige CPUs arithmetische Befehle (`add`, `mul`, ...) für Operanden des Typs `short`?
 
-Gibt es eine `short`-Arithmetik?
 
 *Antwort*:<br />
-Nein! Der Maschinencode eines C-Programms führt niemal arithmetische Berechnungen in Bereichen durch,
+Nein! Der Maschinencode eines C-Programms führt niemals arithmetische Berechnungen in Bereichen durch,
 die kleiner sind als die von `signed int`/`unsigned int`.
 
 Eine `short int`-Variable wird in Ausdrücken typischerweise vor Beginn der Berechnungen in den Typ `int` umgewandelt.
@@ -338,6 +336,52 @@ bisweilen auch rekursiven Funktionsaufrufen.
 Ebenfalls kritisch für den Stapel sind zu viele große Datenmengen,
 die in Funktionen als &bdquo;*Stack*&rdquo;-Variablen angelegt werden.
 
+Die gängigste Ursache für einen &bdquo;*Stack Buffer Overflow*&rdquo; ist eine rekursive Funktion,
+deren Abbruchkriterium nicht funktioniert:
+
+
+*Beispiel*:
+
+```cpp
+01: static void call_myself(int depth) {
+02:     depth++;
+03:     call_myself(depth);
+04: }
+05: 
+06: static void test_stack_based_buffer_overflow_01() {
+07:     call_myself(1);
+08: }
+```
+
+Lässt man das Programm im Debugger laufen, kann man im Debugger-Fenster erkennen,
+wieviele rekursive Aufrufe das Programm geschafft hat:
+
+<img src="Stack_Overflow_Exception_01.png" width="350">
+
+*Abbildung* 1: Anzahl der rekursiven Funktionsaufrufe einer Funktion `call_myself` (hier: 4020).
+
+Für das Eintreten einer *Stack Overflow*-Exception gibt es keine portable Lösung, die Ausnahme zu fangen.
+
+Eine außer Kontrolle geratene rekursive Funktion führt in der Regel zu einem ungültigen Speicherzugriff,
+wenn sie versucht, einen Stack-Frame außerhalb des Stack-Adressraums zu allokieren.
+
+Dies führt je nach Betriebssystem in der Regel zu einem Absturz des Programms mit einem Segmentierungsfehler/Zugriffsverstoß.
+
+Mit anderen Worten: Es wird keine C++-Exception ausgelöst, die von der Sprache standardmäßig behandelt werden kann.
+
+<img src="Stack_Overflow_Exception_02.png" width="350">
+
+*Abbildung* 2: Eine *Stack Overflow*-Exception kann nicht mit `try`/`catch` gefangen werden.
+
+Immerhin quittieren moderne Sprachübersetzer das Problem,
+soweit es zur Übersetzungszeit diagnostiziert werden kann:
+
+```
+warning C4717: 'call_myself': recursive on all control paths, function will cause runtime stack overflow
+```
+
+Weitere Einträge im &bdquo;*Common Weakness Enumeration*&rdquo; Forum,
+die sich mit ähnlich gelagerten Problemen beschäftigen:
 
 *Beschreibung*:
 
@@ -375,7 +419,6 @@ Die Schwachstelle schreibt Daten über das Ende oder vor den Anfang des vorgesehe
 18:     }
 19: }
 ```
-
 
 ### &bdquo;*Heap Buffer Overflow*&rdquo; <a name="link10"></a>
 
