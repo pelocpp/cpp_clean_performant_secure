@@ -357,16 +357,16 @@ void secure_programming_issues()
 {
     using namespace SecureProgrammingExploitability;
 
-    //UnsignedIntegerWraparound::test_unsigned_integer_wraparound();
-    //SignedIntegerOverflow::test_signed_integer_overflow();
-    //NumericTruncationError::test_numeric_truncation_error();
+    UnsignedIntegerWraparound::test_unsigned_integer_wraparound();
+    SignedIntegerOverflow::test_signed_integer_overflow();
+    NumericTruncationError::test_numeric_truncation_error();
     StackBasedBufferOverflow::test_stack_based_buffer_overflow();
-    //HeapBasedBufferOverflow::test_heap_based_buffer_overflow();
-    //BufferUnderwriteUnderflow::test_buffer_underwrite_underflow();
-    //UseAfterFree::test_use_after_free();
-    //DoubleFree::test_double_free();
-    //IncorrectTypeConversion::test_incorrect_type_conversion();
-    //UseOfExternalFormatString::test_use_of_external_format_string();
+    HeapBasedBufferOverflow::test_heap_based_buffer_overflow();
+    BufferUnderwriteUnderflow::test_buffer_underwrite_underflow();
+    UseAfterFree::test_use_after_free();
+    DoubleFree::test_double_free();
+    IncorrectTypeConversion::test_incorrect_type_conversion();
+    UseOfExternalFormatString::test_use_of_external_format_string();
 }
 
 // ===========================================================================
