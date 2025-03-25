@@ -276,10 +276,10 @@ Erkennen Sie die Schwachstellen an diesem Code-Fragment?
 *Beispiel*: Einlesen der Kommandozeile - bessere Lösung
 
 ```cpp
-01: void evaluateArgs(int argc, const char* argv[])
+01: void test(int argc, const char* argv[])
 02: {
 03:     size_t bufsize = 0;
-04:     size_t buflen = 0;
+04:     size_t offset = 0;
 05: 
 06:     char* cmdLine = NULL;
 07: 
@@ -287,7 +287,7 @@ Erkennen Sie die Schwachstellen an diesem Code-Fragment?
 09: 
 10:         const size_t len = strlen(argv[i]);
 11: 
-12:         if (bufsize - buflen <= len) {
+12:         if (bufsize - offset <= len) {
 13: 
 14:             bufsize = (bufsize + len) * 2;
 15: 
@@ -300,19 +300,30 @@ Erkennen Sie die Schwachstellen an diesem Code-Fragment?
 22:             cmdLine = ptr;
 23:         }
 24: 
-25:         memcpy(cmdLine + buflen, argv[i], len);
-26:         buflen += len;
-27:         cmdLine[buflen++] = ' ';
-28:     }
-29: 
-30:     if (cmdLine != NULL) {
-31:         cmdLine[buflen] = '\0';
-32:     }
-33: 
-34:     std::println("cmdLine: >{}<", cmdLine);
-35: 
-36:     free(cmdLine);
-37: }
+25:         memcpy(cmdLine + offset, argv[i], len);
+26:         offset += len;
+27:         cmdLine[offset] = ' ';
+28:         offset++;
+29:     }
+30: 
+31:     if (cmdLine != NULL && offset < bufsize) {
+32:         cmdLine[offset] = '\0';
+33:     }
+34:     else {
+35:         char* ptr = (char*)realloc(cmdLine, bufsize + 1);
+36:         if (ptr == NULL) {
+37:             free(cmdLine);
+38:             exit(-1);
+39:         }
+40: 
+41:         ptr[offset] = '\0';
+42:     }
+43: 
+44:     // print created buffer 'cmdLine'
+45:     std::println("cmdLine: >{}<", cmdLine);
+46: 
+47:     free(cmdLine);
+48: }
 ```
 
 *Ausgabe*:
@@ -347,7 +358,7 @@ Eine optimale Lösung lässt sich nur unter Einsatz der dynamischen Datenverwaltun
 08:     auto length = strlen(str);
 09:     auto size = std::size(buffer);
 10: 
-11:     // strncpy_s(buffer, size, str, length);      // crashes
+11:     // strncpy(buffer, str, length);              // crashes
 12:     strncpy_s(buffer, size, str, size - 1);       // copy with adjusted boundary
 13: 
 14:     buffer[size - 1] = '\0';
@@ -494,39 +505,39 @@ Sum of 2147483649 and 2147483647 is too large, cannot add !
 12: 
 13:     int32_t result = 0;
 14: 
-15:     if (b > 0 && a < std::numeric_limits<std::int32_t>::max() + b ||
+15:     if (b > 0 && a < std::numeric_limits<std::int32_t>::min() + b ||
 16:         b < 0 && a > std::numeric_limits<std::int32_t>::max() + b)
 17:     {
 18:         std::println("Cannot subtract {} from {}! !", b, a);
 19:     }
-20:     else
-21:     {
-22:         result = a - b;
-23:         std::println("{} - {} = {}", a, b, result);
-24:     }
-25: }
-26: 
-27: void test() {
-28: 
-29:     std::uint32_t a = std::numeric_limits<std::int32_t>::min() / 2;
-30:     std::uint32_t b = std::numeric_limits<std::int32_t>::max() / 2;
-31: 
-32:     subtraction_compliant(a, b);
-33: 
-34:     b = std::numeric_limits<std::int32_t>::max();   // removed "/ 2"
+20:     else {
+21:         result = a - b;
+22:         std::println("{} - {} = {}", a, b, result);
+23:     }
+24: }
+25: 
+26: void test()
+27: {
+28:     std::int32_t a = std::numeric_limits<std::int32_t>::min() / 2;
+29:     std::int32_t b = std::numeric_limits<std::int32_t>::max() / 2;
+30: 
+31:     subtraction_compliant(a, b);
+32: 
+33:     b = b + 1;
+34:     subtraction_compliant(a, b);
 35: 
-36:     subtraction_compliant(a, b);
-37: }
+36:     b = b + 1;
+37:     subtraction_compliant(a, b);
+38: }
 ```
 
 *Ausgabe*:
 
 ```
 -1073741824 - 1073741823 = -2147483647
-Cannot subtract 2147483647 from -1073741824! !
+-1073741824 - 1073741824 = -2147483648
+Cannot subtract 1073741825 from -1073741824! !
 ```
-
-
 
 *Beispiel*: Multiplikation
 
@@ -543,36 +554,35 @@ Cannot subtract 2147483647 from -1073741824! !
 10: 
 11: int32_t multiplication_compliant(std::int32_t a, std::int32_t b) {
 12: 
-13:     // want to switch from 32-bit to 64-bit arithmetic
-14:     static_assert (sizeof (int64_t) >= 2 * sizeof(int32_t));
-15: 
-16:     std::int32_t result = 0;
+13:     std::int32_t result = 0;
+14: 
+15:     // switching from 32-bit to 64-bit arithmetic
+16:     int64_t product = static_cast<int64_t>(a) * static_cast<int64_t>(b);
 17: 
-18:     int64_t product = static_cast<int64_t>(a) * static_cast<int64_t>(b);
-19: 
-20:     // result needs to be represented as a 32-bit (std::int32_t) integer value (!)
-21:     if (product > std::numeric_limits<std::int32_t>::max() || product < std::numeric_limits<std::int32_t>::min()) {
-22: 
-23:         std::println("Cannot multiply {} with {}! !", a, b);
-24:     }
-25:     else {
-26:         result = static_cast<int32_t>(product);
-27:         std::println("{} * {} = {}", a, b, result);
-28:     }
-29: 
-30:     return result;
-31: }
-32: 
-33: void test() {
-34: 
-35:     std::int32_t a = 2;
-36:     std::int32_t b = 1;
-37: 
-38:     for (int i = 1; i < 32; ++i) {
-39: 
-40:         b = multiplication_compliant(a, b);
-41:     }
-42: }
+18:     // result needs to be represented as a 32-bit (std::int32_t) integer value (!)
+19:     if (product > std::numeric_limits<std::int32_t>::max() ||
+20:         product < std::numeric_limits<std::int32_t>::min()) {
+21: 
+22:         std::println("Cannot multiply {} with {}! !", a, b);
+23:     }
+24:     else {
+25:         result = static_cast<int32_t>(product);
+26:         std::println("{} * {} = {}", a, b, result);
+27:     }
+28: 
+29:     return result;
+30: }
+31: 
+32: void test() {
+33: 
+34:     std::int32_t a = 2;
+35:     std::int32_t b = 1;
+36: 
+37:     for (int i = 1; i < 32; ++i) {
+38: 
+39:         b = multiplication_compliant(a, b);
+40:     }
+41: }
 ```
 
 *Ausgabe*:

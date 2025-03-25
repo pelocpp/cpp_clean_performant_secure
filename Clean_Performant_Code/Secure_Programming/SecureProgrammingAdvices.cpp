@@ -66,8 +66,8 @@ namespace SecureProgrammingAdvices {
             auto length = strlen(str);
             auto size = std::size(buffer);
 
-            // strncpy_s(buffer, size, str, length);      // crashes
-            strncpy_s(buffer, size, str, size - 1);       // copy with adjusted boundary
+            // strncpy(buffer, str, length);             // crashes
+            strncpy_s(buffer, size, str, size - 1);      // copy with adjusted boundary
 
             buffer[size - 1] = '\0';
 
@@ -112,7 +112,7 @@ namespace SecureProgrammingAdvices {
         static void evaluateArgs(int argc, const char* argv[])
         {
             size_t bufsize = 0;
-            size_t buflen = 0;
+            size_t offset = 0;
 
             char* cmdLine = NULL;
 
@@ -120,7 +120,7 @@ namespace SecureProgrammingAdvices {
 
                 const size_t len = strlen(argv[i]);
 
-                if (bufsize - buflen <= len) {
+                if (bufsize - offset <= len) {
 
                     bufsize = (bufsize + len) * 2;
 
@@ -133,14 +133,23 @@ namespace SecureProgrammingAdvices {
                     cmdLine = ptr;
                 }
 
-                memcpy(cmdLine + buflen, argv[i], len);
-                buflen += len;
-                cmdLine[buflen] = ' ';
-                buflen++;
+                memcpy(cmdLine + offset, argv[i], len);
+                offset += len;
+                cmdLine[offset] = ' ';
+                offset++;
             }
 
-            if (cmdLine != NULL) {
-                cmdLine[buflen] = '\0';
+            if (cmdLine != NULL && offset < bufsize) {
+                cmdLine[offset] = '\0';
+            }
+            else {
+                char* ptr = (char*)realloc(cmdLine, bufsize + 1);
+                if (ptr == NULL) {
+                    free(cmdLine);
+                    exit(-1);
+                }
+
+                ptr[offset] = '\0';
             }
 
             // print created buffer 'cmdLine'
@@ -227,7 +236,7 @@ namespace SecureProgrammingAdvices {
 
             int32_t result = 0;
 
-            if (b > 0 && a < std::numeric_limits<std::int32_t>::max() + b ||
+            if (b > 0 && a < std::numeric_limits<std::int32_t>::min() + b ||
                 b < 0 && a > std::numeric_limits<std::int32_t>::max() + b)
             {
                 std::println("Cannot subtract {} from {}! !", b, a);
@@ -239,16 +248,47 @@ namespace SecureProgrammingAdvices {
             }
         }
 
+        static void subtraction_compliant_no_short_circuit_evaluation(std::int32_t a, std::int32_t b) {
+
+            int32_t result = 0;
+
+            if (b > 0) {
+                if (a < std::numeric_limits<std::int32_t>::min() + b) {
+                    std::println("Cannot subtract {} from {}! !", b, a);
+                }
+                else {
+                    result = a - b;
+                    std::println("{} - {} = {}", a, b, result);
+                }
+            }
+            else if (b < 0) {
+                if (a > std::numeric_limits<std::int32_t>::max() + b) {
+                    std::println("Cannot subtract {} from {}! !", b, a);
+                }
+                else {
+                    result = a - b;
+                    std::println("{} - {} = {}", a, b, result);
+                }
+            }
+            else // b == 0
+            {
+                result = a;
+                std::println("{} - {} = {}", a, b, result);
+            }
+        }
+
         static void test_arithmetic_overflow_subtraction_compliant() {
 
             // for example
-            std::uint32_t a = std::numeric_limits<std::int32_t>::min() / 2;
-            std::uint32_t b = std::numeric_limits<std::int32_t>::max() / 2;
+            std::int32_t a = std::numeric_limits<std::int32_t>::min() / 2;
+            std::int32_t b = std::numeric_limits<std::int32_t>::max() / 2;
 
             subtraction_compliant(a, b);
 
-            b = std::numeric_limits<std::int32_t>::max();     // removed "/ 2"
+            b = b + 1;
+            subtraction_compliant(a, b);
 
+            b = b + 1;
             subtraction_compliant(a, b);
         }
 
@@ -266,15 +306,14 @@ namespace SecureProgrammingAdvices {
 
         static int32_t multiplication_compliant(std::int32_t a, std::int32_t b) {
 
-            // want to switch from 32-bit to 64-bit arithmetic
-            static_assert (sizeof (int64_t) >= 2 * sizeof(int32_t));
-
             std::int32_t result = 0;
 
+            // switching from 32-bit to 64-bit arithmetic
             int64_t product = static_cast<int64_t>(a) * static_cast<int64_t>(b);
 
             // result needs to be represented as a 32-bit (std::int32_t) integer value (!)
-            if (product > std::numeric_limits<std::int32_t>::max() || product < std::numeric_limits<std::int32_t>::min()) {
+            if (product > std::numeric_limits<std::int32_t>::max() || 
+                product < std::numeric_limits<std::int32_t>::min()) {
 
                 std::println("Cannot multiply {} with {}! !", a, b);
             }
