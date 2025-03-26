@@ -674,7 +674,7 @@ namespace SecureProgrammingAdvices {
             explicit Hours (unsigned long long hours) : m_hours(hours) {}
         };
         
-        struct Days {
+        class Days {
         private:
             unsigned long long m_hours = 0;
 
@@ -839,10 +839,13 @@ void secure_programming_advices()
     UseAlgorithms::test_use_algorithms();
     SafeDowncasting::test_safe_downcasting();
     DontUseNewExplicitely::test_dont_use_new_explicitely();
+    DeclareSingleArgumentConstructorsExplicit::test_declare_single_argument_constructors_explicit();
     GivePrimitiveDatatypesSemantics::test_use_string_literals();
     GivePrimitiveDatatypesSemantics::test_use_class_enums();
     GivePrimitiveDatatypesSemantics::test_give_primitive_datatypes_semantics();
-    DeclareSingleArgumentConstructorsExplicit::test_declare_single_argument_constructors_explicit();
+    UseUserDefinedLiterals::test_use_user_defined_literals();
+    UseUserDefinedLiteralsWithConversion::test_use_user_defined_literals();
+    UseUserDefinedLiteralsWithConversion::test_use_user_defined_literals_constexpr();
     UseOverride::test_use_override();
     UseConst::test_use_const();
     UseNodiscardAttribute::test_use_nodiscard();

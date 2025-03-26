@@ -153,7 +153,7 @@ Instanzen der Klasse `std::vector` belegen nach ihrer Erzeugung
 mit dem Standardkonstruktor zunächst keinen Speicherplatz auf dem Heap.
 
 Dieser wird sukzessive bei entsprechenden `push_back`-Aufrufen reserviert.
-Hier wird sehr viel unnütze Rechenzeit verbraucht, wenn die &ndash; gerne auch ungefähre &ndash; 
+Hier wird sehr viel unnütze Rechenzeit verbraucht, wenn man die &ndash; gerne auch ungefähre &ndash; 
 Kapazität des `std::vector`-Objekts vorab weiß.
 
 Mit der `reserve`-Methode lässt sich die *Kapazität* (benötigter Speicherplatz) des  

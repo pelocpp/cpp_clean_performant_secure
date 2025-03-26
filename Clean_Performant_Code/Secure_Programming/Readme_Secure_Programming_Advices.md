@@ -1064,7 +1064,7 @@ Dazu bedarf es einer Implementierung des sogenannten *Literal*-Operators:
 07:     explicit Hours (unsigned long long hours) : m_hours(hours) {}
 08: };
 09:         
-10: struct Days {
+10: class Days {
 11: private:
 12:     unsigned long long m_hours = 0;
 13: 

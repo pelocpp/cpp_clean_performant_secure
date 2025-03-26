@@ -41,7 +41,7 @@ Mehrere Möglichkeiten zum Download finden sich [hier](https://cppcheck.sourcefor
 *Cppcheck* ist sowohl als Open Source ([hier](https://cppcheck.sourceforge.io)) als auch als *Cppcheck Premium Paket*
 mit erweiterter Funktionalität verfügbar.
 
-Weitere Informationen und Kaufoptionen für die kommerzielle Version finden Sie unter [www.cppcheck.com](www.cppcheck.com).
+Weitere Informationen und Kaufoptionen für die kommerzielle Version finden Sie unter [www.cppcheck.com](https://www.cppcheck.com/).
 
 ---
 

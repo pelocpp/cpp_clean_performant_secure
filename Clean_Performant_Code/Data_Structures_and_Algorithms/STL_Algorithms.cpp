@@ -363,8 +363,8 @@ namespace STLAlgorithms_BestPractices {
         return false;
     }
 
-    template <typename TIterator, typename TValue>
-    static auto contains(TIterator begin, TIterator end, const TValue& elem) {
+    template <typename T, typename V>
+    static auto contains(T begin, T end, const V& elem) {
 
         for (auto it{ begin }; it != end; ++it) {
             if (*it == elem) {
@@ -380,10 +380,12 @@ namespace STLAlgorithms_BestPractices {
         const auto values2{ std::list{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 } };
         std::list<std::string> values3{ "1.5", "2.5", "3.5", "4.5", "5.5" };
 
+        // first 'contains' overload
         bool result1{ contains (values1, 3)};
         //bool result2{ contains(values2, 3) };
         //bool result3{ contains(values3, 3) };
 
+        // second 'contains' overload
         bool found1{ contains(values1.begin(), values1.end(), 3) };
         bool found2{ contains(values2.begin(), values2.end(), 3) };
         bool found3{ contains(values3.begin(), values3.end(), "3.5")};
@@ -595,8 +597,8 @@ namespace STLAlgorithms_BestPractices {
     // -----------------------------------------------------------------------
     // Optimization Techniques of STL algorithms
 
-    template <typename TIterator, typename TValue>
-    static auto find_slow(TIterator first, TIterator last, const TValue& value) {
+    template <typename T, typename V>
+    static auto find_slow(T first, T last, const V& value) {
         for (auto it = first; it != last; ++it) {
             if (*it == value) {
                 return it;
@@ -605,8 +607,8 @@ namespace STLAlgorithms_BestPractices {
         return last;
     }
 
-    template <typename TIterator, typename TValue>
-    static auto find_fast(TIterator first, TIterator last, const TValue& value) {
+    template <typename T, typename V>
+    static auto find_fast(T first, T last, const V& value) {
         
         // main loop unrolled into chunks of four (std::random_access_iterator needed)
         auto num_trips = (last - first) / 4;
@@ -677,17 +679,16 @@ static void test_algorithms_introduction()
 static void test_algorithms_best_practices()
 {
     using namespace STLAlgorithms_BestPractices;
-
-    //test_non_generic_vs_generic_function();
-    //test_grid();
-    //test_use_standard_algorithms_over_raw_for_loops();
-    //test_move_n_elements_to_back();
+    test_non_generic_vs_generic_function();
+    test_grid();
+    test_use_standard_algorithms_over_raw_for_loops();
+    test_move_n_elements_to_back();
     test_optimization_techniques();
 }
 
 void test_algorithms()
 {
-    //test_algorithms_introduction();
+    test_algorithms_introduction();
     test_algorithms_best_practices();
 }
 

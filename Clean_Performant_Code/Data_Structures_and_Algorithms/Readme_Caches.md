@@ -162,7 +162,7 @@ Dazu kommen einige Win32-API Betriebssystemfunktionen ins Spiel: `GetModuleHandl
 L1 Cache Size: 32 kB
 ```
 
-Wie passt das Ergbnis mit *Abbildung* 1 zusammen? Ganz einfach,
+Wie passt das Ergebnis mit *Abbildung* 1 zusammen? Ganz einfach,
 mein Rechner hat 8 Kerne, jeder Kern hat einen L1-Anweisungs- und Datencache.
 Macht zusammen 8 * 2 * 32 Kb = 512 kB.
 

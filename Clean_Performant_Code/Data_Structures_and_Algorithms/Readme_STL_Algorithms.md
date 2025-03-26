@@ -137,8 +137,8 @@ Stattdessen können wir ein Funktionstemplate erstellen, das mit Iteratoren arbei
 Auf diese Weise erhalten wir eine `contains`-Funktion, die mit unterschiedlichen STL-Containertypen arbeiten kann:
 
 ```cpp
-01: template <typename TIterator, typename T>
-02: auto contains(TIterator begin, TIterator end, const T& elem) {
+01: template <typename T, typename V>
+02: static auto contains(T begin, T end, const V& elem) {
 03: 
 04:     for (auto it{ begin }; it != end; ++it) {
 05:         if (*it == elem) {
@@ -397,8 +397,8 @@ Wir betrachten als Beispiel den Algorithmus `std::find()`:
 *Quellcode*: Klassische Realisierung
 
 ```cpp
-01: template <typename TIterator, typename TValue>
-02: auto find_slow(TIterator first, TIterator last, const TValue& value) {
+01: template <typename T, typename V>
+02: static auto find_slow(T first, T last, const V& value) {
 03:     for (auto it = first; it != last; ++it) {
 04:         if (*it == value) {
 05:             return it;
@@ -411,28 +411,29 @@ Wir betrachten als Beispiel den Algorithmus `std::find()`:
 *Quellcode*: Optimierte Realisierung
 
 ```cpp
-01: template <typename TIterator, typename TValue>
-02: auto find_fast(TIterator first, TIterator last, const TValue& value) {
+01: template <typename T, typename V>
+02: static auto find_fast(T first, T last, const V& value) {
 03:         
-04:     // main loop unrolled into chunks of four
+04:     // main loop unrolled into chunks of four (std::random_access_iterator needed)
 05:     auto num_trips = (last - first) / 4;
-06:     for (auto trip_count = num_trips; trip_count > 0; --trip_count) {
-07: 
-08:         if (*first == value) { return first; } ++first;
+06: 
+07:     for (auto trip_count = num_trips; trip_count > 0; --trip_count) {
+08: 
 09:         if (*first == value) { return first; } ++first;
 10:         if (*first == value) { return first; } ++first;
 11:         if (*first == value) { return first; } ++first;
-12:     }
-13: 
-14:     // handle the remaining elements
-15:     switch (last - first) {
-16:         case 3: if (*first == value) { return first; } ++first;
-17:         case 2: if (*first == value) { return first; } ++first;
-18:         case 1: if (*first == value) { return first; } ++first;
-19:         case 0:
-20:         default: return last;
-21:     }
-22: }
+12:         if (*first == value) { return first; } ++first;
+13:     }
+14: 
+15:     // handle the remaining elements
+16:     switch (last - first) {
+17:         case 3: if (*first == value) { return first; } ++first;
+18:         case 2: if (*first == value) { return first; } ++first;
+19:         case 1: if (*first == value) { return first; } ++first;
+20:         case 0:
+21:         default: return last;
+22:     }
+23: }
 ```
 
 Worin liegt der Unterschied der beiden Realisierungen?
