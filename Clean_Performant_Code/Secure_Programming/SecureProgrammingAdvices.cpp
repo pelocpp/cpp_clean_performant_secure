@@ -45,10 +45,30 @@ namespace SecureProgrammingAdvices {
             std::printf("%s\n", result);
         }
 
+        static void test_prefer_cpp_to_c_03() {
+
+            char first[] = "Hello ";
+            char second[] = "World";
+
+            size_t len1 = strlen(first);
+            size_t len2 = strlen(second);
+            size_t total = len1 + len2 + 1;
+
+            char* result = new char[total];
+            strcpy_s(result, len1 + 1, first);
+            strcpy_s(result + len1, len2 + 1, second);
+            result[total - 1] = '\0';
+
+            std::printf("%s\n", result);
+
+            delete[] result;
+        }
+
         static void test_prefer_cpp_to_c() {
 
             test_prefer_cpp_to_c_01();
             test_prefer_cpp_to_c_02();
+            test_prefer_cpp_to_c_03();
         }
     }
 

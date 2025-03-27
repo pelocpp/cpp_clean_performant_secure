@@ -157,6 +157,16 @@ wieder: *Prefer C++ to C* (*CPL.1*).
 Zur Illustration vergleiche man die Konkatenation zweier Zeichenketten:
 Einmal in C++ geschrieben und ein zweites Mal in C:
 
+
+*Beispiel*: C++
+
+```cpp
+01: std::string first{ "Hello " };
+02: std::string second{ "World" };
+03: std::string result{ first + second };
+04: std::println("{}", result);
+```
+
 *Beispiel*: C
 
 ```cpp
@@ -169,14 +179,31 @@ Einmal in C++ geschrieben und ein zweites Mal in C:
 07: std::printf("%s\n", result);
 ```
 
-*Beispiel*: C++
+Okay, zugegeben, das C-Beispiel sieht nicht so viel schlimmer wie das C++&ndash;Beispiel aus.
+Aber es besitzt einen kleinen Haken: Die Länge des Ergebnisfelds ist hart kodiert (hier: Länge `20`).
+Diese Einschränkung besitzt das C++&ndash;Beispiel nicht &ndash; wir stellen deshalb noch eine
+zweite Realisierung gegenüber:
+
+*Beispiel*: C
 
 ```cpp
-01: std::string first{ "Hello " };
-02: std::string second{ "World" };
-03: std::string result{ first + second };
-04: std::println("{}", result);
+01: char first[] = "Hello ";
+02: char second[] = "World";
+03: 
+04: size_t len1 = strlen(first);
+05: size_t len2 = strlen(second);
+06: size_t total = len1 + len2 + 1;
+07: 
+08: char* result = new char[total];
+09: strcpy_s(result, len1 + 1, first);
+10: strcpy_s(result + len1, len2 + 1, second);
+11: result[total - 1] = '\0';
+12: 
+13: std::printf("%s\n", result);
+14: delete[] result;
 ```
+
+Jetzt erkennen wir doch gewisse Unterschiede in den beiden Programmiersprachen.
 
 ---
 
