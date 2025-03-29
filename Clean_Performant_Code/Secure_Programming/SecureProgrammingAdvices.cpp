@@ -1,5 +1,5 @@
 // ===========================================================================
-// SecureProgrammingAdvices.cpp
+// SecureProgrammingAdvices.cpp // Secure Programming
 // Advices for Secure Programming
 // ===========================================================================
 
@@ -69,6 +69,25 @@ namespace SecureProgrammingAdvices {
             test_prefer_cpp_to_c_01();
             test_prefer_cpp_to_c_02();
             test_prefer_cpp_to_c_03();
+        }
+    }
+
+    namespace UseSeveralCompilers {
+
+        using MyPoint = std::pair<int, int>;
+
+        template <typename T>
+        using MyPointEx = std::pair<T, T>;
+
+        static void test_use_several_compilers() {
+
+            std::pair p1{ 1, 2 };    // CTAD: Class Template Argument Deduction
+            MyPoint p2{ 3, 4 };      // CTAD: Class Template Argument Deduction
+            // MyPointEx p3{ 5, 6 };    // CTAD: Class Template Argument Deduction // does NOT compile with Visual C++ ?!?
+
+            std::println("n: {}", p1.first);
+            std::println("n: {}", p2.first);
+            // std::println("n: {}", p3.first);
         }
     }
 
@@ -851,6 +870,7 @@ void secure_programming_advices()
     using namespace SecureProgrammingAdvices;
 
     PreferCppToC::test_prefer_cpp_to_c();
+    UseSeveralCompilers::test_use_several_compilers();
     TakeCareOfBufferOverflow::test_take_care_of_buffer_overflow();
     TakeCareOfArithmeticOverflow::test_arithmetic_overflow();
     TakeCareOfArithmeticOverflowUsingMidpoint::test_take_care_of_arithmetic_overflow();

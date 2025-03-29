@@ -217,7 +217,49 @@ akzeptiert und übersetzt, ein anderer Compiler hingegen mit Warnungen oder im Ex
 
 Es empfiehlt sich daher, eine Code-Basis mit mehreren Compiler übersetzungsfähig zu halten.
 Dies minimiert mögliche Nischenprobleme des einen oder anderen Übersetzers.
- 
+
+*Beispiel*: 
+
+```cpp
+01: using MyPoint = std::pair<int, int>;
+02: 
+03: template <typename T>
+04: using MyPointEx = std::pair<T, T>;
+05: 
+06: static void test_use_several_compilers() {
+07: 
+08:     std::pair p1{ 1, 2 };    // CTAD: Class Template Argument Deduction
+09:     MyPoint p2{ 3, 4 };      // CTAD: Class Template Argument Deduction
+10:     MyPointEx p3{ 5, 6 };    // CTAD: Class Template Argument Deduction // does NOT compile with Visual C++ ?!?
+11: 
+12:     std::println("n: {}", p1.first);
+13:     std::println("n: {}", p2.first);
+14:     std::println("n: {}", p3.first);
+15: }
+```
+
+Zeile 10 wird in der Tat vom Visual C++ Compiler nicht übersetzt.
+Der Compiler reagiert mit einer Reihe von Fehlermeldungen, zum Beispiel in der Art
+
+```
+'std::pair<_BidIt,_BidIt> std::pair(const T &,const T &) noexcept(<expr>)': could not deduce template argument for 'T'
+```
+
+Das Problem scheint eine *Alias-Template* Deklaration zu sein (hier: `MyPointEx`),
+auf die CTAD (*Class Template Argument Deduction*) angewendet wird.
+
+Um bei der Wahrheit zu bleiben: Es ist für mich lt. *cppreference.com* nicht ganz klar,
+ob das eigentlich gehen soll. Ziemlich am Ende von [Template Argument Deduction](https://en.cppreference.com/w/cpp/language/template_argument_deduction)
+heißt es hierzu:
+
+&bdquo;Alias templates are not deduced, except in class template argument deduction(since C++20)&rdquo;.
+
+Der GCC-Compiler geht mit diesem Code-Beispiel entspannt um (*Abbildung* 1):
+
+<img src="UseSeveralCompilers.png" width="500">
+
+*Abbildung* 1: *To-Compile* or not *To-Compile*: Der GCC Compiler übersetzt :).
+
 ---
 
 ### *Warnings* und *Errors* <a name="link11"></a>
@@ -248,7 +290,7 @@ Je höher Sie den *Warning Level* einstellen, desto mehr Warnungen werden angezei
 
 <img src="WarningLevel.png" width="700">
 
-*Abbildung* 1: Unterschiedliche *Warning Level* des Visual C++ Compilers.
+*Abbildung* 2: Unterschiedliche *Warning Level* des Visual C++ Compilers.
 
 Sicherlich machen Sie die Beobachtung, dass bei vergleichsweise großem Warning Level sehr viele bisweilen pedantische Warnungen erzeugt werden.
 Hier muss man sich für eine Gratwanderung entscheiden: Ein zu kleiner Warning Level ist schlecht für die Qualität des Programms,
@@ -930,12 +972,12 @@ mit dem Titel *Avoid calling new and delete explicitly* (*R.11*).
 
 <img src="cpp_security_advice_no_new.svg" width="600">
 
-*Abbildung* 2: `std::unique_ptr`-Variablen haben Charme.
+*Abbildung* 3: `std::unique_ptr`-Variablen haben Charme.
 
 
 <img src="cpp_security_advice_no_new_gc.svg" width="300">
 
-*Abbildung* 3: Stack-Variablen haben Charme.
+*Abbildung* 4: Stack-Variablen haben Charme.
 
 Am Ende des Tages stellt sich bei einem mit `new` erzeugten Zeiger immer die Frage:
 Wer hat wann und wo `delete` aufgerufen?

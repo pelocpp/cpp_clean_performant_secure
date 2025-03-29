@@ -163,6 +163,7 @@
     <Image Include="SEI_CERT_C_Coding_Standard.png" />
     <Image Include="Stack_Overflow_Exception_01.png" />
     <Image Include="Stack_Overflow_Exception_02.png" />
+    <Image Include="UseSeveralCompilers.png" />
     <Image Include="VisualStudio_AddressSanitizer_01.png" />
     <Image Include="VisualStudio_AddressSanitizer_02.png" />
     <Image Include="WarningLevel.png" />

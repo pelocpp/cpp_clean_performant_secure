@@ -115,5 +115,8 @@
     <Image Include="Stack_Overflow_Exception_02.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="UseSeveralCompilers.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
