@@ -100,9 +100,9 @@ namespace PerformingBenchmarks {
         }
 
         // Note: take care of SSO
-        constexpr auto StringArgument1 = "1234567890";
-        constexpr auto StringArgument2 = "The quick brown fox jumps over the lazy dog";
-        constexpr auto StringArgument = StringArgument1;
+        auto StringArgument1 = "1234567890";
+        auto StringArgument2 = "The quick brown fox jumps over the lazy dog";
+        auto StringArgument = StringArgument1;
 
         static void StdStringPrefix(benchmark::State& state) {
 

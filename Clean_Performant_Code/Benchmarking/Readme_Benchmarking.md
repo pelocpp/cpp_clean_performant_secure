@@ -91,9 +91,9 @@ void BM_Foo(benchmark::State& state) {
 19: }
 20: 
 21: // Note: take care of SSO
-22: constexpr auto StringArgument1 = "1234567890";
-23: constexpr auto StringArgument2 = "The quick brown fox jumps over the lazy dog";
-24: constexpr auto StringArgument = StringArgument1;
+22: auto StringArgument1 = "1234567890";
+23: auto StringArgument2 = "The quick brown fox jumps over the lazy dog";
+24: auto StringArgument = StringArgument1;
 25: 
 26: static void StdStringPrefix(benchmark::State& state) {
 27: 
