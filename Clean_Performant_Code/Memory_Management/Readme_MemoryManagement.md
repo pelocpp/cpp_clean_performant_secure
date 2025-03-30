@@ -41,7 +41,7 @@
 ### Unterschiede des Stapels im Debug- und Relase-Modus <a name="link3"></a>
 
 Bei der Suche nach Fehlern versorgt uns die Visual Stdio IDE mit einer Reihe von unterstützenden Tools.
-Ein simples Tools sind *Memory Windows*:
+Ein simples Tool sind *Memory Windows*:
 
 ```cpp
 01: int a = 1;
@@ -70,12 +70,12 @@ Ein simples Tools sind *Memory Windows*:
 
 Die Inhalte der Variablen `a`, `b`, `c`, und `d` kann man in einem solchen *Memory Window* ansehen:
 
-<img src="MemoryWindow.png" width="700">
+<img src="MemoryWindow.png" width="900">
 
 *Abbildung* 1: &bdquo;*Memory*&rdquo;-Fenster für lokale Variablen.
 
 Hmmm, fällt Ihnen an der Ausgabe im Fenster etwas auf?
-Richtig gesehen die vier `int`-Variablen liegen in einem Abstand von 36-Bytes voneinander entfernt im Speicher.
+Richtig gesehen, die vier `int`-Variablen liegen in einem Abstand von 32-Bytes voneinander entfernt im Speicher.
 
 Die Ausgaben in der Konsole bestätigen uns in dieser Vermutung:
 
@@ -97,17 +97,17 @@ dies bestätigt auch ein Blick in das Fenster der lokalen Variablen:
 
 <img src="Debug_vs_Release_Mode.png" width="400">
 
-*Abbildung* 2: Nicht jede im Programm deklarierte Variable findet Einzug in das endgültige Programm (*Release*-Modus)
+*Abbildung* 2: Nicht jede im Programm deklarierte Variable findet Einzug in das endgültige Programm (*Release*-Modus).
 
-Aber bleiben wir bei Debug-Modus. Warum ist das so? Hierzu finden sich wenige Hinweise im Netz,
+Aber bleiben wir beim Debug-Modus. Warum ist das so? Hierzu finden sich wenige Hinweise im Netz,
 immerhin gibt es bei [SO](https://stackoverflow.com/questions/60419126/why-does-vs-debug-build-allocates-variables-so-far-apart) eine Erklärung hierzu:
 
-Die Debug-Version allokiert den Speicher anders als die Release-Version.
+&bdquo;Die Debug-Version allokiert den Speicher anders als die Release-Version.
 Insbesondere allokiert die Debug-Version zusätzlich Speicherplatz am Anfang und Ende jedes Speicherblocks,
 den eine Variable benötigt, und füllt diesen mit einem bestimmten Allokationsmuster,
-dass man auf etwaige Beschädigungen hin überprüfen kann:
+dass man auf etwaige Beschädigungen hin überprüfen kann&rdquo;.
 
-In Abbildung *Abbildung* 1 kann man erkennen, dass im &bdquo;toten&rdquo; Bereich der Wert `0xCC` vorhanden ist.
+In *Abbildung* 1 kann man erkennen, dass im &bdquo;toten&rdquo; Bereich der Wert `0xCC` vorhanden ist.
 
 Die Speicherallokation erfolgt in quantisierten Blöcken, wobei die Länge eines Quantums nicht dokumentiert ist,
 sie könnte 16 oder 32 Bytes betragen.
@@ -121,7 +121,7 @@ Wenn Sie nun über den zulässigen Speicherplatz hinausschreiben
 überschreiben Sie einen Teil des &bdquo;toten Speicherplatzes&rdquo; und beschädigen das vorhandene Bitmuster. 
 
 Beim Verlassen eines Unterprogramms im Debug-Modus können Testroutinen des Debuggers überprüfen,
-ob Beschädiugungen in den flankierenden Speicherbereichen vorhanden sind und, wenn ja,
+ob Beschädigungen in den flankierenden Speicherbereichen vorhanden sind und, wenn ja,
 Laufzeitfehlermeldungen generieren.
 
 
@@ -644,9 +644,18 @@ Einige ergänzende Erläuterungen dazu:
 
 ---
 
+
 ## Literatur <a name="link14"></a>
 
-Die Anregungen zum Beispiel eines Arena finden Sie in einem Artikel von *Howard Hinnant* unter
+### Memory-Windows
+
+Hinweise auf das Vorhandensein von Extra-Speicher im Debug-Modus zu Kontrollzwecken kann man hier nachlesen:
+
+[Why does VS Debug build allocates variables so far apart?](https://stackoverflow.com/questions/60419126/why-does-vs-debug-build-allocates-variables-so-far-apart)
+
+### Arena
+
+Die Anregungen zum Beispiel einer Arena finden Sie in einem Artikel von *Howard Hinnant* unter
 
 [stack_alloc](https://howardhinnant.github.io/stack_alloc.html)
 

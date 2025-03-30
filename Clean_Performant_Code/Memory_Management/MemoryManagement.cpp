@@ -14,8 +14,6 @@ namespace MemoryManagement {
 
     namespace Stack_Debug_Versus_Release_Mode {
 
-   // https://stackoverflow.com/questions/60419126/why-does-vs-debug-build-allocates-variables-so-far-apart
-
         static void test_stack_debug_versus_release_mode()
         {
             int a = 1;
@@ -394,7 +392,6 @@ void memory_management()
     using namespace MemoryManagement;
 
     MemoryManagement::Stack_Debug_Versus_Release_Mode::test_stack_debug_versus_release_mode();
-    return;
 
     test_examine_stack_behaviour();
     // test_examine_stack_size();     // crashes (intentionally)
