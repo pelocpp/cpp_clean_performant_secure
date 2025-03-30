@@ -12,6 +12,37 @@
 
 namespace MemoryManagement {
 
+    namespace Stack_Debug_Versus_Release_Mode {
+
+   // https://stackoverflow.com/questions/60419126/why-does-vs-debug-build-allocates-variables-so-far-apart
+
+        static void test_stack_debug_versus_release_mode()
+        {
+            int a = 1;
+            int b = 2;
+            int c = 3;
+            int d = 4;
+
+            int* ap = &a;
+            int* bp = &b;
+            int* cp = &c;
+            int* dp = &d;
+
+            unsigned long long d1 = (unsigned long long)bp - (unsigned long long)ap;
+            unsigned long long d2 = (unsigned long long)cp - (unsigned long long)bp;
+            unsigned long long d3 = (unsigned long long)dp - (unsigned long long)cp;
+
+            std::cout << "&a:  " << &a << std::endl;
+            std::cout << "&b:  " << &b << std::endl;
+            std::cout << "&c:  " << &c << std::endl;
+            std::cout << "&d:  " << &d << std::endl;
+
+            std::println("Diff a <=> b: {}", d1);
+            std::println("Diff b <=> c: {}", d2);
+            std::println("Diff c <=> d: {}", d3);
+        }
+    }
+
     // =======================================================================
     // Examine Stack behaviour
 
@@ -362,23 +393,26 @@ void memory_management()
 {
     using namespace MemoryManagement;
 
-    //test_examine_stack_behaviour();
-    //// test_examine_stack_size();     // crashes (intentionally)
+    MemoryManagement::Stack_Debug_Versus_Release_Mode::test_stack_debug_versus_release_mode();
+    return;
 
-    //test_examine_alignment_01();
-    //test_examine_alignment_02();
-    //test_examine_alignment_03();
-    //test_examine_alignment_04();
-    //test_examine_alignment_05();
-    //test_examine_alignment_06();
-    //test_examine_alignment_07();
-    //test_examine_alignment_08();
-    //test_examine_alignment_09();
-    //test_examine_alignment_10();
+    test_examine_stack_behaviour();
+    // test_examine_stack_size();     // crashes (intentionally)
 
-    //test_placement_new_01();
-    //test_placement_new_02();
-    //test_placement_new_03();
+    test_examine_alignment_01();
+    test_examine_alignment_02();
+    test_examine_alignment_03();
+    test_examine_alignment_04();
+    test_examine_alignment_05();
+    test_examine_alignment_06();
+    test_examine_alignment_07();
+    test_examine_alignment_08();
+    test_examine_alignment_09();
+    test_examine_alignment_10();
+
+    test_placement_new_01();
+    test_placement_new_02();
+    test_placement_new_03();
 
     test_std_launder();
 }

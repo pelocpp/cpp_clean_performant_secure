@@ -36,4 +36,12 @@
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Debug_vs_Release_Mode.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="MemoryWindow.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

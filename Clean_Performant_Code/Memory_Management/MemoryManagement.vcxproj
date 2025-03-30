@@ -139,6 +139,10 @@
     <None Include="Cpp_Examine_Stack.svg" />
     <None Include="Readme_MemoryManagement.md" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Debug_vs_Release_Mode.png" />
+    <Image Include="MemoryWindow.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

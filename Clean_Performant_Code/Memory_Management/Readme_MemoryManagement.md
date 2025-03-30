@@ -8,16 +8,18 @@
 
   * [Allgemeines](#link1)
   * [Der Stack (Stapel)](#link2)
-  * [Größe des Stapels bestimmen](#link3)
-  * [Speicher Ausrichtung (Memory Alignment)](#link4)
-  * [Der Heap (Halde)](#link5)
-  * [Placement *new*](#link6)
-  * [&bdquo;*Zeigerwäsche*&rdquo;: `std::launder`](#link7)
-  * [Literatur](#link8)
-
----
-
-## Placement new <a name="link6"></a>
+    * [Unterschiede des Stapels im Debug- und Relase-Modus](#link3) 
+    * [Ausdehnung des Stapels](#link4)
+    * [Größe des Stapels bestimmen](#link5)
+  * [Ausrichtung von Variablen im Speicher (Memory Alignment)](#link6)
+    * [`std::alignment_of<T>::value` / `alignof()`](#link7)
+    * [`alignas`](#link8)
+    * [`std::align`](#link9)
+    * [`std::max_align_t` ](link10)
+  * [Der Heap (Halde)](#link11)
+  * [Placement *new*](#link12)
+  * [&bdquo;*Zeigerwäsche*&rdquo;: `std::launder`](#link13)
+  * [Literatur](#link14)
 
 ---
 
@@ -35,6 +37,95 @@
 ---
 
 ## Der Stack (Stapel) <a name="link2"></a>
+
+### Unterschiede des Stapels im Debug- und Relase-Modus <a name="link3"></a>
+
+Bei der Suche nach Fehlern versorgt uns die Visual Stdio IDE mit einer Reihe von unterstützenden Tools.
+Ein simples Tools sind *Memory Windows*:
+
+```cpp
+01: int a = 1;
+02: int b = 2;
+03: int c = 3;
+04: int d = 3;
+05: 
+06: int* ap = &a;
+07: int* bp = &b;
+08: int* cp = &c;
+09: int* dp = &d;
+10: 
+11: unsigned long long d1 = (unsigned long long)bp - (unsigned long long)ap;
+12: unsigned long long d2 = (unsigned long long)cp - (unsigned long long)bp;
+13: unsigned long long d3 = (unsigned long long)dp - (unsigned long long)cp;
+14: 
+15: std::cout << "&a:  " << &a << std::endl;
+16: std::cout << "&b:  " << &b << std::endl;
+17: std::cout << "&c:  " << &c << std::endl;
+18: std::cout << "&d:  " << &d << std::endl;
+19: 
+20: std::println("Diff a <=> b: {}", d1);
+21: std::println("Diff b <=> c: {}", d2);
+22: std::println("Diff c <=> d: {}", d3);
+```
+
+Die Inhalte der Variablen `a`, `b`, `c`, und `d` kann man in einem solchen *Memory Window* ansehen:
+
+<img src="MemoryWindow.png" width="700">
+
+*Abbildung* 1: &bdquo;*Memory*&rdquo;-Fenster für lokale Variablen.
+
+Hmmm, fällt Ihnen an der Ausgabe im Fenster etwas auf?
+Richtig gesehen die vier `int`-Variablen liegen in einem Abstand von 36-Bytes voneinander entfernt im Speicher.
+
+Die Ausgaben in der Konsole bestätigen uns in dieser Vermutung:
+
+```
+&a:  0000003A9CEFF7E4
+&b:  0000003A9CEFF804
+&c:  0000003A9CEFF824
+&d:  0000003A9CEFF844
+Diff a <=> b: 32
+Diff b <=> c: 32
+Diff c <=> d: 32
+```
+
+Im Release-Modus haben die Variablen den erwarteten Abstand von 8 Bytes.
+Dies lässt sich nicht ohne Weiteres durch die Ausgaben bestätigen, da der Compiler/Optimizer
+offensichtlich an der Reihenfolge der Variablen bzgl. ihrer Ablage im Speicher Änderungen vornimmt.
+Damit werden die Ausgaben sinnlos,
+dies bestätigt auch ein Blick in das Fenster der lokalen Variablen:
+
+<img src="Debug_vs_Release_Mode.png" width="400">
+
+*Abbildung* 2: Nicht jede im Programm deklarierte Variable findet Einzug in das endgültige Programm (*Release*-Modus)
+
+Aber bleiben wir bei Debug-Modus. Warum ist das so? Hierzu finden sich wenige Hinweise im Netz,
+immerhin gibt es bei [SO](https://stackoverflow.com/questions/60419126/why-does-vs-debug-build-allocates-variables-so-far-apart) eine Erklärung hierzu:
+
+Die Debug-Version allokiert den Speicher anders als die Release-Version.
+Insbesondere allokiert die Debug-Version zusätzlich Speicherplatz am Anfang und Ende jedes Speicherblocks,
+den eine Variable benötigt, und füllt diesen mit einem bestimmten Allokationsmuster,
+dass man auf etwaige Beschädigungen hin überprüfen kann:
+
+In Abbildung *Abbildung* 1 kann man erkennen, dass im &bdquo;toten&rdquo; Bereich der Wert `0xCC` vorhanden ist.
+
+Die Speicherallokation erfolgt in quantisierten Blöcken, wobei die Länge eines Quantums nicht dokumentiert ist,
+sie könnte 16 oder 32 Bytes betragen.
+
+Wenn Sie beispielsweise vier `int`-Variablen auf dem Stack allokieren
+(Größe = 4 * `sizeof(int)` Bytes = 4 * 4 = 16 Bytes),
+belegt der Allokator im Debug-Modus tatsächlich 128 Bytes (vier 32-Byte Quanten).
+
+Wenn Sie nun über den zulässigen Speicherplatz hinausschreiben
+(das ginge in diesem Beispiel nur mit Typwandlungsoperationen),
+überschreiben Sie einen Teil des &bdquo;toten Speicherplatzes&rdquo; und beschädigen das vorhandene Bitmuster. 
+
+Beim Verlassen eines Unterprogramms im Debug-Modus können Testroutinen des Debuggers überprüfen,
+ob Beschädiugungen in den flankierenden Speicherbereichen vorhanden sind und, wenn ja,
+Laufzeitfehlermeldungen generieren.
+
+
+### Ausdehnung des Stapels <a name="link4"></a>
 
 Wir analysieren den Stack an einem kleinen Beispiel, um herausfinden,
 in welche Richtung er wächst. Dazu vergleichen wir die Adressen von Variablen, die sich auf dem Stapel befinden.
@@ -86,11 +177,11 @@ Die verbleibenden 28 Bytes enthalten Daten, die benötigt werden, wenn die Funkti
 
 <img src="Cpp_Examine_Stack.svg" width="700">
 
-*Abbildung* 1: Der Stapel wächst und schrumpft, wenn Funktionen aufgerufen und verlassen werden.
+*Abbildung* 3: Der Stapel wächst und schrumpft, wenn Funktionen aufgerufen und verlassen werden.
 
 ---
 
-## Die Größe des Stapels bestimmen <a name="link3"></a>
+### Die Größe des Stapels bestimmen <a name="link5"></a>
 
 Wir versuchen, ein Programm zu schreiben, das die Größe des Stacks auf einem Rechner bestimmt.
 Dies lässt sich allerdings nur im Rahmen einer Schätzung durchführen.
@@ -161,10 +252,9 @@ Unter Windows ist die Standardgröße des Stacks normalerweise auf 1 MB eingestell
 Die Ausgaben des Programms bestätigen dies in etwa &ndash; der Wert 1,020,980 ist
 nicht weit von 1.048.576 (1.024 * 1.024) entfernt.
 
-
 ---
 
-## Speicher Ausrichtung (Memory Alignment) <a name="link4"></a>
+## Ausrichtung von Variablen im Speicher (Memory Alignment) <a name="link6"></a>
 
 Vorab einige Begrifflichkeiten:
 
@@ -175,7 +265,7 @@ Die Ausrichtung ist immer eine Potenz von 2 und Objekte mit einer entsprechenden
 können immer nur an Speicheradressen platziert werden,
 die ein Vielfaches dieser Ausrichtung sind.
 
-### `std::alignment_of<T>::value` / `alignof()`
+### `std::alignment_of<T>::value` / `alignof()` <a name="link7"></a>
 
 Liefert die Ausrichtung des Typs `T` bzw. des Arguments (Datentyp) `alignof` zurück.
 
@@ -214,7 +304,7 @@ alignof (float)     4
 alignof (double)    8
 ```
 
-### `alignas`
+### `alignas` <a name="link8"></a>
 
 Legt die Anforderung an die Ausrichtung eines Typs oder Objekts im Speicher fest.
 
@@ -250,7 +340,7 @@ Man beachte bei der Ausgabe die letzten Stellen der Adressen in binärer Darstell
 Bei einer Ausrichtungsanforderung von 16 (entspricht 2<sup>4</sup>) finden wir 4 Nullen am Ende vor,
 bei der Ausrichtungsanforderung von 1024 (entspricht 2<sup>10</sup>) entsprechend 10 Nullen.
 
-### `std::align`
+### `std::align` <a name="link9"></a>
 
 Legt die Anforderung an die Ausrichtung eines Typs oder Objekts im Speicher fest.
 
@@ -306,7 +396,7 @@ Number of skipped Bytes:        6
 ```
 
 
-### `std::max_align_t`
+### `std::max_align_t` <a name="link10"></a>
 
 
 `std::max_align_t` beschreibt eine Ausrichtungsanforderung,
@@ -343,11 +433,11 @@ Man beachte wiederum die Anzahl der Nullen am Ende der Binärdarstellung.
 
 ---
 
-## Der Heap (Halde) <a name="link5"></a>
+## Der Heap (Halde) <a name="link11"></a>
 
 ---
 
-## Placement new <a name="link6"></a>
+## Placement new <a name="link12"></a>
 
 C++ ermöglicht es uns, die Bereitstellung von Speicher (Speicherallokation)
 von der Objekterstellung zu trennen.
@@ -465,7 +555,7 @@ sollte in einer C++-Codebasis auf ein absolutes Minimum beschränkt werden.
 
 ---
 
-## &bdquo;*Zeigerwäsche*&rdquo;: `std::launder` <a name="link7"></a>
+## &bdquo;*Zeigerwäsche*&rdquo;: `std::launder` <a name="link13"></a>
 
 Die STL-Funktion ist etwas kurios, sie führt eine &bdquo;*Zeigerwäsche*&rdquo; durch.
 
@@ -554,7 +644,7 @@ Einige ergänzende Erläuterungen dazu:
 
 ---
 
-## Literatur <a name="link8"></a>
+## Literatur <a name="link14"></a>
 
 Die Anregungen zum Beispiel eines Arena finden Sie in einem Artikel von *Howard Hinnant* unter
 
