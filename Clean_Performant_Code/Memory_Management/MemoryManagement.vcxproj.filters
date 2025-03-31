@@ -43,5 +43,11 @@
     <Image Include="MemoryWindow.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Memory_Padding_01.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Memory_Padding_02.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

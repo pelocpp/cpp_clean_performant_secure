@@ -16,10 +16,11 @@
     * [`alignas`](#link8)
     * [`std::align`](#link9)
     * [`std::max_align_t` ](link10)
-  * [Der Heap (Halde)](#link11)
-  * [Placement *new*](#link12)
-  * [&bdquo;*Zeigerwäsche*&rdquo;: `std::launder`](#link13)
-  * [Literatur](#link14)
+  * [Padding](#link11)
+  * [Der Heap (Halde)](#link12)
+  * [Placement *new*](#link13)
+  * [&bdquo;*Zeigerwäsche*&rdquo;: `std::launder`](#link14)
+  * [Literatur](#link15)
 
 ---
 
@@ -433,11 +434,109 @@ Man beachte wiederum die Anzahl der Nullen am Ende der Binärdarstellung.
 
 ---
 
-## Der Heap (Halde) <a name="link11"></a>
+## Padding <a name="link11"></a>
+
+In benutzerdefinierten Typen muss der Übersetzer manchmal zusätzliche Bytes (Padding) hinzufügen.
+
+Zunächt einmal muss der Übersetzer die Elemente in der im Quellcode definierten Reihenfolge platzieren.
+
+Er muss jedoch auch sicherstellen, dass die Datenelemente innerhalb der Klasse (Struktur) korrekt ausgerichtet sind.
+Daher fügt er bei Bedarf *Padding* (Füllbytes) zwischen den Datenelementen hinzu.
+
+*Beispiel*:
+
+```cpp
+01: class Document
+02: {
+03:     bool       m_isCached;
+04:     double     m_rank;
+05:     int        m_id;
+06: };
+```
+
+Mit der Anweisung
+
+```cpp
+std::println("sizeof(Document): {}", sizeof(Document));
+```
+
+erhalten wir die Ausgabe:
+
+```
+sizeof(Document): 24
+```
+
+Der Grund für die mögliche Ausgabe von 24 liegt darin, dass der Compiler nach `bool` und `int` Füllbytes einfügt,
+um die Alignment-Anforderungen der einzelnen Datenelemente und der gesamten Klasse zu erfüllen.
+
+Der Compiler konvertiert die Klasse `Dokument` in etwa wie folgt:
+
+
+```cpp
+01: class Document_Behind_the_Scenes {
+02:     bool       m_isCached;
+03:     std::byte  m_padding1[7]; // invisible padding inserted by compiler
+04:     double     m_rank_;
+05:     int        m_id_;
+06:     std::byte  m_padding2[4]; // invisible padding inserted by compiler
+07: };
+```
+
+Im Visual Stdio gibt es für Klassen einen &bdquo;*Memory Layout Viewer*&rdquo;, der uns vor der Original-Klasse folgende Darstellung liefert:
+
+<img src="Memory_Padding_01.png" width="500">
+
+*Abbildung* 4: &bdquo;*Memory Layout Viewer*&rdquo; auf Klasse `Document` angewendet.
+
+
+
+  * Der erste Abstand zwischen `bool` und `double` beträgt 7 Byte, da das `m__rank`-Datenelement
+  des Typs `double` eine Ausrichtung von 8 Byte hat.
+
+  * Der zweite Abstand nach `int` beträgt 4 Byte.
+
+  * Dies ist erforderlich, um die Ausrichtungsanforderungen der Klasse `Document` selbst zu erfüllen.
+
+  * Das Element mit der größten Ausrichtungsanforderung bestimmt auch die Ausrichtungsanforderung für die gesamte Datenstruktur.
+
+In unserem Beispiel bedeutet dies, dass die Gesamtgröße der Klasse `Document` ein Vielfaches von 8 sein muss,
+da sie einen `double`-Wert mit 8-Byte-Ausrichtung enthält.
+
+Natürlich können wir die Reihenfolge der Datenelemente in der Klasse `Document` auch ändern können,
+um die vom Compiler eingefügten Füllbytes zu minimieren.
+
+Wir beginnen hierzu am besten mit den Datentypen, die die größten Ausrichtungsanforderungen besitzen.
+
+
+Wir erstellen eine neue Version der Klasse `Document`:
+
+```cpp
+01: class Document_V2
+02: {
+03:     double     m_rank;
+04:     int        m_id;
+05:     bool       m_isCached;
+06: };
+```
+
+<img src="Memory_Padding_01.png" width="500">
+
+*Abbildung* 5: Die Datenelemente der `Document`-Klasse neu arrangiert.
+
+Die Größe der neuen `Document`-Klasse beträgt nun nur noch 16 Bytes, verglichen mit 24 Bytes in der ersten Version.
+
+Generell gilt: Die größten Datenelemente sollten am Anfang und die kleinsten am Ende platziert werden.
+
+Auf diese Weise lässt sich der durch das Padding verursachte Speicheraufwand minimieren.
+
 
 ---
 
-## Placement new <a name="link12"></a>
+## Der Heap (Halde) <a name="link12"></a>
+
+---
+
+## Placement new <a name="link13"></a>
 
 C++ ermöglicht es uns, die Bereitstellung von Speicher (Speicherallokation)
 von der Objekterstellung zu trennen.
@@ -555,7 +654,7 @@ sollte in einer C++-Codebasis auf ein absolutes Minimum beschränkt werden.
 
 ---
 
-## &bdquo;*Zeigerwäsche*&rdquo;: `std::launder` <a name="link13"></a>
+## &bdquo;*Zeigerwäsche*&rdquo;: `std::launder` <a name="link14"></a>
 
 Die STL-Funktion ist etwas kurios, sie führt eine &bdquo;*Zeigerwäsche*&rdquo; durch.
 
@@ -645,7 +744,7 @@ Einige ergänzende Erläuterungen dazu:
 ---
 
 
-## Literatur <a name="link14"></a>
+## Literatur <a name="link15"></a>
 
 ### Memory-Windows
 

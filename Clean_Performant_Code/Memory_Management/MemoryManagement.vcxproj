@@ -142,6 +142,8 @@
   <ItemGroup>
     <Image Include="Debug_vs_Release_Mode.png" />
     <Image Include="MemoryWindow.png" />
+    <Image Include="Memory_Padding_01.png" />
+    <Image Include="Memory_Padding_02.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
