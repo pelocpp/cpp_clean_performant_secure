@@ -421,29 +421,29 @@ void memory_management()
 {
     using namespace MemoryManagement;
 
-    //Stack_Debug_Versus_Release_Mode::test_stack_debug_versus_release_mode();
+    Stack_Debug_Versus_Release_Mode::test_stack_debug_versus_release_mode();
 
-    //Stack_Behaviour::test_examine_stack_behaviour();
+    Stack_Behaviour::test_examine_stack_behaviour();
     //Stack_Size::test_examine_stack_size();               // crashes (intentionally)
 
-    //MemoryAlignment::test_examine_alignment_01();
-    //MemoryAlignment::test_examine_alignment_02();
-    //MemoryAlignment::test_examine_alignment_03();
-    //MemoryAlignment::test_examine_alignment_04();
-    //MemoryAlignment::test_examine_alignment_05();
-    //MemoryAlignment::test_examine_alignment_06();
-    //MemoryAlignment::test_examine_alignment_07();
-    //MemoryAlignment::test_examine_alignment_08();
-    //MemoryAlignment::test_examine_alignment_09();
-    //MemoryAlignment::test_examine_alignment_10();
+    MemoryAlignment::test_examine_alignment_01();
+    MemoryAlignment::test_examine_alignment_02();
+    MemoryAlignment::test_examine_alignment_03();
+    MemoryAlignment::test_examine_alignment_04();
+    MemoryAlignment::test_examine_alignment_05();
+    MemoryAlignment::test_examine_alignment_06();
+    MemoryAlignment::test_examine_alignment_07();
+    MemoryAlignment::test_examine_alignment_08();
+    MemoryAlignment::test_examine_alignment_09();
+    MemoryAlignment::test_examine_alignment_10();
 
     MemoryPadding::test_memory_padding();
 
-    //PlacementNew::test_placement_new_01();
-    //PlacementNew::test_placement_new_02();
-    //PlacementNew::test_placement_new_03();
+    PlacementNew::test_placement_new_01();
+    PlacementNew::test_placement_new_02();
+    PlacementNew::test_placement_new_03();
 
-    //MemoryLaundry::test_std_launder();
+    MemoryLaundry::test_std_launder();
 }
 
 // ===========================================================================

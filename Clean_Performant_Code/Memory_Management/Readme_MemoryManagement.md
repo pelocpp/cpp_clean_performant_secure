@@ -436,8 +436,7 @@ Man beachte wiederum die Anzahl der Nullen am Ende der Binärdarstellung.
 
 ## Padding <a name="link11"></a>
 
-In benutzerdefinierten Typen muss der Übersetzer manchmal zusätzliche Bytes (Padding) hinzufügen.
-
+In benutzerdefinierten Typen (Klassen, Strukturen) muss der Übersetzer manchmal zusätzliche Bytes (Padding) hinzufügen.
 Zunächt einmal muss der Übersetzer die Elemente in der im Quellcode definierten Reihenfolge platzieren.
 
 Er muss jedoch auch sicherstellen, dass die Datenelemente innerhalb der Klasse (Struktur) korrekt ausgerichtet sind.
@@ -482,32 +481,27 @@ Der Compiler konvertiert die Klasse `Dokument` in etwa wie folgt:
 07: };
 ```
 
-Im Visual Stdio gibt es für Klassen einen &bdquo;*Memory Layout Viewer*&rdquo;, der uns vor der Original-Klasse folgende Darstellung liefert:
+Im Visual Stdio gibt es für Klassen einen &bdquo;*Memory Layout Viewer*&rdquo;, der uns von der Original-Klasse folgende Darstellung liefert:
 
-<img src="Memory_Padding_01.png" width="500">
+<img src="Memory_Padding_01.png" width="600">
 
 *Abbildung* 4: &bdquo;*Memory Layout Viewer*&rdquo; auf Klasse `Document` angewendet.
 
 
 
-  * Der erste Abstand zwischen `bool` und `double` beträgt 7 Byte, da das `m__rank`-Datenelement
+  * Der erste Abstand zwischen `bool` und `double` beträgt 7 Byte, da das `m_rank`-Datenelement
   des Typs `double` eine Ausrichtung von 8 Byte hat.
-
   * Der zweite Abstand nach `int` beträgt 4 Byte.
-
   * Dies ist erforderlich, um die Ausrichtungsanforderungen der Klasse `Document` selbst zu erfüllen.
-
   * Das Element mit der größten Ausrichtungsanforderung bestimmt auch die Ausrichtungsanforderung für die gesamte Datenstruktur.
 
 In unserem Beispiel bedeutet dies, dass die Gesamtgröße der Klasse `Document` ein Vielfaches von 8 sein muss,
 da sie einen `double`-Wert mit 8-Byte-Ausrichtung enthält.
 
-Natürlich können wir die Reihenfolge der Datenelemente in der Klasse `Document` auch ändern können,
+Natürlich können wir die Reihenfolge der Datenelemente in der Klasse `Document` auch ändern,
 um die vom Compiler eingefügten Füllbytes zu minimieren.
 
 Wir beginnen hierzu am besten mit den Datentypen, die die größten Ausrichtungsanforderungen besitzen.
-
-
 Wir erstellen eine neue Version der Klasse `Document`:
 
 ```cpp
@@ -519,14 +513,13 @@ Wir erstellen eine neue Version der Klasse `Document`:
 06: };
 ```
 
-<img src="Memory_Padding_01.png" width="500">
+<img src="Memory_Padding_01.png" width="600">
 
 *Abbildung* 5: Die Datenelemente der `Document`-Klasse neu arrangiert.
 
 Die Größe der neuen `Document`-Klasse beträgt nun nur noch 16 Bytes, verglichen mit 24 Bytes in der ersten Version.
 
-Generell gilt: Die größten Datenelemente sollten am Anfang und die kleinsten am Ende platziert werden.
-
+**Generell** gilt:<br />Die größten Datenelemente sollten am Anfang und die kleinsten am Ende platziert werden.
 Auf diese Weise lässt sich der durch das Padding verursachte Speicheraufwand minimieren.
 
 
