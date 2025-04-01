@@ -163,7 +163,7 @@ Das folgende Code-Snippet stellt eine Vergleich mit und ohne Aufruf
 der `reserve`-Methode an:
 
 ```cpp
-01: static constexpr int VectorSize = 50;
+01: static constexpr int VectorSize = 100;
 02: 
 03: static void VecPushBack(benchmark::State& state) {
 04:   

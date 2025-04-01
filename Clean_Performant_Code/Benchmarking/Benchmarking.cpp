@@ -139,7 +139,7 @@ namespace PerformingBenchmarks {
         // ======================================================================
         // To-Copy Begin
 
-        static constexpr int VectorSize = 50;
+        static constexpr int VectorSize = 100;
 
         static void VecPushBack(benchmark::State& state) {
 
