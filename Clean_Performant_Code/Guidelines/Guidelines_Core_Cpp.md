@@ -17,20 +17,17 @@
   * [*Explicitly defaulted* Standardkonstruktor](#link9)
   * [*Explicitly deleted* Standardkonstruktor](#link10)
   * [Automatische Erzeugung spezieller Member-Funktionen: Fazit](#link11)
-  * [Literatur](#link)
-
-
-  * [Schreiben Sie kleine, fokussierte Funktionen (Methoden)](#link)
-  * [Verwenden Sie `const` großzügig](#link)
-  * [Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen](#link)
-  * [Rückgabetyp einer Methode](#link)
-  * [Bevorzuge Komposition der Vererbung](#link)
-  * [Implizite Konvertierungen vermeiden](#link)
-  * [Schlüsselwort `auto` verwenden oder nicht?](#link)
+  * [Schreiben Sie kleine, fokussierte Funktionen (Methoden)](#link12)
+  * [Verwenden Sie `const` großzügig](#link13)
+  * [Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen](#link14)
+  * [Rückgabetyp einer Methode](#link15)
+  * [Bevorzuge Komposition der Vererbung](#link16)
+  * [Implizite Konvertierungen vermeiden](#link17)
+  * [Schlüsselwort `auto` verwenden oder nicht?](#link18)
 
 ---
 
-#### Zum Ersten: Klasse (`class`) oder Struktur (`struct`)? <a name="link1"></a>
+### Zum Ersten: Klasse (`class`) oder Struktur (`struct`)? <a name="link1"></a>
 
   * Verwenden Sie Strukturen (`struct`), wenn der zu konzipierende Datentyp
    hauptsächlich ein Halter von Daten ist.
@@ -38,7 +35,9 @@
    die Daten eher als Implementierungsdetails anzusehen sind
    und es das Verhalten (Methoden) ist, was man nach außen zeigen möchte.
 
-#### Zum Zweiten: Klasse (`class`) oder Struktur (`struct`)? <a name="link2"></a>
+---
+
+### Zum Zweiten: Klasse (`class`) oder Struktur (`struct`)? <a name="link2"></a>
 
 Eine Richtlinie stammt von Bjarne Stroustrup *himself*:
 
@@ -47,11 +46,15 @@ Eine Richtlinie stammt von Bjarne Stroustrup *himself*:
 
 Es bleibt nur noch zu klären, was man unter einer *Invarianten* versteht?
 
-#### Zum Dritten: Klasse (`class`) oder Struktur (`struct`)? <a name="link3"></a>
+---
+
+### Zum Dritten: Klasse (`class`) oder Struktur (`struct`)? <a name="link3"></a>
 
 Wenn ein (oder mehrere Elemente) mit `private` zu kennzeichnen sind, sollte man `class` verwenden.
 
-#### Interfaces (Schnittstellen): Wozu? <a name="link4"></a>
+---
+
+### Interfaces (Schnittstellen): Wozu? <a name="link4"></a>
 
 *Interfaces* stellen nicht nur eine Beschreibung von Methoden dar, sie bewirken damit
 auch eine *Hervorhebung*:
@@ -59,11 +62,15 @@ auch eine *Hervorhebung*:
   * Zur Implementierung in einer Klasse wird ein Bezug zur Schnittstelle gegeben.
   * In einer Klasse lassen sich Daten kapseln, die relevanten Methoden der Schnittstell sind hervorgehoben.
 
-#### Minimieren Sie die Sichtbarkeit von Mitgliedern einer Klasse <a name="link5"></a>
+---
+
+### Minimieren Sie die Sichtbarkeit von Mitgliedern einer Klasse <a name="link5"></a>
 
 Ohne Worte :)
 
-#### Lebenszyklus eines Objekts: Spezielle Member-Funktionen <a name="link6"></a>
+---
+
+### Lebenszyklus eines Objekts: Spezielle Member-Funktionen <a name="link6"></a>
 
 C++ definiert für den Lebenszyklus eines Objekts eine Reihe von Methoden/Operatoren,
 die eine besondere Rolle einnehmen.
@@ -81,7 +88,9 @@ Die Schnittstellen dieser Operationen sehen so aus:
 
 *Tabelle* 1: Spezielle Member-Funktionen eines C++ Objekts.
 
-#### Automatische Erzeugung der speziellen Member-Funktionen: Wann? <a name="link7"></a>
+---
+
+### Automatische Erzeugung der speziellen Member-Funktionen: Wann? <a name="link7"></a>
 
 In manchen Situationen nimmt der Compiler einem Entwickler die Arbeit ab und 
 erzeugt für eine oder mehrere der speziellen Member-Funktionen eine Realisierung.
@@ -112,7 +121,9 @@ Was erkennen wir an diesen Aussagen?
   Wird vom Entwickler eine der beiden Operationen implementiert,
   stellt der Compiler *keine* Realisierung der anderen Operation bereit.
 
-#### Automatische Erzeugung der speziellen Member-Funktionen: Wie? <a name="link8"></a>
+---
+
+### Automatische Erzeugung der speziellen Member-Funktionen: Wie? <a name="link8"></a>
 
 Natürlich wäre es interessant zu wissen, wie der Quellcode von automatisch erzeugten Member-Funktionen aussieht.
 Das ist keine triviale Frage, dennoch kann man ein paar Richtlinien erkennen:
@@ -136,7 +147,9 @@ Das ist keine triviale Frage, dennoch kann man ein paar Richtlinien erkennen:
     * Für alle Instanzvariablen, die elementar sind (`int`, `double`), erfolgt eine bitweise Kopie.
 
 
-#### *Explicitly defaulted* Standardkonstruktor <a name="link9"></a>
+---
+
+### *Explicitly defaulted* Standardkonstruktor <a name="link9"></a>
 
 Um das manuelle Schreiben leerer Standardkonstruktoren zu vermeiden,
 unterstützt C++ das Konzept von *explicitly defaulted* Standardkonstruktoren (*Explicitly defaulted Default Constructors*).
@@ -163,19 +176,19 @@ da dieses mithilfe des Schlüsselworts `default` explizit festgelegt wird.
 Sie können das `= default` direkt in die Klassendefinition einfügen,
 damit kann man sich in der Klassenimplementierung eine leere Implementierung für den Standardkonstruktor sparen.
 
-Zur Vermeidung von Missverständnissen:
-
+Zur Vermeidung von Missverständnissen:<br />
 Die Implementierung des automatisch erzeugten Standardkonstruktors ist so,
 als hätte man `= default` in der Klassendefinition geschrieben.
 Diese Aussage gilt für alle speziellen Member-Funktionen.
 
+---
 
-#### *Explicitly deleted* Standardkonstruktor <a name="link10"></a>
+### *Explicitly deleted* Standardkonstruktor <a name="link10"></a>
 
-Auch das Gegenteil von *explicitly defaulted Default Constructors* ist möglich
+Auch das Gegenteil von *Explicitly defaulted Default Constructors* ist möglich
 und wird als *Explicitly deleted Default Constructor* bezeichnet.
 
-Sie können beispielsweise eine Klasse mit nur statischen Memberfunktionen definieren
+Sie können beispielsweise eine Klasse mit nur statischen Memberfunktionen definieren,
 für die Sie keine Konstruktoren schreiben möchten und für die Sie auch nicht möchten,
 dass der Compiler den Standardkonstruktor automatisch generiert.
 
@@ -189,7 +202,9 @@ public:
 };
 ```
 
-#### Automatische Erzeugung spezieller Member-Funktionen: Fazit <a name="link11"></a>
+---
+
+### Automatische Erzeugung spezieller Member-Funktionen: Fazit <a name="link11"></a>
 
 Was sieht die einfachste Strategie aus:
 
@@ -216,7 +231,7 @@ Damit wird Ihr Programmcode performant, einfacher und wartbarer &ndash; und es s
 
 ---
 
-#### Schreiben Sie kleine, fokussierte Funktionen (Methoden) <a name="link"></a>
+### Schreiben Sie kleine, fokussierte Funktionen (Methoden) <a name="link12"></a>
 
 Funktionen (Methoden) sind die Bausteine der *Clean Code* Programmierung.
 Eine gute Funktion sollte klein und fokussiert sein und genau eine Sache tun.
@@ -264,7 +279,7 @@ gibt ein boolesches Ergebnis zurück und hat keine Nebenwirkungen. Sie ist leich
 
 ---
 
-#### Verwenden Sie `const` großzügig <a name="link"></a>
+### Verwenden Sie `const` großzügig <a name="link13"></a>
 
 `const` ist ein leistungsstarkes Sprachfeature in C++, um Absichten auszudrücken und potenzielle Fehler zur Kompilierzeit abzufangen:
 
@@ -315,7 +330,9 @@ dass sie das Rechteck nicht ändert und ein unnötiges Kopieren vermeidet.
 Die konsequente Verwendung von `const` macht Ihren Code selbstdokumentierender und hilft,
 potenzielle Fehler zu erkennen, wie z. B. versehentliche Änderungen an Werten, die konstant sein sollten.
 
-#### Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen <a name="link"></a>
+---
+
+### Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen <a name="link14"></a>
 
 Ausnahmen (*Exceptions*) sind die bevorzugte Methode zum Melden und Behandeln von Fehlern in Modern C++.
 Sie haben mehrere Vorteile gegenüber herkömmlichen Fehlercodes:
@@ -365,8 +382,9 @@ Vergleichen Sie dies mit einer Version, die Fehler Codes hantiert:
 Die Version mit *Exception Handling* trennt die Fehlerbehandlung vom normalen Ablauf
 und der Fehler kann nicht ignoriert werden.
 
+---
 
-#### Rückgabetyp einer Methode <a name="link"></a>
+### Rückgabetyp einer Methode <a name="link15"></a>
 
 Wir betrachten folgendes Beispiel:
 
@@ -414,7 +432,7 @@ Es gibt auch eine zweite Möglichkeit:
 
 ---
 
-#### Bevorzuge Komposition der Vererbung <a name="link"></a>
+### Bevorzuge Komposition der Vererbung <a name="link16"></a>
 
   * Vererbung ist ein leistungsstarkes Feature der objektorientierten Programmierung,
   wird aber oft überstrapaziert.
@@ -478,7 +496,7 @@ Sie könnten eine Transform-Eigenschaft aber auch als Attribut den Klassen hinzu
 
 ---
 
-#### Implizite Konvertierungen vermeiden <a name="link"></a>
+### Implizite Konvertierungen vermeiden <a name="link17"></a>
 
 In der Sprache C++ gibt es des Feature so genannter &bdquo;impliziter Typkonvertierungen&rdquo;.
 
@@ -536,7 +554,7 @@ aber dieses Mal eben nicht versteckt, sondern sichtbar für den Entwickler!
 
 ---
 
-#### Schlüsselwort `auto` verwenden oder nicht? <a name="link"></a>
+### Schlüsselwort `auto` verwenden oder nicht? <a name="link18"></a>
 
 Empfielt sich der Einsatz des Schlüsselworts `auto` oder nicht?
 
@@ -559,7 +577,7 @@ Warum ist dieses Code-Fragment nicht übersetzungsfähig?
 10: }
 ```
 
-#### Zwei Empfehlungen:
+*Zwei Empfehlungen*:
 
   * Verwenden Sie es prinzipiell großzügig. Es kann die Lesbarkeit verbessern.
     Der Compiler kann Typen für uns besser ableiten (*Type Deduction*) als wir selbst.
