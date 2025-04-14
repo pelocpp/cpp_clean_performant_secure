@@ -21,6 +21,7 @@
 
 
   [Initialisierung von Strukturen](#link11)
+  [Initialisierung von Objekten](#link11)
 
 
 
@@ -42,6 +43,19 @@
    die Daten eher als Implementierungsdetails anzusehen sind
    und es das Verhalten (Methoden) ist, was man nach außen zeigen möchte.
 
+*Beispiel*:
+
+```cpp
+01: struct Point2D
+02: {
+03:     int m_x;
+04:     int m_y;
+05: 
+06:     Point2D() : Point2D{ 0, 0 } {}
+07:     Point2D(int x, int y) : m_x{ x }, m_y{ y } {}
+08: };
+```
+
 ---
 
 ### Zum Zweiten: Klasse (`class`) oder Struktur (`struct`)? <a name="link2"></a>
@@ -52,12 +66,64 @@ Eine Richtlinie stammt von Bjarne Stroustrup *himself*:
   * Verwenden Sie Strukturen (`struct`), wenn alle Datenelemente sich unabhängig voneinander verändern können.
 
 Es bleibt nur noch zu klären, was man unter einer *Invarianten* versteht?
+Dazu ein Beispiel einer Klasse `Game`,
+das eine Instanzvariable `m_position` hat, die sich bestimmten Grenzwerten
+(hier: `m_width` und `m_height`) unterwerfen muss.
+
+*Beispiel*:
+
+```cpp
+01: class Game
+02: {
+03: private:
+04:     int     m_width;       // right bound 
+05:     int     m_height;      // height bound 
+06:     Point2D m_position;    // position of a figure on the game board
+07: 
+08: public:
+09:     Game(int width, int height, Point2D position)
+10:         : m_width{}, m_height{}, m_position{ m_position }
+11:     {
+12:         // ensure that the object was constructed correctly 
+13:         checkInvariant();
+14:     }
+15: 
+16:     void moveTo(Point2D inc)
+17:     {
+18:         m_position.m_x += inc.m_x;
+19:         m_position.m_y += inc.m_y;
+20: 
+21:         // ensure that the figure wasn't moved out of play bounds 
+22:         checkInvariant();
+23:     }
+24: 
+25:     // calling 'checkInvariant' is unnecessary because this is an accessor method 
+26:     Point2D getLoc() const
+27:     {
+28:         return m_position;
+29:     }
+30: 
+31: private:
+32:     void checkInvariant() const
+33:     {
+34:         if (!(m_position.m_x >= 0 && m_position.m_x <= m_width)) {
+35:             throw std::out_of_range("Position exceeds width of game board!");
+36:         }
+37:                  
+38:         if (!(m_position.m_y >= 0 && m_position.m_y <= m_height)) {
+39:             throw std::out_of_range("Position exceeds height of game board!");
+40:         }
+41:     }
+42: };
+```
 
 ---
 
 ### Zum Dritten: Klasse (`class`) oder Struktur (`struct`)? <a name="link3"></a>
 
-Wenn ein (oder mehrere Elemente) mit `private` zu kennzeichnen sind, sollte man `class` verwenden.
+Wenn ein (oder mehrere Elemente) mit `private` zu kennzeichnen sind,
+sollte man `class` verwenden.
+
 
 ---
 
@@ -68,6 +134,17 @@ auch eine *Hervorhebung*:
 
   * Zur Implementierung in einer Klasse wird ein Bezug zur Schnittstelle gegeben.
   * In einer Klasse lassen sich Daten kapseln, die relevanten Methoden der Schnittstell sind hervorgehoben.
+
+*Beispiel*:
+
+```cpp
+01: struct ICloneable
+02: {
+03:     virtual ~ICloneable() {};
+04:     virtual std::shared_ptr<ICloneable> clone() const = 0;
+05: };
+```
+
 
 ---
 
@@ -249,7 +326,7 @@ Wir starten eine Reihe von Überlegungen zu folgender Struktur `Point2D`:
 04:     double m_y;
 05: };
 06: 
-07: static void test_variant_01() {
+07: void test_variant_01() {
 08: 
 09:     Point2D point;
 10:     std::println("x: {} - y: {}", point.m_x, point.m_y);
@@ -258,7 +335,7 @@ Wir starten eine Reihe von Überlegungen zu folgender Struktur `Point2D`:
 
 #### Variante 1
 
-Im letzten Listing starten wir mit der schlechtesten aller Möglichlichkeiten:
+Im letzten Listing starten wir mit der schlechtesten aller Möglichkeiten:
 Die Struktur `Point2D` besitzt keine Vorkehrungen, um ihre Membervariablen vorzubelegen &ndash;
 und in Zeile 9 ist es sogar möglich, eine Strukturvariable `point` anzulegen, deren Werte
 nicht vorbelegt sind.
@@ -272,7 +349,7 @@ nicht vorbelegt sind.
 04:     double m_y{};
 05: };
 06: 
-07: static void test_variant_02() {
+07: void test_variant_02() {
 08: 
 09:     Point2D point;
 10: 
@@ -288,12 +365,12 @@ nicht vorbelegt sind.
 
 In dieser Variante besitzen alle Membervariablen so genannte &bdquo;Default Initializer&rdquo;.
 Eine Variable ` Point2D point;` repräsentiert damit den Punkt (0,0) und alle sechs speziellen
-Klassenmethoden funktionieren wie erwartet.
+Membermethoden funktionieren wie erwartet.
 
-*Bemerkung*:
-Ein Konstruktor tut hier nichts, da es nichts zu tun gibt.
+*Bemerkung*:<br />
+Ein Destruktor tut hier nichts, da es nichts zu tun gibt.
 
-*Bemerkung*:
+*Bemerkung*:<br />
 Die zwei verschiebenden Methoden (Verschiebe-Konstruktor, verschiebende Wertzuweisung)
 verhalten sich wie ihre kopierenden Pendants, da es nicht wirklich etwas zu verschieben gibt
 (alle Membervariablen sind elementaren Typs).
@@ -311,7 +388,7 @@ Was fällt Ihnen an dieser dritten Variante auf?
 06:     Point2D(double x, double y) : m_x{ x }, m_y{ y } {}
 07: };
 08: 
-09: static void test_variant_03() {
+09: void test_variant_03() {
 10: 
 11:     // Point2D point;  // error: does not compile
 12:     Point2D anotherPoint{ 1.0, 2.0 };
@@ -332,11 +409,11 @@ Das sollte so nicht sein, eine Abhilfe finden Sie in der nächsten Variante 4 vo
 03:     double m_x;   // no more need for default initialization
 04:     double m_y;   // no more need for default initialization
 05: 
-06:     Point2D() : m_x{  }, m_y{  } {}
+06:     Point2D() : m_x{}, m_y{} {}
 07:     Point2D(double x, double y) : m_x{ x }, m_y{ y } {}
 08: };
 09: 
-10: static void test_variant_04() {
+10: void test_variant_04() {
 11: 
 12:     Point2D point; 
 13:     Point2D anotherPoint{ 1.0, 2.0 };
@@ -364,7 +441,7 @@ mit dem sprachlichen Mittel des &bdquo;*Constructor Chainings*&rdquo; zusammenfa
 07:     Point2D(double x, double y) : m_x{ x }, m_y{ y } {}
 08: };
 09: 
-10: static void test_variant_05() {
+10: void test_variant_05() {
 11: 
 12:     Point2D point;
 13:     Point2D anotherPoint{ 1.0, 2.0 };
@@ -374,7 +451,7 @@ mit dem sprachlichen Mittel des &bdquo;*Constructor Chainings*&rdquo; zusammenfa
 #### Variante 6
 
 Wir kommen noch einmal auf eine Version der Struktur `Point2D` zu sprechen,
-die den Standardkonstruktor verloren hatte. Mit dem Schlüsselwort `default` kann man diesen ergänzen.
+die den Standardkonstruktor verloren hatte. Mit dem Schlüsselwort `default` kann man diesen ebenfalls ergänzen.
 Dazu müssen alle Membervariablen aber mit &bdquo;Default Initializern&rdquo; vorbelegt werden,
 sonst funktioniert diese Variante nicht:
 
@@ -389,7 +466,7 @@ sonst funktioniert diese Variante nicht:
 07:     Point2D(double x, double y) : m_x{ x }, m_y{ y } {}
 08: };
 09: 
-10: static void test_variant_06() {
+10: void test_variant_06() {
 11: 
 12:     Point2D point;
 13:     Point2D anotherPoint{ 1.0, 2.0 };
@@ -402,8 +479,8 @@ Häufig kann man die Beobachtung machen, dass diese Art des Entwurfs zu gutem Ma
 #### Variante 7
 
 Zum Abschluss stellen wir einen letzen, sehr alternativen Ansatz vor:
-Die Struktur `Point2D` besitzt weder Konstruktoren noch &bdquo;Default Initializer&rdquo; für ihre Membervariablen,
-dafür kommt bei der Verwendung der Struktur die Aggregat-Initialisierung zum Einsatz:
+Die Struktur `Point2D` besitzt weder Konstruktoren noch &bdquo;Default Initializer&rdquo; für ihre Membervariablen.
+Dafür kommt bei der Verwendung der Struktur die Aggregat-Initialisierung zum Einsatz:
 
 
 ```cpp
@@ -413,30 +490,27 @@ dafür kommt bei der Verwendung der Struktur die Aggregat-Initialisierung zum Ei
 04:     double m_y;
 05: };
 06: 
-07: // taking advantage of struct Point2D beeing an 'aggregate' type:
-08: //   no user-declared constructors
-09: //   no inherited constructors
-10: //   no private non-static data members
-11: //   no virtual base classes
-12: //   ... some more issues
-13: 
-14: static void test_variant_07() {
-15: 
-16:     Point2D point{};
-17:     Point2D anotherPoint{ 1.0, 2.0 };
-18: }
+07: void test_variant_07() {
+08: 
+09:     // taking advantage of struct Point2D beeing an 'aggregate' type
+10:     Point2D point{};
+11:     Point2D anotherPoint{ 1.0, 2.0 };
+12: }
 ```
 
 Dazu muss der beteiligte Strukturtyp allerdings die Vorrausetzungen eines
 &bdquo;Aggregat-Typs&rdquo; aufweisen.
 
+Kompakt formuliert lauten diese:
+
+  * Keine benutzerdeklarierten Konstruktoren
+  * Keine geerbten Konstruktoren
+  * Keine privaten, nicht statischen Datenelemente
+  * Keine virtuellen Basisklassen
+  * ... einige weitere mehr detaillierte Eigenschaften
+
 
 ---
-
-
-
-
-
 
 ### Schreiben Sie kleine, fokussierte Funktionen (Methoden) <a name="link12"></a>
 
@@ -524,7 +598,7 @@ Einige Richtlinien zur Verwendung von `const`:
 19:     }
 20: };
 21: 
-22: static void printArea(const Rectangle& rect) {
+22: void printArea(const Rectangle& rect) {
 23:     std::println("Area: {}", rect.area());
 24: }
 ```
@@ -812,7 +886,7 @@ Verlust von `const` und `&` bei Verwendung von `auto`:
 10:     const std::string& getName() const { return m_name; }
 11: };
 12: 
-13: static void guidelines_keyword_auto_02()
+13: void guidelines_keyword_auto_02()
 14: {
 15:     Person jack{ "Jack", 50 };
 16:     auto name = jack.getName();

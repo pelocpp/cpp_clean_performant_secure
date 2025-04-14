@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <memory>
 #include <print>
 #include <stdexcept>
 
@@ -66,9 +67,6 @@ namespace GuidelinesCoreCpp {
                 if (!(m_position.m_y >= 0 && m_position.m_y <= m_height)) {
                     throw std::out_of_range("Position exceeds height of game board!");
                 }
-
-                //assert(m_position.m_x >= 0 && m_position.m_x <= m_width);
-                //assert(m_position.m_y >= 0 && m_position.m_y <= m_height);
             }
         };
 
@@ -82,6 +80,15 @@ namespace GuidelinesCoreCpp {
             // game is being spawned out of bounds 
             Game anotherGame{ 10, 10, Point2D{ 12, 8 } };
         }
+    }
+
+    namespace GuidelinesCoreCpp_UseInferfaces {
+
+        struct ICloneable
+        {
+            virtual ~ICloneable() {};
+            virtual std::shared_ptr<ICloneable> clone() const = 0;
+        };
     }
 
     namespace GuidelinesCoreCpp_DefaultedConstructors {
@@ -110,7 +117,6 @@ namespace GuidelinesCoreCpp {
             B b;
         }
     }
-
 
     namespace GuidelinesCoreCpp_InitializationOfStructs {
 
@@ -175,7 +181,7 @@ namespace GuidelinesCoreCpp {
                 double m_x;   // no more need for default initialization
                 double m_y;   // no more need for default initialization
 
-                Point2D() : m_x{  }, m_y{  } {}
+                Point2D() : m_x{}, m_y{} {}
                 Point2D(double x, double y) : m_x{ x }, m_y{ y } {}
             };
 
@@ -257,8 +263,12 @@ namespace GuidelinesCoreCpp {
     }
 
     namespace GuidelinesCoreCpp_InitializationOfObjects {
-    }
 
+
+
+
+
+    }
 
     namespace GuidelinesCoreCpp_SmallFocusedFunctions {
 
