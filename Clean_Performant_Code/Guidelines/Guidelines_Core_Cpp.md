@@ -238,6 +238,206 @@ Damit wird Ihr Programmcode performant, einfacher und wartbarer &ndash; und es s
 
 ---
 
+### Initialisierung von Strukturen <a name="link"></a>
+
+Wir starten eine Reihe von Überlegungen zu folgender Struktur `Point2D`:
+
+```cpp
+01: struct Point2D
+02: {
+03:     double m_x;
+04:     double m_y;
+05: };
+06: 
+07: static void test_variant_01() {
+08: 
+09:     Point2D point;
+10:     std::println("x: {} - y: {}", point.m_x, point.m_y);
+11: }
+```
+
+#### Variante 1
+
+Im letzten Listing starten wir mit der schlechtesten aller Möglichlichkeiten:
+Die Struktur `Point2D` besitzt keine Vorkehrungen, um ihre Membervariablen vorzubelegen &ndash;
+und in Zeile 9 ist es sogar möglich, eine Strukturvariable `point` anzulegen, deren Werte
+nicht vorbelegt sind.
+
+#### Variante 2
+
+```cpp
+01: struct Point2D
+02: {
+03:     double m_x{};
+04:     double m_y{};
+05: };
+06: 
+07: static void test_variant_02() {
+08: 
+09:     Point2D point;
+10: 
+11:     point.m_x = 1.0;
+12:     point.m_y = 2.0;
+13: 
+14:     Point2D copy{ point };   // automatically generated copy-c'tor
+15: 
+16:     Point2D anotherPoint;
+17:     anotherPoint = copy;     // automatically generated assignment operator
+18: }
+```
+
+In dieser Variante besitzen alle Membervariablen so genannte &bdquo;Default Initializer&rdquo;.
+Eine Variable ` Point2D point;` repräsentiert damit den Punkt (0,0) und alle sechs speziellen
+Klassenmethoden funktionieren wie erwartet.
+
+*Bemerkung*:
+Ein Konstruktor tut hier nichts, da es nichts zu tun gibt.
+
+*Bemerkung*:
+Die zwei verschiebenden Methoden (Verschiebe-Konstruktor, verschiebende Wertzuweisung)
+verhalten sich wie ihre kopierenden Pendants, da es nicht wirklich etwas zu verschieben gibt
+(alle Membervariablen sind elementaren Typs).
+
+#### Variante 3
+
+Was fällt Ihnen an dieser dritten Variante auf?
+
+```cpp
+01: struct Point2D
+02: {
+03:     double m_x{};
+04:     double m_y{};
+05: 
+06:     Point2D(double x, double y) : m_x{ x }, m_y{ y } {}
+07: };
+08: 
+09: static void test_variant_03() {
+10: 
+11:     // Point2D point;  // error: does not compile
+12:     Point2D anotherPoint{ 1.0, 2.0 };
+13: }
+```
+
+Die Struktur weist nun einen benutzerdefinierten Konstruktor auf.
+Damit ist Zeile 11 des letzten Listings nicht mehr übersetzungsfähig,
+es gibt also keinen Default-Konstruktor mehr.
+
+Das sollte so nicht sein, eine Abhilfe finden Sie in der nächsten Variante 4 vor:
+
+#### Variante 4
+
+```cpp
+01: struct Point2D
+02: {
+03:     double m_x;   // no more need for default initialization
+04:     double m_y;   // no more need for default initialization
+05: 
+06:     Point2D() : m_x{  }, m_y{  } {}
+07:     Point2D(double x, double y) : m_x{ x }, m_y{ y } {}
+08: };
+09: 
+10: static void test_variant_04() {
+11: 
+12:     Point2D point; 
+13:     Point2D anotherPoint{ 1.0, 2.0 };
+14: }
+```
+
+Die aktuelle Version der Struktur `Point2D` definiert nun alle erwünschten Konstruktoren explizit;
+damit besteht keine Notwendigkeit mehr, die Membervariablen mit Hilfe von
+&bdquo;Default Initializern&rdquo; vorzubelegen.
+ 
+
+#### Variante 5
+
+Die zwei benutzerdefinierten Konstruktoren aus dem letzten Beispiel kann man auch eleganter
+mit dem sprachlichen Mittel des &bdquo;*Constructor Chainings*&rdquo; zusammenfassen:
+
+
+```cpp
+01: struct Point2D
+02: {
+03:     double m_x;
+04:     double m_y;
+05: 
+06:     Point2D() : Point2D{ 0.0, 0.0 }  {}   // delegate work to another constructor
+07:     Point2D(double x, double y) : m_x{ x }, m_y{ y } {}
+08: };
+09: 
+10: static void test_variant_05() {
+11: 
+12:     Point2D point;
+13:     Point2D anotherPoint{ 1.0, 2.0 };
+14: }
+```
+
+#### Variante 6
+
+Wir kommen noch einmal auf eine Version der Struktur `Point2D` zu sprechen,
+die den Standardkonstruktor verloren hatte. Mit dem Schlüsselwort `default` kann man diesen ergänzen.
+Dazu müssen alle Membervariablen aber mit &bdquo;Default Initializern&rdquo; vorbelegt werden,
+sonst funktioniert diese Variante nicht:
+
+
+```cpp
+01: struct Point2D
+02: {
+03:     double m_x{};
+04:     double m_y{};
+05: 
+06:     Point2D() = default;
+07:     Point2D(double x, double y) : m_x{ x }, m_y{ y } {}
+08: };
+09: 
+10: static void test_variant_06() {
+11: 
+12:     Point2D point;
+13:     Point2D anotherPoint{ 1.0, 2.0 };
+14: }
+```
+
+Häufig kann man die Beobachtung machen, dass diese Art des Entwurfs zu gutem Maschinencode führt.
+
+
+#### Variante 7
+
+Zum Abschluss stellen wir einen letzen, sehr alternativen Ansatz vor:
+Die Struktur `Point2D` besitzt weder Konstruktoren noch &bdquo;Default Initializer&rdquo; für ihre Membervariablen,
+dafür kommt bei der Verwendung der Struktur die Aggregat-Initialisierung zum Einsatz:
+
+
+```cpp
+01: struct Point2D
+02: {
+03:     double m_x;
+04:     double m_y;
+05: };
+06: 
+07: // taking advantage of struct Point2D beeing an 'aggregate' type:
+08: //   no user-declared constructors
+09: //   no inherited constructors
+10: //   no private non-static data members
+11: //   no virtual base classes
+12: //   ... some more issues
+13: 
+14: static void test_variant_07() {
+15: 
+16:     Point2D point{};
+17:     Point2D anotherPoint{ 1.0, 2.0 };
+18: }
+```
+
+Dazu muss der beteiligte Strukturtyp allerdings die Vorrausetzungen eines
+&bdquo;Aggregat-Typs&rdquo; aufweisen.
+
+
+---
+
+
+
+
+
+
 ### Schreiben Sie kleine, fokussierte Funktionen (Methoden) <a name="link12"></a>
 
 Funktionen (Methoden) sind die Bausteine der *Clean Code* Programmierung.

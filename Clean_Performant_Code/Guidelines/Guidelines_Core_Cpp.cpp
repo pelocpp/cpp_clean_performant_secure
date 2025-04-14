@@ -118,11 +118,26 @@ namespace GuidelinesCoreCpp {
 
             struct Point2D
             {
+                double m_x;
+                double m_y;
+            };
+
+            static void test_variant_01() {
+
+                Point2D point;
+                std::println("x: {} - y: {}", point.m_x, point.m_y);
+            }
+        }
+
+        namespace Variant_02 {
+
+            struct Point2D
+            {
                 double m_x{};
                 double m_y{};
             };
 
-            static void test_variant_01() {
+            static void test_variant_02() {
 
                 Point2D point;
 
@@ -136,7 +151,7 @@ namespace GuidelinesCoreCpp {
             }
         }
 
-        namespace Variant_02 {
+        namespace Variant_03 {
 
             struct Point2D
             {
@@ -146,27 +161,9 @@ namespace GuidelinesCoreCpp {
                 Point2D(double x, double y) : m_x{ x }, m_y{ y } {}
             };
 
-            static void test_variant_02() {
-
-                // Point2D point;  // error: does not compile
-                Point2D anotherPoint{ 1.0, 2.0 };
-            }
-        }
-
-        namespace Variant_03 {
-
-            struct Point2D
-            {
-                double m_x;   // no more need for default initialization
-                double m_y;   // no more need for default initialization
-
-                Point2D() : m_x{  }, m_y{  } {}
-                Point2D(double x, double y) : m_x{ x }, m_y{ y } {}
-            };
-
             static void test_variant_03() {
 
-                Point2D point; 
+                // Point2D point;  // error: does not compile
                 Point2D anotherPoint{ 1.0, 2.0 };
             }
         }
@@ -178,13 +175,13 @@ namespace GuidelinesCoreCpp {
                 double m_x;   // no more need for default initialization
                 double m_y;   // no more need for default initialization
 
-                Point2D() : Point2D{ 0.0, 0.0 }  {}   // delegate work to another constructor
+                Point2D() : m_x{  }, m_y{  } {}
                 Point2D(double x, double y) : m_x{ x }, m_y{ y } {}
             };
 
             static void test_variant_04() {
 
-                Point2D point;
+                Point2D point; 
                 Point2D anotherPoint{ 1.0, 2.0 };
             }
         }
@@ -193,10 +190,10 @@ namespace GuidelinesCoreCpp {
 
             struct Point2D
             {
-                double m_x{};
-                double m_y{};
+                double m_x;   // no more need for default initialization
+                double m_y;   // no more need for default initialization
 
-                Point2D() = default;
+                Point2D() : Point2D{ 0.0, 0.0 }  {}   // delegate work to another constructor
                 Point2D(double x, double y) : m_x{ x }, m_y{ y } {}
             };
 
@@ -211,6 +208,24 @@ namespace GuidelinesCoreCpp {
 
             struct Point2D
             {
+                double m_x{};
+                double m_y{};
+
+                Point2D() = default;
+                Point2D(double x, double y) : m_x{ x }, m_y{ y } {}
+            };
+
+            static void test_variant_06() {
+
+                Point2D point;
+                Point2D anotherPoint{ 1.0, 2.0 };
+            }
+        }
+
+        namespace Variant_07 {
+
+            struct Point2D
+            {
                 double m_x;
                 double m_y;
             };
@@ -222,7 +237,7 @@ namespace GuidelinesCoreCpp {
             //   no virtual base classes
             //   ... some more issues
 
-            static void test_variant_06() {
+            static void test_variant_07() {
 
                 Point2D point{};
                 Point2D anotherPoint{ 1.0, 2.0 };
@@ -237,6 +252,7 @@ namespace GuidelinesCoreCpp {
             Variant_04::test_variant_04();
             Variant_05::test_variant_05();
             Variant_06::test_variant_06();
+            Variant_07::test_variant_07();
         }
     }
 
