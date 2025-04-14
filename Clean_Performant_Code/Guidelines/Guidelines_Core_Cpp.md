@@ -16,7 +16,14 @@
   * [Automatische Erzeugung der speziellen Member-Funktionen: Wie?](#link8)
   * [*Explicitly defaulted* Standardkonstruktor](#link9)
   * [*Explicitly deleted* Standardkonstruktor](#link10)
-  * [Automatische Erzeugung spezieller Member-Funktionen: Fazit](#link11)
+  * [Automatische Erzeugung spezieller Member-Funktionen: *Rule-of-Zero*](#link11)
+
+
+
+  [Initialisierung von Strukturen](#link11)
+
+
+
   * [Schreiben Sie kleine, fokussierte Funktionen (Methoden)](#link12)
   * [Verwenden Sie `const` großzügig](#link13)
   * [Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen](#link14)
@@ -204,7 +211,7 @@ public:
 
 ---
 
-### Automatische Erzeugung spezieller Member-Funktionen: Fazit <a name="link11"></a>
+### Automatische Erzeugung spezieller Member-Funktionen: *Rule-of-Zero* <a name="link11"></a>
 
 Was sieht die einfachste Strategie aus:
 
@@ -453,8 +460,9 @@ Es gibt auch eine zweite Möglichkeit:
 
 Wenn beispielsweise viele unterschiedliche Klassen in einem 3D-Szenario
 ein *Transformations*-Eigenschaft (also eine Position, eine Rotation und eine Skalierung) benötigen,
-könnten Sie alle Ihre Klassen von einer Klasse `Transform` ableiten,
-Sie könnten eine Transform-Eigenschaft aber auch als Attribut den Klassen hinzufügen:
+könnten Sie alle Ihre Klassen von einer Klasse `Transform` ableiten.
+
+Sie könnten eine *Transform*-Eigenschaft aber auch als Attribut den Klassen hinzufügen:
 
 ```cpp
 01: class Vector3D{};
@@ -488,11 +496,11 @@ Sie könnten eine Transform-Eigenschaft aber auch als Attribut den Klassen hinzu
 
   * Denn wenn Sie eine übergeordnete Klasse ändern, wird die Änderung zwangsläufig in allen untergeordneten Klassen widergespiegelt, was oft nicht erwünscht ist.
 
-  * Aber oft müssen Sie der übergeordneten Klasse etwas hinzufügen, weil eine bestimmte untergeordnete Klasse es braucht, und indem Sie dies tun, zwingen Sie es allen anderen untergeordneten Klassen auf, die es nicht unbedingt brauchen oder wollen.
+  * Oft müssen Sie der übergeordneten Klasse etwas hinzufügen, weil eine bestimmte untergeordnete Klasse es braucht. Indem Sie dies tun, zwingen Sie es allen anderen untergeordneten Klassen auf, die es nicht unbedingt brauchen oder wollen.
 
   * Mit Komposition haben Sie mehr Kontrolle darüber.
 
-  * Und Komposition ermutigt Sie natürlich auch, kleinere Klassen zu schreiben, anstatt von einer großen übergeordneten Klasse zu erben.
+  * Komposition ermöglicht es auch, kleinere Klassen zu schreiben, anstatt von einer großen übergeordneten Klasse zu erben.
 
 ---
 
@@ -551,6 +559,9 @@ verhindert es implizite Konvertierungen, die automatisch vom Compiler durchgefü
 *Hinweis*:
 Mit einer expliziten Typwandlung könnte man die Konvertierung wieder aktivieren,
 aber dieses Mal eben nicht versteckt, sondern sichtbar für den Entwickler!
+
+*Frage*:
+
 
 ---
 

@@ -2,15 +2,15 @@
 // Guidelines_Core_Cpp.cpp
 // ===========================================================================
 
-#include <cassert>
 #include <fstream>
 #include <iostream>
 #include <map>
 #include <print>
+#include <stdexcept>
 
 namespace GuidelinesCoreCpp {
 
-    namespace CoreGuidelines {
+    namespace GuidelinesCoreCpp_ClassVsStructInvariants {
 
         // =======================================================================
         // Invariants
@@ -19,11 +19,11 @@ namespace GuidelinesCoreCpp {
 
         struct Point2D
         {
+            int m_x;
+            int m_y;
+
             Point2D() : Point2D{ 0, 0 } {}
             Point2D(int x, int y) : m_x{ x }, m_y{ y } {}
-
-            int m_x{};
-            int m_y{};
         };
 
         class Game
@@ -59,12 +59,20 @@ namespace GuidelinesCoreCpp {
         private:
             void checkInvariant() const
             {
-                assert(m_position.m_x >= 0 && m_position.m_x <= m_width);
-                assert(m_position.m_y >= 0 && m_position.m_y <= m_height);
+                if (!(m_position.m_x >= 0 && m_position.m_x <= m_width)) {
+                    throw std::out_of_range("Position exceeds width of game board!");
+                }
+                 
+                if (!(m_position.m_y >= 0 && m_position.m_y <= m_height)) {
+                    throw std::out_of_range("Position exceeds height of game board!");
+                }
+
+                //assert(m_position.m_x >= 0 && m_position.m_x <= m_width);
+                //assert(m_position.m_y >= 0 && m_position.m_y <= m_height);
             }
         };
 
-        static void guidelines_inheritance_invariants()
+        static void guidelines_invariants()
         {
             Game game{ 30, 20, Point2D{ 5, 5 } };
 
@@ -74,6 +82,9 @@ namespace GuidelinesCoreCpp {
             // game is being spawned out of bounds 
             Game anotherGame{ 10, 10, Point2D{ 12, 8 } };
         }
+    }
+
+    namespace GuidelinesCoreCpp_DefaultedConstructors {
 
         // =======================================================================
         // The new syntax "= default" in C++11
@@ -98,11 +109,147 @@ namespace GuidelinesCoreCpp {
             A a;
             B b;
         }
+    }
+
+
+    namespace GuidelinesCoreCpp_InitializationOfStructs {
+
+        namespace Variant_01 {
+
+            struct Point2D
+            {
+                double m_x{};
+                double m_y{};
+            };
+
+            static void test_variant_01() {
+
+                Point2D point;
+
+                point.m_x = 1.0;
+                point.m_y = 2.0;
+
+                Point2D copy{ point };   // automatically generated copy-c'tor
+
+                Point2D anotherPoint;
+                anotherPoint = copy;     // automatically generated assignment operator
+            }
+        }
+
+        namespace Variant_02 {
+
+            struct Point2D
+            {
+                double m_x{};
+                double m_y{};
+
+                Point2D(double x, double y) : m_x{ x }, m_y{ y } {}
+            };
+
+            static void test_variant_02() {
+
+                // Point2D point;  // error: does not compile
+                Point2D anotherPoint{ 1.0, 2.0 };
+            }
+        }
+
+        namespace Variant_03 {
+
+            struct Point2D
+            {
+                double m_x;   // no more need for default initialization
+                double m_y;   // no more need for default initialization
+
+                Point2D() : m_x{  }, m_y{  } {}
+                Point2D(double x, double y) : m_x{ x }, m_y{ y } {}
+            };
+
+            static void test_variant_03() {
+
+                Point2D point; 
+                Point2D anotherPoint{ 1.0, 2.0 };
+            }
+        }
+
+        namespace Variant_04 {
+
+            struct Point2D
+            {
+                double m_x;   // no more need for default initialization
+                double m_y;   // no more need for default initialization
+
+                Point2D() : Point2D{ 0.0, 0.0 }  {}   // delegate work to another constructor
+                Point2D(double x, double y) : m_x{ x }, m_y{ y } {}
+            };
+
+            static void test_variant_04() {
+
+                Point2D point;
+                Point2D anotherPoint{ 1.0, 2.0 };
+            }
+        }
+
+        namespace Variant_05 {
+
+            struct Point2D
+            {
+                double m_x{};
+                double m_y{};
+
+                Point2D() = default;
+                Point2D(double x, double y) : m_x{ x }, m_y{ y } {}
+            };
+
+            static void test_variant_05() {
+
+                Point2D point;
+                Point2D anotherPoint{ 1.0, 2.0 };
+            }
+        }
+
+        namespace Variant_06 {
+
+            struct Point2D
+            {
+                double m_x;
+                double m_y;
+            };
+
+            // taking advantage of struct Point2D beeing an 'aggregate' type:
+            //   no user-declared constructors
+            //   no inherited constructors
+            //   no private non-static data members
+            //   no virtual base classes
+            //   ... some more issues
+
+            static void test_variant_06() {
+
+                Point2D point{};
+                Point2D anotherPoint{ 1.0, 2.0 };
+            }
+        }
+    
+        static void guidelines_initialization_of_structs()
+        {
+            Variant_01::test_variant_01();
+            Variant_02::test_variant_02();
+            Variant_03::test_variant_03();
+            Variant_04::test_variant_04();
+            Variant_05::test_variant_05();
+            Variant_06::test_variant_06();
+        }
+    }
+
+    namespace GuidelinesCoreCpp_InitializationOfObjects {
+    }
+
+
+    namespace GuidelinesCoreCpp_SmallFocusedFunctions {
 
         // =======================================================================
         // Write Small, Focused Functions
 
-        static bool isValidUsername(const std::string& username) {
+        static bool isValidUserName(const std::string& username) {
 
             const auto MinLength{ 8 };
             const auto MaxLength{ 30 };
@@ -123,6 +270,15 @@ namespace GuidelinesCoreCpp {
 
             return true;
         }
+
+        static void guidelines_small_focused_functions()
+        {
+            std::string user{ "jack1980" };
+            auto isValid{ isValidUserName(user) };
+        }
+    }
+
+    namespace GuidelinesCoreCpp_UseConstLiberally{
 
         // =======================================================================
         // Use 'const' liberally
@@ -153,6 +309,15 @@ namespace GuidelinesCoreCpp {
             std::println("Area: {}", rect.area());
         }
 
+        static void guidelines_use_const_liberally()
+        {
+            Rectangle rect{ 10.0, 20.0 };
+            printArea(rect);
+        }
+    }
+
+    namespace GuidelinesCoreCpp_PreferExceptionsOverErrorCodes {
+
         // =======================================================================
         // Prefer Exceptions over Error Codes
 
@@ -182,13 +347,19 @@ namespace GuidelinesCoreCpp {
 
             // Process the file
         }
-    }
 
-    // =======================================================================
-    // Return Type of Methods
+        static void guidelines_error_handling()
+        {
+            error_handling_01();
+            error_handling_02();
+        }
+    }
 
     namespace GuidelinesCoreCpp_MethodsReturnType_CopiedToCaller {
 
+        // =======================================================================
+        // Return Type of Methods: By Copy
+         
         class Person
         {
         private:
@@ -205,7 +376,7 @@ namespace GuidelinesCoreCpp {
             size_t getAge() const { return m_age; }
         };
 
-        static void test_person() {
+        static void guidelines_return_type() {
             Person jack{ "Jack", 50 };
             std::string name{ jack.getName() };
             std::println("Name: {}", name);
@@ -213,6 +384,9 @@ namespace GuidelinesCoreCpp {
     }
 
     namespace GuidelinesCoreCpp_MethodsReturnType_LifetimeByVoucher {
+
+        // =======================================================================
+        // Return Type of Methods: By Reference
 
         class Person
         {
@@ -230,21 +404,22 @@ namespace GuidelinesCoreCpp {
             size_t getAge() const { return m_age; }
         };
 
-        static void test_person() {
+        static void guidelines_return_type() {
             Person jack{ "Jack", 50 };
             const std::string& name{ jack.getName() };
             std::println("Name: {}", name);
         }
     }
 
-    // =======================================================================
-    // Prefer Composition over Inheritance
-
     namespace GuidelinesCoreCpp_CompositionOverInheritance {
 
+        // =======================================================================
+        // Prefer Composition over Inheritance
+         
         class Vector3D{};
 
-        class Transform {
+        class Transform
+        {
             Vector3D m_position;
             Vector3D m_rotation;
             Vector3D m_scale;
@@ -267,6 +442,8 @@ namespace GuidelinesCoreCpp {
         private:
             Transform m_transform;
         };
+
+        static void guidelines_prefer_composition_over_inheritance() {}
     }
 
     // =======================================================================
@@ -303,11 +480,11 @@ namespace GuidelinesCoreCpp {
         }
     }
 
-    // =======================================================================
-    // Prevent Implicit Conversions
-
     namespace GuidelinesCoreCpp_Keyword_Auto {
 
+        // =======================================================================
+        // Using Keyword 'auto'
+         
         static void guidelines_keyword_auto_01()
         {
             std::map<int, std::string> aMap{ { 1, "Hello"  } };
@@ -349,18 +526,22 @@ void guidelines_core_cpp()
 {
     using namespace GuidelinesCoreCpp;
 
-    // guidelines_inheritance_invariants();   // crashes intentionally
-    //guidelines_defaulted_constructor();
-    GuidelinesCoreCpp_PreventImplicitConversions::guidelines_implicit_conversion();
-    GuidelinesCoreCpp_Keyword_Auto::guidelines_keyword_auto();
+    // GuidelinesCoreCpp_ClassVsStructInvariants::guidelines_invariants();  // crashes intentionally
+    //GuidelinesCoreCpp_DefaultedConstructors::guidelines_defaulted_constructor();
+
+
+    GuidelinesCoreCpp_InitializationOfStructs::guidelines_initialization_of_structs();
+
+    //GuidelinesCoreCpp_SmallFocusedFunctions::guidelines_small_focused_functions();
+    //GuidelinesCoreCpp_UseConstLiberally::guidelines_use_const_liberally();
+    //GuidelinesCoreCpp_PreferExceptionsOverErrorCodes::guidelines_error_handling();
+    //GuidelinesCoreCpp_MethodsReturnType_CopiedToCaller::guidelines_return_type();
+    //GuidelinesCoreCpp_MethodsReturnType_LifetimeByVoucher::guidelines_return_type();
+    //GuidelinesCoreCpp_CompositionOverInheritance::guidelines_prefer_composition_over_inheritance();
+    //GuidelinesCoreCpp_PreventImplicitConversions::guidelines_implicit_conversion();
+    //GuidelinesCoreCpp_Keyword_Auto::guidelines_keyword_auto();
 }
 
 // ===========================================================================
 // End-of-File
 // ===========================================================================
-
-static void test_03() {
-
-
-}
-
