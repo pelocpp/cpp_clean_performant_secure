@@ -22,7 +22,7 @@
 
   [Initialisierung von Strukturen](#link11)
   [Initialisierung von Objekten](#link11)
-
+  Das Copy-and-Swap-Idiom 
 
 
   * [Schreiben Sie kleine, fokussierte Funktionen (Methoden)](#link12)
@@ -508,6 +508,214 @@ Kompakt formuliert lauten diese:
   * Keine privaten, nicht statischen Datenelemente
   * Keine virtuellen Basisklassen
   * ... einige weitere mehr detaillierte Eigenschaften
+
+
+---
+
+### Initialisierung von Objekten
+
+Wie bei Strukturen betrachten wir nun eine Reihe von Entwicklungsschritten
+in der Entwicklung einer Klasse `SimpleString`.
+
+#### Variante 1
+
+Diese Variante stellt den Rohentwurf einer Klasse `SimpleString` dar &ndash;
+und ist mit mehreren Fehlern behaftet. Erkennen Sie diese?
+
+```cpp
+01: class SimpleString
+02: {
+03: private:
+04:     char*       m_data{};   // pointer to the characters of the string (nullptr)
+05:     std::size_t m_elems{};  // number of elements (zero)
+06:             
+07: public:
+08:     // c'tors / d'tor
+09:     SimpleString() = default; // empty string
+10: 
+11:     SimpleString(const char* s)
+12:         : m_elems{ std::strlen(s) }
+13:     {
+14:         m_data = new char[size() + 1];      // need space for terminating '\0'
+15:         std::copy(s, s + size(), m_data);
+16:         m_data[size()] = '\0';
+17:     }
+18: 
+19:     ~SimpleString() {
+20:         delete[] m_data;
+21:     }
+22: 
+23:     // getter
+24:     std::size_t size() const { return m_elems; }
+25:     bool empty() const { return size() == 0; }
+26:     const char* data() const { return m_data; }
+27: 
+28:     // operators (no index-checking intentionally)
+29:     char operator[](std::size_t n) const { return m_data[n]; }
+30:     char& operator[](std::size_t n) { return m_data[n]; }
+31: };
+```
+
+#### Variante 2
+
+Für Klasse `SimpleString` werden die speziellen Member-Funktionen wie bei Strukturen automatisch
+erzeugt &ndash; nur funktionieren diese nicht! Die `SimpleString`-Klasse enthält Zeiger,
+die durch `new` erzeugt worden sind. Prinzipiell sind derartige Zeiger kopierbar &ndash;
+nur dürfen derartige Zeiger nicht zweimal mit `delete` freigegeben werden.
+
+Ungeachtet dessen sollte man auch nicht übersehen, dass eine Kopie eines Zeigers nicht zu einer
+Kopie der Daten führt, auf die ein Zeiger zeigt. Also auch diese Schwachstelle wird von den
+automatisch generierten speziellen Member-Funktionen nicht berücksichtigt.
+
+Damit kommen wir zum zweiten Entwicklungsschritt der Klasse `SimpleString`,
+es sind die Kopieroperationen (Kopier-Konstruktor, kopierender Wertzuweisungsoperator) explizit zu entwickeln:
+
+
+```cpp
+01: class SimpleString
+02: {
+03: private:
+04:     char* m_data{};   // pointer to the characters of the string (nullptr)
+05:     std::size_t m_elems{};  // number of elements (zero)
+06: 
+07: public:
+08:     // c'tors / d'tor
+09:     SimpleString() = default; // empty string
+10: 
+11:     SimpleString(const char* s)
+12:         : m_elems{ std::strlen(s) }
+13:     {
+14:         m_data = new char[size() + 1];      // need space for terminating '\0'
+15:         std::copy(s, s + size(), m_data);
+16:         m_data[size()] = '\0';
+17:     }
+18: 
+19:     // copy-constructor
+20:     SimpleString(const SimpleString& other)
+21:         : m_data{ new char[other.size() + 1] }, m_elems{ other.size() }
+22:     {
+23:         std::copy(other.m_data, other.m_data + other.size(), m_data);
+24:         m_data[size()] = '\0';
+25:     }
+26: 
+27:     ~SimpleString() {
+28:         delete[] m_data;
+29:     }
+30: 
+31:     // assignment operator
+32:     SimpleString& operator=(const SimpleString& other)
+33:     {
+34:         delete[] m_data;
+35:         m_data = new char[other.size() + 1];
+36:         std::copy(other.m_data, other.m_data + other.size(), m_data);
+37:         m_elems = other.size();
+38:         m_data[size()] = '\0';
+39:         return *this;
+40:     }
+41: 
+42:     // getter
+43:     std::size_t size() const { return m_elems; }
+44:     bool empty() const { return size() == 0; }
+45:     const char* data() const { return m_data; }
+46: 
+47:     // operators (no index-checking intentionally)
+48:     char operator[](std::size_t n) const { return m_data[n]; }
+49:     char& operator[](std::size_t n) { return m_data[n]; }
+50: };
+```
+
+Die vorgestelle Realisierung läuft &ndash; in den meisten Fällen &ndash;,
+dennoch weist sie einen schweren Entwurfsfehler auf! Erkennen Sie die Schwachstellen?
+
+#### Variante 3
+
+Die Schwachstellen im Listing von Variante 2 sind die Zeilen 34 und 35.
+Wirft der Aufruf des `new`-Operators eine Exception (`std::bad_alloc`),
+so befindet sich das `SimpleString`-Objekt in einem inkorrekten Zustand.
+Der Zeiger `m_data` zeigt auf falsche Daten, jeglicher Zugriff auf das Objekt zieht *Undefined Behavior* nach sich.
+
+Wir versuchen es mit einem Redesign der Wertzuweisungsoperators `operator=`:
+
+```cpp
+01: SimpleString& operator=(const SimpleString& other)
+02: {
+03:     char* tmp = new char[other.size() + 1];
+04:     delete[] m_data;
+05:     m_data = tmp;
+06:     std::copy(other.m_data, other.m_data + other.size(), m_data);
+07:     m_elems = other.size();
+08:     m_data[size()] = '\0';
+09:     return *this;
+10: }
+```
+
+Diese Version ruiniert zumindest kein Objekt, wenn es während der Ausführung zu einer Ausnahme kommt.
+Dennoch weist auch diese Realisierung einen &ndash; subtilen &ndash; Fehler auf! Welchen?
+
+
+#### Variante 4
+
+Betrachten Sie hierzu folgendes Beispiel, dass Sie mit der Realisierung aus Variante 3 aufrufen:
+
+
+```cpp
+01: SimpleString s{ "Hello World" };
+02: s = s;
+03: std::println("{}", s.data());
+```
+
+Das Programm enthält eine Selbstzuweisung. Das ergibt zwar keinen Sinn, in *Production-Ready* Quellcode 
+sollte das aber berücksichtigt werden. Außerdem darf nicht übersehen werden, dass das Beispiel zwar nicht abstürzt,
+aber zu einem unerwarteten Ergebnis führt, da auf Grund der Freigabe von `s` auf der rechten Seite der Wertzuweisung
+keine Daten mehr für den Kopiervorgang zur linken Seite vorhanden sind:
+
+```
+═══════════
+```
+
+Damit kommen wir zur nächsten Überarbeitung des Wertzuweisungsoperators `operator=`:
+
+
+```cpp
+01: SimpleString& operator=(const SimpleString& other)
+02: {
+03:     // prevent self-assignment
+04:     if (this == &other) {
+05:         return *this;
+06:     }
+07: 
+08:     char* tmp = new char[other.size() + 1];
+09:     delete[] m_data;
+10:     m_data = tmp;
+11:     std::copy(other.m_data, other.m_data + other.size(), m_data);
+12:     m_elems = other.size();
+13:     m_data[size()] = '\0';
+14:     return *this;
+15: }
+```
+
+Diese Variante des Wertzuweisungsoperators ist nun fehlerfrei. Okay, sie zeichnet sich nicht gerade durch Übersichtlichkeit aus, 
+und die Zeilen 4 bis 6 schmerzen etwas: Sie werden *immer* ausgeführt, und damit eben auch in fast allen Fällen,
+in denen die beiden Objekte links und rechts von der Wertzuweisung verschieden sind.
+Wir haben es mit einem Fall von &bdquo;*Pessimization*&rdquo; zu tun:
+
+
+##### *Pessimization*
+
+Das Wort *Pessimization* wird im Allgemeinen als Gegenteil von *Optimierung* verwendet und bezeichnet
+ein Programmiermanöver oder eine Technik, die das Programmverhalten weniger effizient macht als es sein sollte.
+
+Der obige Fall ist ein bekanntes Beispiel für ein solches Manöver: Jeder zahlt für eine potenzielle Sprung-Anweisung (Assembler: `jmp`-Befehl),
+der durch die `if`-Anweisung eingeleitet wird, obwohl dieser nur in seltenen und ungünstigen Fällen erforderlich ist.
+
+Bei einer *Pessimization*-Situation lohnt es sich oft, einen Schritt zurückzutreten und zu überdenken.
+Vielleicht haben wir das Problem aus dem falschen Blickwinkel angegangen.
+
+Und damit sind wir beim nächsten Thema angekommen: Das Copy-and-Swap-Idiom.
+
+---
+
+### Das Copy-and-Swap-Idiom <a name="link12"></a>
 
 
 ---

@@ -2,12 +2,16 @@
 // Guidelines_Core_Cpp.cpp
 // ===========================================================================
 
+#include <algorithm> 
+#include <cstddef>
+#include <cstring> 
 #include <fstream>
 #include <iostream>
 #include <map>
 #include <memory>
 #include <print>
 #include <stdexcept>
+#include <utility> 
 
 namespace GuidelinesCoreCpp {
 
@@ -264,9 +268,254 @@ namespace GuidelinesCoreCpp {
 
     namespace GuidelinesCoreCpp_InitializationOfObjects {
 
+        namespace Variant_01 {
+
+            class SimpleString
+            {
+            private:
+                char*       m_data{};   // pointer to the characters of the string (nullptr)
+                std::size_t m_elems{};  // number of elements (zero)
+            
+            public:
+                // c'tors / d'tor
+                SimpleString() = default; // empty string
+
+                SimpleString(const char* s)
+                    : m_elems{ std::strlen(s) }
+                {
+                    m_data = new char[size() + 1];      // need space for terminating '\0'
+                    std::copy(s, s + size(), m_data);
+                    m_data[size()] = '\0';
+                }
+
+                ~SimpleString() {
+                    delete[] m_data;
+                }
+
+                // getter
+                std::size_t size() const { return m_elems; }
+                bool empty() const { return size() == 0; }
+                const char* data() const { return m_data; }
+
+                // operators (no index-checking intentionally)
+                char operator[](std::size_t n) const { return m_data[n]; }
+                char& operator[](std::size_t n) { return m_data[n]; }
+            };
+
+            static void test_variant_01() {
+
+                SimpleString s{ "Hello World" };
+                std::println("{}", s.data());
+
+                SimpleString s2;
+                s2 = s;
+                std::println("{}", s2.data());
+            }
+        }
+
+        namespace Variant_02 {
+
+            class SimpleString
+            {
+            private:
+                char* m_data{};   // pointer to the characters of the string (nullptr)
+                std::size_t m_elems{};  // number of elements (zero)
+
+            public:
+                // c'tors / d'tor
+                SimpleString() = default; // empty string
+
+                SimpleString(const char* s)
+                    : m_elems{ std::strlen(s) }
+                {
+                    m_data = new char[size() + 1];      // need space for terminating '\0'
+                    std::copy(s, s + size(), m_data);
+                    m_data[size()] = '\0';
+                }
+
+                // copy-constructor
+                SimpleString(const SimpleString& other)
+                    : m_data{ new char[other.size() + 1] }, m_elems{ other.size() }
+                {
+                    std::copy(other.m_data, other.m_data + other.size(), m_data);
+                    m_data[size()] = '\0';
+                }
+
+                ~SimpleString() {
+                    delete[] m_data;
+                }
+
+                // assignment operator
+                SimpleString& operator=(const SimpleString& other)
+                {
+                    delete[] m_data;
+                    m_data = new char[other.size() + 1];
+                    std::copy(other.m_data, other.m_data + other.size(), m_data);
+                    m_elems = other.size();
+                    m_data[size()] = '\0';
+                    return *this;
+                }
+
+                // getter
+                std::size_t size() const { return m_elems; }
+                bool empty() const { return size() == 0; }
+                const char* data() const { return m_data; }
+
+                // operators (no index-checking intentionally)
+                char operator[](std::size_t n) const { return m_data[n]; }
+                char& operator[](std::size_t n) { return m_data[n]; }
+            };
+
+            static void test_variant_02() {
+
+                SimpleString s{ "Hello World" };
+                std::println("{}", s.data());
+
+                SimpleString s2{ s };
+                std::println("{}", s2.data());
+            }
+        }
+
+        namespace Variant_03 {
+
+            class SimpleString
+            {
+            private:
+                char* m_data{};   // pointer to the characters of the string (nullptr)
+                std::size_t m_elems{};  // number of elements (zero)
+
+            public:
+                // c'tors / d'tor
+                SimpleString() = default; // empty string
+
+                SimpleString(const char* s) 
+                    : m_elems{ std::strlen(s) }
+                {
+                    m_data = new char[size() + 1];      // need space for terminating '\0'
+                    std::copy(s, s + size(), m_data);
+                    m_data[size()] = '\0';
+                }
+
+                // copy-constructor
+                SimpleString(const SimpleString& other)
+                    : m_data{ new char[other.size() + 1] }, m_elems{ other.size() }
+                {
+                    std::copy(other.m_data, other.m_data + other.size(), m_data);
+                    m_data[size()] = '\0';
+                }
+
+                ~SimpleString() {
+                    delete[] m_data;
+                }
+
+                // assignment operator
+                SimpleString& operator=(const SimpleString& other)
+                {
+                    char* tmp = new char[other.size() + 1];
+                    delete[] m_data;
+                    m_data = tmp;
+                    std::copy(other.m_data, other.m_data + other.size(), m_data);
+                    m_elems = other.size();
+                    m_data[size()] = '\0';
+                    return *this;
+                }
+
+                // getter
+                std::size_t size() const { return m_elems; }
+                bool empty() const { return size() == 0; }
+                const char* data() const { return m_data; }
+
+                // operators (no index-checking intentionally)
+                char operator[](std::size_t n) const { return m_data[n]; }
+                char& operator[](std::size_t n) { return m_data[n]; }
+            };
+
+            static void test_variant_03() {
+
+                SimpleString s{ "Hello World" };
+                std::println("{}", s.data());
+
+                SimpleString s2;
+                s2 = s;
+                std::println("{}", s2.data());
+            }
+        }
+
+        namespace Variant_04 {
+
+            class SimpleString
+            {
+            private:
+                char* m_data{};   // pointer to the characters of the string (nullptr)
+                std::size_t m_elems{};  // number of elements (zero)
+
+            public:
+                // c'tors / d'tor
+                SimpleString() = default; // empty string
+
+                SimpleString(const char* s)
+                    : m_elems{ std::strlen(s) }
+                {
+                    m_data = new char[size() + 1];      // need space for terminating '\0'
+                    std::copy(s, s + size(), m_data);
+                    m_data[size()] = '\0';
+                }
+
+                // copy-constructor
+                SimpleString(const SimpleString& other)
+                    : m_data{ new char[other.size() + 1] }, m_elems{ other.size() }
+                {
+                    std::copy(other.m_data, other.m_data + other.size(), m_data);
+                    m_data[size()] = '\0';
+                }
+
+                ~SimpleString() {
+                    delete[] m_data;
+                }
+
+                // assignment operator
+                SimpleString& operator=(const SimpleString& other)
+                {
+                    // prevent self-assignment
+                    if (this == &other) {
+                        return *this;
+                    }
+
+                    char* tmp = new char[other.size() + 1];
+                    delete[] m_data;
+                    m_data = tmp;
+                    std::copy(other.m_data, other.m_data + other.size(), m_data);
+                    m_elems = other.size();
+                    m_data[size()] = '\0';
+                    return *this;
+                }
+
+                // getter
+                std::size_t size() const { return m_elems; }
+                bool empty() const { return size() == 0; }
+                const char* data() const { return m_data; }
+
+                // operators (no index-checking intentionally)
+                char operator[](std::size_t n) const { return m_data[n]; }
+                char& operator[](std::size_t n) { return m_data[n]; }
+            };
+
+            static void test_variant_04() {
+
+                SimpleString s{ "Hello World" };
+                s = s;
+                std::println("{}", s.data());
+            }
+        }
 
 
-
+        static void guidelines_initialization_of_objects()
+        {
+           // Variant_01::test_variant_01();
+           // Variant_02::test_variant_02();
+          //  Variant_03::test_variant_03();
+            Variant_04::test_variant_04();
+        }
 
     }
 
@@ -556,7 +805,8 @@ void guidelines_core_cpp()
     //GuidelinesCoreCpp_DefaultedConstructors::guidelines_defaulted_constructor();
 
 
-    GuidelinesCoreCpp_InitializationOfStructs::guidelines_initialization_of_structs();
+  //  GuidelinesCoreCpp_InitializationOfStructs::guidelines_initialization_of_structs();
+    GuidelinesCoreCpp_InitializationOfObjects::guidelines_initialization_of_objects();
 
     //GuidelinesCoreCpp_SmallFocusedFunctions::guidelines_small_focused_functions();
     //GuidelinesCoreCpp_UseConstLiberally::guidelines_use_const_liberally();
