@@ -22,7 +22,8 @@
 
   [Initialisierung von Strukturen](#link11)
   [Initialisierung von Objekten](#link11)
-  Das Copy-and-Swap-Idiom 
+  [Das Copy-and-Swap-Idiom](#link11)
+  
 
 
   * [Schreiben Sie kleine, fokussierte Funktionen (Methoden)](#link12)
@@ -568,14 +569,14 @@ Kopie der Daten führt, auf die ein Zeiger zeigt. Also auch diese Schwachstelle 
 automatisch generierten speziellen Member-Funktionen nicht berücksichtigt.
 
 Damit kommen wir zum zweiten Entwicklungsschritt der Klasse `SimpleString`,
-es sind die Kopieroperationen (Kopier-Konstruktor, kopierender Wertzuweisungsoperator) explizit zu entwickeln:
+es sind die Kopieroperationen (Kopier-Konstruktor, kopierender Wertzuweisungsoperator) explizit realisiert:
 
 
 ```cpp
 01: class SimpleString
 02: {
 03: private:
-04:     char* m_data{};   // pointer to the characters of the string (nullptr)
+04:     char*       m_data{};   // pointer to the characters of the string (nullptr)
 05:     std::size_t m_elems{};  // number of elements (zero)
 06: 
 07: public:
@@ -634,7 +635,7 @@ Wirft der Aufruf des `new`-Operators eine Exception (`std::bad_alloc`),
 so befindet sich das `SimpleString`-Objekt in einem inkorrekten Zustand.
 Der Zeiger `m_data` zeigt auf falsche Daten, jeglicher Zugriff auf das Objekt zieht *Undefined Behavior* nach sich.
 
-Wir versuchen es mit einem Redesign der Wertzuweisungsoperators `operator=`:
+Wir versuchen es mit einem Redesign des Wertzuweisungsoperators `operator=`:
 
 ```cpp
 01: SimpleString& operator=(const SimpleString& other)
@@ -673,7 +674,7 @@ keine Daten mehr für den Kopiervorgang zur linken Seite vorhanden sind:
 ═══════════
 ```
 
-Damit kommen wir zur nächsten Überarbeitung des Wertzuweisungsoperators `operator=`:
+Damit kommen wir zur nächsten Überarbeitung des Wertzuweisungsoperators:
 
 
 ```cpp
@@ -711,11 +712,31 @@ der durch die `if`-Anweisung eingeleitet wird, obwohl dieser nur in seltenen und
 Bei einer *Pessimization*-Situation lohnt es sich oft, einen Schritt zurückzutreten und zu überdenken.
 Vielleicht haben wir das Problem aus dem falschen Blickwinkel angegangen.
 
-Und damit sind wir beim nächsten Thema angekommen: Das Copy-and-Swap-Idiom.
+Und damit sind wir beim nächsten Thema angekommen: Das *Copy-and-Swap-Idiom*.
 
 ---
 
-### Das Copy-and-Swap-Idiom <a name="link12"></a>
+### Das *Copy-and-Swap-Idiom* <a name="link12"></a>
+
+Das *Copy-and-Swap-Idiom* wurde eingeführt, um zwei Ziele zu erreichen:
+
+  * Realisierung der Kopier-Konstruktoren und Wertzuweisungsoperatoren (sowohl &bdquo;kopierende&rdquo; als auch &bdquo;verschiebende&rdquo; Semantik) auf eine einfache Weise (Vermeidung von Code-Duplikationen).
+  * Bereitstellung der so genannten *Strong Exception Guarantee*.
+
+Auf die *Strong Exception Guarantee* gehen wir später ein, wir verweilen beim *Copy-and-Swap-Idiom*:
+Dieses besteht im Wesentlichen aus zwei Teilen:
+
+
+  * Einem destruktiven Teil, der den bestehenden Zustand des Zielobjekts aufräumt (die linke Seite der Zuweisung),
+  und einem konstruktiven Teil, der den Zustand vom Quellobjekt (rechte Seite der Zuweisung) zum Zielobjekt kopiert.
+  * Der destruktive Teil entspricht im Allgemeinen dem Code im Destruktor des Typs,
+  der konstruktive Teil im Allgemeinen dem Code im Kopierkonstruktor des Typs.
+
+
+Der Name *Copy-and-Swap* für diese Technik rührt daher,
+dass sie üblicherweise durch eine Kombination aus dem Kopierkonstruktor des Typs,
+seinem Destruktor und einer `swap`()-Memberfunktion implementiert wird,
+die die Membervariablen einzeln austauscht.
 
 
 ---

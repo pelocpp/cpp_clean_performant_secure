@@ -318,7 +318,7 @@ namespace GuidelinesCoreCpp {
             class SimpleString
             {
             private:
-                char* m_data{};   // pointer to the characters of the string (nullptr)
+                char*       m_data{};   // pointer to the characters of the string (nullptr)
                 std::size_t m_elems{};  // number of elements (zero)
 
             public:
@@ -381,7 +381,7 @@ namespace GuidelinesCoreCpp {
             class SimpleString
             {
             private:
-                char* m_data{};   // pointer to the characters of the string (nullptr)
+                char*       m_data{};   // pointer to the characters of the string (nullptr)
                 std::size_t m_elems{};  // number of elements (zero)
 
             public:
@@ -446,7 +446,7 @@ namespace GuidelinesCoreCpp {
             class SimpleString
             {
             private:
-                char* m_data{};   // pointer to the characters of the string (nullptr)
+                char*       m_data{};   // pointer to the characters of the string (nullptr)
                 std::size_t m_elems{};  // number of elements (zero)
 
             public:
@@ -508,13 +508,94 @@ namespace GuidelinesCoreCpp {
             }
         }
 
-
         static void guidelines_initialization_of_objects()
         {
-           // Variant_01::test_variant_01();
-           // Variant_02::test_variant_02();
-          //  Variant_03::test_variant_03();
+            Variant_01::test_variant_01();
+            Variant_02::test_variant_02();
+            Variant_03::test_variant_03();
             Variant_04::test_variant_04();
+        }
+    }
+
+    namespace GuidelinesCoreCpp_CopySwapIdiom {
+
+        namespace Variant_01 {
+
+            class SimpleString
+            {
+            private:
+                char* m_data{};   // pointer to the characters of the string (nullptr)
+                std::size_t m_elems{};  // number of elements (zero)
+
+            public:
+                // c'tors / d'tor
+                SimpleString() = default; // empty string
+
+                SimpleString(const char* s)
+                    : m_elems{ std::strlen(s) }
+                {
+                    m_data = new char[size() + 1];      // need space for terminating '\0'
+                    std::copy(s, s + size(), m_data);
+                    m_data[size()] = '\0';
+                }
+
+                // copy-constructor
+                SimpleString(const SimpleString& other)
+                    : m_data{ new char[other.size() + 1] }, m_elems{ other.size() }
+                {
+                    std::copy(other.m_data, other.m_data + other.size(), m_data);
+                    m_data[size()] = '\0';
+                }
+
+                ~SimpleString() {
+                    delete[] m_data;
+                }
+
+                // swap-idiom
+                void swap(SimpleString& other) noexcept
+                {
+                    using std::swap;                 // make the standard swap function available
+                    swap(m_data, other.m_data);      // swap data member
+                    swap(m_elems, other.m_elems);    // swap data member
+                }
+
+                // assignment operator
+                //SimpleString& operator=(const SimpleString& other)
+                //{
+                //    // prevent self-assignment
+                //    if (this == &other) {
+                //        return *this;
+                //    }
+
+                //    char* tmp = new char[other.size() + 1];
+                //    delete[] m_data;
+                //    m_data = tmp;
+                //    std::copy(other.m_data, other.m_data + other.size(), m_data);
+                //    m_elems = other.size();
+                //    m_data[size()] = '\0';
+                //    return *this;
+                //}
+
+                // idiomatic copy assignment
+                SimpleString& operator=(const naive_string& other) {
+                    naive_string{ other }.swap(*this); // <-- here
+                    return *this; // yes, that's it!
+                }
+
+                // getter
+                std::size_t size() const { return m_elems; }
+                bool empty() const { return size() == 0; }
+                const char* data() const { return m_data; }
+
+                // operators (no index-checking intentionally)
+                char operator[](std::size_t n) const { return m_data[n]; }
+                char& operator[](std::size_t n) { return m_data[n]; }
+            };
+
+            static void test_variant_01() {
+
+
+            }
         }
 
     }

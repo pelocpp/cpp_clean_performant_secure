@@ -418,7 +418,7 @@ Es dient zwei Hauptzwecken:
     wird sichergestelt, dass keine abgeleitete Klasse diese Methode überschreiben kann.
 
 Dieses Sprachfeature trägt zu Verbesserungen der *Programmsicherheit*,
-der *Wartbarkeit* und von *potentiellen Optimierungen* bei.
+der *Wartbarkeit* und von *potenziellen Optimierungen* bei.
 
 In einigen Fällen ermöglicht es dem Compiler, optimierteren Code zu generieren.
 Diese Technik ist bekannt als *Devirtualisierung*.
