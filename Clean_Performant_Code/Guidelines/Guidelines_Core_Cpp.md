@@ -23,6 +23,7 @@
   [Initialisierung von Strukturen](#link11)
   [Initialisierung von Objekten](#link11)
   [Das Copy-and-Swap-Idiom](#link11)
+  [Verschiebeoperationen](#link11)
   
 
 
@@ -737,6 +738,83 @@ Der Name *Copy-and-Swap* für diese Technik rührt daher,
 dass sie üblicherweise durch eine Kombination aus dem Kopierkonstruktor des Typs,
 seinem Destruktor und einer `swap`()-Memberfunktion implementiert wird,
 die die Membervariablen einzeln austauscht.
+
+Mit dem *Copy-and-Swap*-Idiom können wir nun folgende Realisierung des 
+Wertzuweisungsoperators betrachten:
+
+```cpp
+01: SimpleString& operator=(SimpleString other) {
+02: 
+03:     this->swap(other);
+04:     return *this;
+05: }
+```
+
+*Hinweise*:
+
+  * Am Beispiel des Parameters `other` wenden wir eine äußerst nützliche Richtlinie an:
+  Wenn Sie in einer Funktion eine Kopie erstellen, lassen Sie den Compiler dies in der Parameterliste tun.
+
+  * So oder so vermeiden wir in dieser Methode das Erstellen einer Kopie:
+  Wir können den Code des Kopierkonstruktors zum Erstellen der Kopie verwenden und müssen seine Anweisungen daher nicht wiederholen.
+  Nachdem die Kopie erstellt ist, können wir mit dem Tauschen der Membervariableninhalte beginnen.
+
+  * Beachten Sie, dass beim Aufrufen der Funktion alle neuen Daten bereits allokiert, kopiert und einsatzbereit sind.
+  Dadurch erhalten wir kostenlos eine *Strong Exception Guarantee* &ndash; dazu später noch mehr.
+
+  * An diesem Punkt sind wir quasi schon fertig, da `swap` keine Fehler auslöst.
+  Wir tauschen unsere aktuellen Daten mit den kopierten aus, ändern unseren Zustand sicher und legen die alten Daten in dem temporäre Objekt ab.
+  Die alten Daten werden dann freigegeben, wenn die Funktion zurückkehrt:
+  Es endet der Gültigkeitsbereich des Parameterobjekts und sein Destruktor wird aufgerufen!
+
+  * Beachten Sie, dass die Notwendigkeit einer Selbstzuweisungsprüfung beseitigt wurde
+  und eine einheitliche Implementierung des `operator=` ermöglicht wurde.
+  Und darüberhinaus gibt es keine Leistungseinbußen mehr bei Nicht-Selbstzuweisungen.
+
+---
+
+### Verschiebeoperationen <a name="link12"></a>
+
+Wie haben bislang in der Klasse `SimpleString` die
+traditionellen Regel der drei speziellen Methoden
+Kopier-Konstruktor, Wertzuweisungsoperator und Destruktor betrachtet.
+
+Seit C++ 11 können wir solchen Code durch die so genannte *Move-Semantik* deutlich effizienter gestalten.
+Es gesellen sich zwei weitere spezielle Methoden (Verschiebe-Konstruktor, Verschiebe-Zuweisungsoperator) zu einer Klasse hinzu.
+
+Ihr Aufruf wird vom Compiler implizit aktiviert, wenn der Compiler Objekte bearbeitet,
+von denen er weiß, dass sie nicht mehr verwendet werden. Das sind beispielsweise Objekte im Programm,
+die keinen Namen besitzen (temporäre Objekte, Zwischenergebnisse).
+
+Am Beispiel der Klasse `SimpleString` könnten diese beiden Methoden so aussehen:
+
+```cpp
+01: SimpleString(SimpleString&& other) noexcept
+02: {
+03:     m_data = std::move(other.m_data);
+04:     m_elems = std::move(other.m_elems);
+05:     other.m_data = nullptr;
+06:     other.m_elems = 0;
+07: }
+08: 
+09: SimpleString& operator=(SimpleString&& other) noexcept {
+10: 
+11:     SimpleString tmp{ std::move(other) };
+12:     tmp.swap(*this);
+13:     return *this;
+14: }
+```
+
+Mit Hilfe von `std::exchange` kann man den verschiebenden Kopierkonstruktor noch
+etwas kompakter realisieren:
+
+```cpp
+SimpleString(SimpleString&& other) noexcept
+{
+    m_data = std::exchange(other.m_data,  nullptr);
+    m_elems = std::exchange(other.m_elems, 0);
+}
+```
 
 
 ---
