@@ -10,6 +10,8 @@
 
 ## [Besserer Code mit der `std::ranges`-Bibliothek](../../Clean_Performant_Code/Ranges/Readme_Ranges.md)
 
+## [Literatur](./Literature.md)
+
 ---
 
 ## Was ist Clean Code?
@@ -74,10 +76,6 @@ But only good programmer can write a code that human can understand.&rdquo;
 
   * Wenn Dein Code sauber ist, findest Du Fehler leicht.
   * Wenn Dein Code schmutzig ist, tummeln sich die Fehler überall!
-
----
-
-## [Literatur](./Literature.md)
 
 ---
 

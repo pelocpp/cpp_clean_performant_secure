@@ -88,7 +88,8 @@ also für *Clean Code*.
 
 ```cpp
 01: std::vector<int> numbers{ 1, 4, 2, 7, 9, 3, 5 };
-02: std::ranges::sort(numbers);
+02:
+03: std::ranges::sort(numbers);
 ```
 
 ---
@@ -98,9 +99,9 @@ also für *Clean Code*.
   * Der Gebrauch von *Range Concepts* trägt dazu bei, bessere und verständlichere Fehlermeldungen zu generieren.
   Die Fehlermeldungen, die bei klassischem C++ und der STL erscheinen,
   sind manchmal absolut unverständlich und sie treten vor allem in Dateien in Erscheinung,
-  die korrekt sind. Der Fehler wäre im Regelfall in der Nähe der Template Instanziierung zu suchen,
+  die korrekt sind. Der Fehler wäre im Regelfall in der Nähe der Template Instanziierungen zu suchen,
   was für einen C++ Compiler zunächst einmal nicht die Fehlerursache ist.
-  Das **reagierde** Verhalten im Falle von Fehlern tritt an anderen Stellen zu Tage.
+  Das **reagierende** Verhalten im Falle von Fehlern tritt an anderen Stellen zu Tage.
 
   * Bei Gebrauch von *Range Concepts* haben wir es mit einem **proaktiven** Verhalten zu tun:
   Es wird die Stelle der Template Instanziierung in Übereinstimmung mit dem Concept analysiert,

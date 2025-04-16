@@ -937,14 +937,14 @@ potenzielle Fehler zu erkennen, wie z. B. versehentliche Änderungen an Werten, 
 
 ### Ausnahmesicherheit (*Exception Safety*) <a name="link18"></a>
 
-Die Idee hinter der *Exception Safety* besteht darin, dass Funktionen bzw. eine Klasse und ihre Methoden
+Die Idee hinter der Thematik *Exception Safety* besteht darin, dass Funktionen bzw. eine Klasse und ihre Methoden
 ihren Clients eine Art Versprechen bzw. eine Garantie hinsichtlich möglicherweise ausgelöster oder nicht ausgelöster Ausnahmen geben.
 
 Es gibt vier Stufen der *Exception Safety*:
 
 #### 1. Keine Ausnahmesicherheit
 
-Mit dieser niedrigsten Stufe der Ausnahmesicherheit wird im wahrsten Sinne des Wortes &ndash; keine Ausnahmesicherheit &ndash; absolut nichts garantiert.
+Mit dieser niedrigsten Stufe der Ausnahmesicherheit wird im wahrsten Sinne des Wortes &ndash; &bdquo;keine Ausnahmesicherheit&rdquo; &ndash; absolut nichts garantiert.
 
 
 #### 2. Elementare Ausnahmesicherheit (*Basic Exception Safety*)
@@ -952,7 +952,7 @@ Mit dieser niedrigsten Stufe der Ausnahmesicherheit wird im wahrsten Sinne des W
 Diese Ebene der Ausnahmesicherheit kann mit mit relativ geringem Implementierungsaufwand erreicht werden:
 
   * Wenn während eines Funktions- oder Methodenaufrufs eine Ausnahme ausgelöst wird, ist sichergestellt, dass keine Ressourcen verloren gehen!
-  * Wenn während eines Funktions- oder Methodenaufrufs eine Ausnahme ausgelöst wird, kommt es anschließend zu keiner Beschädigung der Daten oder des Speichers,
+  * Wenn während eines Funktions- oder Methodenaufrufs eine Ausnahme ausgelöst wird, kommt es anschließend zu keiner Beschädigung der Daten oder allokierten Speichers,
   und alle Objekte befinden sich in einem fehlerfreien und konsistenten Zustand.
   * Aber: Es kann nicht garantiert werden, dass die Daten dieselben sind wie vor dem Aufruf der Funktion oder Methode.
 
@@ -965,10 +965,10 @@ dass sie zumindest die *Basic Exception Safety* einhalten.
 #### 3. Starke Ausnahmesicherheit (*Strong Exception Safety*)
 
 Die starke Ausnahmesicherheit garantiert alles, was auch die elementare Ausnahmesicherheit gewährleistet.
-Darüber hinaus stellt sie sicher, dass im Ausnahmefall die Daten genau so wiederhergestellt werden, wie sie vor dem Aufruf der Funktion oder Methode waren.
+Darüber hinaus stellt sie sicher, dass im Ausnahmefall die Daten genauso wiederhergestellt werden, wie sie vor dem Aufruf der Funktion oder Methode waren.
 
 Mit anderen Worten: Mit dieser Ausnahmesicherheitsstufe erhalten wir eine Art *Commit*- oder *Rollback*-Semantik
-wie bei der Transaktionsverarbeitung in Datenbanken.
+wie bei der Transaktionsverarbeitung eines Datenbanksystems.
 
 
 Es ist leicht nachvollziehbar, dass diese Ausnahmesicherheit einen höheren Implementierungsaufwand bedeutet und zur Laufzeit kostspielig sein kann.
@@ -997,13 +997,14 @@ wenn mit dem `new`-Operator dynamische Daten ins Spiel kommen.
 
 In den folgenden Fällen ist die No-Throw-Garantie zwingend:
 
-#### Destruktoren von Klassen müssen unter allen Umständen die No-Throw-Garantie gewähren!
+#### 1. Destruktoren
 
-Der Grund dafür ist, dass Destruktoren unter anderem auch während des so genannten &bdquo;Stack Unwinding&rdquo;-prozesses aufgerufen werden, wenn eine Ausnahme aufgetreten ist.
+Destruktoren von Klassen müssen unter allen Umständen die No-Throw-Garantie gewähren!
+Der Grund dafür ist, dass Destruktoren unter anderem auch während des so genannten &bdquo;Stack Unwinding&rdquo;-Prozesses aufgerufen werden, wenn eine Ausnahme aufgetreten ist.
 Zu diesem Zeitpunkt kann eine geschachtelt auftretende Ausnahme nicht bearbeitet werden,
-das laufen Programm reagiert in solchen Fällen mit einer unmittelbaren Terminierung.
+das laufende Programm reagiert in solchen Fällen mit einer unmittelbaren Terminierung (Aufruf von `terminate()`).
 
-#### Verschiebeoperationen (Move Operations)
+#### 2. Verschiebeoperationen (Move Operations)
 
 Verschiebe-Konstruktoren und Verschiebe-Zuweisungsoperatoren sollten garantiert keine Fehler enthalten.
 
@@ -1018,17 +1019,15 @@ d.h., der Verschiebekonstruktor ist nicht mit dem Spezifizierer `noexcept` dekla
 verwendet der Container bevorzugt die kopierenden (und damit zeitaufwändigeren) Operationen
 gegenüber den verschiebenden Operationen.
 
-
-
-#### Standardkonstruktoren
+#### 3. Konstruktoren
 
 Das Auslösen einer Ausnahme in einem Konstruktor ist weder wünschenswert, und vor allem: Es kann auch vermieden werden!
 
 Ein &bdquo;halbkonstruiertes Objekt&rdquo; wird kaum im weiteren Gebrauch seinen Client zufriedenstellen.
 
-#### `swap`-Funktionen
+#### 4. `swap`-Funktionen
 
-Eine `swap`-Funktion muss unter allen Umständen die No-Throw-Vorgang die No-Throw-Garantie gewährleiten.
+Eine `swap`-Funktion muss unter allen Umständen die No-Throw-Garantie gewährleiten.
 
 
 ---
@@ -1057,13 +1056,11 @@ void aPotentiallyThrowingFunction() noexcept(false);
 Es gibt zwei gute Gründe für die Verwendung von `noexcept`:
 
   * Ausnahmen, die eine Funktion oder Methode auslösen kann (oder nicht),
-  sollten Teil der Funktionsschnittstelle sein.
-
-  Es hilft Entwicklern beim Lesen des Quellcodes zu erkennen, was passieren kann und was nicht.
-
+  sollten Teil der Funktionsschnittstelle sein.<br />
+  Es hilft Entwicklern beim Lesen des Quellcodes zu erkennen, was passieren kann und was nicht.<br />
   `noexcept` signalisiert Entwicklern, dass sie diese Funktion sicher in ihren eigenen *non-throwing* Funktionen verwenden können.
 
-  * Zweitens kann diese Information vom Compiler für Optimierungen genutzt werden.
+  * Zweitens kann diese Information vom Compiler für Optimierungen genutzt werden.<br />
   `noexcept` ermöglicht es einem Compiler, die Funktion möglicherweise ohne den Laufzeit-Overhead zu kompilieren,
   der sonst im Falle des Eintretens von Ausnahme erforderlich wäre.
 
