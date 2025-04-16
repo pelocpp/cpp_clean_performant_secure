@@ -17,23 +17,17 @@
   * [*Explicitly defaulted* Standardkonstruktor](#link9)
   * [*Explicitly deleted* Standardkonstruktor](#link10)
   * [Automatische Erzeugung spezieller Member-Funktionen: *Rule-of-Zero*](#link11)
-
-
-
-  [Initialisierung von Strukturen](#link11)
-  [Initialisierung von Objekten](#link11)
-  [Das Copy-and-Swap-Idiom](#link11)
-  [Verschiebeoperationen](#link11)
-  
-
-
-  * [Schreiben Sie kleine, fokussierte Funktionen (Methoden)](#link12)
-  * [Verwenden Sie `const` großzügig](#link13)
-  * [Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen](#link14)
-  * [Rückgabetyp einer Methode](#link15)
-  * [Bevorzuge Komposition der Vererbung](#link16)
-  * [Implizite Konvertierungen vermeiden](#link17)
-  * [Schlüsselwort `auto` verwenden oder nicht?](#link18)
+  * [Initialisierung von Strukturen](#link12)
+  * [Initialisierung von Objekten](#link13)
+  * [Das Copy-and-Swap-Idiom](#link14)
+  * [Verschiebeoperationen](#link15)
+  * [Schreiben Sie kleine, fokussierte Funktionen (Methoden)](#link16)
+  * [Verwenden Sie `const` großzügig](#link17)
+  * [Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen](#link18)
+  * [Rückgabetyp einer Methode](#link19)
+  * [Bevorzuge Komposition der Vererbung](#link20)
+  * [Implizite Konvertierungen vermeiden](#link21)
+  * [Schlüsselwort `auto` verwenden oder nicht?](#link22)
 
 ---
 
@@ -309,7 +303,7 @@ Was sieht die einfachste Strategie aus:
     * Wenn in den Instanzvariablen klassische Zeiger, die auf mit `new` allokierte Daten zeigen, vorhanden sind.
     * Wenn Referenzen in den Instanzvariablen vorhanden sind.
 
-Wenn keine der fünf speziellen Member-Funktionen selbst geschrieben werden (*Rule-of-Zero*),
+Wenn keine der sechs speziellen Member-Funktionen selbst geschrieben werden (*Rule-of-Zero*),
 weil Sie geschickt auf `new` usw. verzichten, werden diese sämtlich vom Compiler erzeugt,
 einschließlich des verschiebenden Konstruktors und des verschiebenden Zuweisungsoperators.
 
@@ -317,7 +311,7 @@ Damit wird Ihr Programmcode performant, einfacher und wartbarer &ndash; und es s
 
 ---
 
-### Initialisierung von Strukturen <a name="link"></a>
+### Initialisierung von Strukturen <a name="link12"></a>
 
 Wir starten eine Reihe von Überlegungen zu folgender Struktur `Point2D`:
 
@@ -369,10 +363,10 @@ In dieser Variante besitzen alle Membervariablen so genannte &bdquo;Default Init
 Eine Variable ` Point2D point;` repräsentiert damit den Punkt (0,0) und alle sechs speziellen
 Membermethoden funktionieren wie erwartet.
 
-*Bemerkung*:<br />
+*1. Bemerkung*:<br />
 Ein Destruktor tut hier nichts, da es nichts zu tun gibt.
 
-*Bemerkung*:<br />
+*2. Bemerkung*:<br />
 Die zwei verschiebenden Methoden (Verschiebe-Konstruktor, verschiebende Wertzuweisung)
 verhalten sich wie ihre kopierenden Pendants, da es nicht wirklich etwas zu verschieben gibt
 (alle Membervariablen sind elementaren Typs).
@@ -453,7 +447,7 @@ mit dem sprachlichen Mittel des &bdquo;*Constructor Chainings*&rdquo; zusammenfa
 #### Variante 6
 
 Wir kommen noch einmal auf eine Version der Struktur `Point2D` zu sprechen,
-die den Standardkonstruktor verloren hatte. Mit dem Schlüsselwort `default` kann man diesen ebenfalls ergänzen.
+die den Standardkonstruktor verloren hatte. Mit dem Schlüsselwort `default` kann man diesen wieder hinzufügen.
 Dazu müssen alle Membervariablen aber mit &bdquo;Default Initializern&rdquo; vorbelegt werden,
 sonst funktioniert diese Variante nicht:
 
@@ -477,12 +471,11 @@ sonst funktioniert diese Variante nicht:
 
 Häufig kann man die Beobachtung machen, dass diese Art des Entwurfs zu gutem Maschinencode führt.
 
-
 #### Variante 7
 
-Zum Abschluss stellen wir einen letzen, sehr alternativen Ansatz vor:
+Zum Abschluss stellen wir einen letzen, aber alternativen Ansatz vor:
 Die Struktur `Point2D` besitzt weder Konstruktoren noch &bdquo;Default Initializer&rdquo; für ihre Membervariablen.
-Dafür kommt bei der Verwendung der Struktur die Aggregat-Initialisierung zum Einsatz:
+Dafür kommt bei Verwendung der Struktur die Aggregat-Initialisierung zum Einsatz:
 
 
 ```cpp
@@ -509,12 +502,12 @@ Kompakt formuliert lauten diese:
   * Keine geerbten Konstruktoren
   * Keine privaten, nicht statischen Datenelemente
   * Keine virtuellen Basisklassen
-  * ... einige weitere mehr detaillierte Eigenschaften
+  * ... einige weitere mehr detailliertere Eigenschaften
 
 
 ---
 
-### Initialisierung von Objekten
+### Initialisierung von Objekten <a name="link13"></a>
 
 Wie bei Strukturen betrachten wir nun eine Reihe von Entwicklungsschritten
 in der Entwicklung einer Klasse `SimpleString`.
@@ -570,7 +563,7 @@ Kopie der Daten führt, auf die ein Zeiger zeigt. Also auch diese Schwachstelle 
 automatisch generierten speziellen Member-Funktionen nicht berücksichtigt.
 
 Damit kommen wir zum zweiten Entwicklungsschritt der Klasse `SimpleString`,
-es sind die Kopieroperationen (Kopier-Konstruktor, kopierender Wertzuweisungsoperator) explizit realisiert:
+es sind die Kopieroperationen (Kopier-Konstruktor, kopierender Zuweisungsoperator) explizit realisiert:
 
 
 ```cpp
@@ -636,7 +629,7 @@ Wirft der Aufruf des `new`-Operators eine Exception (`std::bad_alloc`),
 so befindet sich das `SimpleString`-Objekt in einem inkorrekten Zustand.
 Der Zeiger `m_data` zeigt auf falsche Daten, jeglicher Zugriff auf das Objekt zieht *Undefined Behavior* nach sich.
 
-Wir versuchen es mit einem Redesign des Wertzuweisungsoperators `operator=`:
+Wir versuchen es mit einem Redesign des Zuweisungsoperators `operator=`:
 
 ```cpp
 01: SimpleString& operator=(const SimpleString& other)
@@ -671,11 +664,13 @@ sollte das aber berücksichtigt werden. Außerdem darf nicht übersehen werden, 
 aber zu einem unerwarteten Ergebnis führt, da auf Grund der Freigabe von `s` auf der rechten Seite der Wertzuweisung
 keine Daten mehr für den Kopiervorgang zur linken Seite vorhanden sind:
 
+*Ausgabe*:
+
 ```
 ═══════════
 ```
 
-Damit kommen wir zur nächsten Überarbeitung des Wertzuweisungsoperators:
+Damit kommen wir zur nächsten Überarbeitung des Zuweisungsoperators:
 
 
 ```cpp
@@ -696,7 +691,7 @@ Damit kommen wir zur nächsten Überarbeitung des Wertzuweisungsoperators:
 15: }
 ```
 
-Diese Variante des Wertzuweisungsoperators ist nun fehlerfrei. Okay, sie zeichnet sich nicht gerade durch Übersichtlichkeit aus, 
+Diese Variante des Zuweisungsoperators ist nun fehlerfrei. Okay, sie zeichnet sich nicht gerade durch Übersichtlichkeit aus, 
 und die Zeilen 4 bis 6 schmerzen etwas: Sie werden *immer* ausgeführt, und damit eben auch in fast allen Fällen,
 in denen die beiden Objekte links und rechts von der Wertzuweisung verschieden sind.
 Wir haben es mit einem Fall von &bdquo;*Pessimization*&rdquo; zu tun:
@@ -717,21 +712,21 @@ Und damit sind wir beim nächsten Thema angekommen: Das *Copy-and-Swap-Idiom*.
 
 ---
 
-### Das *Copy-and-Swap-Idiom* <a name="link12"></a>
+### Das *Copy-and-Swap-Idiom* <a name="link14"></a>
 
 Das *Copy-and-Swap-Idiom* wurde eingeführt, um zwei Ziele zu erreichen:
 
-  * Realisierung der Kopier-Konstruktoren und Wertzuweisungsoperatoren (sowohl &bdquo;kopierende&rdquo; als auch &bdquo;verschiebende&rdquo; Semantik) auf eine einfache Weise (Vermeidung von Code-Duplikationen).
+  * Realisierung der Kopier-Konstruktoren und Zuweisungsoperatoren (sowohl &bdquo;kopierende&rdquo; als auch &bdquo;verschiebende&rdquo; Semantik) auf eine einfache Weise (Vermeidung von Code-Duplikationen).
   * Bereitstellung der so genannten *Strong Exception Guarantee*.
 
 Auf die *Strong Exception Guarantee* gehen wir später ein, wir verweilen beim *Copy-and-Swap-Idiom*:
 Dieses besteht im Wesentlichen aus zwei Teilen:
 
 
-  * Einem destruktiven Teil, der den bestehenden Zustand des Zielobjekts aufräumt (die linke Seite der Zuweisung),
-  und einem konstruktiven Teil, der den Zustand vom Quellobjekt (rechte Seite der Zuweisung) zum Zielobjekt kopiert.
-  * Der destruktive Teil entspricht im Allgemeinen dem Code im Destruktor des Typs,
-  der konstruktive Teil im Allgemeinen dem Code im Kopierkonstruktor des Typs.
+  * Einem destruktiven Teil, der den bestehenden Zustand des Zielobjekts aufräumt (die linke Seite der Zuweisung).
+  * Einem konstruktiven Teil, der den Zustand vom Quellobjekt (rechte Seite der Zuweisung) zum Zielobjekt kopiert.
+
+Der destruktive Teil entspricht im Allgemeinen dem Code im Destruktor des Typs, der konstruktive Teil im Allgemeinen dem Code im Kopierkonstruktor des Typs.
 
 
 Der Name *Copy-and-Swap* für diese Technik rührt daher,
@@ -740,14 +735,21 @@ seinem Destruktor und einer `swap`()-Memberfunktion implementiert wird,
 die die Membervariablen einzeln austauscht.
 
 Mit dem *Copy-and-Swap*-Idiom können wir nun folgende Realisierung des 
-Wertzuweisungsoperators betrachten:
+Zuweisungsoperators betrachten:
 
 ```cpp
-01: SimpleString& operator=(SimpleString other) {
-02: 
-03:     this->swap(other);
-04:     return *this;
+01: void swap(SimpleString& other) noexcept
+02: {
+03:     std::swap(m_data, other.m_data);      // swap data member
+04:     std::swap(m_elems, other.m_elems);    // swap data member
 05: }
+06: 
+07: // refined copy assignment operator
+08: SimpleString& operator=(SimpleString other) {
+09: 
+10:     this->swap(other);
+11:     return *this;
+12: }
 ```
 
 *Hinweise*:
@@ -755,36 +757,35 @@ Wertzuweisungsoperators betrachten:
   * Am Beispiel des Parameters `other` wenden wir eine äußerst nützliche Richtlinie an:
   Wenn Sie in einer Funktion eine Kopie erstellen, lassen Sie den Compiler dies in der Parameterliste tun.
 
-  * So oder so vermeiden wir in dieser Methode das Erstellen einer Kopie:
-  Wir können den Code des Kopierkonstruktors zum Erstellen der Kopie verwenden und müssen seine Anweisungen daher nicht wiederholen.
-  Nachdem die Kopie erstellt ist, können wir mit dem Tauschen der Membervariableninhalte beginnen.
+  * Nachdem (durch den Aufruf) die Kopie erstellt ist, können wir mit dem Tauschen der Membervariableninhalte beginnen.
 
   * Beachten Sie, dass beim Aufrufen der Funktion alle neuen Daten bereits allokiert, kopiert und einsatzbereit sind.
   Dadurch erhalten wir kostenlos eine *Strong Exception Guarantee* &ndash; dazu später noch mehr.
 
   * An diesem Punkt sind wir quasi schon fertig, da `swap` keine Fehler auslöst.
-  Wir tauschen unsere aktuellen Daten mit den kopierten aus, ändern unseren Zustand sicher und legen die alten Daten in dem temporäre Objekt ab.
-  Die alten Daten werden dann freigegeben, wenn die Funktion zurückkehrt:
+  Wir tauschen unsere aktuellen Daten mit den kopierten aus, ändern unseren Zustand sicher und legen die alten Daten in einem temporären Objekt ab.
+  
+  * Die alten Daten werden dann freigegeben, wenn die Funktion verlassen wird:
   Es endet der Gültigkeitsbereich des Parameterobjekts und sein Destruktor wird aufgerufen!
 
   * Beachten Sie, dass die Notwendigkeit einer Selbstzuweisungsprüfung beseitigt wurde
   und eine einheitliche Implementierung des `operator=` ermöglicht wurde.
-  Und darüberhinaus gibt es keine Leistungseinbußen mehr bei Nicht-Selbstzuweisungen.
+  Darüberhinaus gibt es keine Leistungseinbußen mehr bei Nicht-Selbstzuweisungen.
 
 ---
 
-### Verschiebeoperationen <a name="link12"></a>
+### Verschiebeoperationen <a name="link15"></a>
 
-Wie haben bislang in der Klasse `SimpleString` die
+Wir haben bislang in der Klasse `SimpleString` die
 traditionellen Regel der drei speziellen Methoden
-Kopier-Konstruktor, Wertzuweisungsoperator und Destruktor betrachtet.
+Kopier-Konstruktor, Zuweisungsoperator und Destruktor betrachtet.
 
-Seit C++ 11 können wir solchen Code durch die so genannte *Move-Semantik* deutlich effizienter gestalten.
-Es gesellen sich zwei weitere spezielle Methoden (Verschiebe-Konstruktor, Verschiebe-Zuweisungsoperator) zu einer Klasse hinzu.
+Seit C++ 11 können wir solchen Code durch die so genannte *Move-Semantik* effizienter (performanter) gestalten.
+Es gesellen sich zwei weitere spezielle Methoden (Verschiebe-Konstruktor, Verschiebe-Zuweisungsoperator) zur Klasse hinzu.
 
 Ihr Aufruf wird vom Compiler implizit aktiviert, wenn der Compiler Objekte bearbeitet,
 von denen er weiß, dass sie nicht mehr verwendet werden. Das sind beispielsweise Objekte im Programm,
-die keinen Namen besitzen (temporäre Objekte, Zwischenergebnisse).
+die keinen Namen haben (temporäre Objekte, Objekte, die als Zwischenergebnis fungieren).
 
 Am Beispiel der Klasse `SimpleString` könnten diese beiden Methoden so aussehen:
 
@@ -805,7 +806,7 @@ Am Beispiel der Klasse `SimpleString` könnten diese beiden Methoden so aussehen
 14: }
 ```
 
-Mit Hilfe von `std::exchange` kann man den verschiebenden Kopierkonstruktor noch
+Mit Hilfe von `std::exchange` kann man den verschiebenden Konstruktor noch
 etwas kompakter realisieren:
 
 ```cpp
@@ -816,10 +817,21 @@ SimpleString(SimpleString&& other) noexcept
 }
 ```
 
+Die freie Funktion `std::exchange` funktioniert dabei wie folgt:
+
+```cpp
+int z = std::exchange(x, y);
+```
+
+Nach der Ausführung dieser Anweisung hat
+
+  * `x` den Wert von `y` zugewiesen bekommen und
+  * `z` den ursprüngliche Wert von `x` zugewiesen bekommen.
+
 
 ---
 
-### Schreiben Sie kleine, fokussierte Funktionen (Methoden) <a name="link12"></a>
+### Schreiben Sie kleine, fokussierte Funktionen (Methoden) <a name="link16"></a>
 
 Funktionen (Methoden) sind die Bausteine der *Clean Code* Programmierung.
 Eine gute Funktion sollte klein und fokussiert sein und genau eine Sache tun.
@@ -867,7 +879,7 @@ gibt ein boolesches Ergebnis zurück und hat keine Nebenwirkungen. Sie ist leich
 
 ---
 
-### Verwenden Sie `const` großzügig <a name="link13"></a>
+### Verwenden Sie `const` großzügig <a name="link17"></a>
 
 `const` ist ein leistungsstarkes Sprachfeature in C++, um Absichten auszudrücken und potenzielle Fehler zur Kompilierzeit abzufangen:
 
@@ -920,7 +932,7 @@ potenzielle Fehler zu erkennen, wie z. B. versehentliche Änderungen an Werten, 
 
 ---
 
-### Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen <a name="link14"></a>
+### Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen <a name="link18"></a>
 
 Ausnahmen (*Exceptions*) sind die bevorzugte Methode zum Melden und Behandeln von Fehlern in Modern C++.
 Sie haben mehrere Vorteile gegenüber herkömmlichen Fehlercodes:
@@ -972,7 +984,7 @@ und der Fehler kann nicht ignoriert werden.
 
 ---
 
-### Rückgabetyp einer Methode <a name="link15"></a>
+### Rückgabetyp einer Methode <a name="link19"></a>
 
 Wir betrachten folgendes Beispiel:
 
@@ -1020,7 +1032,7 @@ Es gibt auch eine zweite Möglichkeit:
 
 ---
 
-### Bevorzuge Komposition der Vererbung <a name="link16"></a>
+### Bevorzuge Komposition der Vererbung <a name="link20"></a>
 
   * Vererbung ist ein leistungsstarkes Feature der objektorientierten Programmierung,
   wird aber oft überstrapaziert.
@@ -1085,7 +1097,7 @@ Sie könnten eine *Transform*-Eigenschaft aber auch als Attribut den Klassen hin
 
 ---
 
-### Implizite Konvertierungen vermeiden <a name="link17"></a>
+### Implizite Konvertierungen vermeiden <a name="link21"></a>
 
 In der Sprache C++ gibt es des Feature so genannter &bdquo;impliziter Typkonvertierungen&rdquo;.
 
@@ -1146,7 +1158,7 @@ aber dieses Mal eben nicht versteckt, sondern sichtbar für den Entwickler!
 
 ---
 
-### Schlüsselwort `auto` verwenden oder nicht? <a name="link18"></a>
+### Schlüsselwort `auto` verwenden oder nicht? <a name="link22"></a>
 
 Empfielt sich der Einsatz des Schlüsselworts `auto` oder nicht?
 
