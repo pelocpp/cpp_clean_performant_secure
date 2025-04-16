@@ -24,7 +24,7 @@ Einige Beispiel:
   * Bevorzugen Sie `std::vector` oder `std::array` gegenüber C-Stil-Arrays.
   * Bevorzugen Sie `std::string` oder `std::string_view_` gegenüber Zeichenketten im C-Stil.
   * Bevorzugen Sie `std::unique_ptr` oder `std::shared_ptr` gegenüber klassischen Zeigern.
-  * Bevorzugen Sie Standardalgorithmen wie `std::find`, `std::sort` usw. gegenüber handgeschriebenen Schleifen.
+  * Bevorzugen Sie Standardalgorithmen wie `std::find`, `std::sort` usw. gegenüber handgeschriebenen Algorithmen.
 
 ---
 

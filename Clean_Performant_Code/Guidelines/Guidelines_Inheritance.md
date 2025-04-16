@@ -19,11 +19,10 @@
   * [Schlüsselwort `override`](#link11)
   * [Schlüsselwörter `virtual`, `override` und `final`](#link12)
   * [Schützen Sie sich vor *Object Slicing*](#link13)
-  * [Literatur](#link14)
 
 ---
 
-#### Wann nutzen Sie eine Hierarchie von Klassen? <a name="link1"></a>
+### Wann nutzen Sie eine Hierarchie von Klassen? <a name="link1"></a>
 
 Modelliert man etwas in Quellcode, das eine *inhärent hierarchische Struktur* besitzt,
 sollte man zu einer *Hierarchie von Klassen* greifen.
@@ -38,14 +37,14 @@ Stellen wir uns vor, wir müssen ein komplexes System modellieren,
 das aus einer Reihe von Teilsystemen besteht.
 Im meinem Fall handelte es sich um die Werkzeuge einer Werkzeugmaschinensteuerung.
 
-Ein exemplarisches Werkzeuge stellt die Schnittstelle zum Benutzer dar. 
+Ein exemplarisches Werkzeug stellt die Schnittstelle zum Benutzer dar. 
 
 Damit leiten sich sofort Anforderungen ab,
 verschiedene Benutzerschnittstellen wie Tastatur, Mauszeiger, Touchscreen
 oder einfach auch nur Buttons zu unterstützen. 
 
 Solch ein System von Teilsystemen besitzt eine inhärent hierarchische Struktur.
-Eine Modellierung bildete daher die physikalische Struktur ab und
+Eine Modellierung bildet daher die physikalische Struktur ab und
 ist damit relativ leicht im Top-down-Ansatz zu erfassen.
 
 *Beispiel*:
@@ -53,37 +52,66 @@ ist damit relativ leicht im Top-down-Ansatz zu erfassen.
 ```cpp
 01: class DrawableUIElement {
 02: public:
-03:     virtual void render() const = 0;
-04:     // ...
-05: };
-06: 
-07: class AbstractButton : public DrawableUIElement {
-08: public:
-09:     virtual void onClick() = 0;
-10:     // ...
-11: };
-12: 
-13: class PushButton : public AbstractButton {
-14:     virtual void render() const override {};
-15:     virtual void onClick() override {};
-16:     // ...
-17: };
-18: 
-19: class Checkbox : public AbstractButton {
-20:     // ...
-21: };
+03:     virtual ~DrawableUIElement() {}
+04:     virtual void render() const = 0;
+05:     // ...
+06: };
+07: 
+08: class AbstractButton : public DrawableUIElement {
+09: public:
+10:     virtual void onClick() = 0;
+11:     // ...
+12: };
+13: 
+14: class PushButton : public AbstractButton {
+15:     virtual void render() const override {};
+16:     virtual void onClick() override {};
+17:     // ...
+18: };
+19: 
+20: class Checkbox : public AbstractButton {
+21:     // ...
+22: };
 ```
 
-#### Wann nutzen Sie eine Hierarchie von Klassen? <a name="link2"></a>
+*Frage*:
 
-WEITER:
+Würden Sie den folgenden Klassenentwurf als &bdquo;inhärent hierarchisch&rdquo; ansehen?
 
-https://www.heise.de/blog/C-Core-Guidelines-Klassenhierarchien-3852049.html
+```cpp
+01: template<typename T>
+02: class Container {
+03: public:
+04:     // list operations:
+05:     virtual T& get() = 0;
+06:     virtual void put(T&) = 0;
+07:     virtual void insert(size_t position) = 0;
+08:     // ...
+09:             
+10:     // vector operations:
+11:     virtual T& operator[](int) = 0;
+12:     virtual void sort() = 0;
+13:     // ...
+14:             
+15:     // tree operations:
+16:     virtual void balance() = 0;
+17:     // ...
+18: };
+```
 
+*Antwort*:<br />
+Die Klasse `Container<T>` sollte nicht als Vaterklasse einer Klassenhierarchie fungieren!
+
+Die Antwort steht direkt im Sourcecode. Das Klassen-Template `Container<T>` besteht nur aus rein virtuellen Funktionen,
+um eine Liste, einen Vektor und einen Baum zu modellieren.
+Derartige gegensätzliche Anforderungen erfüllen in keinster Weise die &bdquo;is-a&rdquo;-Beziehung,
+damit scheidet das Konzept der Vererbung aus.
+
+Wollte man das Interface `Container<T>` verwenden, muss man drei vollkommen verschiedene Konzepte implementieren.
 
 ---
 
-#### `virtual` oder nicht `virtual`  <a name="link3"></a>
+### `virtual` oder nicht `virtual`  <a name="link2"></a>
 
   * Einige Klassen dienen nur dem Zweck, mehr oder weniger *Daten* zu halten.
    Derartige Klassen sind dann auch nicht Teil einer Hierarchie.
@@ -96,10 +124,12 @@ https://www.heise.de/blog/C-Core-Guidelines-Klassenhierarchien-3852049.html
    dann ist `virtual` nicht angesagt.
   * Gibt es hingegen in einer Vaterklasse eine Methode &ndash; ggf. mit einer Realisierung, aus welchen Gründen auch immer &ndash;,
    und ist diese Methode gewissermaßen als Hinweis für Kindklassen konzipiert, 
-   an ihrem *Verhalten* einen Beitrag zu leisten, dann sollte die Methode als `virtual` definiert werden.
+   an ihrem *Verhalten* einen Beitrag zu leisten, dann sollte diese Methode als `virtual` definiert werden.
 
 
-#### Haben virtuelle Methoden einen Overhead im Vergleich zu nicht virtuellen Methoden? <a name="link4"></a>
+---
+
+### Haben virtuelle Methoden einen Overhead im Vergleich zu nicht virtuellen Methoden? <a name="link3"></a>
 
 Einfache Frage, einfache Antwort: Ja. In der Umsetzung von virtuellen Methoden auf den Maschinencode weisen Klassen bzw. deren
 Objekte mit virtuellen Methoden Nachteile in punkto
@@ -107,7 +137,9 @@ Objekte mit virtuellen Methoden Nachteile in punkto
   * Geschwindigkeit und
   * Speicher
 
-auf. Zu den Details:
+auf.
+
+Zu den Details:
 
   * Der Aufruf einer virtuellen Methode erfolgt *indirekt*:<br />
   Wird eine virtuelle Methode aufgerufen, dann benötigt dieser Aufruf indirekte Zugriffe
@@ -127,7 +159,7 @@ auf. Zu den Details:
    
 Wir betrachten diese Aussagen an zwei Beispielen:
 
-*Beispiel*:
+*1. Beispiel*:
 
 ```cpp
 01: class A
@@ -178,7 +210,7 @@ Wir betrachten diese Aussagen an zwei Beispielen:
 00007FF7341C116A  call        qword ptr [rax]
 ```
 
-*Beispiel*:
+*2. Beispiel*:
 
 ```cpp
 01: class X
@@ -218,7 +250,9 @@ Sizeof x: 8
 Sizeof y: 16
 ```
 
-#### Abstrakte Klassen und Schnittstellen <a name="link5"></a>
+---
+
+### Abstrakte Klassen und Schnittstellen <a name="link4"></a>
 
 Wenn Ihr Design auf abstrakte Klassen und Schnittstellen baut, dann ist `virtual` natürlich angesagt.
 
@@ -259,7 +293,10 @@ Wenn Ihr Design auf abstrakte Klassen und Schnittstellen baut, dann ist `virtual
 15: };
 ```
 
-#### Konstruktoren und virtuelle Methoden <a name="link6"></a>
+
+---
+
+### Konstruktoren und virtuelle Methoden <a name="link5"></a>
 
 Konstruktoren als solche sind niemals virtuell. 
 Innerhalb von Konstruktoren darf man keine virtuellen Methoden aufrufen.
@@ -272,19 +309,27 @@ virtueller Methoden erfolgen könnte, die in der abgeleiteten Klasse implementier
 Betrachten Sie hierzu das Design Pattern &bdquo;*Virtueller Konstruktor*&rdquo;.
 
 
-#### Destruktoren und virtuelle Methoden <a name="link7"></a>
+---
+
+### Destruktoren und virtuelle Methoden <a name="link6"></a>
 
 Man kann wie bei den Konstruktoren ähnliche Überlegungen anstellen:
 Auch in Destruktoren sollte man auf den Aufruf von virtuellen Methoden verzichten.
 
-#### Einmal `virtual` &ndash; immer `virtual` <a name="link8"></a>
+
+---
+
+### Einmal `virtual` &ndash; immer `virtual` <a name="link7"></a>
 
 Eine virtuelle Methode einer Basisklasse, die in einer abgeleiteten Klasse überschrieben wird,
 ist ebenfalls virtuell. 
 
 Man muss das Schlüsselwort folglich nicht mehr explizit hinschreiben: Einmal `virtual` &ndash; immer `virtual`.
 
-#### Destruktoren und `virtual`: Virtueller Basisklassendestruktor <a name="link9"></a>
+
+---
+
+### Destruktoren und `virtual`: Virtueller Basisklassendestruktor <a name="link8"></a>
 
 Ein Destruktor einer Klasse ist als `virtual` kennzuzeichnen,
 wenn es in der Klasse mindestens eine virtuelle Methode gibt.
@@ -344,7 +389,9 @@ d'tor Base
 ```
 
 
-#### Schlüsselwort `override` <a name="link10"></a>
+---
+
+### Schlüsselwort `override` <a name="link9"></a>
 
 Deklariert man eine Methode mit dem Schlüsselwort `override`, drückt man die Absicht aus,
 sie zu überschreiben. 
@@ -352,7 +399,7 @@ sie zu überschreiben.
 Daher ist es sinnvoll, `override` an der Stelle anzugeben,
 an der man diese Absicht hat.
 
-Dies kann und sollte man dann den Übersetzter auch überprüfen lassen,
+Dies kann und sollte man dann den Übersetzer auch überprüfen lassen,
 nämlich die Absicht, diese Methode zu überschreiben.
 
 Frei nach dem Motto
@@ -403,7 +450,9 @@ Compiles successfully
 In base class
 ```
 
-#### Schlüsselwort `final` <a name="link11"></a>
+---
+
+### Schlüsselwort `final` <a name="link10"></a>
 
 Das C++ Schlüsselwort `final` wurde ab C++ 11 eingeführt,
 um die weitere Vererbung einer Klasse oder das Überschreiben einer virtuellen Funktion zu verhindern.
@@ -494,7 +543,8 @@ Welchen Sinn ergibt es, virtuelle Methode in einer als `final` deklarierten Meth
 
 *Antwort*:<br />
 Keinen!
-<br />Wenn Sie eine Methode als `final` deklarieren, dann bringen Sie zum Ausdruck,
+
+Wenn Sie eine Methode als `final` deklarieren, dann bringen Sie zum Ausdruck,
 dass sich das Verhalten des Objekts nicht mehr ändert! Aber halten Sie sich auch daran?
 Wir stellen uns den Aufruf einer virtuellen Methode in einer als `final` deklarierten Methode vor.
 Kann man dann noch sagen, dass die Methode dann noch das tut, was wir mit ihrer Realisierung verbinden.
@@ -505,23 +555,31 @@ geben wollten.
 *Fazit*:<br />
 Als `final` deklarierte Methoden sollten keine virtuellen Methoden aufrufen!
 
-#### Schlüsselwörter `virtual`, `override` und `final` <a name="link12"></a>
+
+---
+
+### Schlüsselwörter `virtual`, `override` und `final` <a name="link11"></a>
 
 Es gibt mehrere Optionen, eine virtuelle Methoden mit den oben genannten Schlüsselwörter zu markieren.
 
 Verwenden Sie entweder
 
-   *  nur `virtual`
+   * nur `virtual`
    * oder nur `override`
    * oder nur `final`
-   
-`override` und `final` implizieren `virtual`, eine doppelte Benennung ist folglich nicht nötig
-`virtual` muss an der ursprünglichen Deklaration vorhanden sein
-Ein fehlendes `virtual` oder `override` an einer virtuellen Methode verwirrt
+  
+Warum?
+
+   * `override` und `final` implizieren `virtual`, eine doppelte Benennung ist folglich nicht nötig.
+   * `virtual` muss an der ursprünglichen Deklaration vorhanden sein.
+   * Ein fehlendes `virtual` oder `override` an einer virtuellen Methode verwirrt.
 
 
-#### Schützen Sie sich vor *Object Slicing* <a name="link13"></a>
+---
 
+### Schützen Sie sich vor *Object Slicing* <a name="link12"></a>
+
+To be Done.
 
 https://stackoverflow.com/questions/274626/what-is-object-slicing
 

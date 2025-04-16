@@ -7,36 +7,67 @@
 
 namespace GuidelinesInheritance {
 
-    // =======================================================================
-    // Class Hierarchy
+    namespace GuidelinesCoreCpp_ClassVsStructInvariants {
 
-    class DrawableUIElement {
-    public:
-        virtual void render() const = 0;
-        // ...
-    };
+        // =======================================================================
+        // Class Hierarchy
 
-    class AbstractButton : public DrawableUIElement {
-    public:
-        virtual void onClick() = 0;
-        // ...
-    };
+        class DrawableUIElement {
+        public:
+            virtual ~DrawableUIElement() {}
+            virtual void render() const = 0;
+            // ...
+        };
 
-    class PushButton : public AbstractButton {
-        virtual void render() const override {};
-        virtual void onClick() override {};
-        // ...
-    };
+        class AbstractButton : public DrawableUIElement {
+        public:
+            virtual void onClick() = 0;
+            // ...
+        };
 
-    class Checkbox : public AbstractButton {
-        // ...
-    };
+        class PushButton : public AbstractButton {
+            virtual void render() const override {};
+            virtual void onClick() override {};
+            // ...
+        };
 
-    // =======================================================================
-    // Comparison virtual / non virtual methods
+        class Checkbox : public AbstractButton {
+            // ...
+        };
+
+        // =======================================================================
+        // Question: Is this class inherently hierarchical?
+
+        template<typename T>
+        class Container {
+        public:
+            // list operations:
+            virtual T& get() = 0;
+            virtual void put(T&) = 0;
+            virtual void insert(size_t position) = 0;
+            // ...
+            
+            // vector operations:
+            virtual T& operator[](int) = 0;
+            virtual void sort() = 0;
+            // ...
+            
+            // tree operations:
+            virtual void balance() = 0;
+            // ...
+        };
+
+        static void guidelines_inherently_hierarchical() {
+
+            Container<int>* container = nullptr;
+        }
+    }
 
     namespace GuidelinesInheritance_Comparison 
     {
+        // =======================================================================
+        // Comparison virtual / non virtual methods
+
         class A
         {
         public:
@@ -92,11 +123,11 @@ namespace GuidelinesInheritance {
         }
     }
 
-    // =======================================================================
-    // Keyword 'override'
-
     namespace GuidelinesInheritance_Keyword_Override
     {
+        // =======================================================================
+        // Keyword 'override'
+
         class Base
         {
         public:
@@ -126,11 +157,11 @@ namespace GuidelinesInheritance {
         }
     }
 
-    // =======================================================================
-    // Keyword 'final'
-
     namespace GuidelinesInheritance_Keyword_Final_01
     {
+        // =======================================================================
+        // Keyword 'final' // 1. Example
+
         struct Base {
             virtual void func() {};
         };
@@ -146,6 +177,9 @@ namespace GuidelinesInheritance {
 
     namespace GuidelinesInheritance_Keyword_Final_02
     {
+        // =======================================================================
+        // Keyword 'final' // 2. Example
+
         struct Base /*final*/ {                     // <=== remove comment
             virtual void func() {};
         };
@@ -156,6 +190,9 @@ namespace GuidelinesInheritance {
 
     namespace GuidelinesInheritance_Keyword_Final_03
     {
+        // =======================================================================
+        // Keyword 'final' // 3. Example
+
         class IAbstract
         {
         public:
@@ -174,11 +211,11 @@ namespace GuidelinesInheritance {
         };
     }
 
-    // =======================================================================
-// Keyword 'final'
-
     namespace GuidelinesInheritance_Virtual_BaseClassDestructor
     {
+        // =======================================================================
+        // Virtual Base Class Destructor
+
         class Base
         {
         public:

@@ -23,11 +23,14 @@
   * [Verschiebeoperationen](#link15)
   * [Schreiben Sie kleine, fokussierte Funktionen (Methoden)](#link16)
   * [Verwenden Sie `const` großzügig](#link17)
-  * [Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen](#link18)
-  * [Rückgabetyp einer Methode](#link19)
-  * [Bevorzuge Komposition der Vererbung](#link20)
-  * [Implizite Konvertierungen vermeiden](#link21)
-  * [Schlüsselwort `auto` verwenden oder nicht?](#link22)
+  * [Exception Safety](#link18)
+  * [Die No-Throw-Garantie (*No-Throw Guarantee*)](#link19)
+  * [Das `noexcept` Schlüsselwort](#link20)
+  * [Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen](#link21)
+  * [Rückgabetyp einer Methode](#link22)
+  * [Bevorzuge Komposition der Vererbung](#link23)
+  * [Implizite Konvertierungen vermeiden](#link24)
+  * [Schlüsselwort `auto` verwenden oder nicht?](#link25)
 
 ---
 
@@ -728,7 +731,6 @@ Dieses besteht im Wesentlichen aus zwei Teilen:
 
 Der destruktive Teil entspricht im Allgemeinen dem Code im Destruktor des Typs, der konstruktive Teil im Allgemeinen dem Code im Kopierkonstruktor des Typs.
 
-
 Der Name *Copy-and-Swap* für diese Technik rührt daher,
 dass sie üblicherweise durch eine Kombination aus dem Kopierkonstruktor des Typs,
 seinem Destruktor und einer `swap`()-Memberfunktion implementiert wird,
@@ -883,8 +885,8 @@ gibt ein boolesches Ergebnis zurück und hat keine Nebenwirkungen. Sie ist leich
 
 `const` ist ein leistungsstarkes Sprachfeature in C++, um Absichten auszudrücken und potenzielle Fehler zur Kompilierzeit abzufangen:
 
-    * Wird es auf eine Variable angewendet, zeigt es an, dass der Wert nicht geändert wird.
-    * Wird es auf eine Methode angewendet, zeigt es an, dass die Methode das aufgerufene Objekt nicht ändert.
+  * Wird es auf eine Variable angewendet, zeigt es an, dass der Wert nicht geändert wird.
+  * Wird es auf eine Methode angewendet, zeigt es an, dass die Methode das aufgerufene Objekt nicht ändert.
 
 Einige Richtlinien zur Verwendung von `const`:
 
@@ -932,7 +934,142 @@ potenzielle Fehler zu erkennen, wie z. B. versehentliche Änderungen an Werten, 
 
 ---
 
-### Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen <a name="link18"></a>
+
+### Ausnahmesicherheit (*Exception Safety*) <a name="link18"></a>
+
+Die Idee hinter der *Exception Safety* besteht darin, dass Funktionen bzw. eine Klasse und ihre Methoden
+ihren Clients eine Art Versprechen bzw. eine Garantie hinsichtlich möglicherweise ausgelöster oder nicht ausgelöster Ausnahmen geben.
+
+Es gibt vier Stufen der *Exception Safety*:
+
+#### 1. Keine Ausnahmesicherheit
+
+Mit dieser niedrigsten Stufe der Ausnahmesicherheit wird im wahrsten Sinne des Wortes &ndash; keine Ausnahmesicherheit &ndash; absolut nichts garantiert.
+
+
+#### 2. Elementare Ausnahmesicherheit (*Basic Exception Safety*)
+
+Diese Ebene der Ausnahmesicherheit kann mit mit relativ geringem Implementierungsaufwand erreicht werden:
+
+  * Wenn während eines Funktions- oder Methodenaufrufs eine Ausnahme ausgelöst wird, ist sichergestellt, dass keine Ressourcen verloren gehen!
+  * Wenn während eines Funktions- oder Methodenaufrufs eine Ausnahme ausgelöst wird, kommt es anschließend zu keiner Beschädigung der Daten oder des Speichers,
+  und alle Objekte befinden sich in einem fehlerfreien und konsistenten Zustand.
+  * Aber: Es kann nicht garantiert werden, dass die Daten dieselben sind wie vor dem Aufruf der Funktion oder Methode.
+
+
+*Bemerkung*:
+
+Die STL erwartet von von allen benutzerdefinierten Datentypen,
+dass sie zumindest die *Basic Exception Safety* einhalten.
+
+#### 3. Starke Ausnahmesicherheit (*Strong Exception Safety*)
+
+Die starke Ausnahmesicherheit garantiert alles, was auch die elementare Ausnahmesicherheit gewährleistet.
+Darüber hinaus stellt sie sicher, dass im Ausnahmefall die Daten genau so wiederhergestellt werden, wie sie vor dem Aufruf der Funktion oder Methode waren.
+
+Mit anderen Worten: Mit dieser Ausnahmesicherheitsstufe erhalten wir eine Art *Commit*- oder *Rollback*-Semantik
+wie bei der Transaktionsverarbeitung in Datenbanken.
+
+
+Es ist leicht nachvollziehbar, dass diese Ausnahmesicherheit einen höheren Implementierungsaufwand bedeutet und zur Laufzeit kostspielig sein kann.
+
+Ein Beispiel für diesen zusätzlichen Aufwand ist das sogenannte *Copy-and-Swap-Idiom*,
+das verwendet werden muss, um diese Ebene der Ausnahmesicherheit bei kopierenden
+Zuweisungen zu gewährleisten.
+
+#### 4. Die No-Throw-Garantie (*No-Throw Guarantee*)
+
+Die vierte und letzte Ebene der Ausnahmesicherheit behandeln wir im nächsten Abschnitt.
+
+---
+
+### Die No-Throw-Garantie (*No-Throw Guarantee*) <a name="link19"></a>
+
+
+Diese Ebene der Ausnahmesicherheit ist die höchste Ausnahmesicherheitsstufe:
+
+  * Vereinfacht ausgedrückt bedeutet diese Stufe, dass Sie sich als Aufrufer einer Funktion oder Methode keine Gedanken über Ausnahmen machen müssen.
+  * Der Funktions- oder Methodenaufruf ist erfolgreich. Immer!
+  * Es wird niemals eine Ausnahme ausgelöst, da alles intern ordnungsgemäß behandelt wird.
+
+Natürlich ist diese Stufe nicht immer ganz einfach zu erreichen, zum Beispiel dann,
+wenn mit dem `new`-Operator dynamische Daten ins Spiel kommen.
+
+In den folgenden Fällen ist die No-Throw-Garantie zwingend:
+
+#### Destruktoren von Klassen müssen unter allen Umständen die No-Throw-Garantie gewähren!
+
+Der Grund dafür ist, dass Destruktoren unter anderem auch während des so genannten &bdquo;Stack Unwinding&rdquo;-prozesses aufgerufen werden, wenn eine Ausnahme aufgetreten ist.
+Zu diesem Zeitpunkt kann eine geschachtelt auftretende Ausnahme nicht bearbeitet werden,
+das laufen Programm reagiert in solchen Fällen mit einer unmittelbaren Terminierung.
+
+#### Verschiebeoperationen (Move Operations)
+
+Verschiebe-Konstruktoren und Verschiebe-Zuweisungsoperatoren sollten garantiert keine Fehler enthalten.
+
+Wenn eine Verschiebeoperation eine Ausnahme auslöst, ist die Wahrscheinlichkeit groß,
+dass die Verschiebung nicht stattgefunden hat.
+
+Darüber hinaus ist es wichtig, die No-Throw-Garantie für benutzerdefinierte Datentypen zu gewährleisten,
+die für die Verwendung mit STL-Containern vorgesehen sind.
+
+Wenn der Verschiebekonstruktor für einen Elementtyp in einem Container keine No-Throw-Garantie bietet &ndash;
+d.h., der Verschiebekonstruktor ist nicht mit dem Spezifizierer `noexcept` deklariert &ndash;,
+verwendet der Container bevorzugt die kopierenden (und damit zeitaufwändigeren) Operationen
+gegenüber den verschiebenden Operationen.
+
+
+
+#### Standardkonstruktoren
+
+Das Auslösen einer Ausnahme in einem Konstruktor ist weder wünschenswert, und vor allem: Es kann auch vermieden werden!
+
+Ein &bdquo;halbkonstruiertes Objekt&rdquo; wird kaum im weiteren Gebrauch seinen Client zufriedenstellen.
+
+#### `swap`-Funktionen
+
+Eine `swap`-Funktion muss unter allen Umständen die No-Throw-Vorgang die No-Throw-Garantie gewährleiten.
+
+
+---
+
+### Das `noexcept` Schlüsselwort <a name="link20"></a>
+
+Der Spezifizierer `noexcept` in der Signatur einer Funktion gibt an,
+dass diese Funktion **keine** Ausnahme auslösen darf.
+
+Dasselbe gilt für `noexcept(true)`, das lediglich ein Synonym für `noexcept` ist.
+
+Stattdessen kann eine mit `noexcept(false)` deklarierte Funktion Ausnahme werfen.
+
+
+Wenn eine als `noexcept` markierte Funktion trotzdem eine Ausnahme auslöst,
+setzt der C++&ndash;Compiler einen `terminate()`-Aufruf ab, um die Anwendung zu beenden.
+
+Hier einige Beispiele:
+
+```cpp
+void aNonThrowingFunction() noexcept;
+void anotherNonThrowingFunction() noexcept(true);
+void aPotentiallyThrowingFunction() noexcept(false);
+```
+
+Es gibt zwei gute Gründe für die Verwendung von `noexcept`:
+
+  * Ausnahmen, die eine Funktion oder Methode auslösen kann (oder nicht),
+  sollten Teil der Funktionsschnittstelle sein.
+
+  Es hilft Entwicklern beim Lesen des Quellcodes zu erkennen, was passieren kann und was nicht.
+
+  `noexcept` signalisiert Entwicklern, dass sie diese Funktion sicher in ihren eigenen *non-throwing* Funktionen verwenden können.
+
+  * Zweitens kann diese Information vom Compiler für Optimierungen genutzt werden.
+  `noexcept` ermöglicht es einem Compiler, die Funktion möglicherweise ohne den Laufzeit-Overhead zu kompilieren,
+  der sonst im Falle des Eintretens von Ausnahme erforderlich wäre.
+
+---
+
+### Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen <a name="link21"></a>
 
 Ausnahmen (*Exceptions*) sind die bevorzugte Methode zum Melden und Behandeln von Fehlern in Modern C++.
 Sie haben mehrere Vorteile gegenüber herkömmlichen Fehlercodes:
@@ -944,7 +1081,7 @@ Sie haben mehrere Vorteile gegenüber herkömmlichen Fehlercodes:
 Einige Richtlinien zur Verwendung von Ausnahmen:
 
   * Verwenden Sie Ausnahmen für außergewöhnliche Bedingungen, nicht für den normalen Kontrollfluss.
-  * Werfen Sie Ausnahmen *by value* aus und fangen Sie sie *by reference*.
+  * Werfen Sie Ausnahmen *by value* und fangen Sie sie *by reference*.
   * Verwenden Sie nach Möglichkeit Standardausnahmetypen wie `std::runtime_error`, `std::out_of_range` usw.
   * Definieren Sie Ihre eigenen Ausnahmetypen für domänenspezifische Fehler.
   * Vermeiden Sie das Auslösen von Ausnahmen in Destruktoren.
@@ -984,7 +1121,7 @@ und der Fehler kann nicht ignoriert werden.
 
 ---
 
-### Rückgabetyp einer Methode <a name="link19"></a>
+### Rückgabetyp einer Methode <a name="link22"></a>
 
 Wir betrachten folgendes Beispiel:
 
@@ -1032,7 +1169,7 @@ Es gibt auch eine zweite Möglichkeit:
 
 ---
 
-### Bevorzuge Komposition der Vererbung <a name="link20"></a>
+### Bevorzuge Komposition der Vererbung <a name="link23"></a>
 
   * Vererbung ist ein leistungsstarkes Feature der objektorientierten Programmierung,
   wird aber oft überstrapaziert.
@@ -1097,7 +1234,7 @@ Sie könnten eine *Transform*-Eigenschaft aber auch als Attribut den Klassen hin
 
 ---
 
-### Implizite Konvertierungen vermeiden <a name="link21"></a>
+### Implizite Konvertierungen vermeiden <a name="link24"></a>
 
 In der Sprache C++ gibt es des Feature so genannter &bdquo;impliziter Typkonvertierungen&rdquo;.
 
@@ -1158,7 +1295,7 @@ aber dieses Mal eben nicht versteckt, sondern sichtbar für den Entwickler!
 
 ---
 
-### Schlüsselwort `auto` verwenden oder nicht? <a name="link22"></a>
+### Schlüsselwort `auto` verwenden oder nicht? <a name="link25"></a>
 
 Empfielt sich der Einsatz des Schlüsselworts `auto` oder nicht?
 
