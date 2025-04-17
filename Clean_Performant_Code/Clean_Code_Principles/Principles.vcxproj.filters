@@ -26,5 +26,14 @@
     <None Include="Readme_Principles.md">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="cpp_high_cohesion_low_coupling.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="cpp_lamp_switch_01.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="cpp_lamp_switch_02.svg">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -10,7 +10,8 @@
   * [YAGNI](#link2)
   * [DRY](#link3)
   * [POLS](#link4)
-  * [*Kohäsion* und *Kopplung*](#link5)
+  * [Starke *Kohäsion* und niedrige *Kopplung* (*High Cohesion* and *Lose Coupling*)](#link5)
+  * [Ein Beispiel zu *Lose Coupling*](#link6)
   * [RAII](#link6)
   * [Literatur](#link7)
 
@@ -24,7 +25,7 @@
 
 ## KISS <a name="link1"></a>
 
-KISS ist ein Akronym für &bdquo;*Keep it simple and stupid*&bdquo;.
+KISS ist ein Akronym für &bdquo;*Keep it simple and stupid*&rdquo;.
 
 Das KISS-Prinzip besagt, dass Einfachheit ein Hauptziel bei der Softwareentwicklung sein sollte
 und dass unnötige Komplexität vermieden werden sollte.
@@ -37,7 +38,7 @@ nur weil Sie es können.
 Halten Sie Ihren Code so einfach wie möglich! Wenn hohe Qualitätsanforderungen an Flexibilität und Erweiterbarkeit gestellt werden,
 müssen Sie natürlich Komplexität hinzufügen, um diese Anforderungen zu erfüllen.
 
-Sie können beispielsweise das bekannte &bdquo;Strategie Entwurfsmuster&rdquo; verwenden,
+Sie können beispielsweise das bekannte Entwurfsmuster &bdquo;Strategy Design Pattern&rdquo; verwenden,
 um einen flexiblen Variationspunkt in Ihren Code einzuführen, wenn die Anforderungen dies erfordern.
 
 Aber seien Sie vorsichtig und fügen Sie nur so viel Komplexität hinzu, dass solche Dinge einfacher werden.
@@ -54,15 +55,15 @@ Viele Entwickler denken bei der Programmierung eines Programms gerne ein paar Sc
 und programmieren einige zusätzliche Funktionen, &bdquo;nur für den Fall, dass wir sie brauchen&rdquo;
 oder zumindest &bdquo;irgendwann einmal brauchen werden&rdquo;.
 
-Nur 5 Wörter: „You Aren’t Gonna Need It“.
+Nur 5 Wörter: „*You Aren’t Gonna Need It*“.
 
-Halten Sie sich an YAGNI: Schreiben Sie Qellcode erst, wenn Sie wissen, dass sie ihn wirklich benötigen, nicht vorher.
+Halten Sie sich an YAGNI: Schreiben Sie Quellcode erst, wenn Sie wissen, dass sie ihn wirklich benötigen, nicht vorher.
 
 #### Dem Yagni-Prinzip folgen: Ein Selbsttest
 
 Folgen Sie dem Yagni-Prinzip? Wenn ja, wie genau machen Sie das?
 Hier ist ein einfacher Test, der Ihnen dabei helfen kann, das zu beurteilen.
-Nehmen Sie ihn aber nicht zu ernst.
+Nehmen Sie den Test aber nicht allzu ernst.
 
 *Aufgabe*: Erstellen Sie eine Funktion, die die Summe von 2 und 3 berechnet. Wie würden Sie diese Funktion implementieren?
 
@@ -99,7 +100,7 @@ Verallgemeinerungen vorzunehmen.
 
 Wie oft entdeckt man ähnlichen Quellcode in verschiedenen Teilen innerhalb eines Programms?
 
-Genau hier kommt DRY ins Spiel, was im Deutschen so viel bedeutet wie &bdquo;Wiederhole Dich nicht&rdquo; (&bdquo; Don’t Repeat Yourself&rdquo;).
+Genau hier kommt DRY ins Spiel, was im Deutschen so viel bedeutet wie &bdquo;Wiederhole Dich nicht&rdquo; &ndash; &bdquo; Don’t Repeat Yourself&rdquo;.
 
 Das DRY-Prinzip, formuliert von Andrew Hunt und David Thomas, besagt, das Code-Wiederholungen zu vermeiden sind.
 
@@ -114,11 +115,11 @@ Die DRY-Programmierung kann besonders in großen Anwendungen nützlich sein, in de
 Das &bdquo;Principle of Least Surprise&rdquo; (&bdquo;Prinzip der geringsten Überraschung&rdquo;),
 auch unter der Abkürzung POLS bekannt, ist eine goldene Regel in der Software-Ergonomie, der Mensch-Computer-Interaktion und dem Interfacedesign.
 
-Diese Regel wurde z. B. 1987 von *Geoffrey James* in seinem Buch *The Tao of Programming* als &bdquo;Law of Least Astonishment&rdquo; formuliert.
+Diese Regel wurde z. B. 1987 von *Geoffrey James* in seinem Buch *The Tao of Programming* als &bdquo;*Law of Least Astonishment*&rdquo; formuliert.
 Sie besagt, dass eine Benutzerschnittstelle so ausgelegt werden sollte, dass der Benutzer möglichst wenige Überraschungen erlebt.
 
 Das &bdquo;Principle of Least Surprise&rdquo; wird auch auf den Quellcode von Anwendungen erweitert.
-Hierbei sollen Objekte wie Variablen, Funktionen, Methoden, Klassen und dergleichen derart benannt werden,
+Hierbei sollen Objekte wie Variablen, Funktionen, Methoden, Klassen und dergleichen so benannt werden,
 dass deren Funktion und mögliche Nebenwirkungen klar erkenntlich sind.
 
 *Beispiel*:
@@ -135,12 +136,12 @@ std::shared_ptr<Customer> getCustomerOrEmpty(int customerId);
 ```
 
 Gibt einen Kunden anhand einer eindeutigen Identifikationsnummer zurück.
-Sollte der Kunde nicht gefunden werden, wird ein leeres std::shared_ptr<Customer>-Objekt zurückgeliefert.
+Sollte der Kunde nicht gefunden werden, wird ein leeres `std::shared_ptr<Customer>`-Objekt zurückgeliefert.
 Die Methode besitzt keine Nebenwirkungen.
 
 ---
 
-## *Kohäsion* und *Kopplung* (*Cohesion* and *Coupling*) <a name="link5"></a>
+## Starke *Kohäsion* und niedrige *Kopplung* (*High Cohesion* and *Lose Coupling*) <a name="link5"></a>
 
 Wir wenden uns zunächst einer Erklärung der beiden Begrifflichkeiten zu:
 
@@ -149,7 +150,6 @@ ist der Begriff der *Kohäsion* schwieriger zu begreifen.
 
 Darüber hinaus scheinen die Unterschiede zwischen den beiden Begriffen oft unklar zu sein.
 Das ist nicht überraschend: Die Ideen hinter diesen Begriffen sind tatsächlich ähnlich.
-
 Dennoch unterscheiden sie sich:
 
 #### *Kohäsion*
@@ -186,13 +186,154 @@ mit Klassen fort:
 
   * Je geringer die Anzahl, desto geringer die Kopplung.
 
-#### Richtlinie für starke Kohäsion, geringe Kopplung
+#### Richtlinien für starke Kohäsion und geringe Kopplung
 
-  * starke Kohäsion bedeutet im Wesentlichen, dass Teile einer Codebasis, die miteinander in Beziehung stehen,
+  * Starke Kohäsion bedeutet im Wesentlichen, dass Teile einer Codebasis, die miteinander in Beziehung stehen,
   an einem einzigen Ort aufbewahrt werden.
 
   * Geringe Kopplung bedeutet gleichzeitig, nicht miteinander in Beziehung stehende Teile der Codebasis
   so weit wie möglich voneinander zu trennen.
+
+
+<img src="cpp_high_cohesion_low_coupling.svg" width="650">
+
+*Abbildung* 1: Richtlinien für starke Kohäsion und geringe Kopplung.
+
+Betrachten Sie in *Abbildung* 1:<br />
+Eine Komponente (Subsystem) im allgemeinen Sinne ist eine Wiederverwendungseinheit:
+
+  * die Funktionalität mit hoher Kohäsion gruppiert
+  * die angebotene und benötigte Schnittstellen besitzt, um lose Kopplung zu unterstützen
+
+---
+
+## Ein Beispiel zu *Lose Coupling* <a name="link5"></a>
+
+
+Betrachten Sie das Beispiel aus *Abbildung* 2:
+
+<img src="cpp_lamp_switch_01.svg" width="650">
+
+*Abbildung* 2: Ein Klassendiagramm für einen Schalter und eine Lampe.
+
+```cpp
+01: class Lamp {
+02: public:
+03:     void on() { std::println("On"); }
+04:     void off() { std::println("Off"); }
+05: };
+06: 
+07: class Switch {
+08: private:
+09:     Lamp& m_lamp;
+10:     bool  m_state;
+11: 
+12: public:
+13:     Switch(Lamp& lamp) : m_lamp(lamp), m_state{ false } {}
+14:     void toggle() {
+15:         if (m_state) {
+16:             m_state = false;
+17:             m_lamp.off();
+18:         }
+19:         else {
+20:             m_state = true;
+21:             m_lamp.on();
+22:         }
+23:     }
+24: };
+25: 
+26: static void principles_lose_coupling_violating()
+27: {
+28:     Lamp lamp;
+29:     Switch switcher{ lamp };
+30:     switcher.toggle();
+31:     switcher.toggle();
+32:     switcher.toggle();
+33: }
+```
+
+
+Das Beispiel funktioniert grundsätzlich.
+Zuerst wird eine Instanz der Klasse `Lamp` erstellt.
+Diese wird dann bei der Instanziierung der Klasse `Switch` per Referenz an den Schalter übergeben.
+
+Was ist das Problem bei diesem Design?
+Das Problem ist, dass der Schalter einen direkten Verweis auf die konkrete Klasse Lampe enthält.
+Mit anderen Worten: Der Schalter weiß, dass eine Lampe vorhanden ist.
+
+In diesem Beispiel sind Schalter und Lampe **eng** gekoppelt.
+
+Der Schlüssel zur **losen** Kopplung in objektorientierten Softwaredesigns liegt in der Verwendung von Schnittstellen.
+
+Eine Schnittstelle deklariert öffentlich zugängliche Verhaltensmerkmale einer Klasse,
+ohne sich auf eine bestimmte Implementierung dieser Klasse festzulegen.
+
+Eine Schnittstelle ist wie ein Vertrag. Klassen, die eine Schnittstelle implementieren, sind verpflichtet,
+den Vertrag zu erfüllen.
+Das heißt, diese Klassen müssen Implementierungen für die Methodensignaturen der Schnittstelle bereitstellen.
+
+
+<img src="cpp_lamp_switch_02.svg" width="650">
+
+*Abbildung* 3: Lose gekoppelter Schalter und Lampe mittels einer Schnittstelle.
+
+```cpp
+01: class ISwitchable {
+02: public:
+03:     virtual void on() = 0;
+04:     virtual void off() = 0;
+05: };
+06: 
+07: class Switch {
+08: private:
+09:     ISwitchable& m_switcherable;
+10:     bool         m_state;
+11: 
+12: public:
+13:     Switch(ISwitchable& switchable) 
+14:         : m_switcherable(switchable), m_state{ false } 
+15:     {}
+16:     void toggle() {
+17:         if (m_state) {
+18:             m_state = false;
+19:             m_switcherable.off();
+20:         }
+21:         else {
+22:             m_state = true;
+23:             m_switcherable.on();
+24:         }
+25:     }
+26: };
+27: 
+28: class Lamp : public ISwitchable {
+29: public:
+30:     void on() override { std::println("On"); }
+31:     void off() override { std::println("Off"); }
+32: };
+33: 
+34: static void principles_lose_coupling_respecting()
+35: {
+36:     Lamp lamp;
+37:     Switch switcher{ lamp };
+38:     switcher.toggle();
+39:     switcher.toggle();
+40:     switcher.toggle();
+41: }
+```
+
+Die Vorteile eines solchen Designs liegen auf der Hand. Der Schalter (Klasse `Switch`) ist völlig unabhängig
+von den konkreten Klassen, die von ihm gesteuert werden.
+
+Sie möchten einen Ventilator statt einer Lampe steuern? Kein Problem, denn dieses Design ist erweiterbar.
+Erstellen Sie einfach eine `Fan`-Klasse oder andere Klassen, die elektrische Geräte repräsentieren,
+die die `ISwitchable`-Schnittstelle implementieren, wie in *Abbildung* 4 dargestellt:
+
+
+<img src="cpp_lamp_switch_03.svg" width="650">
+
+*Abbildung* 4: Mit Hilfe einer Schnittstelle kann ein Schalter verschiedene elektrische Geräte ansteuern.
+
+
 
 ---
 
@@ -202,7 +343,7 @@ Siehe Repository *Entwurfsmuster*.
 
 ---
 
-## Literatur <a name="link6"></a>
+## Literatur <a name="link7"></a>
 
 Eine gute Beschreibung der Begriffe *Kohäsion* und *Kopplung*  
 wird in [Cohesion and Coupling: the difference](https://enterprisecraftsmanship.com/posts/cohesion-coupling-difference/) gegeben.

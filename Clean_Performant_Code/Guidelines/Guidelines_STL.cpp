@@ -2,7 +2,6 @@
 // Guidelines_STL_Algorithms.cpp
 // ===========================================================================
 
-//#include <cassert>
 #include <algorithm>
 #include <map>
 #include <print>
