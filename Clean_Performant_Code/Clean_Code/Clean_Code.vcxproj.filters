@@ -26,6 +26,9 @@
     <None Include="Literature.md">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Agenda.md">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Buch_Stephan_Roth_Clean_Cpp_20.png">
