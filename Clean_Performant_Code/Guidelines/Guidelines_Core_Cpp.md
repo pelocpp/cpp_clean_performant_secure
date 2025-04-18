@@ -28,7 +28,7 @@
   * [Das `noexcept` Schlüsselwort](#link20)
   * [Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen](#link21)
   * [Rückgabetyp einer Methode](#link22)
-  * [Bevorzuge Komposition der Vererbung](#link23)
+  * [Bevorzuge Komposition der Vererbung gegenüber](#link23)
   * [Implizite Konvertierungen vermeiden](#link24)
   * [Schlüsselwort `auto` verwenden oder nicht?](#link25)
 
@@ -1166,7 +1166,7 @@ Es gibt auch eine zweite Möglichkeit:
 
 ---
 
-### Bevorzuge Komposition der Vererbung <a name="link23"></a>
+### Bevorzuge Komposition der Vererbung gegenüber <a name="link23"></a>
 
   * Vererbung ist ein leistungsstarkes Feature der objektorientierten Programmierung,
   wird aber oft überstrapaziert.
