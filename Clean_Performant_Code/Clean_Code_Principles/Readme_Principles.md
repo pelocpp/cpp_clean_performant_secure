@@ -180,7 +180,7 @@ mit Klassen fort:
 
 #### *Kopplung*
 
-  * Die *Kopplung* hingegen stellt den Grad dar, in dem eine einzelne Einheit von anderen unabhängig ist.
+  * Die *Kopplung* hingegen stellt den Grad dar, in dem eine einzelne Einheit von anderen abhängig bzw. unabhängig ist.
 
   * Mit anderen Worten handelt es sich um die Anzahl der Verbindungen zwischen zwei oder mehr Einheiten.
 
@@ -203,7 +203,7 @@ Betrachten Sie in *Abbildung* 1:<br />
 Eine Komponente (Subsystem) im allgemeinen Sinne ist eine Wiederverwendungseinheit:
 
   * die Funktionalität mit hoher Kohäsion gruppiert
-  * die angebotene und benötigte Schnittstellen besitzt, um lose Kopplung zu unterstützen
+  * die ein oder mehrere Schnittstellen anbietet, um lose Kopplung zu unterstützen
 
 ---
 
@@ -212,7 +212,7 @@ Eine Komponente (Subsystem) im allgemeinen Sinne ist eine Wiederverwendungseinhe
 
 Betrachten Sie das Beispiel aus *Abbildung* 2:
 
-<img src="cpp_lamp_switch_01.svg" width="650">
+<img src="cpp_lamp_switch_01.svg" width="400">
 
 *Abbildung* 2: Ein Klassendiagramm für einen Schalter und eine Lampe.
 
@@ -258,12 +258,12 @@ Zuerst wird eine Instanz der Klasse `Lamp` erstellt.
 Diese wird dann bei der Instanziierung der Klasse `Switch` per Referenz an den Schalter übergeben.
 
 Was ist das Problem bei diesem Design?
-Das Problem ist, dass der Schalter einen direkten Verweis auf die konkrete Klasse Lampe enthält.
+Das Problem ist, dass der Schalter einen direkten Verweis auf die konkrete Klasse `Lamp` enthält.
 Mit anderen Worten: Der Schalter weiß, dass eine Lampe vorhanden ist.
 
 In diesem Beispiel sind Schalter und Lampe **eng** gekoppelt.
 
-Der Schlüssel zur **losen** Kopplung in objektorientierten Softwaredesigns liegt in der Verwendung von Schnittstellen.
+Der Schlüssel zur **losen** Kopplung in objektorientiertem Softwaredesign liegt in der Verwendung von *Schnittstellen*.
 
 Eine Schnittstelle deklariert öffentlich zugängliche Verhaltensmerkmale einer Klasse,
 ohne sich auf eine bestimmte Implementierung dieser Klasse festzulegen.
@@ -273,9 +273,9 @@ den Vertrag zu erfüllen.
 Das heißt, diese Klassen müssen Implementierungen für die Methodensignaturen der Schnittstelle bereitstellen.
 
 
-<img src="cpp_lamp_switch_02.svg" width="650">
+<img src="cpp_lamp_switch_02.svg" width="600">
 
-*Abbildung* 3: Lose gekoppelter Schalter und Lampe mittels einer Schnittstelle.
+*Abbildung* 3: Lose gekoppelter Schalter und Lampe unter Zuhilfenahme einer Schnittstelle.
 
 ```cpp
 01: class ISwitchable {
@@ -326,14 +326,12 @@ von den konkreten Klassen, die von ihm gesteuert werden.
 
 Sie möchten einen Ventilator statt einer Lampe steuern? Kein Problem, denn dieses Design ist erweiterbar.
 Erstellen Sie einfach eine `Fan`-Klasse oder andere Klassen, die elektrische Geräte repräsentieren,
-die die `ISwitchable`-Schnittstelle implementieren, wie in *Abbildung* 4 dargestellt:
+die die `ISwitchable`-Schnittstelle implementieren, so wie es in *Abbildung* 4 dargestellt wird:
 
 
 <img src="cpp_lamp_switch_03.svg" width="650">
 
 *Abbildung* 4: Mit Hilfe einer Schnittstelle kann ein Schalter verschiedene elektrische Geräte ansteuern.
-
-
 
 ---
 

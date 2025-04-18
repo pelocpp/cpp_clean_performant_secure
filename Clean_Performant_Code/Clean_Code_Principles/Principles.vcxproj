@@ -136,6 +136,7 @@
     <None Include="cpp_high_cohesion_low_coupling.svg" />
     <None Include="cpp_lamp_switch_01.svg" />
     <None Include="cpp_lamp_switch_02.svg" />
+    <None Include="cpp_lamp_switch_03.svg" />
     <None Include="Readme_Principles.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
