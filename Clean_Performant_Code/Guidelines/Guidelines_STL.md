@@ -1,4 +1,4 @@
-# Guidelines zur STL (Standard Template Library)
+# Richtlinien zur STL (Standard Template Library)
 
 [Zurück](./Readme_Guidelines.md)
 

@@ -1,4 +1,4 @@
-﻿# Guidelines Core C++
+﻿# Richtlinien Core C++
 
 [Zurück](./Readme_Guidelines.md)
 

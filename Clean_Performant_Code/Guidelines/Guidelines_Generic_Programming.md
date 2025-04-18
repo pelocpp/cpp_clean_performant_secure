@@ -9,7 +9,6 @@
   * [Allgemeines](#link1)
   * [Literatur](#link19)
 
-
 ---
 
 ## Allgemeines <a name="link1"></a>

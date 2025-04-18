@@ -1,12 +1,12 @@
-# Grundlegende Guidelines für C++ Clean Code
+# Allgemeine Richtlinien für C++ Clean Code
 
 [Zurück](../Clean_Code/Readme_Clean_Code.md)
 
 ---
 
-## [Guidelines Core C++](Guidelines_Core_Cpp.md)
+## [Richtlinien Core C++](Guidelines_Core_Cpp.md)
 
-## [Guidelines STL](Guidelines_STL.md)
+## [Richtlinien zur STL (Standard Template Library)](Guidelines_STL.md)
 
 ## [Richtlinien zur Vererbung](Guidelines_Inheritance.md)
 

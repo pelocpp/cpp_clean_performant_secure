@@ -1,4 +1,4 @@
-# Guidelines zur Vererbung
+# Richtlinien zur Vererbung
 
 [Zurück](./Readme_Guidelines.md)
 

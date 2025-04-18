@@ -1,4 +1,4 @@
-# Klassische Prinzipien der Clean Code Programmierung
+# Clean Code Programming Principles
 
 [Zurück](../Clean_Code/Readme_Clean_Code.md)
 

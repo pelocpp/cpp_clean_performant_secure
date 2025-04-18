@@ -1,4 +1,4 @@
-# Besserer Code mit der `std::ranges`-Bibliothek
+# Funktionale Programmierung mit der `std::ranges`-Bibliothek
 
 [Zurück](../Clean_Code/Readme_Clean_Code.md)
 
