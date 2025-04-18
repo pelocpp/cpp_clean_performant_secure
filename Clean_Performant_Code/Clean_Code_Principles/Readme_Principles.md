@@ -12,8 +12,8 @@
   * [POLS](#link4)
   * [Starke *Kohäsion* und niedrige *Kopplung* (*High Cohesion* and *Lose Coupling*)](#link5)
   * [Ein Beispiel zu *Lose Coupling*](#link6)
-  * [RAII](#link6)
-  * [Literatur](#link7)
+  * [RAII](#link7)
+  * [Literatur](#link8)
 
 ---
 
@@ -212,7 +212,7 @@ Eine Komponente (Subsystem) im allgemeinen Sinne ist eine Wiederverwendungseinhe
 
 Betrachten Sie das Beispiel aus *Abbildung* 2:
 
-<img src="cpp_lamp_switch_01.svg" width="400">
+<img src="cpp_lamp_switch_01.svg" width="500">
 
 *Abbildung* 2: Ein Klassendiagramm für einen Schalter und eine Lampe.
 
@@ -273,7 +273,7 @@ den Vertrag zu erfüllen.
 Das heißt, diese Klassen müssen Implementierungen für die Methodensignaturen der Schnittstelle bereitstellen.
 
 
-<img src="cpp_lamp_switch_02.svg" width="600">
+<img src="cpp_lamp_switch_02.svg" width="550">
 
 *Abbildung* 3: Lose gekoppelter Schalter und Lampe unter Zuhilfenahme einer Schnittstelle.
 
@@ -335,13 +335,13 @@ die die `ISwitchable`-Schnittstelle implementieren, so wie es in *Abbildung* 4 d
 
 ---
 
-## RAII <a name="link6"></a>
+## RAII <a name="link7"></a>
 
 Siehe Repository *Entwurfsmuster*.
 
 ---
 
-## Literatur <a name="link7"></a>
+## Literatur <a name="link8"></a>
 
 Eine gute Beschreibung der Begriffe *Kohäsion* und *Kopplung*  
 wird in [Cohesion and Coupling: the difference](https://enterprisecraftsmanship.com/posts/cohesion-coupling-difference/) gegeben.

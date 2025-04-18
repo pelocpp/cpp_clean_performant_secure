@@ -104,6 +104,18 @@ namespace MemoryManagement {
 
         static void test_examine_alignment_01() {
 
+            std::println("alignof (char)        {}", alignof (char));
+            std::println("alignof (short)       {}", alignof (short));
+            std::println("alignof (int)         {}", alignof (int));
+            std::println("alignof (long)        {}", alignof (long));
+            std::println("alignof (long long)   {}", alignof (long long));
+            std::println("alignof (float)       {}", alignof (float));
+            std::println("alignof (double)      {}", alignof (double));
+            std::println("alignof (long double) {}", alignof (long double));
+        }
+
+        static void test_examine_alignment_02() {
+
             size_t align_of_char{ std::alignment_of<char>::value };
             size_t align_of_short{ std::alignment_of<short>::value };
             size_t align_of_int{ std::alignment_of<int>::value };
@@ -119,25 +131,6 @@ namespace MemoryManagement {
             std::println("std::alignment_of<long long>::value  {}", align_of_long_long);
             std::println("std::alignment_of<float>::value      {}", align_of_float);
             std::println("std::alignment_of<double>::value     {}", align_of_double);
-        }
-
-        static void test_examine_alignment_02() {
-
-            size_t align_of_char{ alignof(char) };
-            size_t align_of_short{ alignof(short) };
-            size_t align_of_int{ alignof(int) };
-            size_t align_of_long{ alignof(long) };
-            size_t align_of_long_long{ alignof(long long) };
-            size_t align_of_float{ alignof(float) };
-            size_t align_of_double{ alignof(double) };
-
-            std::println("alignof (char)      {}", align_of_char);
-            std::println("alignof (short)     {}", align_of_short);
-            std::println("alignof (int)       {}", align_of_int);
-            std::println("alignof (long)      {}", align_of_long);
-            std::println("alignof (long long) {}", align_of_long_long);
-            std::println("alignof (float)     {}", align_of_float);
-            std::println("alignof (double)    {}", align_of_double);
         }
 
         struct Empty {};
@@ -421,29 +414,29 @@ void memory_management()
 {
     using namespace MemoryManagement;
 
-    Stack_Debug_Versus_Release_Mode::test_stack_debug_versus_release_mode();
+    //Stack_Debug_Versus_Release_Mode::test_stack_debug_versus_release_mode();
 
-    Stack_Behaviour::test_examine_stack_behaviour();
-    //Stack_Size::test_examine_stack_size();               // crashes (intentionally)
+    //Stack_Behaviour::test_examine_stack_behaviour();
+    ////Stack_Size::test_examine_stack_size();               // crashes (intentionally)
 
     MemoryAlignment::test_examine_alignment_01();
-    MemoryAlignment::test_examine_alignment_02();
-    MemoryAlignment::test_examine_alignment_03();
-    MemoryAlignment::test_examine_alignment_04();
-    MemoryAlignment::test_examine_alignment_05();
-    MemoryAlignment::test_examine_alignment_06();
-    MemoryAlignment::test_examine_alignment_07();
-    MemoryAlignment::test_examine_alignment_08();
-    MemoryAlignment::test_examine_alignment_09();
-    MemoryAlignment::test_examine_alignment_10();
+    //MemoryAlignment::test_examine_alignment_02();
+    //MemoryAlignment::test_examine_alignment_03();
+    //MemoryAlignment::test_examine_alignment_04();
+    //MemoryAlignment::test_examine_alignment_05();
+    //MemoryAlignment::test_examine_alignment_06();
+    //MemoryAlignment::test_examine_alignment_07();
+    //MemoryAlignment::test_examine_alignment_08();
+    //MemoryAlignment::test_examine_alignment_09();
+    //MemoryAlignment::test_examine_alignment_10();
 
-    MemoryPadding::test_memory_padding();
+    //MemoryPadding::test_memory_padding();
 
-    PlacementNew::test_placement_new_01();
-    PlacementNew::test_placement_new_02();
-    PlacementNew::test_placement_new_03();
+    //PlacementNew::test_placement_new_01();
+    //PlacementNew::test_placement_new_02();
+    //PlacementNew::test_placement_new_03();
 
-    MemoryLaundry::test_std_launder();
+    //MemoryLaundry::test_std_launder();
 }
 
 // ===========================================================================

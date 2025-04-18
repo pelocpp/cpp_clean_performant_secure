@@ -12,7 +12,7 @@
     * [Ausdehnung des Stapels](#link4)
     * [Größe des Stapels bestimmen](#link5)
   * [Ausrichtung von Variablen im Speicher (Memory Alignment)](#link6)
-    * [`std::alignment_of<T>::value` / `alignof()`](#link7)
+    * [`alignof()`](#link7)
     * [`alignas`](#link8)
     * [`std::align`](#link9)
     * [`std::max_align_t` ](link10)
@@ -195,7 +195,7 @@ deren Adresse wir uns beim ersten Aufruf gemerkt haben und die wir an jeden Aufr
 
 Auf diese Weise nähern wir uns der tatsächlichen Größe des Stapels, bis es auf Grund eines Stacküberlaufs
 zu einem Absturz des Programms kommt. Dies entspricht nicht ganz der feinen englischen Art,
-ist aber eine unkonverntionelle Vorgehensweise, um die ungefähre Größe des Stapels zu berechnen.
+ist aber eine unkonventionelle Vorgehensweise, um die ungefähre Größe des Stapels zu berechnen.
 
 
 ```cpp
@@ -250,7 +250,7 @@ Auf einem Windows Rechner erhalten wir folgende Ausgaben &ndash; im Mittelteil d
 ```
 
 Unter Windows ist die Standardgröße des Stacks normalerweise auf 1 MB eingestellt.
-Die Ausgaben des Programms bestätigen dies in etwa &ndash; der Wert 1,020,980 ist
+Die Ausgaben des Programms bestätigen dies in etwa &ndash; der Wert 1.020.980 ist
 nicht weit von 1.048.576 (1.024 * 1.024) entfernt.
 
 ---
@@ -259,51 +259,57 @@ nicht weit von 1.048.576 (1.024 * 1.024) entfernt.
 
 Vorab einige Begrifflichkeiten:
 
-Jedem Objekt im Speicher besitzt eine so genannte *Ausrichtung* (*Alignment*),
+Jedes Objekt im Speicher besitzt eine so genannte *Ausrichtung* (*Alignment*),
 die ihm durch Anforderungen des entsprechenden Typs auferlegt werden.
 
 Die Ausrichtung ist immer eine Potenz von 2 und Objekte mit einer entsprechenden Ausrichtung
 können immer nur an Speicheradressen platziert werden,
 die ein Vielfaches dieser Ausrichtung sind.
 
-### `std::alignment_of<T>::value` / `alignof()` <a name="link7"></a>
+### `alignof()` <a name="link7"></a>
 
-Liefert die Ausrichtung des Typs `T` bzw. des Arguments (Datentyp) `alignof` zurück.
+Liefert die Ausrichtung des Arguments (Datentyp) `alignof()` im Speicher zurück.
+
+Für elementare Datentypen `T` kann man die Aussage treffen, dass stets `sizeof(T)` gleich `alignof(T)` gilt:
 
 *Beispiel*:
 
 ```cpp
 01: void test() {
 02: 
-03:     size_t align_of_char      { alignof(char)      };
-04:     size_t align_of_short     { alignof(short)     };
-05:     size_t align_of_int       { alignof(int)       };
-06:     size_t align_of_long      { alignof(long)      };
-07:     size_t align_of_long_long { alignof(long long) };
-08:     size_t align_of_float     { alignof(float)     };
-09:     size_t align_of_double    { alignof(double)    };
-10: 
-11:     std::println("alignof (char)      {}", align_of_char);
-12:     std::println("alignof (short)     {}", align_of_short);
-13:     std::println("alignof (int)       {}", align_of_int);
-14:     std::println("alignof (long)      {}", align_of_long);
-15:     std::println("alignof (long long) {}", align_of_long_long);
-16:     std::println("alignof (float)     {}", align_of_float);
-17:     std::println("alignof (double)    {}", align_of_double);
-18: }
+03:     std::println("alignof (char)        {}", alignof (char));
+04:     std::println("alignof (short)       {}", alignof (short));
+05:     std::println("alignof (int)         {}", alignof (int));
+06:     std::println("alignof (long)        {}", alignof (long));
+07:     std::println("alignof (long long)   {}", alignof (long long));
+08:     std::println("alignof (float)       {}", alignof (float));
+09:     std::println("alignof (double)      {}", alignof (double));
+10:     std::println("alignof (long double) {}", alignof (long double));
+11: }
 ```
 
 *Ausführung*:
 
 ```
-alignof (char)      1
-alignof (short)     2
-alignof (int)       4
-alignof (long)      4
-alignof (long long) 8
-alignof (float)     4
-alignof (double)    8
+alignof (char)        1
+alignof (short)       2
+alignof (int)         4
+alignof (long)        4
+alignof (long long)   8
+alignof (float)       4
+alignof (double)      8
+alignof (long double) 8
 ```
+
+Etwas komplizierter wird es, wenn wir die Ausrichtung von Strukturen betrachten,
+siehe hierzu weiter unten den Abschnitt zu [Padding](#link11).
+
+
+*Bemerkung*:
+
+In der &bdquo;*Type Traits*&rdquo;-Metaprogramming Bibliothek der STL gibt es ein Klassentemplate `std::alignment_of<T>`.
+Dessen Arbeitsweise ist weitestgehend identisch mit dem des Operators `alignof()`, es wird die Ausrichtung des Typs `T` zurückgeliefert.
+Von Ausnahmen abgesehen kann man also immer mit dem Operator `alignof()` arbeiten.
 
 ### `alignas` <a name="link8"></a>
 
