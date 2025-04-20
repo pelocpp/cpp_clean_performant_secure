@@ -9,10 +9,10 @@
 #include <iostream>
 #include <map>
 #include <memory>
+#include <mutex> 
 #include <print>
 #include <stdexcept>
 #include <utility> 
-
 namespace GuidelinesCoreCpp {
 
     namespace GuidelinesCoreCpp_ClassVsStructInvariants {
@@ -117,8 +117,8 @@ namespace GuidelinesCoreCpp {
 
         static void guidelines_defaulted_constructor()
         {
-            A a;
-            B b;
+            [[maybe_unused]] A a;
+            [[maybe_unused]] B b;
         }
     }
 
@@ -965,20 +965,49 @@ namespace GuidelinesCoreCpp {
             guidelines_keyword_auto_02();
         }
     }
+
+    namespace GuidelinesCoreCpp_Keyword_Auto_Left_to_Right_Initialization_Syntax {
+
+
+        class X {};
+
+        class Foo{
+        public:
+            Foo() = default;
+            Foo(int) {};
+        };
+
+        static Foo createFooOject() { return {}; }
+
+        static void guidelines_keyword_auto_left_to_right_Initialization_syntax()
+        {
+            auto var1 = 0;
+            auto var2 = Foo{};
+            auto var3 = createFooOject();
+            auto var4 = std::mutex{};
+
+            auto name = std::string{ "Hans" };
+            auto anotherName = "Sepp";
+
+            auto ptr = std::make_unique<Foo>(123);
+
+            auto myLambda = [](auto n, auto m) { return n + m; };
+
+            //X x1();
+            //auto x2 = X();
+        }
+    }
 }
 
 void guidelines_core_cpp()
 {
     using namespace GuidelinesCoreCpp;
 
-    // GuidelinesCoreCpp_ClassVsStructInvariants::guidelines_invariants();  // crashes intentionally
+    //GuidelinesCoreCpp_ClassVsStructInvariants::guidelines_invariants();  // crashes intentionally
     //GuidelinesCoreCpp_DefaultedConstructors::guidelines_defaulted_constructor();
-
-
-  //  GuidelinesCoreCpp_InitializationOfStructs::guidelines_initialization_of_structs();
-   // GuidelinesCoreCpp_InitializationOfObjects::guidelines_initialization_of_objects();
-    GuidelinesCoreCpp_CopySwapIdiom::guidelines_copy_swap_idiom();
-
+    //GuidelinesCoreCpp_InitializationOfStructs::guidelines_initialization_of_structs();
+    //GuidelinesCoreCpp_InitializationOfObjects::guidelines_initialization_of_objects();
+    //GuidelinesCoreCpp_CopySwapIdiom::guidelines_copy_swap_idiom();
     //GuidelinesCoreCpp_SmallFocusedFunctions::guidelines_small_focused_functions();
     //GuidelinesCoreCpp_UseConstLiberally::guidelines_use_const_liberally();
     //GuidelinesCoreCpp_PreferExceptionsOverErrorCodes::guidelines_error_handling();
@@ -987,6 +1016,8 @@ void guidelines_core_cpp()
     //GuidelinesCoreCpp_CompositionOverInheritance::guidelines_prefer_composition_over_inheritance();
     //GuidelinesCoreCpp_PreventImplicitConversions::guidelines_implicit_conversion();
     //GuidelinesCoreCpp_Keyword_Auto::guidelines_keyword_auto();
+
+    GuidelinesCoreCpp_Keyword_Auto_Left_to_Right_Initialization_Syntax::guidelines_keyword_auto_left_to_right_Initialization_syntax();
 }
 
 // ===========================================================================

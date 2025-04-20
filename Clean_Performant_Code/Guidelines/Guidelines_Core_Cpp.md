@@ -31,6 +31,7 @@
   * [Bevorzuge Komposition der Vererbung gegenüber](#link23)
   * [Implizite Konvertierungen vermeiden](#link24)
   * [Schlüsselwort `auto` verwenden oder nicht?](#link25)
+  * [Schlüsselwort `auto`: *Left-to-Right* Initialisierungsstil](#link26)
 
 ---
 
@@ -1064,6 +1065,11 @@ Es gibt zwei gute Gründe für die Verwendung von `noexcept`:
   `noexcept` ermöglicht es einem Compiler, die Funktion möglicherweise ohne den Laufzeit-Overhead zu kompilieren,
   der sonst im Falle des Eintretens von Ausnahme erforderlich wäre.
 
+
+*Bemerkung*:<br />
+Destruktoren einer Klasse sind implizit als `noexcept` definiert.
+
+
 ---
 
 ### Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen <a name="link21"></a>
@@ -1317,7 +1323,7 @@ Warum ist dieses Code-Fragment nicht übersetzungsfähig?
 
 *Zwei Empfehlungen*:
 
-  * Verwenden Sie es prinzipiell großzügig. Es kann die Lesbarkeit verbessern.
+  * Verwenden Sie `auto` prinzipiell großzügig. Es kann die Lesbarkeit verbessern.
     Der Compiler kann Typen für uns besser ableiten (*Type Deduction*) als wir selbst.
 
   * Ist der Typ einer Variablen von entscheidender Natur, dann sollte man diesen auch explizit hinschreiben.
@@ -1350,6 +1356,114 @@ Es gibt  hier nur eine Warnung:<br />
 *auto does not deduce references a possibly unintended copy is being made*.
 
 ---
+
+### Schlüsselwort `auto`: *Left-to-Right* Initialisierungsstil <a name="link26"></a>
+
+Verwenden Sie das Schlüsselwort `auto`, um damit einen einheitlichen, besser lesbaren Initialisierungsstil
+für Variablen zu generieren:
+
+```cpp
+01: auto var1 = 0;
+02: auto var2 = Foo{};
+03: auto var3 = createFooOject();
+04: auto var4 = std::mutex{};
+05: auto name = std::string{ "Hans" };
+06: auto anotherName = std::make_unique<Foo>(123);
+07: auto myLambda = [](auto n, auto m) { return n + m; };
+```
+
+Welche Vorteile bietet dieser Initialisierungsstil?
+
+##### 1. Das Konsistenzargument
+
+Im Wesentlichen besteht das Argument darin, dass sich der Standardstil in der Initialisierung von Variablen in von C++
+in Richtung einer „von links nach rechts“-Syntax bewegt.
+
+##### 2. Das Initialisierungsargument
+
+Eines der stärksten Argumente für den *Left-to-Right* Initialisierungsstil ist,
+dass sie das Fehlen eines Initialisierungswerts für Variablen/Objekte unmöglich macht.
+
+```cpp
+int i;         // bad
+```
+
+```cpp
+int i = 0;     // better
+```
+
+```cpp
+auto i;        // impossible, doesn't compile
+```
+
+```cpp
+auto i = 0;    // good, i is now initialized (to 0) and can be read from
+```
+
+##### 3. Das Argument, dass bei der Initialisierung die Konvertierung nicht eingeschränkt wird
+
+```cpp
+float x = 123.45;        // Hmmm, 123.45 is of type double
+```
+
+Es findet eine &bdquo;*Narrowing Conversion*&rdquo; statt:
+123.45 ist vom Typ `double` und wird in den weniger präzisen Typ `double` konvertiert.
+
+```cpp
+auto x = 123.45f;
+```
+
+Mit dem *Left-to-Right* Initialisierungsstil wurde überhaupt kein `double`-Wert erzeugt.
+Und es findet keine &bdquo;*Narrowing Conversion*&rdquo; statt.
+
+
+##### 4. Das Argument, dass es die Leistung fast nie beeinträchtigt
+
+Betrachten Sie diesen Ausdruck mit dem *Left-to-Right* Initialisierungsstil:
+
+
+```cpp
+auto name = std::string{ "Hans" };
+```
+
+Was verbirgt sich hinter diesem Gleichheitszeichen? Wird da nicht eine Kopie von `std::string{ "Hans" }` erstellt?
+
+Theoretisch erzeugt der Ausdruck `std::string{ "Hans" }` ein temporäres `std::string`-Objekt,
+das dann nach `name` verschoben wird.
+
+Diese Syntax könnte also die Kosten einer Verschiebung verursachen.
+
+Ab C++ ist das Feature [Copy Elision](https://en.cppreference.com/w/cpp/language/copy_elision) 
+in der Sprache per Definition vorhanden.
+
+Deshalb hat der *Left-to-Right* Initialisierungsstil keine Auswirkungen auf die Laufzeitleistung.
+
+*Bemerkung*:
+Dieses Feature ist in C++ 14 und kleiner nicht vorhanden &ndash;
+hier sollten wir diesen Initialisierungsstil deshalb vermeiden.
+
+##### 5. Das &bdquo;*most vexing*&rdquo; Parse-Argument
+
+```cpp
+X x();
+```
+
+Diese Deklaration wird vom Compiler als eine Funktionsaufrufdeklaration interpretiert,
+die eine Funktion des Namens `x` ohne Parameter aufruft und ein Objekt vom Typ `X` zurückliefert.
+
+
+```cpp
+auto x = X(); // no way to interpret this as a function declaration
+```
+
+
+
+
+
+
+---
+
+
 
 [Zurück](./Readme_Guidelines.md)
 
