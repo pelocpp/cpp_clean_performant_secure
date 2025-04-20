@@ -12,7 +12,12 @@
 #include <mutex> 
 #include <print>
 #include <stdexcept>
-#include <utility> 
+#include <utility>
+
+#if ! defined(_MSC_VER)
+#include <experimental/propagate_const>
+#endif
+
 namespace GuidelinesCoreCpp {
 
     namespace GuidelinesCoreCpp_ClassVsStructInvariants {
@@ -968,7 +973,6 @@ namespace GuidelinesCoreCpp {
 
     namespace GuidelinesCoreCpp_Keyword_Auto_Left_to_Right_Initialization_Syntax {
 
-
         class X {};
 
         class Foo{
@@ -979,7 +983,7 @@ namespace GuidelinesCoreCpp {
 
         static Foo createFooOject() { return {}; }
 
-        static void guidelines_keyword_auto_left_to_right_Initialization_syntax()
+        static void guidelines_keyword_auto_left_to_right_initialization_syntax()
         {
             auto var1 = 0;
             auto var2 = Foo{};
@@ -994,8 +998,117 @@ namespace GuidelinesCoreCpp {
             auto myLambda = [](auto n, auto m) { return n + m; };
 
             //X x1();
-            //auto x2 = X();
+            // auto x2 = X();
         }
+    }
+
+    namespace GuidelinesCoreCpp_Keyword_Const_Auto_References {
+
+        static std::pair<int, int> func(int x) { 
+            return{ x, x }; 
+        }
+
+        static auto another_func() {
+
+            const std::pair<int, int>& cv1 = func(1);  // temporary object of type std::pair<int,int>
+            const std::pair<int, int>& cv2 = func(2);  // temporary object of type std::pair<int,int>
+            const std::pair<int, int>& cv3 = func(3);  // temporary object of type std::pair<int,int>
+
+            // Temporary Lifetime Extension: 
+            return cv1.first + cv2.first + cv3.first;;
+            // cv1, cv2 and cv3 are going out of scope, temporaries will be destroyed right now
+        }
+
+        static void guidelines_keyword_const_auto_references_01()
+        {
+            auto result = another_func();
+            std::println("Value: {}", result);
+        }
+
+        // --------------------------------------------------------------------------------------
+
+        // class defined with new syntax with auto
+        //class Foo
+        //{
+        //public:
+        //    auto val() const {
+        //        return m_value;
+        //    }
+        //    auto& cref() const {
+        //        return m_value;
+        //    }
+        //    auto& mref() {
+        //        return m_value;
+        //    }
+
+        //private:
+        //    int m_value{};
+        //};
+
+        // class defined with traditional syntax with explicit type
+        class Foo
+        {
+        public:
+            int val() const {
+                return m_value;
+            }
+
+            const int& cref() const {
+                return m_value;
+            }
+
+            int& mref() {
+                return m_value;
+            }
+
+        private:
+            int m_value{};
+        };
+
+        static void guidelines_keyword_const_auto_references_02()
+        {
+            auto foo = Foo{};
+
+            auto& cref = foo.cref(); // cref is a const reference
+
+            auto& mref = foo.mref(); // mref is a mutable reference
+        }
+
+        static void guidelines_keyword_const_auto_references()
+        {
+            guidelines_keyword_const_auto_references_01();
+            guidelines_keyword_const_auto_references_02();
+        }
+    }
+
+    namespace GuidelinesCoreCpp_Const_Propagation_for_Pointer {
+
+        class Foo {
+        public:
+            Foo(int* ptr) : m_ptr{ ptr } {}
+
+            auto set_value_behind_pointer(int value) const {
+
+                *m_ptr = value; // compiles despite function being declared const!
+            }
+        private:
+            int* m_ptr{};
+        };
+
+        static void guidelines_keyword_const_propagation_for_pointers_01()
+        {
+            auto i = 0;
+
+            const auto foo = Foo{ &i };
+
+            foo.set_value_behind_pointer(123);
+        }
+
+        static void guidelines_keyword_const_propagation_for_pointers()
+        {
+            guidelines_keyword_const_propagation_for_pointers_01();
+        }
+
     }
 }
 
@@ -1003,21 +1116,21 @@ void guidelines_core_cpp()
 {
     using namespace GuidelinesCoreCpp;
 
-    //GuidelinesCoreCpp_ClassVsStructInvariants::guidelines_invariants();  // crashes intentionally
-    //GuidelinesCoreCpp_DefaultedConstructors::guidelines_defaulted_constructor();
-    //GuidelinesCoreCpp_InitializationOfStructs::guidelines_initialization_of_structs();
-    //GuidelinesCoreCpp_InitializationOfObjects::guidelines_initialization_of_objects();
-    //GuidelinesCoreCpp_CopySwapIdiom::guidelines_copy_swap_idiom();
-    //GuidelinesCoreCpp_SmallFocusedFunctions::guidelines_small_focused_functions();
-    //GuidelinesCoreCpp_UseConstLiberally::guidelines_use_const_liberally();
-    //GuidelinesCoreCpp_PreferExceptionsOverErrorCodes::guidelines_error_handling();
-    //GuidelinesCoreCpp_MethodsReturnType_CopiedToCaller::guidelines_return_type();
-    //GuidelinesCoreCpp_MethodsReturnType_LifetimeByVoucher::guidelines_return_type();
-    //GuidelinesCoreCpp_CompositionOverInheritance::guidelines_prefer_composition_over_inheritance();
-    //GuidelinesCoreCpp_PreventImplicitConversions::guidelines_implicit_conversion();
-    //GuidelinesCoreCpp_Keyword_Auto::guidelines_keyword_auto();
-
-    GuidelinesCoreCpp_Keyword_Auto_Left_to_Right_Initialization_Syntax::guidelines_keyword_auto_left_to_right_Initialization_syntax();
+    GuidelinesCoreCpp_ClassVsStructInvariants::guidelines_invariants();  // crashes intentionally
+    GuidelinesCoreCpp_DefaultedConstructors::guidelines_defaulted_constructor();
+    GuidelinesCoreCpp_InitializationOfStructs::guidelines_initialization_of_structs();
+    GuidelinesCoreCpp_InitializationOfObjects::guidelines_initialization_of_objects();
+    GuidelinesCoreCpp_CopySwapIdiom::guidelines_copy_swap_idiom();
+    GuidelinesCoreCpp_SmallFocusedFunctions::guidelines_small_focused_functions();
+    GuidelinesCoreCpp_UseConstLiberally::guidelines_use_const_liberally();
+    GuidelinesCoreCpp_PreferExceptionsOverErrorCodes::guidelines_error_handling();
+    GuidelinesCoreCpp_MethodsReturnType_CopiedToCaller::guidelines_return_type();
+    GuidelinesCoreCpp_MethodsReturnType_LifetimeByVoucher::guidelines_return_type();
+    GuidelinesCoreCpp_CompositionOverInheritance::guidelines_prefer_composition_over_inheritance();
+    GuidelinesCoreCpp_PreventImplicitConversions::guidelines_implicit_conversion();
+    GuidelinesCoreCpp_Keyword_Auto::guidelines_keyword_auto();
+    GuidelinesCoreCpp_Keyword_Auto_Left_to_Right_Initialization_Syntax::guidelines_keyword_auto_left_to_right_initialization_syntax();
+    GuidelinesCoreCpp_Keyword_Const_Auto_References::guidelines_keyword_const_auto_references();
 }
 
 // ===========================================================================

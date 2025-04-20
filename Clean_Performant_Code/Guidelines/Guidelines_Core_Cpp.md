@@ -32,6 +32,9 @@
   * [Implizite Konvertierungen vermeiden](#link24)
   * [Schlüsselwort `auto` verwenden oder nicht?](#link25)
   * [Schlüsselwort `auto`: *Left-to-Right* Initialisierungsstil](#link26)
+  * [Konstante Referenzen (`const auto&`)](#link27)
+  * [Veränderbare Referenzen (`auto&`)](#link28)
+  * [*Forwarding* Referenzen (`auto&&`)](#link29)
 
 ---
 
@@ -1360,7 +1363,7 @@ Es gibt  hier nur eine Warnung:<br />
 ### Schlüsselwort `auto`: *Left-to-Right* Initialisierungsstil <a name="link26"></a>
 
 Verwenden Sie das Schlüsselwort `auto`, um damit einen einheitlichen, besser lesbaren Initialisierungsstil
-für Variablen zu generieren:
+für Variablen zu haben:
 
 ```cpp
 01: auto var1 = 0;
@@ -1376,13 +1379,13 @@ Welche Vorteile bietet dieser Initialisierungsstil?
 
 ##### 1. Das Konsistenzargument
 
-Im Wesentlichen besteht das Argument darin, dass sich der Standardstil in der Initialisierung von Variablen in von C++
-in Richtung einer „von links nach rechts“-Syntax bewegt.
+Im Wesentlichen besteht das Argument darin, dass sich der Standardstil in der Initialisierung von Variablen in C++
+in Richtung einer &bdquo;von links nach rechts&rdquo;-Syntax bewegt.
 
 ##### 2. Das Initialisierungsargument
 
 Eines der stärksten Argumente für den *Left-to-Right* Initialisierungsstil ist,
-dass sie das Fehlen eines Initialisierungswerts für Variablen/Objekte unmöglich macht.
+dass er das Fehlen eines Initialisierungswerts für Variablen/Objekte unmöglich macht.
 
 ```cpp
 int i;         // bad
@@ -1403,11 +1406,11 @@ auto i = 0;    // good, i is now initialized (to 0) and can be read from
 ##### 3. Das Argument, dass bei der Initialisierung die Konvertierung nicht eingeschränkt wird
 
 ```cpp
-float x = 123.45;        // Hmmm, 123.45 is of type double
+float x = 123.45;        // Hmmm, 123.45 is of type double ?!?
 ```
 
 Es findet eine &bdquo;*Narrowing Conversion*&rdquo; statt:
-123.45 ist vom Typ `double` und wird in den weniger präzisen Typ `double` konvertiert.
+`123.45` ist vom Typ `double` und wird in den weniger präzisen Typ `float` konvertiert.
 
 ```cpp
 auto x = 123.45f;
@@ -1417,7 +1420,7 @@ Mit dem *Left-to-Right* Initialisierungsstil wurde überhaupt kein `double`-Wert
 Und es findet keine &bdquo;*Narrowing Conversion*&rdquo; statt.
 
 
-##### 4. Das Argument, dass es die Leistung fast nie beeinträchtigt
+##### 4. Das Argument, dass es die Leistung (fast) nie beeinträchtigt
 
 Betrachten Sie diesen Ausdruck mit dem *Left-to-Right* Initialisierungsstil:
 
@@ -1426,17 +1429,15 @@ Betrachten Sie diesen Ausdruck mit dem *Left-to-Right* Initialisierungsstil:
 auto name = std::string{ "Hans" };
 ```
 
-Was verbirgt sich hinter diesem Gleichheitszeichen? Wird da nicht eine Kopie von `std::string{ "Hans" }` erstellt?
+Was verbirgt sich hinter dem Gleichheitszeichen? Wird da nicht eine Kopie von `std::string{ "Hans" }` erstellt?
 
 Theoretisch erzeugt der Ausdruck `std::string{ "Hans" }` ein temporäres `std::string`-Objekt,
 das dann nach `name` verschoben wird.
-
 Diese Syntax könnte also die Kosten einer Verschiebung verursachen.
 
 Ab C++ ist das Feature [Copy Elision](https://en.cppreference.com/w/cpp/language/copy_elision) 
 in der Sprache per Definition vorhanden.
-
-Deshalb hat der *Left-to-Right* Initialisierungsstil keine Auswirkungen auf die Laufzeitleistung.
+Deshalb hat der *Left-to-Right* Initialisierungsstil keine Auswirkungen auf die Laufzeitleistung!
 
 *Bemerkung*:
 Dieses Feature ist in C++ 14 und kleiner nicht vorhanden &ndash;
@@ -1449,21 +1450,143 @@ X x();
 ```
 
 Diese Deklaration wird vom Compiler als eine Funktionsaufrufdeklaration interpretiert,
-die eine Funktion des Namens `x` ohne Parameter aufruft und ein Objekt vom Typ `X` zurückliefert.
+die eine Funktion des Namens `x` ohne Parameter deklarioert, die ein Objekt vom Typ `X` zurückliefert.
 
 
 ```cpp
 auto x = X(); // no way to interpret this as a function declaration
 ```
 
+In der letzten Deklaration ist `x` ein Objekts des Typs `X`.
 
 
+---
+
+### Konstante Referenzen (`const auto&`) <a name="link27"></a>
+
+Eine `const auto&`-Referenz kann an alles gebunden werden.
+
+Das ursprüngliche Objekt kann durch eine solche Referenz niemals verändert werden.
+
+Der Gebrauch von `const auto&`-Referenzen für Objekte sollte die Vorzugswahl sein,
+vor allem dann, wenn das Kopieren des Originalobjekts teuer ist.
+
+Wenn die `const auto&`-Referenz an ein temporäres Objekt gebunden ist,
+verlängert sich die Lebensdauer des temporären Objekts angepasst an die Lebensdauer der beteiligten Referenz.
+
+*Beispiel*:
+
+```cpp
+01: std::pair<int, int> func(int x) { 
+02:     return{ x, x }; 
+03: }
+04: 
+05: auto another_func() {
+06: 
+07:     const std::pair<int, int>& cv1 = func(1);  // temporary object of type std::pair<int,int>
+08:     const std::pair<int, int>& cv2 = func(2);  // temporary object of type std::pair<int,int>
+09:     const std::pair<int, int>& cv3 = func(3);  // temporary object of type std::pair<int,int>
+10: 
+11:     // Temporary Lifetime Extension: 
+12:     return cv1.first + cv2.first + cv3.first;;
+13:     // cv1, cv2 and cv3 are going out of scope, temporaries will be destroyed right now
+14: }
+15: 
+16: void test()
+17: {
+18:     auto result = another_func();
+19:     std::println("Value: {}", result);
+20: }
+```
+
+*Hinweis*:
+
+Es ist möglich, bei Verwendung von `auto&` eine `const auto&`-Referenz zu erhalten.
+
+Dies ist im folgenden Beispiel zu sehen:
+
+```cpp
+class Foo
+{
+public:
+    auto val() const {
+        return m_value;
+    }
+
+    auto& cref() const {
+        return m_value;
+    }
+
+    auto& mref() {
+        return m_value;
+    }
+
+private:
+    int m_value{};
+};
+
+void test()
+{
+    auto foo = Foo{};
+    auto& cref = foo.cref(); // <== cref is a const reference (!!!)
+    auto& mref = foo.mref(); // <== mref is a mutable reference
+}
+```
+
+*Fazit*:<br />
+  * Stilistisch sollte man immer `const auto&` verwenden, um explizit auszudrücken, dass man es mit einer konstanten Referenz zu tun hat!
+  * `auto&` wiederum sollte man nur dann verwenden, wenn wir eine veränderliche (mutable) Referenz kennzeichnen wollen.
+
+
+---
+
+### Veränderbare Referenzen (`auto&`) <a name="link28"></a>
+
+Im Gegensatz zu einer konstanten Referenz kann eine veränderbare Referenz (`auto&`) nicht an eine temporäre Variable / ein temporäres Objekt gebunden werden.
+
+Wir verwenden `auto&` immer dann, wenn wir das referenzierte Objekt ändern möchten.
+
+---
+
+### *Forwarding* Referenzen (`auto&&`) <a name="link29"></a>
+
+`auto&&` wird als *Forwarding* Referenz (auch universelle Referenz) bezeichnet.
+
+Sie kann an alles gebunden werden, was sie in bestimmten Fällen nützlich macht.
+
+*Forwarding* Referenzen verlängern, genau wie konstante Referenzen, die Lebensdauer einer temporären Variablen / eines temporären Objekts.
+
+Im Gegensatz zur konstanten Referenz ermöglicht `auto&&` jedoch das Ändern referenzierter Objekte, auch temporärer Variablen / temporärer Objekte.
+
+Wir verwenden nur dann, wenn wir Variablen/Objekte an anderen, unterlagerten Code weiterleiten.
+
+In diesen Weiterleitungsszenarien spielt es keine Rolle, ob die Variable eine konstante oder veränderliche Variable ist;
+man möchte sie lediglich an Code weitergeben, der die Variable tatsächlich verwendet.
+
+*Hinweis*:<br />
+  * Wichtig zu beachten: `auto&&` und `T&&` sind nur dann Weiterleitungsreferenzen, wenn sie in einem Funktionstemplate verwendet werden,
+  in der `T` ein Templateparameter des Funktionstemplates ist.
+
+  * Die Verwendung der `&&`-Syntax mit einem expliziten Typ, z. B. `std::string&&`, bezeichnet eine *RValue*-Referenz
+  und hat nichts mit einer *Forwarding* Referenz zu tun.
 
 
 
 ---
 
+# Literatur
 
+Zum Schlagwort &bdquo;*Temporary Lifetime Extension*&rdquo;
+gibt es im Netz zwei interessante Aufsätze:
+
+[Temporary Lifetime Extension: Mistakes and Solutions](https://hackernoon.com/temporary-lifetime-extension-mistakes-and-solutions)
+
+und
+
+[Lifetime extension of temporary objects in C++](https://pvs-studio.com/en/blog/posts/cpp/1006).
+
+
+---
 
 [Zurück](./Readme_Guidelines.md)
 
