@@ -65,8 +65,9 @@ Jeder Kern des Prozessors verfügt über einen eigenen integrierten L1-Cache.
 
 ### L2-Cache / Second-Level-Cache <a name="link3"></a>
 
-L2-Cache ist ein sekundärer Speichercache, der ebenfalls in jeden einzelnen Kern der CPU eingebettet ist.
-Er hat fast immer mehr Speicherplatz als ein L1-Cache, arbeitet aber langsamer, aber immer noch viel schneller als die RAM-Geschwindigkeit.
+Der L2-Cache ist ein sekundärer Speichercache, der ebenfalls in jeden einzelnen Kern der CPU eingebettet ist.
+Er hat fast immer mehr Speicherplatz als ein L1-Cache, arbeitet aber langsamer,
+aber immer noch viel schneller als die Geschwindigkeit des RAMs ist.
 
 ### L3-Cache / Third-Level-Cache <a name="link4"></a>
 
@@ -74,11 +75,11 @@ Anstatt in jeden CPU-Kern eingebettet zu sein, fungiert der Level-3-Cache als ge
 auf den der gesamte Prozessor zugreifen kann. Er ist viel langsamer als L1- und L2-Cache, vielleicht nur doppelt so schnell wie RAM,
 ist aber die größte aller drei Speicherebenen.
 
-In *Abbildung* 1 finden Sie die Cache-Größen auf meinem Rechner auf meinem Rechner vor:
+In *Abbildung* 1 finden Sie die Cache-Größen auf meinem Rechner vor:
 
-<img src="L1_L2_L3_Cache.png" width="350">
+<img src="L1_L2_L3_Cache.png" width="400">
 
-*Abbildung* 1: Cache-Größen auf meinem Rechner
+*Abbildung* 1: Cache-Größen auf meinem Rechner.
 
 ## *Cache Lines* <a name="link5"></a>
 
@@ -88,9 +89,9 @@ sondern immer eine so genannte *Cache Line*.
 Häufig besteht eine *Cache Line* aus 64 Bytes.
 Die verschiedenen Caches zwischen der CPU und dem Hauptspeicher (L1-, L2- und L3-Cache) tauschen 64-Byte-Blöcke statt einzelner Bytes aus.
 
-Einige wichtige Faktoren, die die Leistung eines Computerprogramms, das den CPU-Cache nutzt, beeinträchtigen können, besteht darin,
+Ein wichtiger Faktor, der die Leistung eines Computerprogramms, das den CPU-Cache nutzt, beeinträchtigen kann, besteht darin,
 in einem Programm zwischen verschiedenen *Cache Lines* &bdquo;hin- und her zu springen&rdquo;,
-an Stelle die Daten einer einzelnen Cache Line im Stück auszuwerten (solange das Programm eine derartige Funktionalität natürlich hergibt).
+an Stelle die Daten einer einzelnen *Cache Line* im Stück auszuwerten (solange das Programm eine derartige Funktionalität natürlich hergibt).
 
 Die Größe einer Cache Line ist in C++ einfach bestimmbar:
 

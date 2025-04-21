@@ -376,14 +376,14 @@ namespace STLAlgorithms_BestPractices {
 
     static void test_non_generic_vs_generic_function ()
     {
-        const auto values1{ std::vector{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 } };
-        const auto values2{ std::list{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 } };
-        std::list<std::string> values3{ "1.5", "2.5", "3.5", "4.5", "5.5" };
+        auto values1 = std::vector{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        auto values2 = std::list{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        auto values3 = std::list<std::string>{ "1.5", "2.5", "3.5", "4.5", "5.5" };
 
         // first 'contains' overload
         bool result1{ contains (values1, 3)};
-        //bool result2{ contains(values2, 3) };
-        //bool result3{ contains(values3, 3) };
+        //bool result2{ contains(values2, 3) };   // does not compile
+        //bool result3{ contains(values3, 3) };   // does not compile
 
         // second 'contains' overload
         bool found1{ contains(values1.begin(), values1.end(), 3) };

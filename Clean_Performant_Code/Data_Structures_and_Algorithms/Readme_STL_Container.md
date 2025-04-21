@@ -43,7 +43,7 @@
 7 Gründe für die Verwendung von STL Standardcontainern:
 
   * Durch den Einsatz von STL Standardcontainern eliminiert man einen Großteil des Boilerplate-Codes,
-  den zu schreiben wäre, wenn man derartige Klassen selbst schreibt.
+  der zu schreiben wäre, wenn man derartige Klassen selbst schreibt.
 
   * STL Container vereinfachen die Entwicklung.
 
@@ -79,7 +79,7 @@ Beachten Sie folgende Hinweise bei der Wahl eines Containers:
   * Wenn die Größe im Voraus bekannt ist, verwenden Sie die Klasse `std::array`.
   Vermeiden Sie C-Style Arrays.
   * Wenn Sie häufig Elemente sowohl am Anfang als auch am Ende eines Containers hinzufügen oder entfernen, verwenden Sie die Klasse `std::deque`.
-  * Verwenden Sie ein `std::list`-Objekt (nicht: `std::deque`), wenn Sie Elemente in der Mitte des Containers einfügen/entfernen müssen.
+  * Verwenden Sie ein `std::list`-Objekt (nicht: `std::deque`), wenn Sie häufig Elemente in der Mitte des Containers einfügen/entfernen müssen.
   * Verwenden Sie nicht die Klasse `std::list`, wenn Sie wahlfreien Zugriff auf Objekte benötigen (Zugriff mit einem Index).
   * Bevorzugen Sie die Klasse `std::vector` gegenüber der Klasse `std::list`, wenn Ihr System einen Cache verwendet &ndash;
   siehe hierzu auch [CPU-Cache-Speicher](Readme_Caches.md).
@@ -108,12 +108,12 @@ Eine der am häufigsten gestellten Fragen im Umfeld von assoziativen Containern l
   * Die Realisierung einer guten Hash-Funktion für die Schlüsseldaten ist nicht möglich oder zu kompliziert.
   * Sie bevorzugen die Realisierung eines Vergleichsoperators für Ihre benutzerdefinierten Datentypen an Stelle des Aufwands, eine gute Hashing-Funktion schreiben zu müssen.
   * Sie benötigen eine garantierte Performanz (z. B. Software für Embedded Systems).
-  * Ungeordnete Container haben im schlimmsten Fall bei Kollisionen eine Worst-Case-Komplexität von O(n).
+  * Ungeordnete Container haben im schlimmsten Fall bei Kollisionen eine Worst-Case-Komplexität von O(*n*).
 
 #### Sie sollten einen ungeordneten assoziativen Container verwenden, wenn:
  
   * Der Speicherplatzaufwand für die Hash-Tabelle spielt keine Rolle.
-  * Das Programm kann gelegentliche längere Operationen akzeptieren (Auflösen von Hash-Kollisionen).
+  * Das Programm kann gelegentliche längere Operationen akzeptieren<br />(Auflösen von Hash-Kollisionen).
   * Sie verfügen über eine gute Hash-Funktion, um Kollisionen zu reduzieren.
   * Sie können den Datentyp `std::string` für die Schlüsseldaten verwenden.
 
@@ -124,16 +124,16 @@ Eine der am häufigsten gestellten Fragen im Umfeld von assoziativen Containern l
   * Ist Ihnen wichtig, wie die Elemente im Container angeordnet sind (Reihenfolge)?<br />Wenn nicht, sind Hash-basierte Container eine praktikable Wahl, andernfalls verwenden Sie geordnete assoziative Container.
   * Wollen Sie Kopiertätigkeiten vorhandener Containerelemente vermeiden, wenn Einfügungen und Löschungen stattfinden?<br />Vermeiden Sie die Verwendung sequentieller (zusammenhängender / konsekutiver) Container.
   * Verfügt Ihr Code über viele `push_back()`-Methodenaufrufe?<br />Verwenden Sie `std::deque` an Stelle von `std::vector`, da `std::deque` intern in Summe weniger Datenblöcke umkopiert / verschiebt.
-  * Bestehen strenge Anforderungen an die Speichernutzung?<br />Ein Einsatz von Hash-Tabelle ist mit Vorsicht zu genießen, da derartige Container intern zusätzlichen, für Nutzdaten nicht verfügbaren Speicherplatz allokieren.
-  * Müssen Sie einen *Map*-Container traversieren?<br />Verwende `std::map` an Stelle von `std::unordered__map`.
-  * Soll die Größe eines Container fest (unveränderlich) sein?<br />Wähle `std::array` an Stelle von `std::vector`.
+  * Bestehen strenge Anforderungen an die Speichernutzung?<br />Ein Einsatz einer Hash-Tabelle ist mit Vorsicht zu genießen, da derartige Container intern zusätzlichen &ndash; für Nutzdaten nicht verfügbaren &ndash; Speicherplatz allokieren.
+  * Müssen Sie einen *Map*-Container traversieren?<br />Verwende `std::map` an Stelle von `std::unordered_map`.
+  * Soll die Größe eines Containers fest (unveränderlich) sein?<br />Wähle `std::array` an Stelle von `std::vector`.
   * Gibt es häufig Einfüge- und Lösch-Operationen in der Mitte des Containers?<br />Verwende `std::list` statt `std::vector` oder `std::deque`.
 
 ### Rolle des Speicherplatzmanagements bei der Wahl eines Containers
 
 Hier sind die allgemeinen Faustregeln für das Speicherplatzmanagement in den verschiedenen sequentiellen Containern:
 
-  * `std:vector`, `std::array` und `std::string` besitzen für ihre Daten zusammenhängenden (konsekutiben) Speicher.
+  * `std:vector`, `std::array` und `std::string` besitzen für ihre Daten zusammenhängenden (konsekutiven) Speicher.
   Sie sind mit APIs im C-Stil kompatibel (siehe zum Beispiel die `data()`-Methode an den zuvor erwähnten Klassen).
   * `std::deque` weist Speicher in Blöcken zu.
   * `std::list` weist Speicher pro Knoten zu.
@@ -200,7 +200,7 @@ bis er mehr Speicherplatz anfordern muss.
 
 ### Array (`std::array`) <a name="link5"></a>
 
-Ein Feld (Array) ist ähnlich zu einem Vektor, nur ist sein Größe fest.
+Ein Feld (Array) ist ähnlich zu einem Vektor, nur ist seine Größe fest.
 
 Die Elemente eines Arrays liegen je nach Örtlichkeit der Definition 
 im globalen Datensegment oder auf dem Stack. Damit ist gesagt, dass sich ein `std::array`-Objekt
@@ -337,7 +337,7 @@ in logarithmischer Zeit, *O(log n)*, durchgeführt werden können.
 Wie das erreicht wird, hängt von der jeweiligen Implementierung der Klassen in der STL ab.
 
 Die bekanntesten Implementierungen verwenden eine Art 
-&bdquo;*Self-balancing Binary Search Tree*&rdquo; (selbstbalancierender binärer Suchbaum).
+&bdquo;*Self-balancing Binary Search Tree*&rdquo; (selbstbalanzierender binärer Suchbaum).
 
 Die Tatsache, dass der Baum in ungefähr ausgeglichen bleibt,
 ist notwendig, um die Höhe des Baums und damit auch die Laufzeit beim Zugriff
@@ -370,9 +370,9 @@ was im Mittel einen konstanten Zeitaufwand (*O(k)*) bedeutet.
 
 Einige Hinweise zu den Details einer *Hash-Tabelle*:
 
-  * Eine Hash-Tabelle speichert ihre Elemente in einer Art Array bestehend aus so genannten *Buckets*.
+  * Eine Hash-Tabelle speichert ihre Elemente in einer Art Array, bestehend aus so genannten *Buckets*, ab.
 
-  * Wenn ein Element zur Hash-Tabelle hinzugefügt wird, wird mithilfe einer Hash-Funktion ein `int`-Wert für das Element berechnet.
+  * Wenn ein Element zur Hash-Tabelle hinzugefügt wird, wird mithilfe einer Hash-Funktion ein `size_t`-Wert für das Element berechnet.
 
   * Dieser Wert wird normalerweise als &bdquo;Hash-Wert&rdquo; des Elements bezeichnet.
 
@@ -389,7 +389,7 @@ Einige Hinweise zu den Details einer *Hash-Tabelle*:
 
   * Man nennt diese Beobachtung eine *Hash-Kollision*:
   Derartige Kollisionen können häufig passieren, zum Beispiel dann,
-  wenn das Array klein ist im Vergleich zur Anzahl der Elemente, die man zur Tabelle hinzufügen möchte.
+  wenn das Array klein ist im Vergleich zur Anzahl der Elemente, die man der Tabelle hinzufügen möchte.
 
   * Es gibt verschiedene Möglichkeiten, mit Hash-Kollisionen umzugehen.
   Ein bekannte Lösungsstrategie ist das so genannte *Separate Chaining* (*Separate Verkettung*).
@@ -449,7 +449,7 @@ std::unordered_map<Person, size_t> phoneBook;
 dann ist der C++ Compiler nicht in der Lage, Hash-Werte für `Person`-Objekte zu berechnen.
 
 Die Lösung des Problems besteht darin, dass wir im Namensraum `std` eine Spezialisierung
-der Klasse `hash` vornehmen müssen. Diese Spezialsierung muss den Aufrufoperator `operator()`
+der Klasse `hash` vornehmen müssen. Diese Spezialisierung muss den Aufrufoperator `operator()`
 mit `Person`-Objekten als Parameter überschreiben, zum Beispiel so:
 
 
@@ -567,7 +567,7 @@ Elements:
 
 <img src="cpp_stl_container_stack.svg" width="200">
 
-*Abbildung* 9: Container Adapter `std::stack`
+*Abbildung* 9: Container Adapter `std::stack`.
 
 ---
 
@@ -618,7 +618,7 @@ Elements:
 
 <img src="cpp_stl_container_queue.svg" width="350">
 
-*Abbildung* 10: Container Adapter `std::queue`
+*Abbildung* 10: Container Adapter `std::queue`.
 
 ---
 

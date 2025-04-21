@@ -1,4 +1,4 @@
-# STL Container
+# STL Algorithmen
 
 [Zurück](Readme_Data_Structures_and_Algorithms.md)
 
@@ -41,7 +41,7 @@ obwohl sie dieselben Vorteile wie Container bieten:
 
 ## Überblick über die populärsten STL-Algorithmen <a name="link2"></a>
 
-Es werden folgenden STL-Algorithmen an Hand von einfachen Beispielen vorgestellt:
+Es werden die folgenden STL-Algorithmen an Hand von einfachen Beispielen vorgestellt:
 
   * `std::fill`
   * `std::for_each`
@@ -154,9 +154,9 @@ Auf diese Weise erhalten wir eine `contains`-Funktion, die mit unterschiedlichen
 ```cpp
 01: void test()
 02: {
-03:     const auto values1{ std::vector{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 } };
-04:     const auto values2{ std::list{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 } };
-05:     std::list<std::string> values3{ "1.5", "2.5", "3.5", "4.5", "5.5" };
+03:     auto values1 = std::vector{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+04:     auto values2 = std::list{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+05:     auto values3 = std::list<std::string>{ "1.5", "2.5", "3.5", "4.5", "5.5" };
 06: 
 07:     bool found1{ contains(values1.begin(), values1.end(), 3) };
 08:     bool found2{ contains(values2.begin(), values2.end(), 3) };
