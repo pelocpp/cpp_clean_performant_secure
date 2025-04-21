@@ -35,6 +35,7 @@
   * [Konstante Referenzen (`const auto&`)](#link27)
   * [Veränderbare Referenzen (`auto&`)](#link28)
   * [*Forwarding* Referenzen (`auto&&`)](#link29)
+  * [`const` Propagation für Zeiger](#link30)
 
 ---
 
@@ -147,7 +148,6 @@ auch eine *Hervorhebung*:
 04:     virtual std::shared_ptr<ICloneable> clone() const = 0;
 05: };
 ```
-
 
 ---
 
@@ -1571,6 +1571,91 @@ man möchte sie lediglich an Code weitergeben, der die Variable tatsächlich ver
   und hat nichts mit einer *Forwarding* Referenz zu tun.
 
 
+---
+
+### `const` Propagation für Zeiger <a name="link30"></a>
+
+Mit dem Schlüsselwort `const` können wir dem Compiler mitteilen,
+welche Objekte unveränderlich sind.
+Der Compiler kann dann überprüfen, ob wir versuchen, Objekte zu verändern, die nicht verändert werden sollen.
+
+Anders ausgedrückt: Der Compiler prüft unseren Code auf `const`-Korrektheit.
+
+Ein häufiger Fehler beim Schreiben von `const`-korrektem Code in C++ ist,
+dass ein `const`-initialisiertes Objekt die Werte, auf die Member-Zeiger zeigen,
+weiterhin manipulieren kann.
+
+Das folgende Beispiel veranschaulicht dieses Problem.
+
+```cpp
+01: class Foo {
+02: public:
+03:     Foo(int* ptr) : m_ptr{ ptr } {}
+04: 
+05:     auto set_value_behind_pointer(int value) const {
+06: 
+07:         *m_ptr = value;  // compiles despite function being declared const!
+08:     }
+09: 
+10:     auto print() const
+11:     {
+12:         std::println("{}", *m_ptr);
+13:     }
+14: 
+15: private:
+16:     int* m_ptr{};
+17: };
+18: 
+19: void test()
+20: {
+21:     auto i = 0;
+22: 
+23:     const auto foo = Foo{ &i };
+24: 
+25:     foo.print();
+26:     foo.set_value_behind_pointer(123);
+27:     foo.print();
+28: }
+```
+
+Die Funktion `set_value_behind_pointer()` verändert den `int`-Wert,
+obwohl sie als `const` deklariert ist.
+
+Es wird eben nicht der Zeiger `m_ptr` selbst verändert,
+sondern nur der `int`-Wert, auf den der Zeiger zeigt.
+
+Um dies lesbar zu verhindern, wurde der Standardbibliothek ein Wrapper namens
+`propagate_const` hinzugefügt.
+
+*Bemerkung*:<br />
+Aktuell ist dieser Wrapper nur im Namensraum `std::experimental` verfügbar,
+und Visual C++ unterstützt dieses Feature aktuell überhaupt nicht,
+dafür aber der GCC:
+
+
+```cpp
+01: class FooImproved {
+02: public:
+03:     FooImproved(int* ptr) : m_ptr{ ptr } {}
+04: 
+05:     auto print() const
+06:     {
+07:         std::println("{}", *m_ptr);
+08:     }
+09: 
+10:     auto set_value_behind_pointer(int value) const
+11:     {
+12:         *m_ptr = value;     // will not compile, const is propagated
+13:     }
+14: 
+15: private:
+16:     std::experimental::propagate_const<int*> m_ptr{ nullptr };
+17:     int m_value{};
+18: };
+```
+
+Siehe in Zeile 16 die Verwendung des `const`-propagierenden Wrappers `std::experimental::propagate_const`
+für Zeiger.
 
 ---
 
