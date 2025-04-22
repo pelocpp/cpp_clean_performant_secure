@@ -1,6 +1,9 @@
-# Effizientes Verwenden der STL-Komponenten in C++
+# Effizienz der STL-Komponenten im Detail
 
-[Zurück](../../Readme.md)
+[Zurück &bdquo;*Clean Code*&rdquo;](../Guidelines/Readme_Guidelines.md)
+
+[Zurück &bdquo;*Performanz und Optimierung*&rdquo;](../Performance_Optimization/Readme_Performance_Optimization.md)
+
 
 ---
 
@@ -62,6 +65,8 @@ Embedded Artistry Artikel Serie:
 
 ---
 
-[Zurück](../../Readme.md)
+[Zurück &bdquo;*Clean Code*&rdquo;](../Guidelines/Readme_Guidelines.md)
+
+[Zurück &bdquo;*Performanz und Optimierung*&rdquo;](../Performance_Optimization/Readme_Performance_Optimization.md)
 
 ---

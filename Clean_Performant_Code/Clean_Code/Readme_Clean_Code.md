@@ -10,7 +10,7 @@
 
 ## [Allgemeine Richtlinien für C++ Clean Code](../../Clean_Performant_Code/Guidelines/Readme_Guidelines.md)
 
-## [Funktionale Programmierung mit der `std::ranges`-Bibliothek](../../Clean_Performant_Code/Ranges/Readme_Ranges.md)
+## [Funktionale Programmierung: Die Bibliothek `std::ranges`](../../Clean_Performant_Code/Ranges/Readme_Ranges.md)
 
 ## [Catch2 Unit-Test Framework](../../Clean_Performant_Code/Clean_Code_Catch2/Readme_Catch2.md)
 
