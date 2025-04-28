@@ -36,6 +36,7 @@
   * [Veränderbare Referenzen (`auto&`)](#link28)
   * [*Forwarding* Referenzen (`auto&&`)](#link29)
   * [`const` Propagation für Zeiger](#link30)
+  * [Strong Typing](#link31)
 
 ---
 
@@ -1723,6 +1724,11 @@ dafür aber der GCC:
 
 Siehe in Zeile 16 die Verwendung des `const`-propagierenden Wrappers `std::experimental::propagate_const`
 für Zeiger.
+
+---
+
+### Strong Typing <a name="link31"></a>
+
 
 ---
 

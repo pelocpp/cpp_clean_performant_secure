@@ -1206,8 +1206,33 @@ namespace GuidelinesCoreCpp {
         }
 
 // #endif
+    }
+
+
+  //  WEITER:  https://github.com/doctorlove/BootstrapCpp/blob/main/Chapter5/playing_cards.h
+
+    namespace GuidelinesCoreCpp_StrongTyping {
+
+        enum class Suit {
+            Hearts,
+            Diamonds,
+            Clubs,
+            Spades
+        };
+
+
+        namespace Example_Without_StrongTyping {
+
+        }
+
+
+        namespace Example_With_StrongTyping {
+
+        }
+
 
     }
+
 }
 
 void guidelines_core_cpp()
