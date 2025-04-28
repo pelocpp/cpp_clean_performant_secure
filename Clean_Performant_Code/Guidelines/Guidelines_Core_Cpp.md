@@ -1730,6 +1730,107 @@ für Zeiger.
 ### Strong Typing <a name="link31"></a>
 
 
+Was versteht man unter dem Begriff &bdquo;*Strong Typing*&rdquo;?
+
+Ein *Strong Type* ist ein Typ, der anstelle eines anderen Typs verwendet wird
+und durch seinen Namen eine bestimmte Bedeutung vermittelt.
+
+Im Gegensatz zu starken Typen stehen meistens elementare Datentypen wie beispielsweise `int` oder `double`.
+
+Oftmals sagen elementare Typen nicht viel über die Bedeutung ihrer Variablen aus,
+und es ist auch nicht möglich, Einschränkungen bzgl. des Wertebereichs ohne Weiteres vornehmen zu können.
+
+*Strong Types* sind meist Wrapper-Klassen für eine Variable elementaren Datentyps,
+um diese bzgl. ihres Wertebereichs und ihres Verhaltens besser kontrollieren zu können.
+
+*Erstes Beispiel*:
+
+```cpp
+01: enum class Suit
+02: {
+03:     Hearts,   // Herz
+04:     Diamonds, // Karo
+05:     Clubs,    // Kreuz
+06:     Spades    // Pik
+07: };
+08: 
+09: struct Card
+10: {
+11:     int value{};
+12:     Suit suit{};
+13: };
+14: 
+15: void test()
+16: {
+17:     Card card{ 2, Suit::Diamonds };
+18:     std::cout << card << std::endl;
+19: }
+```
+
+
+*Zweites Beispiel*:
+
+```cpp
+01: class FaceValue
+02: {
+03: private:
+04:     int m_value;
+05: 
+06: public:
+07:     explicit FaceValue(int value) : m_value{ value }
+08:     {
+09:         if (m_value < 7 || m_value > 14)
+10:         {
+11:             throw std::invalid_argument("Face value invalid");
+12:         }
+13:     }
+14: 
+15:     int value() const
+16:     {
+17:         return m_value;
+18:     }
+19: };
+20: 
+21: class Card
+22: {
+23: private:
+24:     FaceValue m_value{ 7 };
+25:     Suit m_suit{};
+26: 
+27: public:
+28:     Card() = default;
+29:     Card(FaceValue value, Suit suit) : m_value{ value }, m_suit{ suit } {}
+30: 
+31:     FaceValue value() const { return m_value; }
+32:     Suit suit() const { return m_suit; }
+33: };
+34: 
+35: void test()
+36: {
+37:     // Card card{ 2, Suit::Diamonds };              // does not compile (!!!)
+38:                 
+39:     Card defaultCard{};                             // compiles and runs
+40:     std::cout << defaultCard << std::endl;
+41: 
+42:     Card pikAss{ FaceValue{ 14 }, Suit::Spades };   // compiles and runs
+43:     std::cout << pikAss << std::endl;
+44: }
+```
+
+
+Im zweiten Beispiel wurde der Kartenwert der Karte
+
+  * 7, 8, 9, 10: Ebenfalls 7, 8, 9 oder 10
+  * Bube: Jack
+  * Dame: Queen
+  * König: King
+  * Ass: Ace
+
+durch eine Klasse `FaceValue` umgesetzt.
+Dies ermöglicht gegenüber dem Datentyp `int` eine doch schärfere 
+Hantierung aller Regeln, die mit einer bestimmten Instanzvariablen verbunden sind.
+
+
 ---
 
 # Literatur

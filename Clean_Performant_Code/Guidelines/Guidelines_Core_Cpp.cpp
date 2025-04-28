@@ -5,6 +5,7 @@
 #include <algorithm> 
 #include <cstddef>
 #include <cstring> 
+#include <format>
 #include <fstream>
 #include <functional>
 #include <iostream>
@@ -1208,31 +1209,144 @@ namespace GuidelinesCoreCpp {
 // #endif
     }
 
-
-  //  WEITER:  https://github.com/doctorlove/BootstrapCpp/blob/main/Chapter5/playing_cards.h
-
     namespace GuidelinesCoreCpp_StrongTyping {
 
-        enum class Suit {
-            Hearts,
-            Diamonds,
-            Clubs,
-            Spades
+        enum class Suit
+        {
+            Hearts,   // Herz
+            Diamonds, // Karo
+            Clubs,    // Kreuz
+            Spades    // Pik
         };
 
+        static std::string to_string(const Suit& suit)
+        {
+            using namespace std::literals;
+
+            switch (suit)
+            {
+            case Suit::Hearts:
+                return "Hearts"s;
+            case Suit::Diamonds:
+                return "Diamonds"s;
+            case Suit::Clubs:
+                return "Clubs"s;
+            case Suit::Spades:
+                return "Spades"s;
+            default:
+                return "?"s;
+            }
+        }
 
         namespace Example_Without_StrongTyping {
 
-        }
+            struct Card
+            {
+                int value{};
+                Suit suit{};
+            };
 
+            static std::ostream& operator<< (std::ostream& os, const Card& card)
+            {
+                os << to_string(card.suit) << " " << card.value;
+                return os;
+            }
+
+            static void guidelines_strong_typing()
+            {
+                Card card{ 2, Suit::Diamonds };
+                std::cout << card << std::endl;
+            }
+        }
 
         namespace Example_With_StrongTyping {
 
+            class FaceValue
+            {
+            private:
+                int m_value;
+
+            public:
+                explicit FaceValue(int value) : m_value{ value }
+                {
+                    if (m_value < 7 || m_value > 14)
+                    {
+                        throw std::invalid_argument("Face value invalid");
+                    }
+                }
+
+                int value() const
+                {
+                    return m_value;
+                }
+            };
+
+            class Card
+            {
+            private:
+                FaceValue m_value{ 7 };
+                Suit m_suit{};
+
+            public:
+                Card() = default;
+                Card(FaceValue value, Suit suit) : m_value{ value }, m_suit{ suit } {}
+
+                FaceValue value() const { return m_value; }
+                Suit suit() const { return m_suit; }
+            };
+
+            static std::ostream& operator<< (std::ostream& os, const FaceValue& faceValue)
+            {
+                int value{ faceValue.value() };
+                if (value >= 7 && value <= 10) {
+                    os << value;
+                }
+                else
+                {
+                    switch (value)
+                    {
+                    case 11:
+                        os << "Jack";   // Bube
+                        break;
+                    case 12:
+                        os << "Queen";  // Dame
+                        break;
+                    case 13:
+                        os << "King";   // König
+                        break;
+                    case 14:
+                        os << "Ace";    // Ass
+                        break;
+                    }
+                }
+
+                return os;
+            }
+
+            static std::ostream& operator<< (std::ostream& os, const Card& card)
+            {
+                os << to_string(card.suit()) << " " << card.value();
+                return os;
+            }
+            
+            static void guidelines_strong_typing()
+            {
+                // Card card{ 2, Suit::Diamonds };              // does not compile (!!!)
+                
+                Card defaultCard{};                             // compiles and runs
+                std::cout << defaultCard << std::endl;
+
+                Card pikAss{ FaceValue{ 14 }, Suit::Spades };   // compiles and runs
+                std::cout << pikAss << std::endl;
+            }
         }
 
-
+        static void guidelines_keyword_const_auto_references()
+        {
+            Example_Without_StrongTyping::guidelines_strong_typing();
+            Example_With_StrongTyping::guidelines_strong_typing();
+        }
     }
-
 }
 
 void guidelines_core_cpp()
@@ -1255,6 +1369,7 @@ void guidelines_core_cpp()
     GuidelinesCoreCpp_Keyword_Auto_Left_to_Right_Initialization_Syntax::guidelines_keyword_auto_left_to_right_initialization_syntax();
     GuidelinesCoreCpp_Keyword_Const_Auto_References::guidelines_keyword_const_auto_references();
     GuidelinesCoreCpp_Const_Propagation_for_Pointer::guidelines_keyword_const_propagation_for_pointers();
+    GuidelinesCoreCpp_StrongTyping::guidelines_keyword_const_auto_references();
 }
 
 // ===========================================================================
