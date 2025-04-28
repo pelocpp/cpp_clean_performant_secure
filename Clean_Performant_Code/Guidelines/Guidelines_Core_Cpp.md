@@ -329,7 +329,7 @@ Wir starten eine Reihe von Überlegungen zu folgender Struktur `Point2D`:
 04:     double m_y;
 05: };
 06: 
-07: void test_variant_01() {
+07: void test() {
 08: 
 09:     Point2D point;
 10:     std::println("x: {} - y: {}", point.m_x, point.m_y);
@@ -338,7 +338,7 @@ Wir starten eine Reihe von Überlegungen zu folgender Struktur `Point2D`:
 
 #### Variante 1
 
-Im letzten Listing starten wir mit der schlechtesten aller Möglichkeiten:
+Im ersten Listing starten wir mit der schlechtesten aller Varianten:
 Die Struktur `Point2D` besitzt keine Vorkehrungen, um ihre Membervariablen vorzubelegen &ndash;
 und in Zeile 9 ist es sogar möglich, eine Strukturvariable `point` anzulegen, deren Werte
 nicht vorbelegt sind.
@@ -352,7 +352,7 @@ nicht vorbelegt sind.
 04:     double m_y{};
 05: };
 06: 
-07: void test_variant_02() {
+07: void test() {
 08: 
 09:     Point2D point;
 10: 
@@ -391,7 +391,7 @@ Was fällt Ihnen an dieser dritten Variante auf?
 06:     Point2D(double x, double y) : m_x{ x }, m_y{ y } {}
 07: };
 08: 
-09: void test_variant_03() {
+09: void test() {
 10: 
 11:     // Point2D point;  // error: does not compile
 12:     Point2D anotherPoint{ 1.0, 2.0 };
@@ -416,7 +416,7 @@ Das sollte so nicht sein, eine Abhilfe finden Sie in der nächsten Variante 4 vo
 07:     Point2D(double x, double y) : m_x{ x }, m_y{ y } {}
 08: };
 09: 
-10: void test_variant_04() {
+10: void test() {
 11: 
 12:     Point2D point; 
 13:     Point2D anotherPoint{ 1.0, 2.0 };
@@ -444,7 +444,7 @@ mit dem sprachlichen Mittel des &bdquo;*Constructor Chainings*&rdquo; zusammenfa
 07:     Point2D(double x, double y) : m_x{ x }, m_y{ y } {}
 08: };
 09: 
-10: void test_variant_05() {
+10: void test() {
 11: 
 12:     Point2D point;
 13:     Point2D anotherPoint{ 1.0, 2.0 };
@@ -469,7 +469,7 @@ sonst funktioniert diese Variante nicht:
 07:     Point2D(double x, double y) : m_x{ x }, m_y{ y } {}
 08: };
 09: 
-10: void test_variant_06() {
+10: void test() {
 11: 
 12:     Point2D point;
 13:     Point2D anotherPoint{ 1.0, 2.0 };
@@ -492,7 +492,7 @@ Dafür kommt bei Verwendung der Struktur die Aggregat-Initialisierung zum Einsat
 04:     double m_y;
 05: };
 06: 
-07: void test_variant_07() {
+07: void test() {
 08: 
 09:     // taking advantage of struct Point2D beeing an 'aggregate' type
 10:     Point2D point{};
@@ -1307,8 +1307,9 @@ Empfielt sich der Einsatz des Schlüsselworts `auto` oder nicht?
 
 `auto`: **You totally know what you’re doing, or you totally don’t**
 
-*Frage*:
+#### Erstes Beispiel
 
+*Frage*:<br />
 Warum ist dieses Code-Fragment nicht übersetzungsfähig?
 
 ```cpp
@@ -1327,9 +1328,75 @@ Warum ist dieses Code-Fragment nicht übersetzungsfähig?
 *Zwei Empfehlungen*:
 
   * Verwenden Sie `auto` prinzipiell großzügig. Es kann die Lesbarkeit verbessern.
-    Der Compiler kann Typen für uns besser ableiten (*Type Deduction*) als wir selbst.
+    Der Compiler kann Typen für uns besser ableiten als wir selbst (*Type Deduction*).
 
   * Ist der Typ einer Variablen von entscheidender Natur, dann sollte man diesen auch explizit hinschreiben.
+
+
+#### Zweites Beispiel
+
+Lambda-Funktionen (präziser: Lambda-*Objekte*) sind zu einem integralen Bestandteil der C++&ndash;Programmierung geworden.
+Es gibt im Wesentlichen drei Möglichkeiten, diese zu vereinbaren:
+
+  * <i>Inplace</i> &ndash; also als anonyme Objekte.
+  * Mit dem Schlüsselwort `auto`.
+  * Mit dem Klassentemplate `std::function`.
+
+Bei Lambda-Funktionen sollten wir den Weg mit `auto` einschlagen. Warum?
+
+Der Typ einer Lambda-Funktion kann von uns als Entwickler nicht hingeschrieben werden (der Bezeichner des Typs ist für uns nicht bekannt),
+aber `auto` leitet den Typ für uns präsize ab!
+
+Dies bedeutet unter anderem: Zwei Lambda-Funktionen mit denselben Parametern und demselben Rückgabetyp sind von unterschiedlichem Typ!
+
+Allerdings könnten beide Lambda-Funktionen derselben `std::function<>`-Variablen zugewiesen werden.
+
+Das hat aber Nachteile:
+Wenn wir eine Lambda-Funktion in eine `std::function<>`-Variable kopieren, kann diese nicht mehr *inline* verwendet werden,
+sodass der Aufruf möglicherweise langsamer ist.
+Ferner kann das Kopieren der Lambda-Funktion in eine `std::function<>`-Variable auch Anforderungen an die dynamische Speicherverwaltung nach sich ziehen.
+
+Wenn wir eine Lambda-Funktion mit `auto` deklarieren, vermeiden wir Overhead!
+
+*Beispiel*:
+
+Betrachten Sie zu diesem Beispiel den erzeugten Maschinencode!
+
+
+```cpp
+01: void test()
+02: {
+03:     std::vector<int> numbers{ 1, 2, 3, 4, 5 };
+04: 
+05:     auto print = [](int value) { std::print("{} ", value); };
+06: 
+07:     std::function<void(int)> morePrint = [](int value) { std::print("{} ", value); };
+08: 
+09:     std::for_each(
+10:         numbers.begin(),
+11:         numbers.end(),
+12:         [](int value) { std::print("{} ", value); }
+13:     );
+14: 
+15:     std::println();
+16: 
+17:     std::for_each(
+18:         numbers.begin(),
+19:         numbers.end(),
+20:         print
+21:     );
+22: 
+23:     std::println();
+24: 
+25:     std::for_each(
+26:         numbers.begin(),
+27:         numbers.end(),
+28:         morePrint
+29:     );
+30: }
+```
+
+#### Ein Hinweis
 
 *Achtung*:
 
@@ -1348,14 +1415,14 @@ Verlust von `const` und `&` bei Verwendung von `auto`:
 10:     const std::string& getName() const { return m_name; }
 11: };
 12: 
-13: void guidelines_keyword_auto_02()
+13: void test()
 14: {
 15:     Person jack{ "Jack", 50 };
 16:     auto name = jack.getName();
 17: }
 ```
 
-Es gibt  hier nur eine Warnung:<br />
+Es gibt  hier nur eine Warnung zu Zeile 16:<br />
 *auto does not deduce references a possibly unintended copy is being made*.
 
 ---
@@ -1450,7 +1517,7 @@ X x();
 ```
 
 Diese Deklaration wird vom Compiler als eine Funktionsaufrufdeklaration interpretiert,
-die eine Funktion des Namens `x` ohne Parameter deklarioert, die ein Objekt vom Typ `X` zurückliefert.
+die eine Funktion des Namens `x` ohne Parameter deklariert, die ein Objekt vom Typ `X` zurückliefert.
 
 
 ```cpp

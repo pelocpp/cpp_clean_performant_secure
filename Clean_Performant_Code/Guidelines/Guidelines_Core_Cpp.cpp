@@ -6,6 +6,7 @@
 #include <cstddef>
 #include <cstring> 
 #include <fstream>
+#include <functional>
 #include <iostream>
 #include <map>
 #include <memory>
@@ -13,6 +14,7 @@
 #include <print>
 #include <stdexcept>
 #include <utility>
+#include <vector>
 
 #if ! defined(_MSC_VER)
 #include <experimental/propagate_const>
@@ -934,6 +936,7 @@ namespace GuidelinesCoreCpp {
 
         // =======================================================================
         // Using Keyword 'auto'
+        // First Example
          
         static void guidelines_keyword_auto_01()
         {
@@ -961,17 +964,56 @@ namespace GuidelinesCoreCpp {
         static void guidelines_keyword_auto_02()
         {
             Person jack{ "Jack" };
-            auto& name = jack.getName();
+            auto name = jack.getName();
+        }
+
+        // =======================================================================
+        // Using Keyword 'auto'
+        // Second Example
+
+        static void guidelines_keyword_auto_03()
+        {
+            std::vector<int> numbers{ 1, 2, 3, 4, 5 };
+
+            auto print = [](int value) { std::print("{} ", value); };
+
+            std::function<void(int)> morePrint = [](int value) { std::print("{} ", value); };
+
+            std::for_each(
+                numbers.begin(),
+                numbers.end(),
+                [](int value) { std::print("{} ", value); }
+            );
+
+            std::println();
+
+            std::for_each(
+                numbers.begin(),
+                numbers.end(),
+                print
+            );
+
+            std::println();
+
+            std::for_each(
+                numbers.begin(),
+                numbers.end(),
+                morePrint
+            );
         }
 
         static void guidelines_keyword_auto()
         {
             guidelines_keyword_auto_01();
             guidelines_keyword_auto_02();
+            guidelines_keyword_auto_03();
         }
     }
 
     namespace GuidelinesCoreCpp_Keyword_Auto_Left_to_Right_Initialization_Syntax {
+
+        // =======================================================================
+        // Left to Right Initialization Syntax using keyword 'auto'
 
         class X {};
 
@@ -1172,21 +1214,21 @@ void guidelines_core_cpp()
 {
     using namespace GuidelinesCoreCpp;
 
-    //GuidelinesCoreCpp_ClassVsStructInvariants::guidelines_invariants();  // crashes intentionally
-    //GuidelinesCoreCpp_DefaultedConstructors::guidelines_defaulted_constructor();
-    //GuidelinesCoreCpp_InitializationOfStructs::guidelines_initialization_of_structs();
-    //GuidelinesCoreCpp_InitializationOfObjects::guidelines_initialization_of_objects();
-    //GuidelinesCoreCpp_CopySwapIdiom::guidelines_copy_swap_idiom();
-    //GuidelinesCoreCpp_SmallFocusedFunctions::guidelines_small_focused_functions();
-    //GuidelinesCoreCpp_UseConstLiberally::guidelines_use_const_liberally();
-    //GuidelinesCoreCpp_PreferExceptionsOverErrorCodes::guidelines_error_handling();
-    //GuidelinesCoreCpp_MethodsReturnType_CopiedToCaller::guidelines_return_type();
-    //GuidelinesCoreCpp_MethodsReturnType_LifetimeByVoucher::guidelines_return_type();
-    //GuidelinesCoreCpp_CompositionOverInheritance::guidelines_prefer_composition_over_inheritance();
-    //GuidelinesCoreCpp_PreventImplicitConversions::guidelines_implicit_conversion();
-    //GuidelinesCoreCpp_Keyword_Auto::guidelines_keyword_auto();
-    //GuidelinesCoreCpp_Keyword_Auto_Left_to_Right_Initialization_Syntax::guidelines_keyword_auto_left_to_right_initialization_syntax();
-    //GuidelinesCoreCpp_Keyword_Const_Auto_References::guidelines_keyword_const_auto_references();
+    // GuidelinesCoreCpp_ClassVsStructInvariants::guidelines_invariants();  // crashes intentionally
+    GuidelinesCoreCpp_DefaultedConstructors::guidelines_defaulted_constructor();
+    GuidelinesCoreCpp_InitializationOfStructs::guidelines_initialization_of_structs();
+    GuidelinesCoreCpp_InitializationOfObjects::guidelines_initialization_of_objects();
+    GuidelinesCoreCpp_CopySwapIdiom::guidelines_copy_swap_idiom();
+    GuidelinesCoreCpp_SmallFocusedFunctions::guidelines_small_focused_functions();
+    GuidelinesCoreCpp_UseConstLiberally::guidelines_use_const_liberally();
+    GuidelinesCoreCpp_PreferExceptionsOverErrorCodes::guidelines_error_handling();
+    GuidelinesCoreCpp_MethodsReturnType_CopiedToCaller::guidelines_return_type();
+    GuidelinesCoreCpp_MethodsReturnType_LifetimeByVoucher::guidelines_return_type();
+    GuidelinesCoreCpp_CompositionOverInheritance::guidelines_prefer_composition_over_inheritance();
+    GuidelinesCoreCpp_PreventImplicitConversions::guidelines_implicit_conversion();
+    GuidelinesCoreCpp_Keyword_Auto::guidelines_keyword_auto();
+    GuidelinesCoreCpp_Keyword_Auto_Left_to_Right_Initialization_Syntax::guidelines_keyword_auto_left_to_right_initialization_syntax();
+    GuidelinesCoreCpp_Keyword_Const_Auto_References::guidelines_keyword_const_auto_references();
     GuidelinesCoreCpp_Const_Propagation_for_Pointer::guidelines_keyword_const_propagation_for_pointers();
 }
 
