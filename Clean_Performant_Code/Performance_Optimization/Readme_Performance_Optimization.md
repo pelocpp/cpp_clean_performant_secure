@@ -4,6 +4,8 @@
 
 ---
 
+## [Agenda](./Agenda.md)
+
 ## [C++ Performance Optimierung: Best Practices](../BestPractices/Readme_BestPractices.md)
 
 ## [Benchmarking](../Benchmarking/Readme_Benchmarking.md)

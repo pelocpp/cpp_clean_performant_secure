@@ -130,6 +130,7 @@
     <ClCompile Include="Program.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Agenda.md" />
     <None Include="Literature.md" />
     <None Include="Readme_Performance_Optimization.md" />
   </ItemGroup>

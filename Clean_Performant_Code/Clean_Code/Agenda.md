@@ -1,4 +1,4 @@
-# Agenda Seminar &bdquo;Modern C++&rdquo;
+# Agenda Seminar &bdquo;Clean Code C++&rdquo;
 
 [Zurück](./Readme_Clean_Code.md)
 
@@ -14,7 +14,7 @@
   * Starker Zusammenhalt (*Strong Cohesion*)
   * Lose Kopplung (*Lose Coupling*)
 
-## Einfache Konzepte von Clean C++
+## Einfache Konzepte von Clean Code C++
 
   * Namensgebung für Bezeichner
   * Kommentare
@@ -22,19 +22,19 @@
   * Old C-Style in einem C++ Projekt
 
 
-## Fortgeschrittene Konzepte von Clean C++
+## Fortgeschrittene Konzepte von Clean Code C++
 
   * Ressourcenverwaltung mit RAII
   * Nutzung von Smart Pointer Klassen (`std::unique_ptr`, `std::shared_ptr` und `std::weak_ptr`)
   * Verschieben ist besser als Kopieren (`std::move`)
+  * *Rule-of-Zero*
+  * *Copy-Swap* Idiom
   * Perfektes Weiterleiten (*Perfect Forwarding*, `std::forward`)
   * Vorteile von `auto` (*Automatic Type Deduction*)
-  * Vermeide UB (*Undefined Behaviour*)
+  * Vorteile von Lambda-Objekten
   * Typreiche Programmierung (Type-Rich Programming, Type Traits)
-  * Statischer vs. dynamischer Polymorphismus
-  * Verwenden Sie Bibliotheken (STL)
-  * Richtige Ausnahme- und Fehlerbehandlung
-  * Design von Methoden-/Funktionsschnittstellen (Attribute)
+  * *Strong Types*
+  * Verwenden Sie Container und Algorithmen der C++&ndash;Bibliothek STL
   * Verwendung von Konzepten (`concept`) und Anforderungen (`requires`)
 
 
@@ -70,7 +70,6 @@
     * Funktionsähnliche Objekte (Funktoren)
     * Lambda-Ausdrücke
     * Generische Lambda-Ausdrücke
-    * Lambda-Vorlagen
   * Funktionen höherer Ordnung
     * Map, Filter und Reduce
   * Pipelining mit Bereichs-Adaptern
@@ -84,7 +83,7 @@
     * Test Codequalität
     * Unit-Test-Benennung
     * Unit-Test-Unabhängigkeit
-  * Beispiel: Die Bibliothek Catch2
+  * Beispiel: Die Bibliothek *Catch2*
 
 
 ---
