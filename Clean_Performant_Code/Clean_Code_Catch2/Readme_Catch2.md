@@ -9,7 +9,7 @@
 In diesem Repository findet man einfache, einführende Beispiele
 zum &bdquo;*Catch2 Unit Testing Framework*&rdquo; vor.
 
-Weitere Informatinen findet man [hier](https://github.com/catchorg/Catch2).
+Weitere Informationen findet man [hier](https://github.com/catchorg/Catch2).
 
 ---
 

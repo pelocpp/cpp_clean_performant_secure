@@ -138,7 +138,7 @@ sollte man `class` verwenden.
 auch eine *Hervorhebung*:
 
   * Zur Implementierung in einer Klasse wird ein Bezug zur Schnittstelle gegeben.
-  * In einer Klasse lassen sich Daten kapseln, die relevanten Methoden der Schnittstell sind hervorgehoben.
+  * In einer Klasse lassen sich Daten kapseln, die relevanten Methoden der Schnittstelle sind hervorgehoben.
 
 *Beispiel*:
 

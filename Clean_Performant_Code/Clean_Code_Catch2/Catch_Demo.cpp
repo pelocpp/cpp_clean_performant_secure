@@ -106,7 +106,7 @@ TEST_CASE("vectors can be sized and resized", "[vector]") {
 }
 
 // ===============================================================
-// note: behaviour driven development stype testing
+// note: behaviour driven development style testing
 
 SCENARIO("bdd vectors can be sized and resized", "[bdd_vector]") {
 
