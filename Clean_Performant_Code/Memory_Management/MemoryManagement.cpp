@@ -396,9 +396,9 @@ namespace MemoryManagement {
 
     namespace Placement_New_Example {
 
-        constexpr std::size_t Max = 50'000'000;
+       constexpr std::size_t Max = 50'000'000;
       //  constexpr std::size_t Max = 1;
-      //  constexpr std::size_t Max = 5;
+       //constexpr std::size_t Max = 5;
 
         class Person
         {
@@ -420,13 +420,9 @@ namespace MemoryManagement {
         class MyString : public std::string
         {
         public:
-            MyString() : std::string{} {}
+            MyString() = default;
 
             MyString(const char* s) : std::string{ s } {}
-
-         //   BigData& operator= (const BigData&);      // copy assignment
-
-            MyString(const MyString& ms) : std::string{ ms } {}
 
             //~MyString() {
             //    std::println("~MyString");
@@ -461,10 +457,8 @@ namespace MemoryManagement {
                 {
                     for (std::size_t i{}; i != m_size; ++i) {
 
-                        auto elem = m_elems[i];
-
                         std::println("{:02}: {}", i, m_elems[i]);
-                      //  std::cout << i << ": " << m_elems[i] << std::endl;
+                        //  std::cout << i << ": " << m_elems[i] << std::endl;
                     }
                 }
             };
@@ -474,29 +468,22 @@ namespace MemoryManagement {
         {
             {
                 ScopedTimer watch;
-
                 BigData_Classic_Implementation::BigData<int> data{ Max, 123 };
-                //data.print();
             }
 
             {
                 ScopedTimer watch;
-
                 BigData_Classic_Implementation::BigData<std::string> data{ Max, std::string{ "C++ Memory Management" } };
-                //data.print();
             }
 
             {
                 ScopedTimer watch;
-
                 BigData_Classic_Implementation::BigData<MyString> data{ Max, MyString{ "C++ Memory Management" } };
-                //data.print();
             }
 
             {
                 ScopedTimer watch;
                 BigData_Classic_Implementation::BigData<Person> data{ Max, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
-                //data.print();
             }
             std::println("");
         }
@@ -519,10 +506,7 @@ namespace MemoryManagement {
                     m_elems = static_cast<T*> (std::malloc(size * sizeof(T)));
                     m_size = size;
 
-                    auto pBegin = m_elems;
-                    auto pEnd = m_elems + m_size;
-
-                    for (; pBegin != pEnd; ++pBegin) {
+                    for (auto pBegin = m_elems; pBegin != m_elems + m_size; ++pBegin) {
 
                         ::new (static_cast<void*>(pBegin)) T{ init };
                     }
@@ -530,20 +514,12 @@ namespace MemoryManagement {
 
                 ~BigData()
                 {
-                    // std::destroy(m_elems, m_elems + m_size);
+                    for (auto pBegin = m_elems; pBegin != m_elems + m_size; ++pBegin) {
 
-                    auto pBegin = m_elems;
-                    auto pEnd = m_elems + m_size;
-
-                    for (; pBegin != pEnd; ++pBegin) {
-
-                        //std::destroy_at(pBegin);
                         pBegin->~T();
                     }
 
                     std::free(m_elems);
-
-                    // was ist mit den std::destroy ....................
                 }
             
                 void print()
@@ -559,30 +535,22 @@ namespace MemoryManagement {
         {
             {
                 ScopedTimer watch;
-
                 BigData_Classic_Improved_Implementation::BigData<int> data{ Max, 123 };
-               // data.print();
             }
 
             {
                 ScopedTimer watch;
-
                 BigData_Classic_Improved_Implementation::BigData<std::string> data{ Max, "C++ Memory Management" };
-                //data.print();
             }
 
             {
                 ScopedTimer watch;
-
                 BigData_Classic_Improved_Implementation::BigData<MyString> data{ Max, MyString{ "C++ Memory Management" } };
-                //data.print();
             }
 
             {
                 ScopedTimer watch;
-
                 BigData_Classic_Implementation::BigData<Person> data{ Max, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
-                //data.print();
             }
             std::println("");
         }
@@ -626,33 +594,178 @@ namespace MemoryManagement {
         {
             {
                 ScopedTimer watch;
-
                 BigData_Classic_Improved_Implementation::BigData<int> data{ Max, 123 };
-                //    data.print();
             }
 
             {
                 ScopedTimer watch;
-
                 BigData_Classic_Improved_Implementation::BigData<std::string> data{ Max, "C++ Memory Management" };
-                //     data.print();
             }
 
             {
                 ScopedTimer watch;
-
                 BigData_Classic_Improved_Implementation::BigData<MyString> data{ Max, MyString{ "C++ Memory Management" } };
-                //   data.print();
             }
 
             {
                 ScopedTimer watch;
-
                 BigData_Classic_Implementation::BigData<Person> data{ Max, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
-              //  data.print();
             }
             std::println("");
         }
+    }
+
+    namespace Placement_New_Example_Quickbench {
+
+        // To-Copy Begin
+        // ======================================================================
+
+#if defined (QUICKBENCH_BEGIN)
+
+        constexpr std::size_t Max = 10;
+
+        class Person
+        {
+        private:
+            std::string m_first;
+            std::string m_last;
+            std::size_t m_age;
+
+        public:
+            Person() : m_first{}, m_last{}, m_age{} {}
+
+            Person(std::string first, std::string last, size_t age)
+                : m_first{ first }, m_last{ last }, m_age{ age }
+            {
+            }
+        };
+
+        namespace BigData_Classic_Implementation
+        {
+            template <typename T>
+            class BigData
+            {
+            private:
+                T* m_elems{};
+                std::size_t m_size{};
+
+            public:
+                // c'tor(s) / d'tor
+                BigData() = default;
+
+                BigData(std::size_t size, const T& init)
+                    : m_elems{ new T[size] }, m_size{ size }
+                {
+                    std::fill(m_elems, m_elems + m_size, init);
+                }
+
+                ~BigData()
+                {
+                    delete[] m_elems;
+                }
+            };
+        }
+
+        static void BigDataClassicInt(benchmark::State& state) {
+            // Code inside this loop is measured repeatedly
+            for (auto _ : state) {
+                BigData_Classic_Implementation::BigData<int> data{ Max, 123 };
+                // Make sure the variable is not optimized away by compiler
+                benchmark::DoNotOptimize(data);
+            }
+        }
+        // Register the function as a benchmark
+        BENCHMARK(BigDataClassicInt);
+
+        static void BigDataClassicString(benchmark::State& state) {
+            // Code inside this loop is measured repeatedly
+            for (auto _ : state) {
+                BigData_Classic_Implementation::BigData<std::string> data{ Max, std::string{ "C++ Memory Management" } };
+                // Make sure the variable is not optimized away by compiler
+                benchmark::DoNotOptimize(data);
+            }
+        }
+        // Register the function as a benchmark
+        BENCHMARK(BigDataClassicString);
+
+        static void BigDataClassicPerson(benchmark::State& state) {
+            // Code inside this loop is measured repeatedly
+            for (auto _ : state) {
+                BigData_Classic_Implementation::BigData<Person> data{ Max, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
+                // Make sure the variable is not optimized away by compiler
+                benchmark::DoNotOptimize(data);
+            }
+        }
+        // Register the function as a benchmark
+        BENCHMARK(BigDataClassicPerson);
+
+        //============================================================
+
+        namespace BigData_Classic_More_Improved_Implementation
+        {
+            template <typename T>
+            class BigData
+            {
+            private:
+                T* m_elems{};
+                std::size_t m_size{};
+
+            public:
+                // c'tor(s)
+                BigData() = default;
+
+                BigData(std::size_t size, const T& init)
+                {
+                    m_elems = static_cast<T*> (std::malloc(size * sizeof(T)));
+                    m_size = size;
+                    std::uninitialized_fill(m_elems, m_elems + m_size, init);
+                }
+
+                ~BigData()
+                {
+                    std::destroy(m_elems, m_elems + m_size);
+                    std::free(m_elems);
+                }
+            };
+        }
+
+        static void BigDataImprovedInt(benchmark::State& state) {
+            // Code inside this loop is measured repeatedly
+            for (auto _ : state) {
+                BigData_Classic_More_Improved_Implementation::BigData<int> data{ Max, 123 };
+                // Make sure the variable is not optimized away by compiler
+                benchmark::DoNotOptimize(data);
+            }
+        }
+        // Register the function as a benchmark
+        BENCHMARK(BigDataImprovedInt);
+
+        static void BigDataImprovedString(benchmark::State& state) {
+            // Code inside this loop is measured repeatedly
+            for (auto _ : state) {
+                BigData_Classic_More_Improved_Implementation::BigData<std::string> data{ Max, std::string{ "C++ Memory Management" } };
+                // Make sure the variable is not optimized away by compiler
+                benchmark::DoNotOptimize(data);
+            }
+        }
+        // Register the function as a benchmark
+        BENCHMARK(BigDataImprovedString);
+
+        static void BigDataImprovedPerson(benchmark::State& state) {
+            // Code inside this loop is measured repeatedly
+            for (auto _ : state) {
+                BigData_Classic_More_Improved_Implementation::BigData<Person> data{ Max, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
+                // Make sure the variable is not optimized away by compiler
+                benchmark::DoNotOptimize(data);
+            }
+        }
+        // Register the function as a benchmark
+        BENCHMARK(BigDataImprovedPerson);
+
+#endif
+
+        // To-Copy End
+        // ======================================================================
     }
 
     namespace MemoryLaundry {
@@ -691,7 +804,7 @@ namespace MemoryManagement {
 void memory_management()
 {
 
-    //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+  //  _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
     using namespace MemoryManagement;
 
@@ -718,13 +831,9 @@ void memory_management()
     //Placement_New::test_placement_new_03();
     //Placement_New::test_placement_new_04();
 
-
-
-
-
     Placement_New_Example::test_placement_new_example_01();
-   Placement_New_Example::test_placement_new_example_02();
-   Placement_New_Example::test_placement_new_example_03();
+    Placement_New_Example::test_placement_new_example_02();
+    Placement_New_Example::test_placement_new_example_03();
 
     //MemoryLaundry::test_std_launder();
 }
