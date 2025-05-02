@@ -2,8 +2,15 @@
 // MemoryManagement.cpp
 // ===========================================================================
 
+//#define _CRTDBG_MAP_ALLOC
+//#include <cstdlib>
+//#include <crtdbg.h>
+
+#include "../LoggerUtility/ScopedTimer.h"
+
 #include <bitset>
 #include <cassert>
+#include <cstddef>
 #include <iostream>
 #include <memory>
 #include <print>
@@ -318,10 +325,9 @@ namespace MemoryManagement {
             std::println("sizeof(Document_V2): {}", sizeof(Document_V2));
             std::println("sizeof(Document_V2_Behind_the_Scenes): {}", sizeof(Document_V2_Behind_the_Scenes));
         }
-
     }
 
-    namespace PlacementNew {
+    namespace Placement_New {
 
     // =======================================================================
     // Placement New
@@ -345,23 +351,23 @@ namespace MemoryManagement {
             }
         };
 
+        unsigned char g_memory[sizeof (Person)];
+
         static void test_placement_new_01() {
 
-            auto* memory = std::malloc(sizeof(Person));
-            auto* person = ::new (memory) Person{ "Sepp", "Mueller", (size_t)30 };
+            std::println("sizeof (Person): {}", sizeof(Person));
+
+            auto* person = ::new (g_memory) Person{ "Sepp", "Mueller", static_cast<size_t>(30) };
 
             person->~Person();
-            std::free(memory);
         }
 
         static void test_placement_new_02() {
 
             auto* memory = std::malloc(sizeof(Person));
-            auto* person = reinterpret_cast<Person*>(memory);
+            auto* person = ::new (memory) Person{ "Sepp", "Mueller", static_cast<size_t>(30) };
 
-            std::uninitialized_fill_n(person, 1, Person{ "Sepp", "Mueller", (size_t)30 });
-
-            std::destroy_at(person);
+            person->~Person();
             std::free(memory);
         }
 
@@ -370,16 +376,288 @@ namespace MemoryManagement {
             auto* memory = std::malloc(sizeof(Person));
             auto* person = reinterpret_cast<Person*>(memory);
 
-            std::construct_at(person, Person{ "Sepp", "Mueller", (size_t)30 }); // C++20
+            std::uninitialized_fill_n(person, 1, Person{ "Sepp", "Mueller", static_cast<size_t>(30) });
+
+            std::destroy_at(person);
+            std::free(memory);
+        }
+
+        static void test_placement_new_04() {
+
+            auto* memory = std::malloc(sizeof(Person));
+            auto* person = reinterpret_cast<Person*>(memory);
+
+            std::construct_at(person, Person{ "Sepp", "Mueller", static_cast<size_t>(30) }); // C++20
 
             std::destroy_at(person);
             std::free(memory);
         }
     }
 
+    namespace Placement_New_Example {
+
+        constexpr std::size_t Max = 50'000'000;
+      //  constexpr std::size_t Max = 1;
+      //  constexpr std::size_t Max = 5;
+
+        class Person
+        {
+        private:
+            std::string m_first;
+            std::string m_last;
+            size_t      m_age;
+
+        public:
+            Person(): m_first{}, m_last{}, m_age{} {}
+
+            Person(std::string first, std::string last, size_t age)
+                : m_first{ first }, m_last{ last }, m_age{ age }
+            {}
+
+            ~Person() {}
+        };
+
+        class MyString : public std::string
+        {
+        public:
+            MyString() : std::string{} {}
+
+            MyString(const char* s) : std::string{ s } {}
+
+         //   BigData& operator= (const BigData&);      // copy assignment
+
+            MyString(const MyString& ms) : std::string{ ms } {}
+
+            //~MyString() {
+            //    std::println("~MyString");
+            //}
+        };
+
+        namespace BigData_Classic_Implementation
+        {
+            template <typename T>
+            class BigData
+            {
+            private:
+                T* m_elems{};
+                std::size_t m_size{};
+
+            public:
+                // c'tor(s) / d'tor
+                BigData() = default;
+
+                BigData(std::size_t size, const T& init)
+                    : m_elems{ new T[size] }, m_size{ size }
+                {
+                    std::fill(m_elems, m_elems + m_size, init);
+                }
+
+                ~BigData()
+                {
+                    delete[] m_elems;
+                }
+
+                void print()
+                {
+                    for (std::size_t i{}; i != m_size; ++i) {
+
+                        auto elem = m_elems[i];
+
+                        std::println("{:02}: {}", i, m_elems[i]);
+                      //  std::cout << i << ": " << m_elems[i] << std::endl;
+                    }
+                }
+            };
+        }
+
+        static void test_placement_new_example_01()
+        {
+            {
+                ScopedTimer watch;
+
+                BigData_Classic_Implementation::BigData<int> data{ Max, 123 };
+                //data.print();
+            }
+
+            {
+                ScopedTimer watch;
+
+                BigData_Classic_Implementation::BigData<std::string> data{ Max, std::string{ "C++ Memory Management" } };
+                //data.print();
+            }
+
+            {
+                ScopedTimer watch;
+
+                BigData_Classic_Implementation::BigData<MyString> data{ Max, MyString{ "C++ Memory Management" } };
+                //data.print();
+            }
+
+            {
+                ScopedTimer watch;
+                BigData_Classic_Implementation::BigData<Person> data{ Max, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
+                //data.print();
+            }
+            std::println("");
+        }
+
+        namespace BigData_Classic_Improved_Implementation
+        {
+            template <typename T>
+            class BigData
+            {
+            private:
+                T* m_elems{};
+                std::size_t m_size{};
+
+            public:
+                // c'tor(s)
+                BigData() = default;
+
+                BigData(std::size_t size, const T& init)
+                {
+                    m_elems = static_cast<T*> (std::malloc(size * sizeof(T)));
+                    m_size = size;
+
+                    auto pBegin = m_elems;
+                    auto pEnd = m_elems + m_size;
+
+                    for (; pBegin != pEnd; ++pBegin) {
+
+                        ::new (static_cast<void*>(pBegin)) T{ init };
+                    }
+                }
+
+                ~BigData()
+                {
+                    // std::destroy(m_elems, m_elems + m_size);
+
+                    auto pBegin = m_elems;
+                    auto pEnd = m_elems + m_size;
+
+                    for (; pBegin != pEnd; ++pBegin) {
+
+                        //std::destroy_at(pBegin);
+                        pBegin->~T();
+                    }
+
+                    std::free(m_elems);
+
+                    // was ist mit den std::destroy ....................
+                }
+            
+                void print()
+                {
+                    for (std::size_t i{}; i != m_size; ++i) {
+                        std::println("{:02}: {}", i, m_elems[i]);
+                    }
+                }
+            };
+        }
+
+        static void test_placement_new_example_02()
+        {
+            {
+                ScopedTimer watch;
+
+                BigData_Classic_Improved_Implementation::BigData<int> data{ Max, 123 };
+               // data.print();
+            }
+
+            {
+                ScopedTimer watch;
+
+                BigData_Classic_Improved_Implementation::BigData<std::string> data{ Max, "C++ Memory Management" };
+                //data.print();
+            }
+
+            {
+                ScopedTimer watch;
+
+                BigData_Classic_Improved_Implementation::BigData<MyString> data{ Max, MyString{ "C++ Memory Management" } };
+                //data.print();
+            }
+
+            {
+                ScopedTimer watch;
+
+                BigData_Classic_Implementation::BigData<Person> data{ Max, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
+                //data.print();
+            }
+            std::println("");
+        }
+
+        namespace BigData_Classic_More_Improved_Implementation
+        {
+            template <typename T>
+            class BigData
+            {
+            private:
+                T* m_elems{};
+                std::size_t m_size{};
+
+            public:
+                // c'tor(s)
+                BigData() = default;
+
+                BigData(std::size_t size, const T& init)
+                {
+                    m_elems = static_cast<T*> (std::malloc(size * sizeof(T)));
+                    m_size = size;
+                    std::uninitialized_fill(m_elems, m_elems + m_size, init);
+                }
+
+                ~BigData()
+                {
+                    std::destroy(m_elems, m_elems + m_size);
+                    std::free(m_elems);
+                }
+
+                void print()
+                {
+                    for (std::size_t i{}; i != m_size; ++i) {
+                        std::println("{:02}: {}", i, m_elems[i]);
+                    }
+                }
+            };
+        }
+
+        static void test_placement_new_example_03()
+        {
+            {
+                ScopedTimer watch;
+
+                BigData_Classic_Improved_Implementation::BigData<int> data{ Max, 123 };
+                //    data.print();
+            }
+
+            {
+                ScopedTimer watch;
+
+                BigData_Classic_Improved_Implementation::BigData<std::string> data{ Max, "C++ Memory Management" };
+                //     data.print();
+            }
+
+            {
+                ScopedTimer watch;
+
+                BigData_Classic_Improved_Implementation::BigData<MyString> data{ Max, MyString{ "C++ Memory Management" } };
+                //   data.print();
+            }
+
+            {
+                ScopedTimer watch;
+
+                BigData_Classic_Implementation::BigData<Person> data{ Max, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
+              //  data.print();
+            }
+            std::println("");
+        }
+    }
+
     namespace MemoryLaundry {
 
-        using namespace PlacementNew;  // class Person
+        using namespace Placement_New;  // class Person
 
         // =======================================================================
         // Memory Laundry: std::launder
@@ -412,6 +690,9 @@ namespace MemoryManagement {
 
 void memory_management()
 {
+
+    //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
     using namespace MemoryManagement;
 
     //Stack_Debug_Versus_Release_Mode::test_stack_debug_versus_release_mode();
@@ -419,7 +700,7 @@ void memory_management()
     //Stack_Behaviour::test_examine_stack_behaviour();
     ////Stack_Size::test_examine_stack_size();               // crashes (intentionally)
 
-    MemoryAlignment::test_examine_alignment_01();
+    //MemoryAlignment::test_examine_alignment_01();
     //MemoryAlignment::test_examine_alignment_02();
     //MemoryAlignment::test_examine_alignment_03();
     //MemoryAlignment::test_examine_alignment_04();
@@ -432,9 +713,18 @@ void memory_management()
 
     //MemoryPadding::test_memory_padding();
 
-    //PlacementNew::test_placement_new_01();
-    //PlacementNew::test_placement_new_02();
-    //PlacementNew::test_placement_new_03();
+    //Placement_New::test_placement_new_01();
+    //Placement_New::test_placement_new_02();
+    //Placement_New::test_placement_new_03();
+    //Placement_New::test_placement_new_04();
+
+
+
+
+
+    Placement_New_Example::test_placement_new_example_01();
+   Placement_New_Example::test_placement_new_example_02();
+   Placement_New_Example::test_placement_new_example_03();
 
     //MemoryLaundry::test_std_launder();
 }

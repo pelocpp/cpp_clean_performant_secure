@@ -577,20 +577,20 @@ d'tor Person
 
 Es gibt kein *Placement delete*.
 Um das Objekt zu zerstören und den Speicher freizugeben, müssen wir also den Destruktor explizit aufrufen
-und dann den separat Speicher freigeben.
+und dann den Speicher separat freigeben.
 
-C++17 führt eine Reihe von Hilfsfunktionen in der STL (<memory>) ein,
+C++17 führt eine Reihe von Hilfsfunktionen in der STL (Include-Datei `<memory>`) ein,
 um Objekte zu konstruieren und zu zerstören, ohne Speicher zuzuweisen oder freizugeben.
 
 Anstatt *Placement new* zu verwenden, ist es jetzt also möglich,
-einige der Funktionen aus der STL (<memory>) zu verwenden,
+einige der Funktionen aus der STL zu verwenden,
 deren Namen mit `std::uninitialized_` beginnen, um Objekte in einen nicht initialisierten Speicherbereich
 zu konstruieren, zu kopieren und zu verschieben.
 
 Und anstatt den Destruktor explizit aufzurufen, können wir jetzt `std::destroy_at()` verwenden,
 um ein Objekt an einer bestimmten Speicheradresse zu zerstören, ohne den Speicher freizugeben.
 
-Das vorherige Beispiel könnte mit diesen neuen Funktionen neu geschrieben werden:
+Das vorherige Beispiel könnte mit diesen neuen Funktionen so geschrieben werden:
 
 *Beispiel*:
 

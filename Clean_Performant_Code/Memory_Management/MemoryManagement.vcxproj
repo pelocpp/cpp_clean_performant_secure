@@ -130,6 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\LoggerUtility\Logger.cpp" />
     <ClCompile Include="Arena.cpp" />
     <ClCompile Include="MemoryManagement.cpp" />
     <ClCompile Include="Program.cpp" />

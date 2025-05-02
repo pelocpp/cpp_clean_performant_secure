@@ -14,15 +14,16 @@
 
   * Speicherbereiche eine C/C++&ndash;Programms
   * Stack versus Heap
+  * CPU-Cache-Speicher
   * Ausrichtung (*Alignment*) und *Padding* 
   * *Placement New*: Trennung von Speicherallokation und Objektkonstruktion
 
 ## Einfache Code-Optimierungstechniken
 
   * Klasse `std::vector`: Bedeutung der `reserve`-Methode
-  * Wozu `std::initializer_list` verwenden
+  * Wozu Klasse `std::initializer_list` verwenden?
   * SSO (*Small String Optimization*)
-  * Wozu `std::string_view` verwenden
+  * Wozu Klasse `std::string_view` verwenden?
   * `constexpr` &ndash; *Compile-Time*&ndash;Programmierung
   * IIFE &ndash; *Immediately Invoked Functional Expression*
   * *Copy*/*Move* Elision
@@ -39,7 +40,7 @@
 
 ## Optimierung von Algorithmen und Datenstrukturen
 
-  * Big-O-Notation
+  * *Big-O* Notation
   * Verwenden Sie Container und Algorithmen der C++&ndash;Bibliothek STL
   * Die richtige Auswahl des Containers
   * Die richtige Auswahl eines Algorithmus
@@ -55,8 +56,7 @@
 
   * Quick C++ Benchmark
 
-
-
+ 
 ## Funktionale Programmierung: Die Bibliothek `std::ranges`
 
   * Was ist funktionale Programmierung?

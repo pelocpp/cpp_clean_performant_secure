@@ -37,5 +37,8 @@
     <Image Include="Buch_Nicolai_Josuttis_Cpp_Move_Semantics.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Buch_Patrice_Roy_Cpp_Memory_Management.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

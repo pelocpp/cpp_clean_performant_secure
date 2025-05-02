@@ -15,6 +15,13 @@
 
 ---
 
+  * Roy, Patrice &bdquo;*C++ Memory Management (1. Auflage)*&rdquo;.</br>
+    Packt Publishing (25. März 2025), 434 Seiten. Sprache: Englisch. ISBN-13: 978-1805129806, ISBN-10: 1805129805.
+
+    <img src="Buch_Patrice_Roy_Cpp_Memory_Management.png" width="150">
+
+---
+
   * Josuttis, Nicolai M., &bdquo;*C++ Move Semantics &ndash; The Complete Guide*&rdquo;.</br> 
     NicoJosuttis (30. August 2020), 262 Seiten. Sprache: Englisch. ISBN-10: 3967309002, ISBN-13: 978-3967309003.
 

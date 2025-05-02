@@ -27,6 +27,9 @@
     <ClCompile Include="Arena.h">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\LoggerUtility\Logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Readme_MemoryManagement.md">
