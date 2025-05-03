@@ -18,9 +18,12 @@
 
   * Namensgebung für Bezeichner
   * Kommentare
-  * Funktionen
   * Old C-Style in einem C++ Projekt
-
+  * Organisation von Include-Files
+  * Initialisierung von Strukturen und Objekten
+  * Warum Schlüsselwort `explicit`
+  * Schlüsselwort `auto` verwenden oder nicht?
+  * Schlüsselwort `auto`: Left-to-Right Initialisierungsstil
 
 ## Fortgeschrittene Konzepte von Clean Code C++
 
@@ -58,7 +61,7 @@
     * Objektorientiertes Denken
     * Prinzipien für gutes Klassendesign
   * Module
-    * Die Nachteile von #include 
+    * Die Nachteile von `#include` 
     * Module als Rettung
     * Unter der Haube
 
@@ -66,8 +69,6 @@
 
   * Was ist funktionale Programmierung?
   * Funktionale Programmierung in modernem C++
-    * Funktionale Programmierung mit C++-Templates
-    * Funktionsähnliche Objekte (Funktoren)
     * Lambda-Ausdrücke
     * Generische Lambda-Ausdrücke
   * Funktionen höherer Ordnung
@@ -82,7 +83,6 @@
     * Regeln für gute Unit-Tests
     * Test Codequalität
     * Unit-Test-Benennung
-    * Unit-Test-Unabhängigkeit
   * Beispiel: Die Bibliothek *Catch2*
 
 
