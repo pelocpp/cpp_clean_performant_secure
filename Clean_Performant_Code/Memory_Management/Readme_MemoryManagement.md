@@ -659,7 +659,7 @@ eine Art Container sein.
 #### Erster Ansatz
 
 Eine erste einfache Realisierung, die nur die Deklaration der Instanzvariablen
-und einen benutzerdefinierten Konstruktur zeigen soll, könnte so aussehen:
+und einen benutzerdefinierten Konstruktur zeigt, könnte so aussehen:
 
 ```cpp
 01: template <typename T>
@@ -688,7 +688,7 @@ und einen benutzerdefinierten Konstruktur zeigen soll, könnte so aussehen:
 24: };
 ```
 
-Was ist schlecht in Punkto &bdquo;Performanz&rdquo; an dieser Implementierung?
+Was ist schlecht in puncto &bdquo;Performanz&rdquo; an dieser Implementierung?
 
 Okay, es hängt ein wenig von der konkreten Wahl des Datentyps `T` ab.
 Stellen wir uns vor, `T` repräsentiert *keinen* elementaren Datentyp,
@@ -697,8 +697,8 @@ also zum Beispiel die Klasse `std::string` oder einen anderen benutzerdefinierte
 Der Konstruktor reserviert zunächst auf der Halde dynamisch Speicher für `size` Elemente des Typs `T` (mittels `new T[size]`).
 Das bedeutet insbesondere, dass `size` Mal der Standardkonstruktor des Typs `T` ausgeführt wird.
 
-Nun gib es aber einen Vorbelegunswert `init`, mit dem alle Objekte im Speicherbereich `m_elems` vorbelegt werden sollen.
-Es kommt also noch zusätzlich `size` Mal zur Ausführung des Kopierkonstruktors der Klasse `T` mit `init` als Vorlage.
+Nun gibt es aber einen Vorbelegungswert `init`, mit dem alle Objekte im Speicherbereich `m_elems` vorbelegt werden sollen.
+Es kommt also noch zusätzlich `size` Mal der Kopierkonstruktor der Klasse `T` mit `init` als Vorlage zur Ausführung.
 
 Im Prinzip belegen wir den Speicherbereich `m_elems` zweimal vor:
 Zum Ersten mit dem Standardkonstruktor des Typs `T` und zum Zweiten mit seinem Kopierkonstruktor.
@@ -713,7 +713,7 @@ Mit Hilfe von *Placement new* können wir eine Vereinfachung erreichen:
 02: class BigData
 03: {
 04: private:
-05:     T*          m_elems{};
+05:     T* m_elems{};
 06:     std::size_t m_size{};
 07: 
 08: public:
@@ -732,25 +732,27 @@ Mit Hilfe von *Placement new* können wir eine Vereinfachung erreichen:
 21: 
 22:     ~BigData()
 23:     {
-24:         for (auto pBegin = m_elems; pBegin != m_elems + m_size; ++pBegin) {
-25:             pBegin->~T();
-26:         }
-27: 
-28:         std::free(m_elems);
-29:     }
-30: 
-31:     // ...
-32: };
+24:         std::for_each(
+25:             m_elems,
+26:             m_elems + m_size,
+27:             [](const T& obj) { obj.~T(); }
+28:         );
+29: 
+30:         std::free(m_elems);
+31:     }
+32: 
+33:     // ...
+34: };
 ```
 
 In Zeile 14 reservieren wir den Speicher mit `std::malloc`. Dies erspart uns die unnütze Ausführung des Standardkonstruktors
 für alle `T`-Objekte.
 
-Um die `T`-Objekte wir gefordert vorzubelegen (mit dem Wert `init`),
+Um die `T`-Objekte wie gefordert vorzubelegen (mit dem Wert `init`),
 wenden wir den *Placement new*&ndash;Mechanismus an (Zeile 18).
 
 Wir dürfen in dieser Variante nicht übersehen, dass wir den Destruktor der Klasse `T` explizit aufrufen müssen.
-Dies erfolgt in Zeile 25.
+Dies erfolgt in Zeile 27.
 
 #### Dritter Ansatz
 
@@ -785,6 +787,19 @@ die deren Schreibweise vereinfachen:
 25:     // ...
 26: };
 ```
+
+*Hinweis*:<br />
+Zwischen `std::fill` und `std::uninitialized_fill` gibt es folgenden Unterschied in der Ausführung:
+
+
+  * `std::fill`:<br />
+  Es wird ein gültig vorbelegter Speicherbereich erwartet. Das letzte Argument von `std::fill` wird mit dem `=`-Operator
+  an alle vorhandenen Elemente im Speicherbereich zugewiesen. Folglich erwartet der `operator=` einen Speicherbereich,
+  der gültige Werte enthält.
+
+  * `std::uninitialized_fill`:<br />
+  Der zu belegende Speicherbereich kann beliebige Werte enthalten.
+  Es wird der gesamte Speicherbereich im Stile des *Placement new*&ndash;Mechanismus mit dem letzten Argument von `std::uninitialized_fill` vorbelegt.
 
 Die Ausführungszeiten erfüllen auf meinem Rechner nicht alle Erwartungen:
 Jeweils drei aufeinanderfolgende Zeilen betrachten ein `BigData`-Objekt
