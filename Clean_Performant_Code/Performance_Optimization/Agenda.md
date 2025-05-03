@@ -18,6 +18,7 @@
   * Ausrichtung (*Alignment*) und *Padding* 
   * *Placement New*: Trennung von Speicherallokation und Objektkonstruktion
 
+
 ## Einfache Code-Optimierungstechniken
 
   * Klasse `std::vector`: Bedeutung der `reserve`-Methode
@@ -49,24 +50,25 @@
 ## Multithreading / Concurrency
 
   * Grundlagen des Multithreading
-  * Verwendung von Threads und elementare Synchronisationsmechanismen
+  * Verwenden von Threads und elementare Synchronisationsmechanismen
+  * `std::async` und `std::future`
+  * Parallelisierung von STL-Algorithmen (`std::execution::parallel_policy`)
 
 
 ## Tools zur Performance-Messung
 
   * Quick C++ Benchmark
+  * Visual Studio Diagnostic Tools
 
  
 ## Funktionale Programmierung: Die Bibliothek `std::ranges`
 
   * Was ist funktionale Programmierung?
   * Funktionale Programmierung in modernem C++
-    * Funktionale Programmierung mit C++-Templates
-    * Funktionsähnliche Objekte (Funktoren)
     * Lambda-Ausdrücke
     * Generische Lambda-Ausdrücke
   * Funktionen höherer Ordnung
-    * Map, Filter und Reduce
+    * *Map*, *Filter* und *Reduce*
   * Pipelining mit Bereichs-Adaptern
 
 

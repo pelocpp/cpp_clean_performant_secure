@@ -533,10 +533,10 @@ namespace MemoryManagement {
 
         static void test_placement_new_example_02()
         {
-            {
-                ScopedTimer watch;
-                BigData_Classic_Improved_Implementation::BigData<int> data{ Max, 123 };
-            }
+            //{
+            //    ScopedTimer watch;
+            //    BigData_Classic_Improved_Implementation::BigData<int> data{ Max, 123 };
+            //}
 
             {
                 ScopedTimer watch;
@@ -831,9 +831,9 @@ void memory_management()
     //Placement_New::test_placement_new_03();
     //Placement_New::test_placement_new_04();
 
-    Placement_New_Example::test_placement_new_example_01();
+    //Placement_New_Example::test_placement_new_example_01();
     Placement_New_Example::test_placement_new_example_02();
-    Placement_New_Example::test_placement_new_example_03();
+    //Placement_New_Example::test_placement_new_example_03();
 
     //MemoryLaundry::test_std_launder();
 }
