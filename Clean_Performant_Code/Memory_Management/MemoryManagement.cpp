@@ -3,11 +3,12 @@
 // ===========================================================================
 
 //#define _CRTDBG_MAP_ALLOC
-//#include <cstdlib>
 //#include <crtdbg.h>
+//#include <cstdlib>
 
 #include "../LoggerUtility/ScopedTimer.h"
 
+#include <algorithm>
 #include <bitset>
 #include <cassert>
 #include <cstddef>
@@ -161,7 +162,7 @@ namespace MemoryManagement {
 
             char bad{};
 
-            *(char volatile*)&bad; // inject an bad offset
+            *(char volatile*) &bad;                     // inject an bad offset
 
             std::byte buffer[sizeof(int64_t)] = {};     // not properly aligned for int64_t
 
@@ -396,9 +397,13 @@ namespace MemoryManagement {
 
     namespace Placement_New_Example {
 
-       constexpr std::size_t Max = 50'000'000;
-      //  constexpr std::size_t Max = 1;
-       //constexpr std::size_t Max = 5;
+        // Debug Mode
+        //constexpr std::size_t DataSize = 50'000;
+        //constexpr std::size_t NumIterations = 100;
+
+        // Release Mode
+        constexpr std::size_t DataSize = 100'000;
+        constexpr std::size_t NumIterations = 500;
 
         class Person
         {
@@ -412,22 +417,54 @@ namespace MemoryManagement {
 
             Person(std::string first, std::string last, size_t age)
                 : m_first{ first }, m_last{ last }, m_age{ age }
-            {}
+            {
+                //std::println("Person");
+            }
 
-            ~Person() {}
-        };
+            //Person(const Person& other)
+            //    : m_first{ other.m_first }, m_last{ other.m_last }, m_age{ other.m_age }
+            //{
+            //    std::println("copy c'tor Person");
+            //}
 
-        class MyString : public std::string
-        {
-        public:
-            MyString() = default;
+            //Person& operator= (const Person& other) {
 
-            MyString(const char* s) : std::string{ s } {}
+            //    std::println("operator=");
 
-            //~MyString() {
-            //    std::println("~MyString");
+            //    m_first = other.m_first;
+            //    m_last = other.m_last;
+            //    m_age = other.m_age;
+
+            //    return *this;
+            //}
+
+            //~Person() {
+            //    std::println("~Person");
             //}
         };
+
+
+        static void test_placement_new_example_00()
+        {
+            // remove comments from class Person
+
+            using T = Person;
+
+            Person hans{ "Hans", "Albert", 33 };
+
+            std::size_t size = 5;
+
+            T* elems = static_cast<T*> (std::malloc(5 * sizeof(T)));
+
+            std::uninitialized_fill(elems, elems + size, hans);
+
+            Person sepp{ "Sepp", "Meier", 33 };
+
+            std::fill(elems, elems + size, sepp);
+
+            std::destroy(elems, elems + size);
+            std::free(elems);
+        }
 
         namespace BigData_Classic_Implementation
         {
@@ -456,9 +493,7 @@ namespace MemoryManagement {
                 void print()
                 {
                     for (std::size_t i{}; i != m_size; ++i) {
-
                         std::println("{:02}: {}", i, m_elems[i]);
-                        //  std::cout << i << ": " << m_elems[i] << std::endl;
                     }
                 }
             };
@@ -468,22 +503,23 @@ namespace MemoryManagement {
         {
             {
                 ScopedTimer watch;
-                BigData_Classic_Implementation::BigData<int> data{ Max, 123 };
+                for (size_t i{}; i != NumIterations; ++i) {
+                    BigData_Classic_Implementation::BigData<int> data{ DataSize, 123 };
+                }
             }
 
             {
                 ScopedTimer watch;
-                BigData_Classic_Implementation::BigData<std::string> data{ Max, std::string{ "C++ Memory Management" } };
+                for (size_t i{}; i != NumIterations; ++i) {
+                    BigData_Classic_Implementation::BigData<std::string> data{ DataSize, std::string{ "C++ Memory Management" } };
+                }
             }
 
             {
                 ScopedTimer watch;
-                BigData_Classic_Implementation::BigData<MyString> data{ Max, MyString{ "C++ Memory Management" } };
-            }
-
-            {
-                ScopedTimer watch;
-                BigData_Classic_Implementation::BigData<Person> data{ Max, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
+                for (size_t i{}; i != NumIterations; ++i) {
+                    BigData_Classic_Implementation::BigData<Person> data{ DataSize, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
+                }
             }
             std::println("");
         }
@@ -507,17 +543,17 @@ namespace MemoryManagement {
                     m_size = size;
 
                     for (auto pBegin = m_elems; pBegin != m_elems + m_size; ++pBegin) {
-
                         ::new (static_cast<void*>(pBegin)) T{ init };
                     }
                 }
 
                 ~BigData()
                 {
-                    for (auto pBegin = m_elems; pBegin != m_elems + m_size; ++pBegin) {
-
-                        pBegin->~T();
-                    }
+                    std::for_each(
+                        m_elems,
+                        m_elems + m_size,
+                        [](const T& obj) { obj.~T(); }
+                    );
 
                     std::free(m_elems);
                 }
@@ -533,24 +569,25 @@ namespace MemoryManagement {
 
         static void test_placement_new_example_02()
         {
-            //{
-            //    ScopedTimer watch;
-            //    BigData_Classic_Improved_Implementation::BigData<int> data{ Max, 123 };
-            //}
-
             {
                 ScopedTimer watch;
-                BigData_Classic_Improved_Implementation::BigData<std::string> data{ Max, "C++ Memory Management" };
+                for (size_t i{}; i != NumIterations; ++i) {
+                    BigData_Classic_Improved_Implementation::BigData<int> data{ DataSize, 123 };
+                }
             }
 
             {
                 ScopedTimer watch;
-                BigData_Classic_Improved_Implementation::BigData<MyString> data{ Max, MyString{ "C++ Memory Management" } };
+                for (size_t i{}; i != NumIterations; ++i) {
+                    BigData_Classic_Improved_Implementation::BigData<std::string> data{ DataSize, "C++ Memory Management" };
+                }
             }
 
             {
                 ScopedTimer watch;
-                BigData_Classic_Implementation::BigData<Person> data{ Max, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
+                for (size_t i{}; i != NumIterations; ++i) {
+                    BigData_Classic_Implementation::BigData<Person> data{ DataSize, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
+                }
             }
             std::println("");
         }
@@ -594,25 +631,28 @@ namespace MemoryManagement {
         {
             {
                 ScopedTimer watch;
-                BigData_Classic_Improved_Implementation::BigData<int> data{ Max, 123 };
+                for (size_t i{}; i != NumIterations; ++i) {
+                    BigData_Classic_Improved_Implementation::BigData<int> data{ DataSize, 123 };
+                }
             }
 
             {
                 ScopedTimer watch;
-                BigData_Classic_Improved_Implementation::BigData<std::string> data{ Max, "C++ Memory Management" };
+                for (size_t i{}; i != NumIterations; ++i) {
+                    BigData_Classic_Improved_Implementation::BigData<std::string> data{ DataSize, "C++ Memory Management" };
+                }
             }
 
             {
                 ScopedTimer watch;
-                BigData_Classic_Improved_Implementation::BigData<MyString> data{ Max, MyString{ "C++ Memory Management" } };
-            }
-
-            {
-                ScopedTimer watch;
-                BigData_Classic_Implementation::BigData<Person> data{ Max, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
+                for (size_t i{}; i != NumIterations; ++i) {
+                    BigData_Classic_Implementation::BigData<Person> data{ DataSize, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
+                }
             }
             std::println("");
         }
+
+
     }
 
     namespace Placement_New_Example_Quickbench {
@@ -803,39 +843,39 @@ namespace MemoryManagement {
 
 void memory_management()
 {
-
-  //  _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+   // _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
     using namespace MemoryManagement;
 
-    //Stack_Debug_Versus_Release_Mode::test_stack_debug_versus_release_mode();
+    Stack_Debug_Versus_Release_Mode::test_stack_debug_versus_release_mode();
 
-    //Stack_Behaviour::test_examine_stack_behaviour();
-    ////Stack_Size::test_examine_stack_size();               // crashes (intentionally)
+    Stack_Behaviour::test_examine_stack_behaviour();
+    //Stack_Size::test_examine_stack_size();               // crashes (intentionally)
 
-    //MemoryAlignment::test_examine_alignment_01();
-    //MemoryAlignment::test_examine_alignment_02();
-    //MemoryAlignment::test_examine_alignment_03();
-    //MemoryAlignment::test_examine_alignment_04();
-    //MemoryAlignment::test_examine_alignment_05();
-    //MemoryAlignment::test_examine_alignment_06();
-    //MemoryAlignment::test_examine_alignment_07();
-    //MemoryAlignment::test_examine_alignment_08();
-    //MemoryAlignment::test_examine_alignment_09();
-    //MemoryAlignment::test_examine_alignment_10();
+    MemoryAlignment::test_examine_alignment_01();
+    MemoryAlignment::test_examine_alignment_02();
+    MemoryAlignment::test_examine_alignment_03();
+    MemoryAlignment::test_examine_alignment_04();
+    MemoryAlignment::test_examine_alignment_05();
+    MemoryAlignment::test_examine_alignment_06();
+    MemoryAlignment::test_examine_alignment_07();
+    MemoryAlignment::test_examine_alignment_08();
+    MemoryAlignment::test_examine_alignment_09();
+    MemoryAlignment::test_examine_alignment_10();
 
-    //MemoryPadding::test_memory_padding();
+    MemoryPadding::test_memory_padding();
 
-    //Placement_New::test_placement_new_01();
-    //Placement_New::test_placement_new_02();
-    //Placement_New::test_placement_new_03();
-    //Placement_New::test_placement_new_04();
+    Placement_New::test_placement_new_01();
+    Placement_New::test_placement_new_02();
+    Placement_New::test_placement_new_03();
+    Placement_New::test_placement_new_04();
 
-    //Placement_New_Example::test_placement_new_example_01();
+    Placement_New_Example::test_placement_new_example_00();
+    Placement_New_Example::test_placement_new_example_01();
     Placement_New_Example::test_placement_new_example_02();
-    //Placement_New_Example::test_placement_new_example_03();
+    Placement_New_Example::test_placement_new_example_03();
 
-    //MemoryLaundry::test_std_launder();
+    MemoryLaundry::test_std_launder();
 }
 
 // ===========================================================================

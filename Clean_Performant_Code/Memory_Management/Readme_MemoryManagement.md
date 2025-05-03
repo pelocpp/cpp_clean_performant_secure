@@ -18,7 +18,7 @@
     * [`std::max_align_t` ](link10)
   * [Padding](#link11)
   * [Der Heap (Halde)](#link12)
-  * [Placement *new*](#link13)
+  * [*Placement new*](#link13)
   * [&bdquo;*Zeigerwäsche*&rdquo;: `std::launder`](#link14)
   * [Literatur](#link15)
 
@@ -535,7 +535,7 @@ Auf diese Weise lässt sich der durch das Padding verursachte Speicheraufwand min
 
 ---
 
-## Placement new <a name="link13"></a>
+## *Placement new* <a name="link13"></a>
 
 C++ ermöglicht es uns, die Bereitstellung von Speicher (Speicherallokation)
 von der Objekterstellung zu trennen.
@@ -544,8 +544,6 @@ Wir könnten beispielsweise mit `malloc()` ein Byte-Array reservieren
 und in diesem Speicherbereich ein neues benutzerdefiniertes Objekt erstellen.
 
 *Beispiel*:
-
-
 
 Die möglicherweise ungewohnte Syntax, die `::new (memory)` verwendet, heißt *Placement new*.
 
@@ -644,12 +642,167 @@ d'tor Person
 d'tor Person
 ```
 
+
 Bitte beachte, dass wir diese *Low-Level*-Speicherfunktionen betrachten,
 um ein besseres Verständnis der Speicherverwaltung in C++ zu vermitteln.
 
-Die Verwendung von `reinterpret_cast` und den hier gezeigten Speicherverwaltungsfunktionen
+Die Verwendung von `reinterpret_cast` und die hier gezeigten Speicherverwaltungsfunktionen
 sollte in einer C++-Codebasis auf ein absolutes Minimum beschränkt werden.
 
+
+### Ein zweites Beispiel
+
+Wir betrachten in diesem Beispiel eine Klasse `BigData`:
+Das Klassentemplate soll für Daten unterschiedlichen Typs `T`
+eine Art Container sein.
+
+#### Erster Ansatz
+
+Eine erste einfache Realisierung, die nur die Deklaration der Instanzvariablen
+und einen benutzerdefinierten Konstruktur zeigen soll, könnte so aussehen:
+
+```cpp
+01: template <typename T>
+02: class BigData
+03: {
+04: private:
+05:     T*          m_elems{};
+06:     std::size_t m_size{};
+07: 
+08: public:
+09:     // c'tor(s) / d'tor
+10:     BigData() = default;
+11: 
+12:     BigData(std::size_t size, const T& init)
+13:         : m_elems{ new T[size] }, m_size{ size }
+14:     {
+15:         std::fill(m_elems, m_elems + m_size, init);
+16:     }
+17: 
+18:     ~BigData()
+19:     {
+20:         delete[] m_elems;
+21:     }
+22: 
+23:     // ...
+24: };
+```
+
+Was ist schlecht in Punkto &bdquo;Performanz&rdquo; an dieser Implementierung?
+
+Okay, es hängt ein wenig von der konkreten Wahl des Datentyps `T` ab.
+Stellen wir uns vor, `T` repräsentiert *keinen* elementaren Datentyp,
+also zum Beispiel die Klasse `std::string` oder einen anderen benutzerdefinierten Typ.
+
+Der Konstruktor reserviert zunächst auf der Halde dynamisch Speicher für `size` Elemente des Typs `T` (mittels `new T[size]`).
+Das bedeutet insbesondere, dass `size` Mal der Standardkonstruktor des Typs `T` ausgeführt wird.
+
+Nun gib es aber einen Vorbelegunswert `init`, mit dem alle Objekte im Speicherbereich `m_elems` vorbelegt werden sollen.
+Es kommt also noch zusätzlich `size` Mal zur Ausführung des Kopierkonstruktors der Klasse `T` mit `init` als Vorlage.
+
+Im Prinzip belegen wir den Speicherbereich `m_elems` zweimal vor:
+Zum Ersten mit dem Standardkonstruktor des Typs `T` und zum Zweiten mit seinem Kopierkonstruktor.
+Wie könnte man dies vermeiden?
+
+#### Zweiter Ansatz
+
+Mit Hilfe von *Placement new* können wir eine Vereinfachung erreichen:
+
+```cpp
+01: template <typename T>
+02: class BigData
+03: {
+04: private:
+05:     T*          m_elems{};
+06:     std::size_t m_size{};
+07: 
+08: public:
+09:     // c'tor(s)
+10:     BigData() = default;
+11: 
+12:     BigData(std::size_t size, const T& init)
+13:     {
+14:         m_elems = static_cast<T*> (std::malloc(size * sizeof(T)));
+15:         m_size = size;
+16: 
+17:         for (auto pBegin = m_elems; pBegin != m_elems + m_size; ++pBegin) {
+18:             ::new (static_cast<void*>(pBegin)) T{ init };
+19:         }
+20:     }
+21: 
+22:     ~BigData()
+23:     {
+24:         for (auto pBegin = m_elems; pBegin != m_elems + m_size; ++pBegin) {
+25:             pBegin->~T();
+26:         }
+27: 
+28:         std::free(m_elems);
+29:     }
+30: 
+31:     // ...
+32: };
+```
+
+In Zeile 14 reservieren wir den Speicher mit `std::malloc`. Dies erspart uns die unnütze Ausführung des Standardkonstruktors
+für alle `T`-Objekte.
+
+Um die `T`-Objekte wir gefordert vorzubelegen (mit dem Wert `init`),
+wenden wir den *Placement new*&ndash;Mechanismus an (Zeile 18).
+
+Wir dürfen in dieser Variante nicht übersehen, dass wir den Destruktor der Klasse `T` explizit aufrufen müssen.
+Dies erfolgt in Zeile 25.
+
+#### Dritter Ansatz
+
+Für die *Placement new*&ndash;Techniken aus dem letzten Beispiel gibt es Low-Level-Funktionen, 
+die deren Schreibweise vereinfachen:
+
+```cpp
+01: template <typename T>
+02: class BigData
+03: {
+04: private:
+05:     T*          m_elems{};
+06:     std::size_t m_size{};
+07: 
+08: public:
+09:     // c'tor(s)
+10:     BigData() = default;
+11: 
+12:     BigData(std::size_t size, const T& init)
+13:     {
+14:         m_elems = static_cast<T*> (std::malloc(size * sizeof(T)));
+15:         m_size = size;
+16:         std::uninitialized_fill(m_elems, m_elems + m_size, init);
+17:     }
+18: 
+19:     ~BigData()
+20:     {
+21:         std::destroy(m_elems, m_elems + m_size);
+22:         std::free(m_elems);
+23:     }
+24: 
+25:     // ...
+26: };
+```
+
+Die Ausführungszeiten erfüllen auf meinem Rechner nicht alle Erwartungen:
+Jeweils drei aufeinanderfolgende Zeilen betrachten ein `BigData`-Objekt
+mit `int`, `std::string` oder `Person`-Objekten:
+
+```
+[1]:    Elapsed time: 4 [milliseconds]
+[1]:    Elapsed time: 4602 [milliseconds]
+[1]:    Elapsed time: 7700 [milliseconds]
+
+[1]:    Elapsed time: 3 [milliseconds]
+[1]:    Elapsed time: 3315 [milliseconds]
+[1]:    Elapsed time: 7693 [milliseconds]
+
+[1]:    Elapsed time: 4 [milliseconds]
+[1]:    Elapsed time: 3371 [milliseconds]
+[1]:    Elapsed time: 7717 [milliseconds]
+```
 
 ---
 
@@ -728,7 +881,7 @@ Einige ergänzende Erläuterungen dazu:
   damit der Compiler die komplexe Zustandsnachverfolgung zur Kompilierzeit, die Compiler durchführen, absichtlich vergisst und so tut,
   als wäre der Zeiger tatsächlich ein brandneues Objekt, von dem er nichts wusste.
 
-  * Es ´liegen gewisse Ähnlichkeiten zum Schlüsselwort `volatile` vor:
+  * Es liegen gewisse Ähnlichkeiten zum Schlüsselwort `volatile` vor:
   `volatile` dient zum Deaktivieren von Compiler-Annahmen darüber, was ein Wert zur Laufzeit sein könnte.
   Wenn Sie beispielsweise zweimal hintereinander von einer regulären `int`-Variablen lesen, ohne dazwischen zu schreiben,
   würde der Compiler wahrscheinlich den zweiten Lesevorgang entfernen und den ersten Wert wiederverwenden (bessere Codegenerierung),
