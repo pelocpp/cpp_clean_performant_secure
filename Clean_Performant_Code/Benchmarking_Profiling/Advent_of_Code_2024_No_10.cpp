@@ -5,13 +5,9 @@
 
 #include "../LoggerUtility/ScopedTimer.h"
 
-#include <algorithm>
 #include <array>
-#include <cassert>
 #include <fstream>
-#include <iostream>
 #include <list>
-#include <map>
 #include <print>
 #include <string>
 #include <string_view>
@@ -380,7 +376,7 @@ static void puzzle_10_part_two()
 // ===========================================================================
 // main
 
-void puzzle_10()
+void performance_profiling_puzzle_10()
 {
     //puzzle_10_test();
     //puzzle_11_test();
@@ -389,11 +385,6 @@ void puzzle_10()
     //puzzle_12_test();
     //puzzle_10_part_two();     // 1609
 }
-
-// ===========================================================================
-// End-of-File
-// ===========================================================================
-
 
 // ===========================================================================
 // End-of-File

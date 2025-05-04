@@ -30,9 +30,15 @@
     <ClCompile Include="Advent_of_Code_2024_No_11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\LoggerUtility\Logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Readme_Benchmarking.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Readme_Profiling.md">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
@@ -44,6 +50,15 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Quick_Cpp_Benchmark_StdVector.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Profiling_01.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Profiling_02.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Profiling_03.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

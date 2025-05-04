@@ -5,11 +5,8 @@
 
 #include "../LoggerUtility/ScopedTimer.h"
 
-#include <algorithm>
-#include <cassert>
 #include <forward_list>
 #include <fstream>
-#include <iostream>
 #include <print>
 #include <sstream>
 #include <string>
@@ -17,7 +14,8 @@
 #include <unordered_map>
 #include <utility>
 
-
+// ===========================================================================
+// 
 // TBD: Die zerlegten Zahlen ebenfalls in eine Map aufnehmen ... dann muss nicht so oft zerlegt werden
 
 // https://advent-of-code.xavd.id/writeups/2024/day/11/
@@ -27,20 +25,25 @@
 // ===========================================================================
 // global data
 
-static std::string_view g_filenameTestData{ "Puzzle11_TestData.txt" };
-static std::string_view g_filenameRealData{ "Puzzle11_RealData.txt" };
+static std::string_view g_filenameTestData{ "./Data/Puzzle11_TestData.txt" };
+static std::string_view g_filenameRealData{ "./Data/Puzzle11_RealData.txt" };
 
 // ===========================================================================
-// types
+// interfaces
 
 struct IPlutonianPebbles
 {
-    virtual void readPuzzleFromFile(const std::string_view filename) = 0;
-    virtual void printPebbles() = 0;
-    virtual void blink() = 0;
-    virtual void blinking(size_t count) = 0;
+    virtual ~IPlutonianPebbles() = default;
+
+    virtual void   readPuzzleFromFile(const std::string_view filename) = 0;
+    virtual void   printPebbles() = 0;
+    virtual void   blink() = 0;
+    virtual void   blinking(size_t count) = 0;
     virtual size_t size() = 0;
 };
+
+// ===========================================================================
+// types
 
 class PlutonianPebbles : public IPlutonianPebbles
 {
@@ -268,44 +271,6 @@ public:
 };
 
 // ===========================================================================
-// forward declarations
-
-// ===========================================================================
-// input & output
-
-// ===========================================================================
-// types / logic
-
-// ===========================================================================
-// testing
-
-static void puzzle_10_test()
-{
-    ScopedTimer watch{};
-    BruteForcePlutonianPebbles pebbles;
-    pebbles.readPuzzleFromFile(g_filenameTestData);
-    pebbles.printPebbles();
-    //std::println("Size: {}", pebbles.size());
-    pebbles.blinking(5);
-    //std::println("Size: {}", pebbles.size());   // expected 213625 (25 times blinking)
-}
-
-static void puzzle_11_test()
-{
-    ScopedTimer watch{};
-    AdvancedPlutonianPebbles pebbles;
-    pebbles.readPuzzleFromFile(g_filenameTestData);
-    pebbles.printPebbles();
-    //std::println("Size: {}", pebbles.size());
-    pebbles.blinking(6);
-    //std::println("Size: {}", pebbles.size());   // expected 213625 (25 times blinking)
-}
-
-static void puzzle_12_test()
-{
-}
-
-// ===========================================================================
 // part one
 
 static void puzzle_11_part_one()
@@ -316,7 +281,7 @@ static void puzzle_11_part_one()
     pebbles.readPuzzleFromFile(g_filenameRealData);
     std::println("Size: {}", pebbles.size());
     pebbles.blinking(25);
-    std::println("Size: {}", pebbles.size());   // expected 213625 (25 times blinking) // 2000 msecs
+    std::println("Size: {}", pebbles.size());   // expected 213625 (25 times blinking) // ca 2.000 msecs (debug)
 }
 
 // ===========================================================================
@@ -330,18 +295,14 @@ static void puzzle_11_part_two()
     pebbles.printPebbles();
     std::println("Size: {}", pebbles.size());
     pebbles.blinking(75);
-    std::println("Size: {}", pebbles.size());   // expected 252442982856820
+    std::println("Size: {}", pebbles.size());   // expected 252442982856820    // ca 880 msecs (debug)
 }
 
 // ===========================================================================
 // main
 
-void puzzle_11()
+void performance_profiling_puzzle_11()
 {
-    //puzzle_10_test();
-    //puzzle_11_test();
-    //puzzle_12_test();
-
     puzzle_11_part_one();
     //puzzle_11_part_two();
 }

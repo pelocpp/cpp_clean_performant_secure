@@ -130,15 +130,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\LoggerUtility\Logger.cpp" />
     <ClCompile Include="Advent_of_Code_2024_No_10.cpp" />
     <ClCompile Include="Advent_of_Code_2024_No_11.cpp" />
     <ClCompile Include="Benchmarking.cpp" />
     <ClCompile Include="Program.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Readme_Profiling.md" />
     <None Include="Readme_Benchmarking.md" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Profiling_01.png" />
+    <Image Include="Profiling_02.png" />
+    <Image Include="Profiling_03.png" />
     <Image Include="Quick_Cpp_Benchmark_StdVector.png" />
     <Image Include="Quick_Cpp_Benchmark_String_Comparison_No_SSO.png" />
     <Image Include="Quick_Cpp_Benchmark_String_Comparison_SSO.png" />

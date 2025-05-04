@@ -8,7 +8,9 @@
 
 ## [C++ Performance Optimierung: Best Practices](../BestPractices/Readme_BestPractices.md)
 
-## [Benchmarking](../Benchmarking/Readme_Benchmarking.md)
+## [Benchmarking](../Benchmarking_Profiling/Readme_Benchmarking.md)
+
+## [Profiling](../Benchmarking_Profiling/Readme_Profiling.md)
 
 ## [Effizienz der STL-Komponenten im Detail](../Data_Structures_and_Algorithms/Readme_Data_Structures_and_Algorithms.md)
 
