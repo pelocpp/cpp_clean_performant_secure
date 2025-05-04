@@ -15,13 +15,28 @@
 #include <utility>
 
 // ===========================================================================
+// Eine Ausführung von Schritt zeit, dass in Methode 'splitPebble'
+// ein HotSpot vorhanden ist.
 // 
-// TBD: Die zerlegten Zahlen ebenfalls in eine Map aufnehmen ... dann muss nicht so oft zerlegt werden
-
+// Es bietet sich ein Redesign von 'splitPebble' an:
+// Die Ausführungszeiten mit 'splitPebbleEx' sind besser.
+// 
+// Ein zweites Redesign dieser Methode führt zu besseren Ausführungszeiten.
+// 
+// To be Done 1: Die von 'splitPebble' zeregten Zahlen in eine Map aufnehmen (sog. Memoization),
+// dann die Ausführungszeiten beobachten.
+// 
+// To be Done 1: Es werden mehrere Male std::pairs mit 2 size_t Variablen kopiert.
+// In den Meldungen gibt es Warnungen hierzu:
+// 'auto' doesn't deduce references. A possibly unintended copy is being made.
+// Hier sollte ein Mikro-benchmark durchgeführt werden oder eine Laufzeitmessung.
+// 
+// Weitere Links:
 // https://advent-of-code.xavd.id/writeups/2024/day/11/
-
 // https://www.reddit.com/r/adventofcode/comments/1hbm0al/2024_day_11_solutions/?rdt=46542
-
+// 
+// ===========================================================================
+ 
 // ===========================================================================
 // global data
 
@@ -241,24 +256,24 @@ public:
             if (pebble == 0) {
                 *pos = 1;
             }
-            //else if (hasEvenDigits(pebble)) {
+            else if (hasEvenDigits(pebble)) {
 
-            //    const auto [leftHalf, rightHalf] = splitPebble(pebble);
-            //    *pos = leftHalf;
-            //    m_pebbles.insert_after(pos, rightHalf);
-            //    m_size++;
-
-            //    ++pos; // skip new right half
-            //}
-            else if (auto result = hasEvenDigitsEx(pebble); result.first) {
-
-                const auto [leftHalf, rightHalf] = splitPebbleExEx(pebble, result.second);
+                const auto [leftHalf, rightHalf] = splitPebble(pebble);
                 *pos = leftHalf;
                 m_pebbles.insert_after(pos, rightHalf);
                 m_size++;
 
                 ++pos; // skip new right half
             }
+            //else if (auto result = hasEvenDigitsEx(pebble); result.first) {
+
+            //    const auto [leftHalf, rightHalf] = splitPebbleEx(pebble, result.second);  // <== splitPebbleEx or splitPebbleExEx
+            //    *pos = leftHalf;
+            //    m_pebbles.insert_after(pos, rightHalf);
+            //    m_size++;
+
+            //    ++pos; // skip new right half
+            //}
             else {
                 *pos *= 2024;
             }

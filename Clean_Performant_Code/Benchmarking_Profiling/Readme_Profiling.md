@@ -8,12 +8,12 @@
 
   * [Allgemeines](#link1)
   * [Visual Studio Diagnostic Tools](#link2)
+  * [Ein Beispiel: &bdquo;*Plutonian Pebbles*&rdquo;](#link3)
 
 ---
 
 #### Quellcode
 
-[*Advent_of_Code_2024_No_10.cpp*](Advent_of_Code_2024_No_10.cpp)<br />
 [*Advent_of_Code_2024_No_11.cpp*](Advent_of_Code_2024_No_11.cpp)<br />
 
 ---
@@ -27,7 +27,8 @@ Es macht keinen Sinn, offensichtlich ineffiziente Programme zu schreiben, wenn d
 
 Ich rate Ihnen jedoch dringend, sich in der Design- und Programmierphase nicht zu sehr auf die Leistung zu konzentrieren.
 
-Es empfiehlt sich, zunächst ein sauberes, gut strukturiertes Design und eine gut strukturierte Implementierung zu erstellen, dann einen Profiler zu verwenden und nur die Teile zu optimieren, die vom Profiler als Leistungsengpässe gekennzeichnet werden.
+Es empfiehlt sich, zunächst ein sauberes, gut strukturiertes Design und eine gut strukturierte Implementierung zu erstellen,
+dann einen Profiler zu verwenden und nur die Teile zu optimieren, die vom Profiler als Leistungsengpässe gekennzeichnet werden.
 
 Denken Sie an die in dem Buch
 &bdquo;[*Computer Architecture: A Quantitative Approach*](https://www.amazon.de/Computer-Architecture-Quantitative-Approach-Kaufmann/dp/0443154066)&rdquo;
@@ -83,6 +84,23 @@ wie das des rechten Teils (`rightPart`).
 *Abbildung* 3: Quelltext mit Hervorhebung der rechenintensivsten Zeilen.
 
 ---
+
+## Ein Beispiel: &bdquo;*Plutonian Pebbles*&rdquo; <a name="link3"></a>
+
+Wir benötigen ein geeignetes Beispiel, um Profiling Tools anzuwenden.
+Beim XXX handelt es sich ein ein jährliches Event im Dezember, bei dem es darum geht, kleinere bis größere Programmier-Aufgaben
+(&bdquo;*Puzzles*&rdquo;) zu lösen. Definitiv sind diese Aufgaben nicht einfach, stellen eine Herausforderung für jeden Entwickler dar
+und eignen sich sehr gut, um möglicherweise zu laufzeitintensive Lösungen mit einem Blick hinter die Kulissen zu tunen.
+
+Ich habe im Quellcode zu diesem Abschnitt eine Realisierung des so genannten &bdquo;*Plutonian Pebbles*&rdquo;&ndash;Puzzles beigefügt.
+Um es vorweg zu sagen: Diese Lösung ist weit davon entfernt, eine gute Lösung zu sein.
+Deshalb soll sie mit den *Visual Studio Profiling Tools* analysiert werden:
+
+  * Finden Sie den *Hot Path* der vorliegenden Lösung.
+  * Wie könnte ein Redesign des gefundenen Engpasses aussehen?
+
+---
+
 
 [Zurück](../Performance_Optimization/Readme_Performance_Optimization.md)
 
