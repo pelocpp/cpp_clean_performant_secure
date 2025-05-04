@@ -59,6 +59,7 @@
 
   * Quick C++ Benchmark
   * Visual Studio Diagnostic Tools
+  * Visual Studio Analysis Tools (CPU Usage, Memory Usage und weitere)
 
  
 ## Funktionale Programmierung: Die Bibliothek `std::ranges`

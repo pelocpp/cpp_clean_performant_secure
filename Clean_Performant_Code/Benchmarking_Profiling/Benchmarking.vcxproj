@@ -24,6 +24,7 @@
     <ProjectGuid>{f1a9ab12-da60-49ea-b326-89b7aa640d82}</ProjectGuid>
     <RootNamespace>Benchmarking</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Benchmarking_Profiling</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -129,6 +130,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Advent_of_Code_2024_No_10.cpp" />
+    <ClCompile Include="Advent_of_Code_2024_No_11.cpp" />
     <ClCompile Include="Benchmarking.cpp" />
     <ClCompile Include="Program.cpp" />
   </ItemGroup>
@@ -139,6 +142,12 @@
     <Image Include="Quick_Cpp_Benchmark_StdVector.png" />
     <Image Include="Quick_Cpp_Benchmark_String_Comparison_No_SSO.png" />
     <Image Include="Quick_Cpp_Benchmark_String_Comparison_SSO.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Data\Puzzle10_RealData.txt" />
+    <Text Include="Data\Puzzle10_TestData.txt" />
+    <Text Include="Data\Puzzle11_RealData.txt" />
+    <Text Include="Data\Puzzle11_TestData.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

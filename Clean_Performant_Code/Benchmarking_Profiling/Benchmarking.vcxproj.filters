@@ -13,12 +13,21 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{4602b2d0-67cc-4070-a329-41f2c1943f4f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Benchmarking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Program.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Advent_of_Code_2024_No_10.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Advent_of_Code_2024_No_11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -37,5 +46,19 @@
     <Image Include="Quick_Cpp_Benchmark_StdVector.png">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Data\Puzzle10_RealData.txt">
+      <Filter>Data</Filter>
+    </Text>
+    <Text Include="Data\Puzzle10_TestData.txt">
+      <Filter>Data</Filter>
+    </Text>
+    <Text Include="Data\Puzzle11_RealData.txt">
+      <Filter>Data</Filter>
+    </Text>
+    <Text Include="Data\Puzzle11_TestData.txt">
+      <Filter>Data</Filter>
+    </Text>
   </ItemGroup>
 </Project>

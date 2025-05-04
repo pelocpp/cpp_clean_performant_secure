@@ -1,5 +1,5 @@
 // ===========================================================================
-// Program.cpp // Benchmarking
+// Program.cpp // Benchmarking // Profiling
 // ===========================================================================
 
 extern void performance_performing_benchmarks();
