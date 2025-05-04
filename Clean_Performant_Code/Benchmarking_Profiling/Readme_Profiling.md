@@ -30,7 +30,7 @@ Ich rate Ihnen jedoch dringend, sich in der Design- und Programmierphase nicht z
 Es empfiehlt sich, zunächst ein sauberes, gut strukturiertes Design und eine gut strukturierte Implementierung zu erstellen, dann einen Profiler zu verwenden und nur die Teile zu optimieren, die vom Profiler als Leistungsengpässe gekennzeichnet werden.
 
 Denken Sie an die in dem Buch
-&bdquo;[*Computer Architecture: A Quantitative Approach*](https://www.amazon.de/Computer-Architecture-Quantitative-Approach-Kaufmann)&rdquo;
+&bdquo;[*Computer Architecture: A Quantitative Approach*](https://www.amazon.de/Computer-Architecture-Quantitative-Approach-Kaufmann/dp/0443154066)&rdquo;
 von John L. Hennessy, David A. Patterson, Christos Kozyrakis
 eingeführte &bdquo;90/10&rdquo;-Regel, die besagt, dass 90 Prozent der Laufzeit der meisten Programme
 auf nur 10 Prozent des Codes entfallen.
@@ -60,13 +60,13 @@ Wir geben in den folgenden drei Abbildungen einen Überblick über deren Funktiona
 
 In *Abbildung* 1 finden Sie eine Darstellung des *Hot Path*:
 
-<img src="Profiling_01.png" width="500">
+<img src="Profiling_01.png" width="600">
 
 *Abbildung* 1: Darstellung des *Hot Path*.
 
 
-Diese Drilldown-Ansicht zeigt oben den Hot Path,
-in einem weiteren Fenster (*Abbildung* 2) den eigentlichen Code der Memberfunktion:
+Die Drilldown-Ansicht in *Abbildung* 2 (*Call-Tree*) zeigt die Ausführungszeiten der einzelnen Funktions-/Methodenaufrufe
+der kritischsten Funktion/Methode des *Hot Path*.
 
 <img src="Profiling_02.png" width="800">
 
