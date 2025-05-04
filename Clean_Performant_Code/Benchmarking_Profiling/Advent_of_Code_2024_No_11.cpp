@@ -78,23 +78,111 @@ public:
 
     static bool hasEvenDigits(size_t pebble)
     {
-        int numDigits{};
+        size_t numDigits{};
         while (pebble != 0) {
             pebble /= 10;
             ++numDigits;
         }
+
         return (numDigits % 2) == 0;
+    }
+
+    // redesigned version of hasEvenDigits
+    static std::pair<bool, size_t> hasEvenDigitsEx(size_t pebble)
+    {
+        size_t numDigits{};
+        while (pebble != 0) {
+            pebble /= 10;
+            ++numDigits;
+        }
+        
+        return { (numDigits % 2) == 0 , numDigits };
+    }
+
+    // First redesigned version of splitPebble
+    static std::pair<size_t, size_t> splitPebbleEx(size_t pebble, size_t numDigits)
+    {
+        size_t left{};
+        size_t right{};
+
+        switch (numDigits)
+        {
+        case 2:
+            left = pebble / 10;
+            right = pebble % 10;
+            break;
+
+        case 4:
+            left = pebble / 100;
+            right = pebble % 100;
+            break;
+
+        case 6:
+            left = pebble / 1000;
+            right = pebble % 1000;
+            break;
+
+        case 8:
+            left = pebble / 10000;
+            right = pebble % 10000;
+            break;
+
+        case 10:
+            left = pebble / 100000;
+            right = pebble % 100000;
+            break;
+
+        case 12:
+            left = pebble / 1000000;
+            right = pebble % 1000000;
+            break;
+
+        case 14:
+            left = pebble / 10000000;
+            right = pebble % 10000000;
+            break;
+
+        case 16:
+            left = pebble / 100000000;
+            right = pebble % 100000000;
+            break;
+
+        case 18:
+            left = pebble / 1000000000;
+            right = pebble % 1000000000;
+            break;
+        }
+
+        return { left , right };
+    }
+
+    // Second redesigned version of splitPebble
+    static std::pair<size_t, size_t> splitPebbleExEx(size_t pebble, size_t numDigits)
+    {
+        static size_t pow10[10]
+        {
+            1, 10, 100, 1'000, 10'000, 100'000, 1'000'000, 10'000'000, 100'000'000, 1'000'000'000
+        };
+
+        size_t denominator{ pow10[numDigits / 2 - 1] };
+
+        size_t left{ pebble / denominator };
+        size_t right{ pebble % denominator };
+
+        return { left , right };
     }
 };
 
-class BruteForcePlutonianPebbles : public PlutonianPebbles
+// ===========================================================================
+// brute force approach: using linked list
+class PlutonianPebblesPartI : public PlutonianPebbles
 {
 protected:
     std::forward_list<size_t> m_pebbles{};
     size_t                    m_size;
 
 public:
-    BruteForcePlutonianPebbles() : m_pebbles{}, m_size{} {}
+    PlutonianPebblesPartI() : m_pebbles{}, m_size{} {}
 
     void readPuzzleFromFile(const std::string_view filename) override
     {
@@ -153,9 +241,18 @@ public:
             if (pebble == 0) {
                 *pos = 1;
             }
-            else if (hasEvenDigits(pebble)) {
+            //else if (hasEvenDigits(pebble)) {
 
-                const auto [leftHalf, rightHalf] = splitPebble(pebble);
+            //    const auto [leftHalf, rightHalf] = splitPebble(pebble);
+            //    *pos = leftHalf;
+            //    m_pebbles.insert_after(pos, rightHalf);
+            //    m_size++;
+
+            //    ++pos; // skip new right half
+            //}
+            else if (auto result = hasEvenDigitsEx(pebble); result.first) {
+
+                const auto [leftHalf, rightHalf] = splitPebbleExEx(pebble, result.second);
                 *pos = leftHalf;
                 m_pebbles.insert_after(pos, rightHalf);
                 m_size++;
@@ -176,14 +273,17 @@ public:
     }
 };
 
-class AdvancedPlutonianPebbles : public PlutonianPebbles
+// ===========================================================================
+// part two
+
+class PlutonianPebblesPartII : public PlutonianPebbles
 {
 private:
     std::unordered_map<size_t, size_t> m_countedPebbles;
     size_t                             m_size;
 
 public:
-    AdvancedPlutonianPebbles() : m_countedPebbles{}, m_size{} {}
+    PlutonianPebblesPartII() : m_countedPebbles{}, m_size{} {}
 
     void readPuzzleFromFile(const std::string_view filename) override {
 
@@ -276,7 +376,7 @@ public:
 static void puzzle_11_part_one()
 {
     ScopedTimer watch{};
-    BruteForcePlutonianPebbles pebbles;
+    PlutonianPebblesPartI pebbles;
     pebbles.printPebbles();
     pebbles.readPuzzleFromFile(g_filenameRealData);
     std::println("Size: {}", pebbles.size());
@@ -290,7 +390,7 @@ static void puzzle_11_part_one()
 static void puzzle_11_part_two()
 {
     ScopedTimer watch{};
-    AdvancedPlutonianPebbles pebbles;
+    PlutonianPebblesPartII pebbles;
     pebbles.readPuzzleFromFile(g_filenameRealData);
     pebbles.printPebbles();
     std::println("Size: {}", pebbles.size());
