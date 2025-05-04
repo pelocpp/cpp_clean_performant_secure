@@ -141,6 +141,7 @@
     <None Include="Readme_Benchmarking.md" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="AdventOfCode.png" />
     <Image Include="Profiling_01.png" />
     <Image Include="Profiling_02.png" />
     <Image Include="Profiling_03.png" />

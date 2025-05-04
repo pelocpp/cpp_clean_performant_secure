@@ -88,19 +88,27 @@ wie das des rechten Teils (`rightPart`).
 ## Ein Beispiel: &bdquo;*Plutonian Pebbles*&rdquo; <a name="link3"></a>
 
 Wir benötigen ein geeignetes Beispiel, um Profiling Tools anzuwenden.
-Beim XXX handelt es sich ein ein jährliches Event im Dezember, bei dem es darum geht, kleinere bis größere Programmier-Aufgaben
+Beim &bdquo;[Advent of Code](https://adventofcode.com/2024)&rdquo; handelt es sich ein ein jährliches Event im Dezember, bei dem es darum geht, kleinere bis größere Programmier-Aufgaben
 (&bdquo;*Puzzles*&rdquo;) zu lösen. Definitiv sind diese Aufgaben nicht einfach, stellen eine Herausforderung für jeden Entwickler dar
 und eignen sich sehr gut, um möglicherweise zu laufzeitintensive Lösungen mit einem Blick hinter die Kulissen zu tunen.
 
-Ich habe im Quellcode zu diesem Abschnitt eine Realisierung des so genannten &bdquo;*Plutonian Pebbles*&rdquo;&ndash;Puzzles beigefügt.
-Um es vorweg zu sagen: Diese Lösung ist weit davon entfernt, eine gute Lösung zu sein.
+<img src="AdventOfCode.png" width="600">
+
+*Abbildung* 4: Startseite des &bdquo;[Advent of Code 2024](https://adventofcode.com/2024)&rdquo;.
+
+Genaue Beobachter und Kenner des Wettbewerbs können in *Abbildung* 4 erkennen,
+dass ich bis zur 12. Aufgabe mithalten konnte. Okay, Fairness muss sein:
+Es hat mir an der Zeit gemangelt, um mich den restlichen Puzzles zuzuwenden.
+Vielleicht sieht es in diesem Jahr besser aus :)
+
+Im Quellcode zu diesem Abschnitt habe ich eine &bdquo;*quick-and-dirty*&rdquo; Realisierung des so genannten &bdquo;*Plutonian Pebbles*&rdquo;&ndash;Puzzles beigefügt.
+Um es vorweg zu sagen: Diese Lösung ist weit davon entfernt, gut zu sein.
 Deshalb soll sie mit den *Visual Studio Profiling Tools* analysiert werden:
 
-  * Finden Sie den *Hot Path* der vorliegenden Lösung.
+  * Finden Sie den *Hot Path* der vorliegenden Lösung?
   * Wie könnte ein Redesign des gefundenen Engpasses aussehen?
 
 ---
-
 
 [Zurück](../Performance_Optimization/Readme_Performance_Optimization.md)
 
