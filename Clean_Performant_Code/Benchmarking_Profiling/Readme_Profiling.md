@@ -89,7 +89,7 @@ wie das des rechten Teils (`rightPart`).
 
 Wir benötigen ein geeignetes Beispiel, um Profiling Tools anzuwenden.
 
-Beim &bdquo;[Advent of Code](https://adventofcode.com/2024)&rdquo; handelt es sich ein ein jährliches Event im Dezember, bei dem es darum geht, kleinere bis größere Programmier-Aufgaben
+Beim &bdquo;[Advent of Code](https://adventofcode.com/2024)&rdquo; handelt es sich um ein jährliches Event im Dezember, bei dem es darum geht, kleinere bis größere Programmier-Aufgaben
 (&bdquo;*Puzzles*&rdquo;) zu lösen. Definitiv sind diese Aufgaben nicht einfach, stellen eine Herausforderung für jeden Entwickler dar
 und eignen sich sehr gut, um möglicherweise zu laufzeitintensive Lösungen mit einem Blick hinter die Kulissen zu tunen.
 
