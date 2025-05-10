@@ -9,35 +9,36 @@
   * [Zum Ersten: Klasse (`class`) oder Struktur (`struct`)?](#link1)
   * [Zum Zweiten: Klasse (`class`) oder Struktur (`struct`)?](#link2)
   * [Zum Dritten: Klasse (`class`) oder Struktur (`struct`)?](#link3)
-  * [Interfaces (Schnittstellen): Wozu?](#link4)
-  * [Minimieren Sie die Sichtbarkeit von Mitgliedern einer Klasse](#link5)
-  * [Lebenszyklus eines Objekts: Spezielle Member-Funktionen](#link6)
-  * [Automatische Erzeugung der speziellen Member-Funktionen: Wann?](#link7)
-  * [Automatische Erzeugung der speziellen Member-Funktionen: Wie?](#link8)
-  * [*Explicitly defaulted* Standardkonstruktor](#link9)
-  * [*Explicitly deleted* Standardkonstruktor](#link10)
-  * [Automatische Erzeugung spezieller Member-Funktionen: *Rule-of-Zero*](#link11)
-  * [Initialisierung von Strukturen](#link12)
-  * [Initialisierung von Objekten](#link13)
-  * [Das Copy-and-Swap-Idiom](#link14)
-  * [Verschiebeoperationen](#link15)
-  * [Schreiben Sie kleine, fokussierte Funktionen (Methoden)](#link16)
-  * [Verwenden Sie `const` großzügig](#link17)
-  * [Exception Safety](#link18)
-  * [Die No-Throw-Garantie (*No-Throw Guarantee*)](#link19)
-  * [Das `noexcept` Schlüsselwort](#link20)
-  * [Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen](#link21)
-  * [Rückgabetyp einer Methode](#link22)
-  * [Bevorzuge Komposition der Vererbung gegenüber](#link23)
-  * [Implizite Konvertierungen vermeiden](#link24)
-  * [Schlüsselwort `auto` verwenden oder nicht?](#link25)
-  * [Schlüsselwort `auto`: *Left-to-Right* Initialisierungsstil](#link26)
-  * [Konstante Referenzen (`const auto&`)](#link27)
-  * [Veränderbare Referenzen (`auto&`)](#link28)
-  * [*Forwarding* Referenzen (`auto&&`)](#link29)
-  * [`const` Propagation für Zeiger](#link30)
-  * [Strong Typing](#link31)
-  * [`if`- und *Range-based* `for`-Anweisungen mit Initialisierer](#link32)
+  * [Organisation von Include-Files](#link4)
+  * [Interfaces (Schnittstellen): Wozu?](#link5)
+  * [Minimieren Sie die Sichtbarkeit von Mitgliedern einer Klasse](#link6)
+  * [Lebenszyklus eines Objekts: Spezielle Member-Funktionen](#link7)
+  * [Automatische Erzeugung der speziellen Member-Funktionen: Wann?](#link8)
+  * [Automatische Erzeugung der speziellen Member-Funktionen: Wie?](#link9)
+  * [*Explicitly defaulted* Standardkonstruktor](#link10)
+  * [*Explicitly deleted* Standardkonstruktor](#link11)
+  * [Automatische Erzeugung spezieller Member-Funktionen: *Rule-of-Zero*](#link12)
+  * [Initialisierung von Strukturen](#link13)
+  * [Initialisierung von Objekten](#link14)
+  * [Das Copy-and-Swap-Idiom](#link15)
+  * [Verschiebeoperationen](#link16)
+  * [Schreiben Sie kleine, fokussierte Funktionen (Methoden)](#link17)
+  * [Verwenden Sie `const` großzügig](#link18)
+  * [Exception Safety](#link19)
+  * [Die No-Throw-Garantie (*No-Throw Guarantee*)](#link20)
+  * [Das `noexcept` Schlüsselwort](#link21)
+  * [Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen](#link22)
+  * [Rückgabetyp einer Methode](#link23)
+  * [Bevorzuge Komposition der Vererbung gegenüber](#link24)
+  * [Implizite Konvertierungen vermeiden](#link25)
+  * [Schlüsselwort `auto` verwenden oder nicht?](#link26)
+  * [Schlüsselwort `auto`: *Left-to-Right* Initialisierungsstil](#link27)
+  * [Konstante Referenzen (`const auto&`)](#link28)
+  * [Veränderbare Referenzen (`auto&`)](#link29)
+  * [*Forwarding* Referenzen (`auto&&`)](#link30)
+  * [`const` Propagation für Zeiger](#link31)
+  * [Strong Typing](#link32)
+  * [`if`- und *Range-based* `for`-Anweisungen mit Initialisierer](#link33)
 
 ---
 
@@ -130,10 +131,25 @@ das eine Instanzvariable `m_position` hat, die sich bestimmten Grenzwerten
 Wenn ein (oder mehrere Elemente) mit `private` zu kennzeichnen sind,
 sollte man `class` verwenden.
 
+---
+
+### Organisation von Include-Files <a name="link4"></a>
+
+Die goldene Regel für #include-Dateien lautet:
+
+Wenn ein Modul `main.c` ein Untermodul `submodule.c` verwendet,
+sollte alles, was zum Kompilieren von `submodule.c` benötigt wird,
+in `submodule.h` definiert sein.
+
+Die empfohlene Regel lautet:
+
+  1. Lokale #include-Dateien
+  2. Drittanbieter #include-Dateien
+  3. STL #include-Dateien
 
 ---
 
-### Interfaces (Schnittstellen): Wozu? <a name="link4"></a>
+### Interfaces (Schnittstellen): Wozu? <a name="link5"></a>
 
 *Interfaces* stellen nicht nur eine Beschreibung von Methoden dar, sie bewirken damit
 auch eine *Hervorhebung*:
@@ -153,13 +169,13 @@ auch eine *Hervorhebung*:
 
 ---
 
-### Minimieren Sie die Sichtbarkeit von Mitgliedern einer Klasse <a name="link5"></a>
+### Minimieren Sie die Sichtbarkeit von Mitgliedern einer Klasse <a name="link6"></a>
 
 Ohne Worte :)
 
 ---
 
-### Lebenszyklus eines Objekts: Spezielle Member-Funktionen <a name="link6"></a>
+### Lebenszyklus eines Objekts: Spezielle Member-Funktionen <a name="link7"></a>
 
 C++ definiert für den Lebenszyklus eines Objekts eine Reihe von Methoden/Operatoren,
 die eine besondere Rolle einnehmen.
@@ -179,7 +195,7 @@ Die Schnittstellen dieser Operationen sehen so aus:
 
 ---
 
-### Automatische Erzeugung der speziellen Member-Funktionen: Wann? <a name="link7"></a>
+### Automatische Erzeugung der speziellen Member-Funktionen: Wann? <a name="link8"></a>
 
 In manchen Situationen nimmt der Compiler einem Entwickler die Arbeit ab und 
 erzeugt für eine oder mehrere der speziellen Member-Funktionen eine Realisierung.
@@ -212,7 +228,7 @@ Was erkennen wir an diesen Aussagen?
 
 ---
 
-### Automatische Erzeugung der speziellen Member-Funktionen: Wie? <a name="link8"></a>
+### Automatische Erzeugung der speziellen Member-Funktionen: Wie? <a name="link9"></a>
 
 Natürlich wäre es interessant zu wissen, wie der Quellcode von automatisch erzeugten Member-Funktionen aussieht.
 Das ist keine triviale Frage, dennoch kann man ein paar Richtlinien erkennen:
@@ -238,7 +254,7 @@ Das ist keine triviale Frage, dennoch kann man ein paar Richtlinien erkennen:
 
 ---
 
-### *Explicitly defaulted* Standardkonstruktor <a name="link9"></a>
+### *Explicitly defaulted* Standardkonstruktor <a name="link10"></a>
 
 Um das manuelle Schreiben leerer Standardkonstruktoren zu vermeiden,
 unterstützt C++ das Konzept von *explicitly defaulted* Standardkonstruktoren (*Explicitly defaulted Default Constructors*).
@@ -272,7 +288,7 @@ Diese Aussage gilt für alle speziellen Member-Funktionen.
 
 ---
 
-### *Explicitly deleted* Standardkonstruktor <a name="link10"></a>
+### *Explicitly deleted* Standardkonstruktor <a name="link11"></a>
 
 Auch das Gegenteil von *Explicitly defaulted Default Constructors* ist möglich
 und wird als *Explicitly deleted Default Constructor* bezeichnet.
@@ -293,7 +309,7 @@ public:
 
 ---
 
-### Automatische Erzeugung spezieller Member-Funktionen: *Rule-of-Zero* <a name="link11"></a>
+### Automatische Erzeugung spezieller Member-Funktionen: *Rule-of-Zero* <a name="link12"></a>
 
 Was sieht die einfachste Strategie aus:
 
@@ -320,7 +336,7 @@ Damit wird Ihr Programmcode performant, einfacher und wartbarer &ndash; und es s
 
 ---
 
-### Initialisierung von Strukturen <a name="link12"></a>
+### Initialisierung von Strukturen <a name="link13"></a>
 
 Wir starten eine Reihe von Überlegungen zu folgender Struktur `Point2D`:
 
@@ -516,7 +532,7 @@ Kompakt formuliert lauten diese:
 
 ---
 
-### Initialisierung von Objekten <a name="link13"></a>
+### Initialisierung von Objekten <a name="link14"></a>
 
 Wie bei Strukturen betrachten wir nun eine Reihe von Entwicklungsschritten
 in der Entwicklung einer Klasse `SimpleString`.
@@ -721,7 +737,7 @@ Und damit sind wir beim nächsten Thema angekommen: Das *Copy-and-Swap-Idiom*.
 
 ---
 
-### Das *Copy-and-Swap-Idiom* <a name="link14"></a>
+### Das *Copy-and-Swap-Idiom* <a name="link15"></a>
 
 Das *Copy-and-Swap-Idiom* wurde eingeführt, um zwei Ziele zu erreichen:
 
@@ -782,7 +798,7 @@ Zuweisungsoperators betrachten:
 
 ---
 
-### Verschiebeoperationen <a name="link15"></a>
+### Verschiebeoperationen <a name="link16"></a>
 
 Wir haben bislang in der Klasse `SimpleString` die
 traditionellen Regel der drei speziellen Methoden
@@ -839,7 +855,7 @@ Nach der Ausführung dieser Anweisung hat
 
 ---
 
-### Schreiben Sie kleine, fokussierte Funktionen (Methoden) <a name="link16"></a>
+### Schreiben Sie kleine, fokussierte Funktionen (Methoden) <a name="link17"></a>
 
 Funktionen (Methoden) sind die Bausteine der *Clean Code* Programmierung.
 Eine gute Funktion sollte klein und fokussiert sein und genau eine Sache tun.
@@ -887,7 +903,7 @@ gibt ein boolesches Ergebnis zurück und hat keine Nebenwirkungen. Sie ist leich
 
 ---
 
-### Verwenden Sie `const` großzügig <a name="link17"></a>
+### Verwenden Sie `const` großzügig <a name="link18"></a>
 
 `const` ist ein leistungsstarkes Sprachfeature in C++, um Absichten auszudrücken und potenzielle Fehler zur Kompilierzeit abzufangen:
 
@@ -941,7 +957,7 @@ potenzielle Fehler zu erkennen, wie z. B. versehentliche Änderungen an Werten, 
 ---
 
 
-### Ausnahmesicherheit (*Exception Safety*) <a name="link18"></a>
+### Ausnahmesicherheit (*Exception Safety*) <a name="link19"></a>
 
 Die Idee hinter der Thematik *Exception Safety* besteht darin, dass Funktionen bzw. eine Klasse und ihre Methoden
 ihren Clients eine Art Versprechen bzw. eine Garantie hinsichtlich möglicherweise ausgelöster oder nicht ausgelöster Ausnahmen geben.
@@ -989,7 +1005,7 @@ Die vierte und letzte Ebene der Ausnahmesicherheit behandeln wir im nächsten Ab
 
 ---
 
-### Die No-Throw-Garantie (*No-Throw Guarantee*) <a name="link19"></a>
+### Die No-Throw-Garantie (*No-Throw Guarantee*) <a name="link20"></a>
 
 
 Diese Ebene der Ausnahmesicherheit ist die höchste Ausnahmesicherheitsstufe:
@@ -1038,7 +1054,7 @@ Eine `swap`-Funktion muss unter allen Umständen die No-Throw-Garantie gewährle
 
 ---
 
-### Das `noexcept` Schlüsselwort <a name="link20"></a>
+### Das `noexcept` Schlüsselwort <a name="link21"></a>
 
 Der Spezifizierer `noexcept` in der Signatur einer Funktion gibt an,
 dass diese Funktion **keine** Ausnahme auslösen darf.
@@ -1077,7 +1093,7 @@ Destruktoren einer Klasse sind implizit als `noexcept` definiert.
 
 ---
 
-### Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen <a name="link21"></a>
+### Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen <a name="link22"></a>
 
 Ausnahmen (*Exceptions*) sind die bevorzugte Methode zum Melden und Behandeln von Fehlern in Modern C++.
 Sie haben mehrere Vorteile gegenüber herkömmlichen Fehlercodes:
@@ -1129,7 +1145,7 @@ und der Fehler kann nicht ignoriert werden.
 
 ---
 
-### Rückgabetyp einer Methode <a name="link22"></a>
+### Rückgabetyp einer Methode <a name="link23"></a>
 
 Wir betrachten folgendes Beispiel:
 
@@ -1177,7 +1193,7 @@ Es gibt auch eine zweite Möglichkeit:
 
 ---
 
-### Bevorzuge Komposition der Vererbung gegenüber <a name="link23"></a>
+### Bevorzuge Komposition der Vererbung gegenüber <a name="link24"></a>
 
   * Vererbung ist ein leistungsstarkes Feature der objektorientierten Programmierung,
   wird aber oft überstrapaziert.
@@ -1242,7 +1258,7 @@ Sie könnten eine *Transform*-Eigenschaft aber auch als Attribut den Klassen hin
 
 ---
 
-### Implizite Konvertierungen vermeiden <a name="link24"></a>
+### Implizite Konvertierungen vermeiden <a name="link25"></a>
 
 In der Sprache C++ gibt es des Feature so genannter &bdquo;impliziter Typkonvertierungen&rdquo;.
 
@@ -1303,7 +1319,7 @@ aber dieses Mal eben nicht versteckt, sondern sichtbar für den Entwickler!
 
 ---
 
-### Schlüsselwort `auto` verwenden oder nicht? <a name="link25"></a>
+### Schlüsselwort `auto` verwenden oder nicht? <a name="link26"></a>
 
 Empfielt sich der Einsatz des Schlüsselworts `auto` oder nicht?
 
@@ -1429,7 +1445,7 @@ Es gibt  hier nur eine Warnung zu Zeile 16:<br />
 
 ---
 
-### Schlüsselwort `auto`: *Left-to-Right* Initialisierungsstil <a name="link26"></a>
+### Schlüsselwort `auto`: *Left-to-Right* Initialisierungsstil <a name="link27"></a>
 
 Verwenden Sie das Schlüsselwort `auto`, um damit einen einheitlichen, besser lesbaren Initialisierungsstil
 für Variablen zu haben:
@@ -1531,7 +1547,7 @@ In der letzten Deklaration ist `x` ein Objekts des Typs `X`.
 
 ---
 
-### Konstante Referenzen (`const auto&`) <a name="link27"></a>
+### Konstante Referenzen (`const auto&`) <a name="link28"></a>
 
 Eine `const auto&`-Referenz kann an alles gebunden werden.
 
@@ -1609,7 +1625,7 @@ void test()
 
 ---
 
-### Veränderbare Referenzen (`auto&`) <a name="link28"></a>
+### Veränderbare Referenzen (`auto&`) <a name="link29"></a>
 
 Im Gegensatz zu einer konstanten Referenz kann eine veränderbare Referenz (`auto&`) nicht an eine temporäre Variable / ein temporäres Objekt gebunden werden.
 
@@ -1617,7 +1633,7 @@ Wir verwenden `auto&` immer dann, wenn wir das referenzierte Objekt ändern möc
 
 ---
 
-### *Forwarding* Referenzen (`auto&&`) <a name="link29"></a>
+### *Forwarding* Referenzen (`auto&&`) <a name="link30"></a>
 
 `auto&&` wird als *Forwarding* Referenz (auch universelle Referenz) bezeichnet.
 
@@ -1642,7 +1658,7 @@ man möchte sie lediglich an Code weitergeben, der die Variable tatsächlich ver
 
 ---
 
-### `const` Propagation für Zeiger <a name="link30"></a>
+### `const` Propagation für Zeiger <a name="link31"></a>
 
 Mit dem Schlüsselwort `const` können wir dem Compiler mitteilen,
 welche Objekte unveränderlich sind.
@@ -1728,7 +1744,7 @@ für Zeiger.
 
 ---
 
-### Strong Typing <a name="link31"></a>
+### Strong Typing <a name="link32"></a>
 
 Was versteht man unter dem Begriff &bdquo;*Strong Typing*&rdquo;?
 
@@ -1833,7 +1849,7 @@ Hantierung aller Regeln, die mit einer bestimmten Instanzvariablen verbunden sin
 
 ---
 
-###  `if`- und *Range-based* `for`-Anweisungen mit Initialisierer <a name="link32"></a>
+###  `if`- und *Range-based* `for`-Anweisungen mit Initialisierer <a name="link33"></a>
 
 Ab C++ 17 kann eine `if`-Anweisung einen *Initialisierer* enthalten,
 der eine benannte Variable deklariert und initialisiert.
