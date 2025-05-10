@@ -18,9 +18,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Benchmarking.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Program.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -82,6 +79,15 @@
       <Filter>Source Files</Filter>
     </Text>
     <Text Include="Benchmarking_StdArray_Constant_Initialization.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="Benchmarking_StdVector_Reserve.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="Benchmarking_StdStringView_vs_StdString.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="Benchmarking_GettingStarted.txt">
       <Filter>Source Files</Filter>
     </Text>
   </ItemGroup>

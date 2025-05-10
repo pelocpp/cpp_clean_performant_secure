@@ -133,7 +133,6 @@
     <ClCompile Include="..\LoggerUtility\Logger.cpp" />
     <ClCompile Include="Advent_of_Code_2024_No_10.cpp" />
     <ClCompile Include="Advent_of_Code_2024_No_11.cpp" />
-    <ClCompile Include="Benchmarking.cpp" />
     <ClCompile Include="Program.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -150,8 +149,11 @@
     <Image Include="Quick_Cpp_Benchmark_String_Comparison_SSO.png" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Benchmarking_GettingStarted.txt" />
     <Text Include="Benchmarking_StdArray_Constant_Initialization.txt" />
+    <Text Include="Benchmarking_StdStringView_vs_StdString.txt" />
     <Text Include="Benchmarking_StdVector_Constant_Initialization.txt" />
+    <Text Include="Benchmarking_StdVector_Reserve.txt" />
     <Text Include="Data\Puzzle10_RealData.txt" />
     <Text Include="Data\Puzzle10_TestData.txt" />
     <Text Include="Data\Puzzle11_RealData.txt" />

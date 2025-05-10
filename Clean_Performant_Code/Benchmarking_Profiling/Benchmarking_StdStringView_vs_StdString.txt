@@ -1,0 +1,52 @@
+// ===========================================================================
+// Benchmarking_StdStringView_vs_StdString.txt
+// Comparison of std::string and std::string_view
+// ===========================================================================
+
+// Note: take care of SSO
+auto StringArgument1 = "1234567890";
+auto StringArgument2 = "The quick brown fox jumps over the lazy dog";
+auto StringArgument = StringArgument1;
+
+// prefix version using std::string
+static std::string prefix(const std::string& str) {
+    if (str.length() >= 5) {
+        // extract a part of string
+        auto substr = str.substr(1, 4);  // substr is a std::string
+        return substr;
+    }
+    return {};
+}
+
+// prefix version using std::string_view
+static std::string_view prefix(std::string_view str) {
+    if (str.length() >= 5) {
+        // extract a part of string
+        auto substr = str.substr(1, 4);  // substr is a std::string_view
+        return substr;
+    }
+    return {};
+}
+
+static void StdStringPrefix(benchmark::State& state) {
+    for (auto _ : state) {
+        std::string s{ StringArgument };
+        auto result{ prefix(s) };
+        benchmark::DoNotOptimize(result);
+    }
+}
+
+static void StdStringViewPrefix(benchmark::State& state) {
+    for (auto _ : state) {
+        std::string_view s{ StringArgument };
+        auto result{ prefix(s) };
+        benchmark::DoNotOptimize(result);
+    }
+}
+
+BENCHMARK(StdStringPrefix); 
+BENCHMARK(StdStringViewPrefix);
+
+// ===========================================================================
+// End-of-File
+// ===========================================================================
