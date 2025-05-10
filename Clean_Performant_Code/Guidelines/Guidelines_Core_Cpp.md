@@ -37,6 +37,7 @@
   * [*Forwarding* Referenzen (`auto&&`)](#link29)
   * [`const` Propagation für Zeiger](#link30)
   * [Strong Typing](#link31)
+  * [`if`- und *Range-based* `for`-Anweisungen mit Initialisierer](#link32)
 
 ---
 
@@ -1729,7 +1730,6 @@ für Zeiger.
 
 ### Strong Typing <a name="link31"></a>
 
-
 Was versteht man unter dem Begriff &bdquo;*Strong Typing*&rdquo;?
 
 Ein *Strong Type* ist ein Typ, der anstelle eines anderen Typs verwendet wird
@@ -1832,6 +1832,48 @@ Hantierung aller Regeln, die mit einer bestimmten Instanzvariablen verbunden sin
 
 
 ---
+
+###  `if`- und *Range-based* `for`-Anweisungen mit Initialisierer <a name="link32"></a>
+
+Ab C++ 17 kann eine `if`-Anweisung einen *Initialisierer* enthalten,
+der eine benannte Variable deklariert und initialisiert.
+
+Diese Form der `if`-Anweisung bietet sich an,
+wenn die Variable ausschließlich innerhalb des Blocks der `if`-Anweisung benötigt wird:.
+
+1. *Beispiel*:
+
+```cpp
+01: void test()
+02: {
+03:     std::map<int, std::string> m;
+04:     if (auto it = m.find(10); it != m.end()) {
+05:         auto size = it->second.size();
+06:     }
+07: }
+```
+
+2. *Beispiel*:
+
+```cpp
+01: void test()
+02: {
+03:     std::vector<int> numbers = { 1, 2, 3, 4, 5 };
+04:     for (int i{}; auto n : numbers) {
+05: 
+06:         std::println("{:02}: {}", i, n);
+07:         ++i;
+08:     }
+09: }
+```
+
+
+
+---
+
+
+
+
 
 # Literatur
 
