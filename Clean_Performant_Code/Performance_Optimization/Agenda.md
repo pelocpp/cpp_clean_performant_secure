@@ -28,7 +28,7 @@
   * `constexpr` &ndash; *Compile-Time*&ndash;Programmierung
   * IIFE &ndash; *Immediately Invoked Functional Expression*
   * *Copy*/*Move* Elision
-  * Statischer versus dynamischer Polymorphismus
+  * Die Technik der `emplace`-Methoden
 
 
 ## Fortgeschrittene Code-Optimierungstechniken
@@ -37,6 +37,8 @@
   * Verschieben ist besser als Kopieren (`std::move`)
   * Perfektes Weiterleiten (*Perfect Forwarding*, `std::forward`)
   * CRTP &ndash; Curiously Recurring Template Pattern
+  * Statischer versus dynamischer Polymorphismus
+  * `std::variant`, `std::visit` und statische Methodenaufrufe
 
 
 ## Optimierung von Algorithmen und Datenstrukturen
@@ -45,6 +47,8 @@
   * Verwenden Sie Container und Algorithmen der C++&ndash;Bibliothek STL
   * Die richtige Auswahl des Containers
   * Die richtige Auswahl eines Algorithmus
+  * STL-Algorithmen und generische Lambda-Objekte
+  * STL-Algorithmen versus klassische Wiederholunganweisungen
 
 
 ## Multithreading / Concurrency
