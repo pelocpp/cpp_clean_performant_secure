@@ -78,5 +78,11 @@
     <Text Include="Data\Puzzle11_TestData.txt">
       <Filter>Data</Filter>
     </Text>
+    <Text Include="Benchmarking_StdVector_Constant_Initialization.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="Benchmarking_StdArray_Constant_Initialization.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -150,6 +150,8 @@
     <Image Include="Quick_Cpp_Benchmark_String_Comparison_SSO.png" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Benchmarking_StdArray_Constant_Initialization.txt" />
+    <Text Include="Benchmarking_StdVector_Constant_Initialization.txt" />
     <Text Include="Data\Puzzle10_RealData.txt" />
     <Text Include="Data\Puzzle10_TestData.txt" />
     <Text Include="Data\Puzzle11_RealData.txt" />
