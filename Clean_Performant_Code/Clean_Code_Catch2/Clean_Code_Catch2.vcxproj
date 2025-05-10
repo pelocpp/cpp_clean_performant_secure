@@ -137,6 +137,9 @@
   <ItemGroup>
     <ClInclude Include="Catch2\catch.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Command_Line_Arguments.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
