@@ -23,7 +23,7 @@ TEST_CASE ("Factorials are computed", "[factorial]") {
     REQUIRE(Factorial(5) == 120);
 
     CHECK(Factorial(1) == 1);
-    CHECK(Factorial(2) == 3);
+    CHECK(Factorial(2) == 2);
     CHECK(Factorial(3) == 6);
     CHECK(Factorial(4) == 24);
     CHECK(Factorial(5) == 120);
@@ -241,7 +241,7 @@ TEST_CASE("Floating Point Arithmetic", "[Floating]")
 
     CHECK_THAT(f, floatMatcher);
 
-    f += 0.5;
+    f += 0.5;   // f == 123.5f, wrong value
     CHECK_THAT(f, floatMatcher);
 }
 
