@@ -149,6 +149,7 @@
     <Image Include="Quick_Cpp_Benchmark_String_Comparison_SSO.png" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Benchmarking_Folding.txt" />
     <Text Include="Benchmarking_GettingStarted.txt" />
     <Text Include="Benchmarking_StdArray_Constant_Initialization.txt" />
     <Text Include="Benchmarking_StdStringView_vs_StdString.txt" />
