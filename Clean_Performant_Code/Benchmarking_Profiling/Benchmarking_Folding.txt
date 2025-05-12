@@ -19,16 +19,16 @@ static auto addIterating(auto ... values) {
 static void FoldingSolution(benchmark::State& state) {
   for (auto _ : state) {
 
-    auto a0{ 1};
-    auto a1{ 1};
-    auto a2{ 2};
-    auto a3{ 3};
-    auto a4{ 4};
-    auto a5{ 5};
-    auto a6{ 6};
-    auto a7{ 7};
-    auto a8{ 8};
-    auto a9{ 9};
+    auto a0{ 1 };
+    auto a1{ 1 };
+    auto a2{ 2 };
+    auto a3{ 3 };
+    auto a4{ 4 };
+    auto a5{ 5 };
+    auto a6{ 6 };
+    auto a7{ 7 };
+    auto a8{ 8 };
+    auto a9{ 9 };
 
     auto sum{ addFolding(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) };
     benchmark::DoNotOptimize(sum);
@@ -38,16 +38,16 @@ static void FoldingSolution(benchmark::State& state) {
 static void IterativeSolution(benchmark::State& state) {
   for (auto _ : state) {
 
-    auto a0{ 1};
-    auto a1{ 1};
-    auto a2{ 2};
-    auto a3{ 3};
-    auto a4{ 4};
-    auto a5{ 5};
-    auto a6{ 6};
-    auto a7{ 7};
-    auto a8{ 8};
-    auto a9{ 9};
+    auto a0{ 1 };
+    auto a1{ 1 };
+    auto a2{ 2 };
+    auto a3{ 3 };
+    auto a4{ 4 };
+    auto a5{ 5 };
+    auto a6{ 6 };
+    auto a7{ 7 };
+    auto a8{ 8 };
+    auto a9{ 9 };
 
     auto sum{ addIterating(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) };
     benchmark::DoNotOptimize(sum);
