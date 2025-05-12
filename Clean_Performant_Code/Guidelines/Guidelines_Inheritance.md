@@ -16,9 +16,8 @@
   * [Destruktoren und `virtual`: Virtueller Basisklassendestruktor](#link8)
   * [Schlüsselwort `override`](#link9)
   * [Schlüsselwort `final`](#link10)
-  * [Schlüsselwort `override`](#link11)
-  * [Schlüsselwörter `virtual`, `override` und `final`](#link12)
-  * [Schützen Sie sich vor *Object Slicing*](#link13)
+  * [Schlüsselwörter `virtual`, `override` und `final`](#link11)
+  * [Schützen Sie sich vor *Object Slicing*](#link12)
 
 ---
 
@@ -104,7 +103,7 @@ Die Klasse `Container<T>` sollte nicht als Vaterklasse einer Klassenhierarchie f
 
 Die Antwort steht direkt im Sourcecode. Das Klassen-Template `Container<T>` besteht nur aus rein virtuellen Funktionen,
 um eine Liste, einen Vektor und einen Baum zu modellieren.
-Derartige gegensätzliche Anforderungen erfüllen in keinster Weise die &bdquo;is-a&rdquo;-Beziehung,
+Derartige gegensätzliche Anforderungen erfüllen in keinster Weise die &bdquo;*is-a*&rdquo;-Beziehung,
 damit scheidet das Konzept der Vererbung aus.
 
 Wollte man das Interface `Container<T>` verwenden, muss man drei vollkommen verschiedene Konzepte implementieren.
@@ -474,7 +473,7 @@ Diese Technik ist bekannt als *Devirtualisierung*.
 
 Wir betrachten einige Beispiele dazu:
 
-*Beispiel*:
+*Beispiel* 1:
 
 ```cpp
 01: struct Base {
@@ -492,7 +491,7 @@ Wir betrachten einige Beispiele dazu:
 
 *Frage*: Ist dieses Code-Snippet übersetzungsfähig?
  
-*Beispiel*:
+*Beispiel* 2:
 
 ```cpp
 01: struct Base final {
@@ -505,7 +504,7 @@ Wir betrachten einige Beispiele dazu:
 
 *Frage*: Ist dieses Code-Snippet übersetzungsfähig?
 
-*Beispiel*:
+*Beispiel* 3:
 
 ```cpp
 01: class IAbstract
@@ -539,7 +538,7 @@ da `anotherMethod()` innerhalb einer abgeleiteten Klasse aufgerufen werden könnt
 die `doSomething()` überschrieben hat.
 
 *Abschließende Frage*:<br />
-Welchen Sinn ergibt es, virtuelle Methode in einer als `final` deklarierten Methode aufzurufen?
+Welchen Sinn ergibt es, virtuelle Methoden in einer als `final` deklarierten Methode aufzurufen?
 
 *Antwort*:<br />
 Keinen!

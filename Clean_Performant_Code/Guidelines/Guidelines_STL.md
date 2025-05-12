@@ -36,7 +36,7 @@ Was spricht dafür, STL-Standardalgorithmen einfachen `for`-Schleifen vorzuziehen
 
 Es gibt aber noch einen zweiten Grund:
 
-  * Vor allem die komplexeren Algorithmen können leicht unübersichtlich werden, wenn wir sie von Hand implementieren.
+  * Vor allem die komplexeren Algorithmen können leicht unübersichtlich werden, wenn wir sie von Hand schreiben.
 
   * Daher ist es gut, neben dem Namen des Algorithmus im Code den Algorithmusteil vom Rest der Logik zu trennen.
 
@@ -144,13 +144,13 @@ Der `std::inserter` ähnelt dem `back_inserter`, benötigt aber einen Iterator, mi
 
 Im Fall von `std::map` ist dies ein *Hinweis* darauf, wo das Element eingefügt werden könnte.
 
-Das Lambda-Objekt führt die eigentliche Umwandlung eines `Employees`-Objekts in einen `std::map`-Eintrag durch-
+Das Lambda-Objekt führt die eigentliche Umwandlung eines `Employees`-Objekts in einen `std::map`-Eintrag durch.
 
 Es ist sehr interessant, die Gehälter aller Mitarbeiter aufgelistet zu haben,
 aber vielleicht möchten Ihre Manager nicht, dass Sie wissen, wie hoch ihr Gehaltsscheck aussieht.
 
 Daher erhalten wir die zusätzliche Anforderung,
-die Gehälter der Manager aus dieser Karte herauszuhalten.
+die Gehälter der Manager aus diesem `std::map`-Objekt herauszuhalten.
 Im Fall unserer ursprünglichen Schleife ist die Änderung einfach:
 
 ```cpp
@@ -170,11 +170,11 @@ Die Schleife wird etwas komplizierter, ist aber immer noch lesbar.
 
 Wir sind vielleicht nicht davon überzeugt, dass die Verwendung eines Algorithmus hier notwendig ist, um es lesbarer zu machen.
 
-Aber sehen wir uns an, wie es aussieht, wenn wir es tun. Normalerweise haben Algorithmen mit einer Bedingung oder, im Standardjargon, einem Prädikat, das Suffix _if in ihrem Namen.
+Aber sehen wir uns an, wie es aussieht, wenn wir es tun. Normalerweise haben Algorithmen mit einer Bedingung oder, im Standardjargon, einem Prädikat, das Suffix `_if` in ihrem Namen.
 
 Es gibt `std::copy_if`, um nur Dinge zu kopieren, die eine Bedingung erfüllen, und `std::find_if` und `std::remove_if` arbeiten mit Elementen, die einem Prädikat statt einem Wert entsprechen.
 
-Der Algorithmus, nach dem wir suchen, ist also `transform_if`.
+Der Algorithmus, nach dem wir suchen, lautet also `transform_if`.
 
 Aber das gibt es nicht in der Standardbibliothek.
 
@@ -196,7 +196,7 @@ Also starten wir jetzt unsere eigene Algorithmenbibliothek. Der gesamte Code sie
 10:     return result;
 11: }
 12: 
-13: static void guidelines_stl_algorithms_transform_04() {
+13: void test() {
 14: 
 15:     std::vector<Employee> employees;
 16: 
