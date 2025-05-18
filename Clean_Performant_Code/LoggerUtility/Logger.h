@@ -76,6 +76,12 @@ public:
         os << getPrefix() << '\t' << "Elapsed time: " << duration << " [microseconds]" << std::endl;
     }
 
+    static void stopWatchNano(std::ostream& os) {
+        std::chrono::steady_clock::time_point end{ std::chrono::steady_clock::now() };
+        auto duration{ std::chrono::duration_cast<std::chrono::nanoseconds>(end - s_begin).count() };
+        os << "Elapsed time: " << duration << " nanoseconds." << std::endl;
+    }
+
 private:
     static std::string getPrefix()
     {

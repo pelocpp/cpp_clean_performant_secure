@@ -555,13 +555,15 @@ Auf diese Weise lässt sich der durch das Padding verursachte Speicheraufwand min
 Die manuelle Lebensdauerverwaltung und das Erstellen von Objekten in nicht initialisierten
 oder untypisierten Speicherblöcken ist ein spezielleres Thema.
 
-Es gibt jedoch Situationen, in denen `std::vector` nicht ausreicht.
+Es gibt jedoch Situationen, in denen `std::vector` nicht die Performanz bietet, die man benötigt
+oder die vielleicht in C machbar wäre. Ein Umstieg von C auf C++ sollte generell nicht angestrebt werden,
+aber eine Erweiterung der STL um neue, performantere Funktionen könnte Abhilfe schaffen.
 
-Die C++-Standardbibliothek STL bietet eine Reihe neuer, low-level Algorithmen,
+Die C++-Standardbibliothek STL bietet eine Reihe neuer, *low-level* Algorithmen,
 die Standard-, Kopier-, Verschiebe- und Wertkonstruktion sowie deren Freigabe
-auf Basis nicht initialisierten Speichers ermöglichen.
+auf der Grundlage nicht initialisierten Speichers ermöglichen.
 
-### Neue Speicherverwaltungfunktionen ab C++ 17
+### Neue Speicherverwaltungsfunktionen ab C++ 17
 
 ```cpp
 template <class InputIterator, class ForwardIterator>
@@ -572,7 +574,7 @@ ForwardIterator std::uninitialized_copy(
 );
 ```
 
-#### Ein Beispiel
+### Ein Beispiel
 
 Wir betrachten eine häufig in der Praxis auftretende Situation:
 
@@ -623,19 +625,19 @@ Der Ziel-Container &ndash; in diesem Beispiel ein `std::vector`-Container mit `I
 wird zunächste mit &bdquo;leeren&rdquo; `Integer`-Objekten angelegt.
 Der Speicher des `std::vector`-Containers wird natürlich benötigt,
 aber die Vorbelegung (Initialisierung) der entsprechenden Anzahl von `Integer`-Objekten wird umsonst durchgeführt,
-da ja im unmittelbar nächsten Schritt ein Kopier-Vorgang mit dem `std::vector`-Container als Ziel eingeleitet wird.
+da ja in der unmittelbar folgenden Anweisung ein Kopier-Vorgang mit dem `std::vector`-Container als Ziel eingeleitet wird.
 
-Was man bräuchte, wäre eine Möglichkeit, einen  `std::vector`-Container mit `Integer`-Objekten anzulegen,
-aber ohne den gesamten Speicherbereich zu initialisieren.
+Was man bräuchte, wäre eine Möglichkeit, einen `std::vector`-Container mit `Integer`-Objekten anlegen zu können,
+aber eben ohne den gesamten Speicherbereich zu initialisieren.
 
 Dazu gibt es nun den Algorithmus `std::uninitialized_copy`.
 
 Der Wehrmutstropfen bei diesem Ansatz ist, dass wir Speicher reservieren müssen, der nicht initialisiert wird.
-Das geht, aber wir müssen auf Funktionen wie beispielsweise
+Das geht, aber nicht mit der Klasse `std::vector`. Wir müssen auf Funktionen wie beispielsweise
 
   * `std:malloc` / `std::free`
   * `std::aligned_alloc` / `std::free` (`std::aligned_alloc` wird von Visual C++ nicht unterstützt)
-  * `_aligned_malloc` / `_aligned_free` (Visual C++)
+  * `_aligned_malloc` / `_aligned_free` (Alternative Funktinen, von Visual C++ bereitgestellt)
 
 zurückgreifen.
 
@@ -676,12 +678,12 @@ ins Spiel:
 
   * `std::destroy`
 
-Im letzten Beispiel hatten wir einen Speicherbereich mit `Integer`-Objekten ausgenbreitet.
-Derartige Objekt haben keinen Destruktor, es ist vor der Freigabe des Speichers also nichts zu tun.
+Im letzten Beispiel hatten wir einen Speicherbereich mit `Integer`-Objekten ausgebreitet.
+Derartige Objekt haben keinen Destruktor, es ist bzgl. der Freigabe des Speichers der benutzen Objekte also nichts zu tun.
 Anders sieht das aus, wenn Objekte mit dynamischen Daten umkopiert werden.
 Diese haben einen Destruktor &ndash; und dieser muss aufgerufen werden.
 
-Es folgen zwei weitere Beispiele hierzu:
+Hierzu folgen nun zwei weitere Beispiele, wie wechseln von der Klasse `Integer` zur Klasse `std::string`:
 
 *Beispiel* 3:
 
