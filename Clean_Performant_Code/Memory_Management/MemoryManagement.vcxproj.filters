@@ -30,6 +30,9 @@
     <ClCompile Include="..\LoggerUtility\Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LowLevelSTLAlgorithms.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Readme_MemoryManagement.md">
