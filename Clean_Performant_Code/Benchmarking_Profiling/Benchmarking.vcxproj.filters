@@ -93,5 +93,8 @@
     <Text Include="Benchmarking_Folding.txt">
       <Filter>Source Files</Filter>
     </Text>
+    <Text Include="Benchmarking_StdUninitializedCopy_Demo.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

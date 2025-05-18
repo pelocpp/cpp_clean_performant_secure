@@ -1,0 +1,66 @@
+// ===========================================================================
+// Benchmarking_StdUninitializedCopy_Demo.txt
+// Comparing std::vector vs. std::uninitialized_copy
+// ===========================================================================
+
+#include <array>
+#include <numeric>
+
+class Integer
+{
+public:
+    Integer() : m_value{} {}
+    Integer(int value) : m_value{ value } {}
+    int get() const{ return m_value; }
+private:
+    int m_value;
+};
+
+constexpr size_t Size = 1000;
+
+static void CopyClassicalWay(benchmark::State& state) {
+  std::array<int, Size> numbers{};
+  std::iota(numbers.begin(), numbers.end(), 1);
+
+  for (auto _ : state) {
+    std::vector<Integer> vec;
+    vec.resize(Size);
+
+    auto last = std::copy(
+      numbers.begin(),
+      numbers.end(),
+      vec.begin()
+    );
+    benchmark::DoNotOptimize(last);
+  }
+}
+
+static void CopyOPtimizedWay(benchmark::State& state) {
+  std::array<int, Size> numbers{};
+  std::iota(numbers.begin(), numbers.end(), 1);
+
+  for (auto _ : state) {
+    Integer* buffer = (Integer*) std::malloc(Size * sizeof(Integer));
+    if (buffer == nullptr) {
+      return;
+    }
+
+    auto first = static_cast<Integer*>(buffer);
+
+    Integer* last = std::uninitialized_copy(
+      numbers.begin(),
+      numbers.end(),
+      first
+    );
+
+    std::free(buffer);
+    benchmark::DoNotOptimize(last);
+  }
+}
+
+BENCHMARK(CopyClassicalWay);
+BENCHMARK(CopyOPtimizedWay);
+
+// ===========================================================================
+// End-of-File
+// ===========================================================================

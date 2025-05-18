@@ -153,6 +153,7 @@
     <Text Include="Benchmarking_GettingStarted.txt" />
     <Text Include="Benchmarking_StdArray_Constant_Initialization.txt" />
     <Text Include="Benchmarking_StdStringView_vs_StdString.txt" />
+    <Text Include="Benchmarking_StdUninitializedCopy_Demo.txt" />
     <Text Include="Benchmarking_StdVector_Constant_Initialization.txt" />
     <Text Include="Benchmarking_StdVector_Reserve.txt" />
     <Text Include="Data\Puzzle10_RealData.txt" />
