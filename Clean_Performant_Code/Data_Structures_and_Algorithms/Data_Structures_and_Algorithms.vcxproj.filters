@@ -95,6 +95,9 @@
     <None Include="cpp_stl_algorithms_unexpected_exceptions_02.svg">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="cpp_stl_container_overview_01.svg">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="L1_L2_L3_Cache.png">

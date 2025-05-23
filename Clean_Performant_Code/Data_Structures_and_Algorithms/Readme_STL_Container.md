@@ -35,7 +35,7 @@
 
 ## Allgemeines <a name="link1"></a>
 
-<img src="cpp_stl_container_overview.svg" width="700">
+<img src="cpp_stl_container_overview_01.svg" width="400">
 
 *Abbildung* 1: Überblick über alle STL Standardcontainer.
 
