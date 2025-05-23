@@ -84,7 +84,7 @@ namespace DataStructuresAndAlgorithms {
 
         static MatrixType matrix;
 
-        static auto initMatrix(MatrixType& matrix) {
+        static auto initMatrixFast(MatrixType& matrix) {
 
             ScopedTimer watch{};
 
@@ -92,14 +92,36 @@ namespace DataStructuresAndAlgorithms {
 
             for (size_t i{}; i != Size; ++i) {
                 for (size_t j{}; j != Size; ++j) {
-                    matrix[i][j] = value++;      // no "cache thrashing"
-                    //matrix[j][i] = value++;    // remove comment: demonstrates "cache thrashing"
+                    // matrix[i][j] = value++;           // no "cache thrashing"
+                    matrix[i][j] = (i * Size) + j;
+                }
+            }
+        }
+
+        static auto initMatrixSlow(MatrixType& matrix) {
+
+            ScopedTimer watch{};
+
+            size_t value{};
+
+            for (size_t i{}; i != Size; ++i) {
+                for (size_t j{}; j != Size; ++j) {
+                    matrix[j][i] = (j * Size) + i;    // demonstrating "cache thrashing" // note: matrix element needs to be calculated differently
+                    //matrix[j][i] = value++;
                 }
             }
         }
 
         static void test_cache_thrashing() {
-            initMatrix(matrix);
+            initMatrixFast(matrix);
+            initMatrixFast(matrix);
+            initMatrixFast(matrix);
+            initMatrixFast(matrix);
+        
+            initMatrixSlow(matrix);
+            initMatrixSlow(matrix);
+            initMatrixSlow(matrix);
+            initMatrixSlow(matrix);
         }
     }
 
@@ -264,7 +286,7 @@ namespace DataStructuresAndAlgorithms {
         }
 
         // utility: sample the time it takes to run func on N threads
-        void run_tests(
+        static void run_tests(
             const std::function<useless_result_t(threadlatch&, unsigned)>& func,
             const unsigned num_threads) {
             useless_result_t final_result = 0;
@@ -284,7 +306,7 @@ namespace DataStructuresAndAlgorithms {
                 << std::endl;
         }
 
-        void test_cache_lines() {
+        static void test_cache_lines() {
             const auto cores = std::thread::hardware_concurrency();
             std::cout << "Hardware concurrency: " << cores << std::endl;
 
@@ -336,7 +358,6 @@ namespace DataStructuresAndAlgorithms {
                     }, cores);
             }
         }
-
     }
 }
 

@@ -15,18 +15,18 @@
 #include <utility>
 
 // ===========================================================================
-// Eine Ausführung von Schritt zeit, dass in Methode 'splitPebble'
+// Eine Ausführung von Schritt "Part I" zeigt, dass in Methode 'splitPebble'
 // ein HotSpot vorhanden ist.
 // 
 // Es bietet sich ein Redesign von 'splitPebble' an:
 // Die Ausführungszeiten mit 'splitPebbleEx' sind besser.
 // 
-// Ein zweites Redesign dieser Methode führt zu besseren Ausführungszeiten.
+// Ein zweites Redesign dieser Methode führt zu noch besseren Ausführungszeiten.
 // 
-// To be Done 1: Die von 'splitPebble' zeregten Zahlen in eine Map aufnehmen (sog. Memoization),
+// To be Done 1: Die von 'splitPebble' zerlegten Zahlen in eine Map aufnehmen (sog. Memoization),
 // dann die Ausführungszeiten beobachten.
 // 
-// To be Done 1: Es werden mehrere Male std::pairs mit 2 size_t Variablen kopiert.
+// To be Done 2: Es werden mehrere Male 'std::pair's mit 2 'size_t' Variablen kopiert.
 // In den Meldungen gibt es Warnungen hierzu:
 // 'auto' doesn't deduce references. A possibly unintended copy is being made.
 // Hier sollte ein Mikro-benchmark durchgeführt werden oder eine Laufzeitmessung.
@@ -111,10 +111,10 @@ public:
             ++numDigits;
         }
         
-        return { (numDigits % 2) == 0 , numDigits };
+        return std::pair<bool, size_t>{ (numDigits % 2) == 0 , numDigits };
     }
 
-    // First redesigned version of splitPebble
+    // first redesigned version of splitPebble: splitPebbleEx
     static std::pair<size_t, size_t> splitPebbleEx(size_t pebble, size_t numDigits)
     {
         size_t left{};
@@ -168,10 +168,16 @@ public:
             break;
         }
 
-        return { left , right };
+        static size_t count = 0;
+        if (count < 10) {
+            std::println("{} - {}", left, right);
+            ++count;
+        }
+        
+        return std::pair{ left , right };
     }
 
-    // Second redesigned version of splitPebble
+    // second redesigned version of splitPebble: splitPebbleExEx
     static std::pair<size_t, size_t> splitPebbleExEx(size_t pebble, size_t numDigits)
     {
         static size_t pow10[10]
@@ -179,12 +185,18 @@ public:
             1, 10, 100, 1'000, 10'000, 100'000, 1'000'000, 10'000'000, 100'000'000, 1'000'000'000
         };
 
-        size_t denominator{ pow10[numDigits / 2 - 1] };
+        size_t denominator{ pow10[numDigits / 2] };
 
         size_t left{ pebble / denominator };
         size_t right{ pebble % denominator };
 
-        return { left , right };
+        static size_t count2 = 0;
+        if (count2 < 10) {
+            std::println("{} - {}", left, right);
+            ++count2;
+        }
+
+        return std::pair{ left , right };
     }
 };
 
@@ -256,6 +268,10 @@ public:
             if (pebble == 0) {
                 *pos = 1;
             }
+
+            // ---------------------------------------------------------------
+            /* original version: seems to be a hot spot */
+            
             else if (hasEvenDigits(pebble)) {
 
                 const auto [leftHalf, rightHalf] = splitPebble(pebble);
@@ -265,6 +281,10 @@ public:
 
                 ++pos; // skip new right half
             }
+            
+            // ---------------------------------------------------------------
+            /* change from splitPebble to splitPebbleEx and splitPebbleExEx */
+            
             //else if (auto result = hasEvenDigitsEx(pebble); result.first) {
 
             //    const auto [leftHalf, rightHalf] = splitPebbleEx(pebble, result.second);  // <== splitPebbleEx or splitPebbleExEx
@@ -274,6 +294,7 @@ public:
 
             //    ++pos; // skip new right half
             //}
+            
             else {
                 *pos *= 2024;
             }
@@ -343,7 +364,7 @@ public:
             if (pebble == 0) {
                 pebbles[1] += count;
             }
-            else if (hasEvenDigits(pebble)) {  // TODO : schneller berechnen
+            else if (hasEvenDigits(pebble)) {
 
                 const auto [leftHalf, rightHalf] = splitPebble(pebble);
 
@@ -414,12 +435,12 @@ static void puzzle_11_part_two()
 }
 
 // ===========================================================================
-// main
+// main puzzle 11
 
 void performance_profiling_puzzle_11()
 {
     puzzle_11_part_one();
-    //puzzle_11_part_two();
+    puzzle_11_part_two();
 }
 
 // ===========================================================================
