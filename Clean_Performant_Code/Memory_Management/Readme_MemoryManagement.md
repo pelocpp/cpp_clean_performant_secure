@@ -549,13 +549,12 @@ Auf diese Weise lässt sich der durch das Padding verursachte Speicheraufwand min
 
 
 
-
 ### *Low-level* Speicherverwaltungsfunktionen <a name="link13"></a>
 
-Die manuelle Lebensdauerverwaltung und das Erstellen von Objekten in nicht initialisierten
-oder untypisierten Speicherblöcken ist ein spezielleres Thema.
+Die manuelle Lebensdauerverwaltung und das Erstellen von Objekten in nicht initialisierten Speicherblöcken
+ist ein spezielleres Thema.
 
-Es gibt jedoch Situationen, in denen `std::vector` nicht die Performanz bietet, die man benötigt
+Es gibt Situationen, in denen `std::vector` nicht die Performanz bietet, die man benötigt
 oder die vielleicht in C machbar wäre. Ein Umstieg von C auf C++ sollte generell nicht angestrebt werden,
 aber eine Erweiterung der STL um neue, performantere Funktionen könnte Abhilfe schaffen.
 
@@ -563,18 +562,7 @@ Die C++-Standardbibliothek STL bietet eine Reihe neuer, *low-level* Algorithmen,
 die Standard-, Kopier-, Verschiebe- und Wertkonstruktion sowie deren Freigabe
 auf der Grundlage nicht initialisierten Speichers ermöglichen.
 
-### Neue Speicherverwaltungsfunktionen ab C++ 17
-
-```cpp
-template <class InputIterator, class ForwardIterator>
-ForwardIterator std::uninitialized_copy(
-    InputIterator first,
-    InputIterator last,
-    ForwardIterator dest
-);
-```
-
-### Ein Beispiel
+### Ein Beispiel: `std::uninitialized_copy`
 
 Wir betrachten eine häufig in der Praxis auftretende Situation:
 
@@ -632,12 +620,12 @@ aber eben ohne den gesamten Speicherbereich zu initialisieren.
 
 Dazu gibt es nun den Algorithmus `std::uninitialized_copy`.
 
-Der Wehrmutstropfen bei diesem Ansatz ist, dass wir Speicher reservieren müssen, der nicht initialisiert wird.
+Der Wehrmutstropfen bei diesem Ansatz ist, dass wir Speicher benötigen, der nicht initialisiert wird.
 Das geht, aber nicht mit der Klasse `std::vector`. Wir müssen auf Funktionen wie beispielsweise
 
   * `std:malloc` / `std::free`
   * `std::aligned_alloc` / `std::free` (`std::aligned_alloc` wird von Visual C++ nicht unterstützt)
-  * `_aligned_malloc` / `_aligned_free` (Alternative Funktinen, von Visual C++ bereitgestellt)
+  * `_aligned_malloc` / `_aligned_free` (Alternative Funktionen, von Visual C++ bereitgestellt)
 
 zurückgreifen.
 
@@ -683,7 +671,7 @@ Derartige Objekt haben keinen Destruktor, es ist bzgl. der Freigabe des Speicher
 Anders sieht das aus, wenn Objekte mit dynamischen Daten umkopiert werden.
 Diese haben einen Destruktor &ndash; und dieser muss aufgerufen werden.
 
-Hierzu folgen nun zwei weitere Beispiele, wie wechseln von der Klasse `Integer` zur Klasse `std::string`:
+Hierzu folgen nun zwei weitere Beispiele, wir wechseln von der Klasse `Integer` zur Klasse `std::string`:
 
 *Beispiel* 3:
 
@@ -741,10 +729,6 @@ Hierzu folgen nun zwei weitere Beispiele, wie wechseln von der Klasse `Integer` 
 26:     std::free(buffer);
 27: }
 ```
-
-
-
-
 
 
 
