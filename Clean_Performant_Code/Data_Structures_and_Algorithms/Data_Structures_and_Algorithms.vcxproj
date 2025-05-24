@@ -155,6 +155,9 @@
     <None Include="cpp_stl_container_stack.svg" />
     <None Include="cpp_stl_container_tree.svg" />
     <None Include="cpp_stl_container_vector.svg" />
+    <None Include="False_Sharing_Example_01.svg" />
+    <None Include="False_Sharing_Example_02.svg" />
+    <None Include="False_Sharing_Example_03.svg" />
     <None Include="Readme_Big_O_Notation.md" />
     <None Include="Readme_Caches.md" />
     <None Include="Readme_Data_Structures_and_Algorithms.md" />

@@ -13,6 +13,7 @@
 #include <future>
 #include <iostream>
 #include <new>
+#include <numeric>
 #include <print>
 #include <random>
 #include <thread>
@@ -125,11 +126,158 @@ namespace DataStructuresAndAlgorithms {
         }
     }
 
-    namespace CacheMisses_True_Sharing_vs_False_Sharing {
+    namespace CacheMisses_False_Sharing {
+
+        const std::size_t Iterations = 100'000'000;  // 10000000
+        // const std::size_t Iterations = 10;  // 
+
+        struct Data {
+            int x{};
+            int y{};
+        };
+
+        struct DataWithAlignment {
+            alignas(std::hardware_destructive_interference_size) int x{};
+            alignas(std::hardware_destructive_interference_size) int y{};
+        };
+
+        template <typename TData>
+        static void updateData(TData& data, int id) {
+
+            for (int i = 0; i < Iterations; ++i) {
+                if (i % 2 == 0) {
+                    data.x += id;
+                }
+                else {
+                    data.y += id;
+                }
+            }
+        }
+
+        static void test_false_sharing_with_false_sharing()
+        {
+            Data data1;
+            Data data2;
+
+            std::thread t1(updateData<Data>, std::ref(data1), 1);
+            std::thread t2(updateData<Data>, std::ref(data2), 2);
+
+            {
+                ScopedTimer watch{};
+
+                t1.join();
+                t2.join();
+            }
+        }
+
+        static void test_false_sharing_no_false_sharing()
+        {
+            DataWithAlignment data1;
+            DataWithAlignment data2;
+
+            std::thread t1(updateData<DataWithAlignment>, std::ref(data1), 1);
+            std::thread t2(updateData<DataWithAlignment>, std::ref(data2), 2);
+
+            {
+                ScopedTimer watch{};
+
+                t1.join();
+                t2.join();
+            }
+        }
+
+        static void test_false_sharing_short_demo()
+        {
+            test_false_sharing_with_false_sharing();
+            test_false_sharing_with_false_sharing();
+            test_false_sharing_with_false_sharing();
+            test_false_sharing_with_false_sharing();
+            test_false_sharing_with_false_sharing();
+
+            std::println();
+
+            test_false_sharing_no_false_sharing();
+            test_false_sharing_no_false_sharing();
+            test_false_sharing_no_false_sharing();
+            test_false_sharing_no_false_sharing();
+            test_false_sharing_no_false_sharing();
+        }
+    }
+
+    namespace CacheMisses_False_Sharing {
+
+        // https://curiouslyrecurringthoughts.home.blog/2019/06/10/c17-and-false-sharing/
+
+#define FALSE_SHARING false
+
+        static void test_false_sharing_long_demo() {
+
+            // constexpr std::size_t numProcessors = 8;
+            // constexpr std::size_t numIter = 40'000'000;
+
+            constexpr std::size_t numProcessors = 8;
+            constexpr std::size_t numIter = 10;
+
+#if FALSE_SHARING
+            std::cout << "With false sharing \n";
+            struct resultType {
+                int val;
+            };
+#else
+            std::cout << "Without false sharing\n";
+            struct resultType {
+                alignas(std::hardware_destructive_interference_size) int val;
+            };
+#endif
+            std::println("Sizeof: {}", sizeof(struct resultType));
+
+            std::array<resultType, numProcessors> results{ 0 };
+            std::array<std::thread, numProcessors> threads;
+
+            {
+                ScopedTimer watch{};
+
+                for (std::size_t i = 0; i < numProcessors; ++i) {
+
+                    auto& result = results[i];
+
+                    threads[i] = std::thread{
+                        [&result, numIter]() mutable {
+                            for (std::size_t j = 0; j < numIter; ++j) {
+                                result.val = (result.val + std::rand() % 10) % 50;
+                                // std::println("val: {}", result.val);
+                            }
+                        }
+                    };
+                }
+
+                std::for_each(
+                    begin(threads),
+                    end(threads),
+                    [](std::thread& t) { t.join(); }
+                );
+            }
+
+            const auto res = std::accumulate(
+                cbegin(results),
+                cend(results),
+                resultType{ 0 },
+                [](const resultType a, const resultType b) {
+                    auto s = a.val + b.val;
+                    return resultType{ s };
+                }
+            );
+
+            std::println("Result: {}", res.val);
+        }
+    }
+
+    namespace CacheMisses_False_Sharing {
+
+        // Source Code stammt von hier:
+        // https://stackoverflow.com/questions/39680206/understanding-stdhardware-destructive-interference-size-and-stdhardware-cons
 
         // https://stackoverflow.com/questions/57606409/what-is-true-sharing
-
-        // https://stackoverflow.com/questions/39680206/understanding-stdhardware-destructive-interference-size-and-stdhardware-cons
 
         // http://thebeardsage.com/true-sharing-false-sharing-and-ping-ponging/
 
@@ -365,12 +513,15 @@ namespace DataStructuresAndAlgorithms {
 
 void test_caches()
 {
-    using namespace DataStructuresAndAlgorithms::CacheLinesAndCacheSizes;
-    test_examine_cache_line_size();
-    test_examine_l1_cache_size();
+    using namespace DataStructuresAndAlgorithms;
 
-    using namespace DataStructuresAndAlgorithms::CacheMisses;
-    test_cache_thrashing();
+    CacheLinesAndCacheSizes::test_examine_cache_line_size();
+    CacheLinesAndCacheSizes::test_examine_l1_cache_size();
+
+    CacheMisses_False_Sharing::test_cache_lines();
+
+    CacheMisses_False_Sharing::test_false_sharing_short_demo();  // short demo
+    CacheMisses_False_Sharing::test_false_sharing_long_demo();  // long demo
 }
 
 // ===========================================================================

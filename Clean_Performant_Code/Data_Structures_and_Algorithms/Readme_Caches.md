@@ -13,6 +13,8 @@
   * [*Cache Lines*](#link5)
   * [Größe des L1 Caches](#link6)
   * [Cache-Fehler (*Cache Misses*)](#link7)
+  * [*False Sharing*](#link8)
+  * [Literatur](#link9)
 
 ---
 
@@ -212,19 +214,121 @@ geschickt oder ungeschickt erfolgen.
 24: }
 ```
 
-*Ausgabe*: Ohne &bdquo;Cache Thrashing&bdquo;
+*Ausgabe*: Ohne &bdquo;Cache Thrashing&rdquo;.
 
 ```
 Elapsed time: 87 [milliseconds]   87  // 612
 ```
 
-*Ausgabe*: Mit &bdquo;Cache Thrashing&bdquo;
+*Ausgabe*: Mit &bdquo;Cache Thrashing&rdquo;.
 
 ```
 Elapsed time: 612 [milliseconds]
 ```
 
 Beide Ausführungen beziehen sich auf den *Release*-Mode.
+
+---
+
+
+## *False Sharing* <a name="link8"></a>
+
+Wir beginnen mit dem *Sharing*-Aspekt von *False Sharing*:
+
+Beim Lesen von Daten aus dem RAM lädt die CPU einen Speicherblock (*Cache Line*)
+in ihren eigenen Cache.
+
+Dadurch soll die *Datenlokalität* optimal genutzt werden:
+Wenn Sie auf Daten zugreifen, greifen Sie höchstwahrscheinlich auch auf andere Daten zu,
+die sich in der Nähe befinden.
+Deshalb ist es sinnvoll, die gesamte Cache Line in den Cache zu laden, um sie schneller abrufen zu können.
+
+Was passiert, wenn eine CPU den Inhalt einer Cache Line ändert, die aktuell mit anderen CPUs geteilt wird?
+Die Caches der anderen CPUs müssen **neu geladen** werden,
+bevor die auf diesen CPUs laufenden Prozesse fortgesetzt werden können, wodurch diese blockiert werden.
+
+Dieser Mechanismus ermöglicht den verschiedenen Threads in einem Prozess eine zusammenhängende Ansicht des Speichers.
+
+Betrachten wir nun den False-Aspekt von *False Sharing*:
+
+Dieser tritt auf, wenn zwei oder mehr Prozesse (Threads) **unabhängige** Daten in **derselben** Cache Line lesen und ändern.
+In diesem Fall wird der zuvor beschriebene Cache-Kohärenzmechanismus zum Problem:
+Eine CPU wird blockiert und wartet auf ein völlig nutzloses Update.
+
+Betrachten Sie zu diesem Zweck nachfolgend *Abbildung* 3, 4 und 5:
+
+<img src="False_Sharing_Example_01.svg" width="600">
+
+*Abbildung* 3: Ausgangsszenario zwei CPUs mit Cache Lines.
+
+In *Abbildung* 3 arbeitet CPU 1 ausschließlich auf der Zelle, die den Wert &bdquo;1&rdquo; enthält.
+CPU 2 wiederum ausschließlich auf der Zelle, die den Wert &bdquo;2&rdquo; enthält.
+
+<img src="False_Sharing_Example_02.svg" width="600">
+
+*Abbildung* 4: CPU 1 andert eine Zelle in ihrem Cache.
+
+CPU 1 hat den Wert in &bdquo;ihrer&rdquo; Zelle von &bdquo;1&rdquo; auf &bdquo;123&rdquo; geändert.
+
+CPU 2 erleidet einen Cache-Fehler (*Cache Miss*) und muss neu geladen werden.
+
+<img src="False_Sharing_Example_03.svg" width="600">
+
+*Abbildung* 5: Der Cache von CPUs muss aktualisiert werden.
+
+Der Cache von CPU 2 wurde neu geladen. CPU 2 kann nun die Arbeit fortsetzen.
+
+*False Sharing* kann in der Regel auf zwei Arten behoben werden:
+
+  * Stellen Sie sicher, dass Daten, die nicht zueinander in Beziehung stehen, in unterschiedlichen Cache Lines gespeichert werden.
+  * Verwenden Sie lokale Daten für Zwischenberechnungen und greifen Sie erst am Ende auf den gemeinsam genutzten Speicher zu.
+
+
+### *False Sharing* und C++ 17
+
+Mit C++ 17 gibt es Unterstützung 
+
+
+Die Konstante `std::hardware_destructive_interference_size` gibt den garantierten Mindestabstand in Bytes zwischen zwei Speicherpositionen an,
+um einen *False Sharing* Zugriff zu vermeiden.
+
+```cpp
+constexpr std::size_t std::hardware_destructive_interference_size
+```
+
+Mit `alignas` lassen sich Variablen an diesem Mindestabstand entsprechend ausrichten.
+
+*Beispiel*:
+
+```cpp
+01: struct DataWithAlignment {
+02:     alignas(std::hardware_destructive_interference_size) int x{};
+03:     alignas(std::hardware_destructive_interference_size) int y{};
+04: };
+```
+
+Neben `std::hardware_destructive_interference_size` gibt es eine zweite Konstante: `std::hardware_destructive_interference_size`:
+
+Diese Konstante gibt den garantierten Mindestabstand in Bytes zwischen zwei Speicherorten an,
+der &bdquo;*konstruktive Interferenz*&rdquo; gewährleistet.
+
+&bdquo;*konstruktive Interferenz*&rdquo; tritt auf,
+wenn zwei Speicherorte nahe beieinander liegen, aber Zugriffe sich nicht gegenseitig stören.
+
+---
+
+## Literatur <a name="link9"></a>
+
+
+Anregungen zum *False Sharing* finden Sie beispielsweise unter
+
+[Caches and the problem of false sharing, a primer in C++17](https://medium.com/@joao_vaz/caches-and-the-problem-of-false-sharing-a-primer-in-c-17-1177ad07a625)
+
+[Understanding False Sharing](https://parallelcomputing2017.wordpress.com/2017/03/17/understanding-false-sharing/)
+
+und
+
+[C++17 and False Sharing](https://curiouslyrecurringthoughts.home.blog/2019/06/10/c17-and-false-sharing/)
 
 ---
 
