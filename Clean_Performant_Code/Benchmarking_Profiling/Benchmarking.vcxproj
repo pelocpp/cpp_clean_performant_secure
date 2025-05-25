@@ -134,6 +134,9 @@
     <ClCompile Include="Advent_of_Code_2024_No_10.cpp" />
     <ClCompile Include="Advent_of_Code_2024_No_11.cpp" />
     <ClCompile Include="Program.cpp" />
+    <ClCompile Include="ScopedTimer_Folding.cpp" />
+    <ClCompile Include="ScopedTimer_GettingStarted.cpp" />
+    <ClCompile Include="ScopedTimer_StdStringView_vs_StdString.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Readme_Profiling.md" />

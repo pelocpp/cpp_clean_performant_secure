@@ -1,0 +1,139 @@
+// ===========================================================================
+// ScopedTimer_Folding.cpp
+// ===========================================================================
+
+#include "../LoggerUtility/ScopedTimer.h"
+
+#include <print>
+#include <string>
+#include <vector>
+#include <cstdlib>
+#include <algorithm>
+
+namespace Benchmarking_Folding {
+
+    // =======================================================================
+    // generating random numbers
+
+    static constexpr size_t NumInputs = 10;
+
+    static std::vector<size_t> randomNumbers = [] {
+
+        std::vector<size_t> numbers;
+        numbers.resize(NumInputs);
+
+        for (auto& n : numbers) {
+            n = static_cast<size_t>(std::rand());
+        }
+
+        std::sort(
+            numbers.begin(),
+            numbers.end()
+        );
+
+        return numbers;
+    } ();
+
+    // =======================================================================
+
+    static auto addFolding(auto ... values) {
+        return (... + values);
+    }
+
+    static auto addIterating(auto ... values) {
+        auto list = { values ... };
+        auto sum{ (size_t) 0 };
+        for (auto elem : list) {
+            sum += elem;
+        }
+        return sum;
+    }
+
+    // =======================================================================
+
+    // const size_t Iterations = 10'000'000;
+
+    const size_t Iterations = 10'0'000;
+
+    static void FoldingSolution() {
+
+        std::println("FoldingSolution");
+
+        ScopedTimer watch{ ScopedTimer::Resolution::Nano };
+
+        for (size_t i{}; i != Iterations; ++i) {
+
+            size_t a0{ randomNumbers[0] };
+            size_t a1{ randomNumbers[1] };
+            size_t a2{ randomNumbers[2] };
+            size_t a3{ randomNumbers[3] };
+            size_t a4{ randomNumbers[4] };
+            size_t a5{ randomNumbers[5] };
+            size_t a6{ randomNumbers[6] };
+            size_t a7{ randomNumbers[7] };
+            size_t a8{ randomNumbers[8] };
+            size_t a9{ randomNumbers[9] };
+
+            //size_t a0{ static_cast<size_t>(std::rand()) };
+            //size_t a1{ static_cast<size_t>(std::rand()) };
+            //size_t a2{ static_cast<size_t>(std::rand()) };
+            //size_t a3{ static_cast<size_t>(std::rand()) };
+            //size_t a4{ static_cast<size_t>(std::rand()) };
+            //size_t a5{ static_cast<size_t>(std::rand()) };
+            //size_t a6{ static_cast<size_t>(std::rand()) };
+            //size_t a7{ static_cast<size_t>(std::rand()) };
+            //size_t a8{ static_cast<size_t>(std::rand()) };
+            //size_t a9{ static_cast<size_t>(std::rand()) };
+
+            auto sum{ addFolding(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) };
+        }
+    }
+
+    static void IterativeSolution() {
+
+        std::println("IterativeSolution");
+
+        ScopedTimer watch{ ScopedTimer::Resolution::Nano };
+
+        for (size_t i{}; i != Iterations; ++i) {
+
+            size_t a0{ randomNumbers[0] };
+            size_t a1{ randomNumbers[1] };
+            size_t a2{ randomNumbers[2] };
+            size_t a3{ randomNumbers[3] };
+            size_t a4{ randomNumbers[4] };
+            size_t a5{ randomNumbers[5] };
+            size_t a6{ randomNumbers[6] };
+            size_t a7{ randomNumbers[7] };
+            size_t a8{ randomNumbers[8] };
+            size_t a9{ randomNumbers[9] };
+
+            //size_t a0{ static_cast<size_t>(std::rand()) };
+            //size_t a1{ static_cast<size_t>(std::rand()) };
+            //size_t a2{ static_cast<size_t>(std::rand()) };
+            //size_t a3{ static_cast<size_t>(std::rand()) };
+            //size_t a4{ static_cast<size_t>(std::rand()) };
+            //size_t a5{ static_cast<size_t>(std::rand()) };
+            //size_t a6{ static_cast<size_t>(std::rand()) };
+            //size_t a7{ static_cast<size_t>(std::rand()) };
+            //size_t a8{ static_cast<size_t>(std::rand()) };
+            //size_t a9{ static_cast<size_t>(std::rand()) };
+
+            auto sum{ addIterating(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) };
+        }
+    }
+
+}
+
+int benchmarking_folding()
+{
+    using namespace Benchmarking_Folding;
+
+    FoldingSolution();
+    IterativeSolution();
+    return 0;
+}
+
+// ===========================================================================
+// End-of-File
+// ===========================================================================

@@ -1,6 +1,7 @@
 // ===========================================================================
 // Benchmarking_GettingStarted.txt
 // 'Getting Started' Example from the Quick C++ Benchmark WebSite
+// Status: Working!
 // ===========================================================================
 
 static void StringCreation(benchmark::State& state) {
