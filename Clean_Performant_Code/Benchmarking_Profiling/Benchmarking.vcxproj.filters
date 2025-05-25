@@ -42,6 +42,12 @@
     <ClCompile Include="ScopedTimer_Lambda_vs_Std_Function.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ScopedTimer_STL_Containers_Populating.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScopedTimer_STL_Containers_Accessing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Readme_Benchmarking.md">
@@ -109,6 +115,9 @@
       <Filter>Source Files</Filter>
     </Text>
     <Text Include="Benchmarking_Lambda_vs_Std_Function.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="Benchmarking_STL_Containers_Populating.txt">
       <Filter>Source Files</Filter>
     </Text>
   </ItemGroup>

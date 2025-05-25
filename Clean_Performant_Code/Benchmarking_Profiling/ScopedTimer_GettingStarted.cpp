@@ -9,7 +9,7 @@
 
 namespace Benchmarking_Getting_Started {
 
-    const size_t Iterations = 10'000'000;
+    static const size_t Iterations = 10'000'000;
 
     static void StringCreation() {
 
@@ -35,13 +35,12 @@ namespace Benchmarking_Getting_Started {
     }
 }
 
-int benchmarking_getting_started()
+void benchmarking_getting_started()
 {
     using namespace Benchmarking_Getting_Started;
 
     StringCreation();
     StringCopy();
-    return 0;
 }
 
 // ===========================================================================

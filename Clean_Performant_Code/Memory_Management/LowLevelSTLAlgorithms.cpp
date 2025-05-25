@@ -156,8 +156,8 @@ namespace LowLevel_MemoryFunctions_Functions {
     // =======================================================================
     // Benchmark Functions
 
-    constexpr size_t Size = 1000;
-    constexpr size_t Iterations = 1'000'000;
+    static constexpr size_t Size = 1000;
+    static constexpr size_t Iterations = 1'000'000;
 
     namespace Benchmark_Example_Using_Class_Integer {
 

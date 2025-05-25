@@ -138,6 +138,8 @@
     <ClCompile Include="ScopedTimer_GettingStarted.cpp" />
     <ClCompile Include="ScopedTimer_Lambda_vs_Std_Function.cpp" />
     <ClCompile Include="ScopedTimer_StdStringView_vs_StdString.cpp" />
+    <ClCompile Include="ScopedTimer_STL_Containers_Accessing.cpp" />
+    <ClCompile Include="ScopedTimer_STL_Containers_Populating.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Readme_Profiling.md" />
@@ -161,6 +163,7 @@
     <Text Include="Benchmarking_StdUninitializedCopy_Demo.txt" />
     <Text Include="Benchmarking_StdVector_Constant_Initialization.txt" />
     <Text Include="Benchmarking_StdVector_Reserve.txt" />
+    <Text Include="Benchmarking_STL_Containers_Populating.txt" />
     <Text Include="Data\Puzzle10_RealData.txt" />
     <Text Include="Data\Puzzle10_TestData.txt" />
     <Text Include="Data\Puzzle11_RealData.txt" />

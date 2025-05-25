@@ -10,12 +10,12 @@
 
 namespace Benchmarking_Std_Stringview_vs_Std_String {
 
-    const size_t Iterations = 100'000'000;
+    static const size_t Iterations = 100'000'000;
 
     // Note: take care of SSO
-    auto StringArgument1 = "1234567890";
-    auto StringArgument2 = "The quick brown fox jumps over the lazy dog";
-    auto StringArgument = StringArgument1;
+    static auto StringArgument1 = "1234567890";
+    static auto StringArgument2 = "The quick brown fox jumps over the lazy dog";
+    static auto StringArgument = StringArgument1;
 
     // prefix version using std::string
     static std::string prefix(const std::string& str) {
@@ -62,13 +62,12 @@ namespace Benchmarking_Std_Stringview_vs_Std_String {
     }
 }
 
-int benchmarking_std_stringview_vs_std_string()
+void benchmarking_std_stringview_vs_std_string()
 {
     using namespace Benchmarking_Std_Stringview_vs_Std_String;
 
     StdStringPrefix();
     StdStringViewPrefix();
-    return 0;
 }
 
 // ===========================================================================

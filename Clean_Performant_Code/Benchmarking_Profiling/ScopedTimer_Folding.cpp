@@ -53,7 +53,7 @@ namespace Benchmarking_Folding {
 
     // const size_t Iterations = 10'000'000;
 
-    const size_t Iterations = 10'0'000;
+    static const size_t Iterations = 10'0'000;
 
     static void FoldingSolution() {
 
@@ -124,13 +124,12 @@ namespace Benchmarking_Folding {
     }
 }
 
-int benchmarking_folding()
+void benchmarking_folding()
 {
     using namespace Benchmarking_Folding;
 
     FoldingSolution();
     IterativeSolution();
-    return 0;
 }
 
 // ===========================================================================

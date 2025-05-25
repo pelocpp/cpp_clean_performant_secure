@@ -9,8 +9,8 @@
 
 namespace Benchmarking_Lambda_vs_Std_Function {
 
-    const size_t Iterations = 100000;
-    const size_t InnerIterations = 100;
+    static const size_t Iterations = 100000;
+    static const size_t InnerIterations = 100;
 
     static double MyFunction(double input)
     {
@@ -75,14 +75,13 @@ namespace Benchmarking_Lambda_vs_Std_Function {
     }
 }
 
-int benchmarking_lambda_vs_std_function()
+void benchmarking_lambda_vs_std_function()
 {
     using namespace Benchmarking_Lambda_vs_Std_Function;
 
     Lambda();
     StdFunctionWithLambda();
     StdFunctionWithFreeFunction();
-    return 0;
 }
 
 // ===========================================================================
