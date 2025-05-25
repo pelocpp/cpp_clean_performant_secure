@@ -1,0 +1,73 @@
+// ===========================================================================
+// Benchmarking_Lambda_vs_Std_Function.txt
+// Comparing Lambda invocation vs. std::function invocation
+// Status: Working!
+// ===========================================================================
+
+#include <functional>
+
+const size_t InnerIterations = 100;
+    
+static double MyFunction(double input)
+{
+    double total = input * 2.0f + 1.0f;
+    return total;
+}
+
+static void Lambda(benchmark::State& state)
+{
+    auto lambda = [](double input) {
+        auto total = input * 2.0 + 1.0;
+        return total;
+    };
+    benchmark::DoNotOptimize(lambda);
+
+    for (auto _ : state) {
+        auto total = 0.0;
+        for (size_t i{}; i != InnerIterations; ++i) {
+            total += lambda(total);
+        }
+        benchmark::DoNotOptimize(total);
+    }
+}
+BENCHMARK(Lambda);
+
+static void StdFunctionWithLambda(benchmark::State& state)
+{
+    auto lambda = [](double input) {
+        auto total = input * 2.0 + 1.0;
+        return total;
+    };
+    benchmark::DoNotOptimize(lambda);
+
+    std::function<double(double)> func{ lambda };
+    benchmark::DoNotOptimize(func);
+
+    for (auto _ : state) {
+        auto total = 0.0;
+        for (size_t i{}; i != InnerIterations; ++i) {
+            total += func(total);
+        }
+        benchmark::DoNotOptimize(total);
+    }
+}
+BENCHMARK(StdFunctionWithLambda);
+
+static void StdFunctionWithFreeFunction(benchmark::State& state)
+{
+    std::function<double(double)> func{ &MyFunction };
+    benchmark::DoNotOptimize(func);
+
+    for (auto _ : state) {
+        auto total = 0.0;
+        for (size_t i{}; i != InnerIterations; ++i) {
+            total += func(total);
+        }
+        benchmark::DoNotOptimize(total);
+    }
+}
+BENCHMARK(StdFunctionWithFreeFunction);
+
+// ===========================================================================
+// End-of-File
+// ===========================================================================

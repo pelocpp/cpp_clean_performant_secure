@@ -122,7 +122,6 @@ namespace Benchmarking_Folding {
             auto sum{ addIterating(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) };
         }
     }
-
 }
 
 int benchmarking_folding()

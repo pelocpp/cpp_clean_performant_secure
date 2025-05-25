@@ -136,6 +136,7 @@
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="ScopedTimer_Folding.cpp" />
     <ClCompile Include="ScopedTimer_GettingStarted.cpp" />
+    <ClCompile Include="ScopedTimer_Lambda_vs_Std_Function.cpp" />
     <ClCompile Include="ScopedTimer_StdStringView_vs_StdString.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +155,7 @@
   <ItemGroup>
     <Text Include="Benchmarking_Folding.txt" />
     <Text Include="Benchmarking_GettingStarted.txt" />
+    <Text Include="Benchmarking_Lambda_vs_Std_Function.txt" />
     <Text Include="Benchmarking_StdArray_Constant_Initialization.txt" />
     <Text Include="Benchmarking_StdStringView_vs_StdString.txt" />
     <Text Include="Benchmarking_StdUninitializedCopy_Demo.txt" />
