@@ -145,12 +145,12 @@ namespace Benchmarking_STL_Containers_Populating {
       {"T5heeeeeeeeeeeeeeeeeeeee", "lol"},
     };
 
-    auto sortedItems = [] () {
-        // want to sort a copy
-        auto sorted = itemsInVector;
-        std::sort(sorted.begin(), sorted.end());
-        std::reverse(sorted.begin(), sorted.end());
-        return sorted;
+    static auto sortedItems = [] () {
+        // want to sort a reversed sorted copy of 'itemsInVector'
+        auto toBeSorted = itemsInVector;
+        std::sort(toBeSorted.begin(), toBeSorted.end());
+        std::reverse(toBeSorted.begin(), toBeSorted.end());
+        return toBeSorted;
     }();
 
     static const size_t Iterations = 100'000;
@@ -180,6 +180,7 @@ namespace Benchmarking_STL_Containers_Populating {
 
             std::unordered_map<std::string, std::string> result;
             result.reserve(sortedItems.size());
+
             for (const auto& item : sortedItems) {
                 result[item.first] = item.second;
             }

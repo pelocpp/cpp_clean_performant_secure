@@ -140,18 +140,19 @@ std::vector<std::pair<std::string, std::string>> itemsInVector = {
   {"T5heeeeeeeeeeeeeeeeeeeee", "lol"},
 };
 
-auto sorted = [] {
-  auto sorted = itemsInVector;
-  std::sort(sorted.begin(), sorted.end());
-  std::reverse(sorted.begin(), sorted.end());
-  return sorted;
+auto sortedItems = [] () {
+    // want to sort a reversed sorted copy of 'itemsInVector'
+    auto toBeSorted = itemsInVector;
+    std::sort(toBeSorted.begin(), toBeSorted.end());
+    std::reverse(toBeSorted.begin(), toBeSorted.end());
+    return toBeSorted;
 }();
 
 static void PopulateMap(benchmark::State& state) {
    for (auto _ : state) {
     std::map<std::string, std::string> result;
     
-    for (const auto &item : sorted) {
+    for (const auto &item : sortedItems) {
       result.insert(std::make_pair(item.first, item.second));
     }
     benchmark::DoNotOptimize(result);
@@ -162,9 +163,9 @@ BENCHMARK(PopulateMap);;
 static void PopulateUnorderedMap(benchmark::State& state) {
    for (auto _ : state) {
     std::unordered_map<std::string, std::string> result;
-    result.reserve(sorted.size());
+    result.reserve(sortedItems.size());
     
-    for (const auto &item : sorted) {
+    for (const auto &item : sortedItems) {
       result[item.first] = item.second;
     }
     benchmark::DoNotOptimize(result);
@@ -175,9 +176,9 @@ BENCHMARK(PopulateUnorderedMap);
 static void PopulateVector(benchmark::State& state) {
    for (auto _ : state) {
     std::vector<std::pair<std::string, std::string>> result;
-    result.reserve(sorted.size());
+    result.reserve(sortedItems.size());
     
-    for (const auto &item : sorted) {
+    for (const auto &item : sortedItems) {
       result.push_back(std::make_pair(item.first, item.second));
     }
     benchmark::DoNotOptimize(result);
@@ -188,9 +189,9 @@ BENCHMARK(PopulateVector);
 static void PopulateSortedVector(benchmark::State& state) {
    for (auto _ : state) {
     std::vector<std::pair<std::string, std::string>> result;
-    result.reserve(sorted.size());
+    result.reserve(sortedItems.size());
     
-    for (const auto &item : sorted) {
+    for (const auto &item : sortedItems) {
       result.push_back(std::make_pair(item.first, item.second));
     }
 
@@ -210,7 +211,7 @@ static void PopulateLinkedList(benchmark::State& state) {
    for (auto _ : state) {
     std::list<std::pair<std::string, std::string>> result;
 
-    for (const auto &item : sorted) {
+    for (const auto &item : sortedItems) {
       result.push_back(std::make_pair(item.first, item.second));
     }
     benchmark::DoNotOptimize(result);
@@ -222,7 +223,7 @@ static void PopulateDeque(benchmark::State& state) {
    for (auto _ : state) {
     std::deque<std::pair<std::string, std::string>> result;
 
-    for (const auto &item : sorted) {
+    for (const auto &item : sortedItems) {
       result.push_back(std::make_pair(item.first, item.second));
     }
     benchmark::DoNotOptimize(result);
