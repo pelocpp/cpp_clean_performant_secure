@@ -13,9 +13,11 @@
 #include <unordered_map>
 #include <vector>
 
+// WEITER https://idriss.medium.com/how-to-use-quick-benchmark-tool-for-performance-legacy-in-c-a96149ed40e3
+
 namespace Benchmarking_STL_Containers_Populating {
 
-    static std::vector<std::pair<std::string, std::string>> itemsInVector = {
+    std::vector<std::pair<std::string, std::string>> itemsInVector = {
       {"Hello", "lol"},
       {"The", "lol"},
       {"Quick", "lol"},
@@ -143,7 +145,8 @@ namespace Benchmarking_STL_Containers_Populating {
       {"T5heeeeeeeeeeeeeeeeeeeee", "lol"},
     };
 
-    static auto sorted = [] {
+    auto sortedItems = [] () {
+        // want to sort a copy
         auto sorted = itemsInVector;
         std::sort(sorted.begin(), sorted.end());
         std::reverse(sorted.begin(), sorted.end());
@@ -161,7 +164,7 @@ namespace Benchmarking_STL_Containers_Populating {
         for (size_t i{}; i != Iterations; ++i) {
 
             std::map<std::string, std::string> result;
-            for (const auto& item : sorted) {
+            for (const auto& item : sortedItems) {
                 result.insert(std::make_pair(item.first, item.second));
             }
         }
@@ -176,8 +179,8 @@ namespace Benchmarking_STL_Containers_Populating {
         for (size_t i{}; i != Iterations; ++i) {
 
             std::unordered_map<std::string, std::string> result;
-            result.reserve(sorted.size());
-            for (const auto& item : sorted) {
+            result.reserve(sortedItems.size());
+            for (const auto& item : sortedItems) {
                 result[item.first] = item.second;
             }
         }
@@ -192,9 +195,9 @@ namespace Benchmarking_STL_Containers_Populating {
         for (size_t i{}; i != Iterations; ++i) {
 
             std::vector<std::pair<std::string, std::string>> result;
-            result.reserve(sorted.size());
+            result.reserve(sortedItems.size());
 
-            for (const auto& item : sorted) {
+            for (const auto& item : sortedItems) {
                 result.push_back(std::make_pair(item.first, item.second));
             }
         }
@@ -209,9 +212,9 @@ namespace Benchmarking_STL_Containers_Populating {
         for (size_t i{}; i != Iterations; ++i) {
 
             std::vector<std::pair<std::string, std::string>> result;
-            result.reserve(sorted.size());
+            result.reserve(sortedItems.size());
 
-            for (const auto& item : sorted) {
+            for (const auto& item : sortedItems) {
                 result.push_back(std::make_pair(item.first, item.second));
             }
 
@@ -235,8 +238,7 @@ namespace Benchmarking_STL_Containers_Populating {
 
             std::list<std::pair<std::string, std::string>> result;
 
-            for (const auto& item : sorted)
-            {
+            for (const auto& item : sortedItems) {
                 result.push_back(std::make_pair(item.first, item.second));
             }
         }
@@ -252,8 +254,7 @@ namespace Benchmarking_STL_Containers_Populating {
 
             std::deque<std::pair<std::string, std::string>> result;
 
-            for (const auto& item : sorted)
-            {
+            for (const auto& item : sortedItems) {
                 result.push_back(std::make_pair(item.first, item.second));
             }
         }

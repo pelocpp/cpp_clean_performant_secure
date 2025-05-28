@@ -22,8 +22,8 @@ int main()
     //benchmarking_lambda_vs_std_function();
     //benchmarking_std_stringview_vs_std_string();
 
-    //benchmarking_stl_containers_populating();
-    benchmarking_stl_containers_accessing();
+    benchmarking_stl_containers_populating();
+    //benchmarking_stl_containers_accessing();
     return 0;
 }
 
