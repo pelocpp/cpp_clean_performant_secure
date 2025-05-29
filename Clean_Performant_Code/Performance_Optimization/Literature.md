@@ -15,6 +15,13 @@
 
 ---
 
+  * Pikus, Fedor G. &bdquo;*The Art of Writing Efficient Programs*&rdquo;.</br>
+    Packt Publishing (22. Oktober 2021), 464 Seiten. Sprache: Englisch. ISBN-13: 978-1800208117, ISBN-10: 1800208111.
+
+    <img src="Buch_Fedor_Pikus_The_Art_of_Writing_Efficient_Programs.png" width="150">
+
+---
+
   * Roy, Patrice &bdquo;*C++ Memory Management (1. Auflage)*&rdquo;.</br>
     Packt Publishing (25. März 2025), 434 Seiten. Sprache: Englisch. ISBN-13: 978-1805129806, ISBN-10: 1805129805.
 

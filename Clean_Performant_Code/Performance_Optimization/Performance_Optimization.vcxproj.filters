@@ -40,5 +40,8 @@
     <Image Include="Buch_Patrice_Roy_Cpp_Memory_Management.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Buch_Fedor_Pikus_The_Art_of_Writing_Efficient_Programs.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
