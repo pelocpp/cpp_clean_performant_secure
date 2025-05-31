@@ -47,6 +47,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Clean_Code_Catch2", "Clean_
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Benchmarking_Profiling", "Clean_Performant_Code\Benchmarking_Profiling\Benchmarking.vcxproj", "{F1A9AB12-DA60-49EA-B326-89B7AA640D82}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Person", "Person", "{47FBCE54-1CCF-4B2D-A4D7-8CAFCCB25E37}"
+	ProjectSection(SolutionItems) = preProject
+		Clean_Performant_Code\Person\Person.h = Clean_Performant_Code\Person\Person.h
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

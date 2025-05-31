@@ -2,81 +2,28 @@
 // Hashing.cpp
 // ===========================================================================
 
+#include "../Person/Person.h"
+
 #include <print>
 #include <string>
 #include <unordered_map>
-
-namespace DataStructuresAndAlgorithms {
-
-    namespace Hashing {
-
-        // =======================================================================
-        // Hashing
-
-        struct Person
-        {
-            std::string m_firstName;
-            std::string m_lastName;
-            size_t      m_age;
-
-            bool operator== (const Person& other) const {
-
-                return
-                    m_firstName == other.m_firstName &&
-                    m_lastName == other.m_lastName &&
-                    m_age == other.m_age;
-            }
-        };
-    }
-}
 
 namespace std
 {
     // =======================================================================
     // std::hash
 
-    using namespace DataStructuresAndAlgorithms::Hashing;
-
     template <>
     struct hash<Person>
     {
         size_t operator()(const Person& p) const {
 
-            auto hash1{ std::hash<std::string>() (p.m_firstName) };
-            auto hash2{ std::hash<size_t>() (p.m_age) };
-            auto hash3{ std::hash<std::string>() (p.m_lastName) };
+            auto hash1{ std::hash<std::string>() (p.getFirstname()) };
+            auto hash2{ std::hash<size_t>() (p.getAge()) };
+            auto hash3{ std::hash<std::string>() (p.getLastname()) };
 
             size_t hash{ hash1 ^ (hash2 << 1) ^ (hash3 << 2) };  // combine these hash values
             return hash;
-        }
-    };
-}
-
-namespace std
-{
-    // =======================================================================
-    // std::println
-
-    using namespace DataStructuresAndAlgorithms::Hashing;
-
-    template <>
-    struct formatter<Person>
-    {
-        constexpr auto parse(std::format_parse_context& ctx) {
-            return ctx.begin();
-        }
-
-        auto format(const Person& person, std::format_context& ctx) const {
-
-            auto firstName{ person.m_firstName };
-            auto lastName{ person.m_lastName };
-            auto age{ person.m_age };
-
-            return std::format_to(
-                ctx.out(),
-                "Person {} {} [Age: {}]",
-                firstName, lastName, age
-            );
         }
     };
 }

@@ -432,12 +432,14 @@ der Umstand des Fehlers ist aber vergleichsweise einfach zu erklären.
 Wollten wir eine benutzerdefinierte Klasse, wie zum Beispiel besagte Klasse `Person`
 
 ```cpp
-01: struct Person
+01: class Person
 02: {
-03:     std::string m_firstName;
-04:     std::string m_lastName;
-05:     size_t      m_age;
-06: };
+03: private:
+04:     std::string m_first;
+05:     std::string m_last;
+06:     size_t      m_age;
+07:     ...
+08: 
 ```
 
 als Schlüssel für eine Hashtabelle verwenden, also etwa auf die Weise
@@ -461,11 +463,11 @@ mit `Person`-Objekten als Parameter überschreiben, zum Beispiel so:
 05:     {
 06:         size_t operator()(const Person& p) const {
 07: 
-08:             auto hash1{ std::hash<std::string>() (p.m_firstName) };
-09:             auto hash2{ std::hash<size_t>() (p.m_age) };
-10:             auto hash3{ std::hash<std::string>() (p.m_lastName) };
+08:             auto hash1{ std::hash<std::string>() (p.getFirstname()) };
+09:             auto hash2{ std::hash<size_t>() (p.getAge()) };
+10:             auto hash3{ std::hash<std::string>() (p.getLastname()) };
 11: 
-12:             size_t hash{ hash1 ^ (hash2 << 1) ^ (hash3 << 2) };
+12:             size_t hash{ hash1 ^ (hash2 << 1) ^ (hash3 << 2) };  // combine these hash values
 13:             return hash;
 14:         }
 15:     };

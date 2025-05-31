@@ -8,6 +8,8 @@
 
 #include "../LoggerUtility/ScopedTimer.h"
 
+#include "../Person/Person.h"
+
 #include <algorithm>
 #include <bitset>
 #include <cassert>
@@ -333,25 +335,6 @@ namespace MemoryManagement {
     // =======================================================================
     // Placement New
 
-        class Person
-        {
-        private:
-            std::string m_first;
-            std::string m_last;
-            size_t      m_age;
-
-        public:
-            Person(std::string first, std::string last, size_t age)
-                : m_first{ first }, m_last{ last }, m_age{ age }
-            {
-                std::println("c'tor Person");
-            }
-
-            ~Person() {
-                std::println("d'tor Person");
-            }
-        };
-
         unsigned char g_memory[sizeof (Person)];
 
         static void test_placement_new_01() {
@@ -405,43 +388,6 @@ namespace MemoryManagement {
         constexpr std::size_t DataSize = 100'000;
         constexpr std::size_t NumIterations = 500;
 
-        class Person
-        {
-        private:
-            std::string m_first;
-            std::string m_last;
-            size_t      m_age;
-
-        public:
-            Person(): m_first{}, m_last{}, m_age{} {}
-
-            Person(std::string first, std::string last, size_t age)
-                : m_first{ first }, m_last{ last }, m_age{ age }
-            {
-                //std::println("Person");
-            }
-
-            //Person(const Person& other)
-            //    : m_first{ other.m_first }, m_last{ other.m_last }, m_age{ other.m_age }
-            //{
-            //    std::println("copy c'tor Person");
-            //}
-
-            //Person& operator= (const Person& other) {
-
-            //    std::println("operator=");
-
-            //    m_first = other.m_first;
-            //    m_last = other.m_last;
-            //    m_age = other.m_age;
-
-            //    return *this;
-            //}
-
-            //~Person() {
-            //    std::println("~Person");
-            //}
-        };
 
 
         static void test_placement_new_example_00()
