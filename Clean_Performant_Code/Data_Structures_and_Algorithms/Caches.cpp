@@ -515,13 +515,15 @@ void test_caches()
 {
     using namespace DataStructuresAndAlgorithms;
 
-    CacheLinesAndCacheSizes::test_examine_cache_line_size();
-    CacheLinesAndCacheSizes::test_examine_l1_cache_size();
+    //CacheLinesAndCacheSizes::test_examine_cache_line_size();
+    //CacheLinesAndCacheSizes::test_examine_l1_cache_size();
 
-    CacheMisses_False_Sharing::test_cache_lines();
+    CacheMisses::test_cache_thrashing();
 
-    CacheMisses_False_Sharing::test_false_sharing_short_demo();  // short demo
-    CacheMisses_False_Sharing::test_false_sharing_long_demo();  // long demo
+    //CacheMisses_False_Sharing::test_cache_lines();
+
+    //CacheMisses_False_Sharing::test_false_sharing_short_demo();  // short demo
+    //CacheMisses_False_Sharing::test_false_sharing_long_demo();  // long demo
 }
 
 // ===========================================================================
