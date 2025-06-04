@@ -16,8 +16,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Data_Structures_and_Algorit
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Memory_Management", "Clean_Performant_Code\Memory_Management\MemoryManagement.vcxproj", "{FF25EF19-AABC-41AD-9C04-D44E22AAB81A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Essential_Utilities", "Clean_Performant_Code\Essential Utilities\Essential Utilities.vcxproj", "{3A635FE3-4DF5-4DD6-9CDE-90FD080E3C0C}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ranges", "Clean_Performant_Code\Ranges\Ranges.vcxproj", "{77E3F2A5-8576-46A0-AF24-0AD0E1B38A6D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Clean_Code_Guidelines", "Clean_Performant_Code\Guidelines\Guidelines.vcxproj", "{7A337D9C-2A2E-4B03-A7BA-92AD759FC5C9}"
@@ -86,14 +84,6 @@ Global
 		{FF25EF19-AABC-41AD-9C04-D44E22AAB81A}.Release|x64.Build.0 = Release|x64
 		{FF25EF19-AABC-41AD-9C04-D44E22AAB81A}.Release|x86.ActiveCfg = Release|Win32
 		{FF25EF19-AABC-41AD-9C04-D44E22AAB81A}.Release|x86.Build.0 = Release|Win32
-		{3A635FE3-4DF5-4DD6-9CDE-90FD080E3C0C}.Debug|x64.ActiveCfg = Debug|x64
-		{3A635FE3-4DF5-4DD6-9CDE-90FD080E3C0C}.Debug|x64.Build.0 = Debug|x64
-		{3A635FE3-4DF5-4DD6-9CDE-90FD080E3C0C}.Debug|x86.ActiveCfg = Debug|Win32
-		{3A635FE3-4DF5-4DD6-9CDE-90FD080E3C0C}.Debug|x86.Build.0 = Debug|Win32
-		{3A635FE3-4DF5-4DD6-9CDE-90FD080E3C0C}.Release|x64.ActiveCfg = Release|x64
-		{3A635FE3-4DF5-4DD6-9CDE-90FD080E3C0C}.Release|x64.Build.0 = Release|x64
-		{3A635FE3-4DF5-4DD6-9CDE-90FD080E3C0C}.Release|x86.ActiveCfg = Release|Win32
-		{3A635FE3-4DF5-4DD6-9CDE-90FD080E3C0C}.Release|x86.Build.0 = Release|Win32
 		{77E3F2A5-8576-46A0-AF24-0AD0E1B38A6D}.Debug|x64.ActiveCfg = Debug|x64
 		{77E3F2A5-8576-46A0-AF24-0AD0E1B38A6D}.Debug|x64.Build.0 = Debug|x64
 		{77E3F2A5-8576-46A0-AF24-0AD0E1B38A6D}.Debug|x86.ActiveCfg = Debug|Win32

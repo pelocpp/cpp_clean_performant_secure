@@ -21,9 +21,6 @@
     <ClCompile Include="Program.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\LoggerUtility\Logger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Caches.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

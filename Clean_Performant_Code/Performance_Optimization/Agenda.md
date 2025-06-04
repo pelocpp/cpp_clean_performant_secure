@@ -13,17 +13,21 @@
 ## Speicherverwaltung (Memory Management)
 
   * Speicherbereiche eine C/C++&ndash;Programms
-  * Stack versus Heap
-  * CPU-Cache-Speicher
+  * Globales Datensegment, Stack und Heap
+  * CPU Cache-Speicher
   * Ausrichtung (*Alignment*) und *Padding* 
   * *Placement New*: Trennung von Speicherallokation und Objektkonstruktion
 
 
 ## Einfache Code-Optimierungstechniken
 
+  * *Call*-*by*-*Value* versus *Call*-*by*-*Reference* bei elementaren Datentypen
+  * *Call*-*by*-*Value* versus *Call*-*by*-*Reference* bei nicht-elementaren Datentypen
+  * *getter*-Methoden von Klassen: Rückgabetyp *By*-*Value* oder *By*-*Reference*
+  * Klassen (Strukturen) und die Ausrichtung der Daten: Je kleiner, desto besser 
   * Klasse `std::vector`: Bedeutung der `reserve`-Methode
   * Wozu Klasse `std::initializer_list` verwenden?
-  * SSO (*Small String Optimization*)
+  * Klasse `std::string`: SSO (*Small String Optimization*)
   * Wozu Klasse `std::string_view` verwenden?
   * `constexpr` &ndash; *Compile-Time*&ndash;Programmierung
   * IIFE &ndash; *Immediately Invoked Functional Expression*
