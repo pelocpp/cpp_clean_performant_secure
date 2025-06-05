@@ -9,8 +9,6 @@
 
 ## Inhalt
 
-### [CPU-Cache-Speicher](Readme_Caches.md)
-
 ### [Die *Big-O Notation*](Readme_Big_O_Notation.md)
 
 ### [STL Container](Readme_STL_Container.md)
@@ -22,17 +20,6 @@
 ---
 
 ## Literatur <a name="link6"></a>
-
-#### CPU-Cache-Speicher
-
-Ein interessanter Artikel zum Thema *Demystifying CPU Caches with Examples*
-findet sich [hier](https://mecha-mind.medium.com/demystifying-cpu-caches-with-examples-810534628d71).
-
-Eine *Gallery of Processor Cache Effects* beschreibt *Igor Ostrovsky*
-in seinem [Blog](https://igoro.com/archive/gallery-of-processor-cache-effects/).
-
-Die Anregungen zur Berechnung der L1 Cache Größe finden Sie unter dem Github Gist<br />
-[Get L1 data cache size on most operating systems](https://gist.github.com/kimwalisch/16c34ae16447b245464a)
 
 #### STL Container und Big-O Notation
 

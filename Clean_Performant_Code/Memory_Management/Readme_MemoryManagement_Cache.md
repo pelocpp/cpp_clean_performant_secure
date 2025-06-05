@@ -1,6 +1,6 @@
 # CPU-Cache-Speicher
 
-[Zurück](Readme_Data_Structures_and_Algorithms.md)
+[Zurück](Readme_MemoryManagement.md)
 
 ---
 
@@ -23,7 +23,7 @@
 [*Caches.cpp*](Caches.cpp)<br />
 
 ---
-
+ 
 ## Allgemeines <a name="link1"></a>
 
 CPU-Cache-Speicher ist eine Art temporärer Datenspeicher, der sich auf dem Prozessor befindet.
@@ -449,6 +449,6 @@ und
 
 ---
 
-[Zurück](Readme_Data_Structures_and_Algorithms.md)
+[Zurück](Readme_MemoryManagement.md)
 
 ---
