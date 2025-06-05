@@ -130,11 +130,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\LoggerUtility\Logger.cpp" />
-    <ClCompile Include="Arena.cpp" />
-    <ClCompile Include="Cache.cpp" />
-    <ClCompile Include="LowLevelSTLAlgorithms.cpp" />
-    <ClCompile Include="MemoryManagement.cpp" />
+    <ClCompile Include="_Arena.cpp" />
+    <ClCompile Include="MemoryManagement_Alignment_Padding.cpp" />
+    <ClCompile Include="MemoryManagement_Cache_False_Sharing.cpp" />
+    <ClCompile Include="MemoryManagement_Heap.cpp" />
+    <ClCompile Include="MemoryManagement_LowLevelSTLAlgorithms.cpp" />
+    <ClCompile Include="MemoryManagement_Placement_New.cpp" />
+    <ClCompile Include="MemoryManagement_Stack.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="Arena.h" />
   </ItemGroup>
@@ -145,9 +147,10 @@
     <None Include="False_Sharing_Example_02.svg" />
     <None Include="False_Sharing_Example_03.svg" />
     <None Include="Readme_MemoryManagement_Alignment_Padding.md" />
-    <None Include="Readme_MemoryManagement_Cache.md" />
+    <None Include="Readme_MemoryManagement_Cache_False_Sharing.md" />
     <None Include="Readme_MemoryManagement.md" />
     <None Include="Readme_MemoryManagement_Heap.md" />
+    <None Include="Readme_MemoryManagement_Placement_New.md" />
     <None Include="Readme_MemoryManagement_Stack.md" />
   </ItemGroup>
   <ItemGroup>

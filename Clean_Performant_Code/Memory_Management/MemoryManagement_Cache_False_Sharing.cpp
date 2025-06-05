@@ -1,5 +1,5 @@
 // ===========================================================================
-// Cache.cpp
+// MemoryManagement_Cache_False_Sharing.cpp // Memory Management
 // ===========================================================================
 
 #include "../LoggerUtility/ScopedTimer.h"
@@ -511,19 +511,19 @@ namespace DataStructuresAndAlgorithms {
 
 // =================================================================
 
-void test_caches()
+void memory_management_cache_false_sharing()
 {
     using namespace DataStructuresAndAlgorithms;
 
-    //CacheLinesAndCacheSizes::test_examine_cache_line_size();
-    //CacheLinesAndCacheSizes::test_examine_l1_cache_size();
+    CacheLinesAndCacheSizes::test_examine_cache_line_size();
+    CacheLinesAndCacheSizes::test_examine_l1_cache_size();
 
     CacheMisses::test_cache_thrashing();
 
-    //CacheMisses_False_Sharing::test_cache_lines();
+    CacheMisses_False_Sharing::test_cache_lines();
 
-    //CacheMisses_False_Sharing::test_false_sharing_short_demo();  // short demo
-    //CacheMisses_False_Sharing::test_false_sharing_long_demo();  // long demo
+    CacheMisses_False_Sharing::test_false_sharing_short_demo();  // short demo
+    CacheMisses_False_Sharing::test_false_sharing_long_demo();  // long demo
 }
 
 // ===========================================================================

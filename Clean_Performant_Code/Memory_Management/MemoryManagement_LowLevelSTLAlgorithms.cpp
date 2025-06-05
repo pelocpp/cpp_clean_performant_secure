@@ -401,7 +401,7 @@ namespace LowLevel_MemoryFunctions_Functions {
     }
 }
 
-void low_level_memory_management_functions()
+void memory_management_low_level_stl_functions()
 {
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 

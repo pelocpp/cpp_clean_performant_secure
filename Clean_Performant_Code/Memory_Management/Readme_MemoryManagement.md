@@ -14,6 +14,8 @@
 
 ### [Alignment und Padding (Ausrichtung und Abstand)](Readme_MemoryManagement_Alignment_Padding.md)
 
+### [Placement New](Readme_MemoryManagement_Placement_New.md)
+
 ### [Literatur](XXX.md)
 
 ---
