@@ -139,12 +139,11 @@ namespace DataStructuresAndAlgorithms {
 
     namespace CacheMisses_False_Sharing {
 
-      //  const std::size_t Iterations = 100'000'000;  // Debug
-
+#ifdef _DEBUG
+        const std::size_t Iterations = 100'000'000;  // Debug
+#else
         const std::size_t Iterations = 300'000'000;  // Release
-
-
-        // const std::size_t Iterations = 10;  // 
+#endif
 
         struct Data {
             int x{};
@@ -203,6 +202,8 @@ namespace DataStructuresAndAlgorithms {
 
         static void test_false_sharing_short_demo()
         {
+            std::println("With False-Sharing:");
+
             test_false_sharing_with_false_sharing();
             test_false_sharing_with_false_sharing();
             test_false_sharing_with_false_sharing();
@@ -210,6 +211,7 @@ namespace DataStructuresAndAlgorithms {
             test_false_sharing_with_false_sharing();
 
             std::println();
+            std::println("No False-Sharing:");
 
             test_false_sharing_no_false_sharing();
             test_false_sharing_no_false_sharing();
