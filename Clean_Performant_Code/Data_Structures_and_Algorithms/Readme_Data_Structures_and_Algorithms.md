@@ -1,9 +1,8 @@
-# Effizienz der STL-Komponenten im Detail
+# STL-Container und -Algorithmen im Detail
 
 [Zurück &bdquo;*Clean Code*&rdquo;](../Guidelines/Readme_Guidelines.md)
 
 [Zurück &bdquo;*Performanz und Optimierung*&rdquo;](../Performance_Optimization/Readme_Performance_Optimization.md)
-
 
 ---
 

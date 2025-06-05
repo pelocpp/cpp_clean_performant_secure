@@ -126,5 +126,8 @@
     <Text Include="Benchmarking_STL_Containers_Accessing.txt">
       <Filter>Source Files</Filter>
     </Text>
+    <Text Include="Benchmarking_Placement_New.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

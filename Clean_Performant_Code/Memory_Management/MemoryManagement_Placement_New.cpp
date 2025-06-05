@@ -66,9 +66,7 @@ namespace Placement_New_Example {
 
     // Release Mode
     constexpr std::size_t DataSize = 100'000;
-    constexpr std::size_t NumIterations = 500;
-
-
+    constexpr std::size_t NumIterations = 300;
 
     static void test_placement_new_example_00()
     {
@@ -277,8 +275,6 @@ namespace Placement_New_Example {
         }
         std::println("");
     }
-
-
 }
 
 namespace Placement_New_Example_Quickbench {

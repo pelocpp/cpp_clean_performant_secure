@@ -7,25 +7,17 @@
 ## Inhalt
   
   * [Allgemeines](#link1)
-  * [Unterschiede des Stapels im Debug- und Relase-Modus](#link3) 
-  * [Ausdehnung des Stapels](#link4)
-  * [Größe des Stapels bestimmen](#link5)
+  * [Ein Beispiel: `std::uninitialized_copy`](#link2) 
 
 ---
 
 #### Quellcode
 
-[*MemoryManagement_Stack.cpp*](MemoryManagement_Stack.cpp)<br />
+[*MemoryManagement_LowLevelSTLAlgorithms.cpp*](MemoryManagement_LowLevelSTLAlgorithms.cpp)<br />
 
 ---
 
 ## Allgemeines <a name="link1"></a>
-
-
----
-
-
-### *Low-level* Speicherverwaltungsfunktionen <a name="link13"></a>
 
 Die manuelle Lebensdauerverwaltung und das Erstellen von Objekten in nicht initialisierten Speicherblöcken
 ist ein spezielleres Thema.
@@ -38,7 +30,7 @@ Die C++-Standardbibliothek STL bietet eine Reihe neuer, *low-level* Algorithmen,
 die Standard-, Kopier-, Verschiebe- und Wertkonstruktion sowie deren Freigabe
 auf der Grundlage nicht initialisierten Speichers ermöglichen.
 
-### Ein Beispiel: `std::uninitialized_copy`
+### Ein Beispiel: `std::uninitialized_copy` <a name="link2"></a>
 
 Wir betrachten eine häufig in der Praxis auftretende Situation:
 
@@ -172,7 +164,6 @@ Hierzu folgen nun zwei weitere Beispiele, wir wechseln von der Klasse `Integer` 
 18:     std::println();
 19: }
 ```
-
 
 *Beispiel* 3:
 

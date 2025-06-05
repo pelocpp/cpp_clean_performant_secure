@@ -1,4 +1,4 @@
-# C++ Performance Optimierung: Getting Started
+# Getting Started: Einfache Optimierungstechniken
 
 [Zurück](../Performance_Optimization/Readme_Performance_Optimization.md)
 

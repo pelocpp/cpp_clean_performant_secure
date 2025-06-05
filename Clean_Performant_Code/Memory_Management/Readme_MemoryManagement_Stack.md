@@ -7,9 +7,9 @@
 ## Inhalt
   
   * [Allgemeines](#link1)
-  * [Unterschiede des Stapels im Debug- und Relase-Modus](#link3) 
-  * [Ausdehnung des Stapels](#link4)
-  * [Größe des Stapels bestimmen](#link5)
+  * [Unterschiede des Stapels im Debug- und Relase-Modus](#link2)
+  * [Ausdehnung des Stapels](#link3)
+  * [Größe des Stapels bestimmen](#link4)
 
 ---
 
@@ -21,10 +21,9 @@
 
 ## Allgemeines <a name="link1"></a>
 
-
 ---
 
-### Unterschiede des Stapels im Debug- und Relase-Modus <a name="link3"></a>
+### Unterschiede des Stapels im Debug- und Relase-Modus <a name="link2"></a>
 
 Bei der Suche nach Fehlern versorgt uns die Visual Stdio IDE mit einer Reihe von unterstützenden Tools.
 Ein simples Tool sind *Memory Windows*:
@@ -111,7 +110,7 @@ ob Beschädigungen in den flankierenden Speicherbereichen vorhanden sind und, wen
 Laufzeitfehlermeldungen generieren.
 
 
-### Ausdehnung des Stapels <a name="link4"></a>
+### Ausdehnung des Stapels <a name="link3"></a>
 
 Wir analysieren den Stack an einem kleinen Beispiel, um herausfinden,
 in welche Richtung er wächst. Dazu vergleichen wir die Adressen von Variablen, die sich auf dem Stapel befinden.
@@ -167,7 +166,7 @@ Die verbleibenden 28 Bytes enthalten Daten, die benötigt werden, wenn die Funkti
 
 ---
 
-### Die Größe des Stapels bestimmen <a name="link5"></a>
+### Die Größe des Stapels bestimmen <a name="link4"></a>
 
 Wir versuchen, ein Programm zu schreiben, das die Größe des Stacks auf einem Rechner bestimmt.
 Dies lässt sich allerdings nur im Rahmen einer Schätzung durchführen.

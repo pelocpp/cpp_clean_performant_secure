@@ -15,30 +15,30 @@ public:
     // Rule-of-Six methods
     Person() : m_age{ }
     {
-        std::println("default c'tor Person");
+        // std::println("default c'tor Person");
     }
 
     Person(std::string first, std::string last, size_t age)
         : m_first{ first }, m_last{ last }, m_age{ age }
     {
-        std::println("user defined c'tor Person");
+        // std::println("user defined c'tor Person");
     }
 
     Person(const Person& other)
         : m_first{ other.m_first }, m_last{ other.m_last }, m_age{ other.m_age }
     {
-        std::println("copy c'tor Person");
+        // std::println("copy c'tor Person");
     }
 
     Person(Person&& other) noexcept
         : m_first{ std::move(other.m_first) }, m_last{ std::move(other.m_last) }, m_age{ std::move(other.m_age) }
     {
-        std::println("move c'tor Person");
+        // std::println("move c'tor Person");
     }
 
     Person& operator= (const Person& other)
     {
-        std::println("copy operator= Person");
+        // std::println("copy operator= Person");
 
         m_first = other.m_first;
         m_last = other.m_last;
@@ -49,7 +49,7 @@ public:
 
     Person& operator= (Person&& other) noexcept
     {
-        std::println("move operator= Person");
+        // std::println("move operator= Person");
 
         m_first = std::move(other.m_first);
         m_last = std::move(other.m_last);
@@ -59,7 +59,7 @@ public:
     }
 
     ~Person() {
-        std::println("d'tor Person");
+        // std::println("d'tor Person");
     }
 
     // operators - needed for hashing

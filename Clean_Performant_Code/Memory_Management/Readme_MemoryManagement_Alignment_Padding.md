@@ -7,12 +7,12 @@
 ## Inhalt
   
   * [Allgemeines](#link1)
-  * [Ausrichtung von Variablen im Speicher (Memory Alignment)](#link6)
-    * [`alignof()`](#link7)
-    * [`alignas`](#link8)
-    * [`std::align`](#link9)
-    * [`std::max_align_t` ](link10)
-  * [Padding](#link11)
+  * [Ausrichtung von Variablen im Speicher (Memory Alignment)](#link2)
+    * [`alignof()`](#link3)
+    * [`alignas`](#link4)
+    * [`std::align`](#link5)
+    * [`std::max_align_t` ](link6)
+  * [Padding](#link7)
 
 ---
 
@@ -26,7 +26,7 @@
 
 ---
 
-## Ausrichtung von Variablen im Speicher (Memory Alignment) <a name="link6"></a>
+## Ausrichtung von Variablen im Speicher (Memory Alignment) <a name="link2"></a>
 
 Vorab einige Begrifflichkeiten:
 
@@ -37,7 +37,7 @@ Die Ausrichtung ist immer eine Potenz von 2 und Objekte mit einer entsprechenden
 können immer nur an Speicheradressen platziert werden,
 die ein Vielfaches dieser Ausrichtung sind.
 
-### `alignof()` <a name="link7"></a>
+### `alignof()` <a name="link3"></a>
 
 Liefert die Ausrichtung des Arguments (Datentyp) `alignof()` im Speicher zurück.
 
@@ -82,7 +82,7 @@ In der &bdquo;*Type Traits*&rdquo;-Metaprogramming Bibliothek der STL gibt es ei
 Dessen Arbeitsweise ist weitestgehend identisch mit dem des Operators `alignof()`, es wird die Ausrichtung des Typs `T` zurückgeliefert.
 Von Ausnahmen abgesehen kann man also immer mit dem Operator `alignof()` arbeiten.
 
-### `alignas` <a name="link8"></a>
+### `alignas` <a name="link4"></a>
 
 Legt die Anforderung an die Ausrichtung eines Typs oder Objekts im Speicher fest.
 
@@ -118,7 +118,7 @@ Man beachte bei der Ausgabe die letzten Stellen der Adressen in binärer Darstell
 Bei einer Ausrichtungsanforderung von 16 (entspricht 2<sup>4</sup>) finden wir 4 Nullen am Ende vor,
 bei der Ausrichtungsanforderung von 1024 (entspricht 2<sup>10</sup>) entsprechend 10 Nullen.
 
-### `std::align` <a name="link9"></a>
+### `std::align` <a name="link5"></a>
 
 Legt die Anforderung an die Ausrichtung eines Typs oder Objekts im Speicher fest.
 
@@ -174,7 +174,7 @@ Number of skipped Bytes:        6
 ```
 
 
-### `std::max_align_t` <a name="link10"></a>
+### `std::max_align_t` <a name="link6"></a>
 
 
 `std::max_align_t` beschreibt eine Ausrichtungsanforderung,
@@ -211,7 +211,7 @@ Man beachte wiederum die Anzahl der Nullen am Ende der Binärdarstellung.
 
 ---
 
-## Padding <a name="link11"></a>
+## Padding <a name="link7"></a>
 
 In benutzerdefinierten Typen (Klassen, Strukturen) muss der Übersetzer manchmal zusätzliche Bytes (Padding) hinzufügen.
 Zunächt einmal muss der Übersetzer die Elemente in der im Quellcode definierten Reihenfolge platzieren.
@@ -263,8 +263,6 @@ Im Visual Stdio gibt es für Klassen einen &bdquo;*Memory Layout Viewer*&rdquo;, 
 <img src="Memory_Padding_01.png" width="600">
 
 *Abbildung* 4: &bdquo;*Memory Layout Viewer*&rdquo; auf Klasse `Document` angewendet.
-
-
 
   * Der erste Abstand zwischen `bool` und `double` beträgt 7 Byte, da das `m_rank`-Datenelement
   des Typs `double` eine Ausrichtung von 8 Byte hat.

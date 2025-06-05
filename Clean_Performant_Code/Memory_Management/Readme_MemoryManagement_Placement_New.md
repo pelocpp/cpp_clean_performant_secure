@@ -309,7 +309,6 @@ mit `int`, `std::string` oder `Person`-Objekten:
 
 ---
 
-
 [Zurück](Readme_MemoryManagement.md)
 
 ---
