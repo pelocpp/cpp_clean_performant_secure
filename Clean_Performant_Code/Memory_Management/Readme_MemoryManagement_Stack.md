@@ -15,14 +15,14 @@
 
 #### Quellcode
 
-[*STL_Algorithms.cpp*](STL_Algorithms.cpp)<br />
+[*MemoryManagement_Stack.cpp*](MemoryManagement_Stack.cpp)<br />
 
 ---
 
 ## Allgemeines <a name="link1"></a>
 
 
-## Der Stack (Stapel) <a name="link2"></a>
+---
 
 ### Unterschiede des Stapels im Debug- und Relase-Modus <a name="link3"></a>
 

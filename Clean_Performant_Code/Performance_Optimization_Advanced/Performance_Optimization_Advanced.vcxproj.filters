@@ -33,4 +33,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Performance_Optimization_Advanced.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Performance_Optimization_Advanced_Laundry.md">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

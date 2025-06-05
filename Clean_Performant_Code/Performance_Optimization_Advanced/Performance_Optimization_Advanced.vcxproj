@@ -132,6 +132,10 @@
   <ItemGroup>
     <ClInclude Include="ObjectPool.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Performance_Optimization_Advanced.md" />
+    <None Include="Performance_Optimization_Advanced_Laundry.md" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

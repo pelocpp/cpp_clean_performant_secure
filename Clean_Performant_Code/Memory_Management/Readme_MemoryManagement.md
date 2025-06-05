@@ -6,7 +6,7 @@
 
 ## Inhalt
 
-### [CPU-Cache-Speicher](Readme_Cache.md)
+### [CPU-Cache-Speicher / *False Sharing*](Readme_MemoryManagement_Cache_False_Sharing.md)
 
 ### [Der Stack (Stapel)](Readme_MemoryManagement_Stack.md)
 
@@ -14,29 +14,11 @@
 
 ### [Alignment und Padding (Ausrichtung und Abstand)](Readme_MemoryManagement_Alignment_Padding.md)
 
-### [Placement New](Readme_MemoryManagement_Placement_New.md)
+### [*Placement New*](Readme_MemoryManagement_Placement_New.md)
 
-### [Literatur](XXX.md)
+### [*Low-level* Speicherverwaltungsfunktionen](Readme_MemoryManagement_LowLevelSTLAlgorithms.md)
 
----
-
-
-
-## Inhalt
-
-  * [Allgemeines](#link1)
-
-  * [Literatur](#link16)
-
----
-
-#### Quellcode
-
-[*MemoryManagement.cpp*](MemoryManagement.cpp)<br />
-
-[*Arena.h*](Arena.h).<br />
-[*Arena.cpp*](Arena.cpp).<br />
-
+### [Literatur](#link1)
 
 ---
 
@@ -51,8 +33,9 @@
 // https://stackoverflow.com/questions/21377360/proper-way-to-create-unique-ptr-that-holds-an-allocated-array
 
 
+---
 
-## Literatur <a name="link6"></a>
+## Literatur <a name="link1"></a>
 
 #### CPU-Cache-Speicher
 

@@ -150,6 +150,7 @@
     <None Include="Readme_MemoryManagement_Cache_False_Sharing.md" />
     <None Include="Readme_MemoryManagement.md" />
     <None Include="Readme_MemoryManagement_Heap.md" />
+    <None Include="Readme_MemoryManagement_LowLevelSTLAlgorithms.md" />
     <None Include="Readme_MemoryManagement_Placement_New.md" />
     <None Include="Readme_MemoryManagement_Stack.md" />
   </ItemGroup>
