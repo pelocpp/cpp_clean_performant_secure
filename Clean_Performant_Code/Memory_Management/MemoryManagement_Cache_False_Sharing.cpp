@@ -41,6 +41,8 @@ namespace DataStructuresAndAlgorithms {
             typedef BOOL(WINAPI* LPFN_GLPI)(PSYSTEM_LOGICAL_PROCESSOR_INFORMATION, PDWORD);
 
             auto handle = GetModuleHandle(L"kernel32");
+            if (handle == NULL)
+                return;
 
             auto glpi = (LPFN_GLPI)GetProcAddress(handle, "GetLogicalProcessorInformation");
             if (glpi == NULL)
@@ -81,54 +83,67 @@ namespace DataStructuresAndAlgorithms {
 
         constexpr auto Size = capacityL1CacheSize / sizeof(int);
 
+        // static const size_t Iterations = 10'000'000;
+        static const size_t Iterations = 10;
+
         using MatrixType = std::array<std::array<size_t, Size>, Size>;
 
         static MatrixType matrix;
 
-        static auto initMatrixFast(MatrixType& matrix) {
-
-            ScopedTimer watch{};
-
-            size_t value{};
+        static auto initMatrixNoCacheThrashing(MatrixType& matrix) {
 
             for (size_t i{}; i != Size; ++i) {
                 for (size_t j{}; j != Size; ++j) {
-                    // matrix[i][j] = value++;           // no "cache thrashing"
-                    matrix[i][j] = (i * Size) + j;
+                    matrix[i][j] = (i * Size) + j;     // no "cache thrashing"
                 }
             }
         }
 
-        static auto initMatrixSlow(MatrixType& matrix) {
-
-            ScopedTimer watch{};
-
-            size_t value{};
+        static auto initMatrixWithCacheThrashing(MatrixType& matrix) {
 
             for (size_t i{}; i != Size; ++i) {
                 for (size_t j{}; j != Size; ++j) {
                     matrix[j][i] = (j * Size) + i;    // demonstrating "cache thrashing" // note: matrix element needs to be calculated differently
-                    //matrix[j][i] = value++;
                 }
             }
         }
 
-        static void test_cache_thrashing() {
-            initMatrixFast(matrix);
-            initMatrixFast(matrix);
-            initMatrixFast(matrix);
-            initMatrixFast(matrix);
-        
-            initMatrixSlow(matrix);
-            initMatrixSlow(matrix);
-            initMatrixSlow(matrix);
-            initMatrixSlow(matrix);
+        static auto testMatrixNoCacheThrashing() {
+
+            std::println("Matrix Test:  No Cache Thrashing");
+
+            ScopedTimer watch{ ScopedTimer::Resolution::Micro };
+
+            for (size_t i{}; i != Iterations; ++i) {
+                initMatrixNoCacheThrashing(matrix);
+            }
+        }
+
+        static auto testMatrixWithCacheThrashing() {
+
+            std::println("Matrix Test:  With Cache Thrashing");
+
+            ScopedTimer watch{ ScopedTimer::Resolution::Micro };
+
+            for (size_t i{}; i != Iterations; ++i) {
+                initMatrixWithCacheThrashing(matrix);
+            }
+        }
+
+        static void test_cache_thrashing()
+        {
+            testMatrixNoCacheThrashing();
+            testMatrixWithCacheThrashing();
         }
     }
 
     namespace CacheMisses_False_Sharing {
 
-        const std::size_t Iterations = 100'000'000;  // 10000000
+      //  const std::size_t Iterations = 100'000'000;  // Debug
+
+        const std::size_t Iterations = 300'000'000;  // Release
+
+
         // const std::size_t Iterations = 10;  // 
 
         struct Data {
@@ -515,15 +530,15 @@ void memory_management_cache_false_sharing()
 {
     using namespace DataStructuresAndAlgorithms;
 
-    CacheLinesAndCacheSizes::test_examine_cache_line_size();
-    CacheLinesAndCacheSizes::test_examine_l1_cache_size();
+    //CacheLinesAndCacheSizes::test_examine_cache_line_size();
+    //CacheLinesAndCacheSizes::test_examine_l1_cache_size();
 
-    CacheMisses::test_cache_thrashing();
+    //CacheMisses::test_cache_thrashing();
 
-    CacheMisses_False_Sharing::test_cache_lines();
+    //CacheMisses_False_Sharing::test_cache_lines();
 
     CacheMisses_False_Sharing::test_false_sharing_short_demo();  // short demo
-    CacheMisses_False_Sharing::test_false_sharing_long_demo();  // long demo
+    //CacheMisses_False_Sharing::test_false_sharing_long_demo();   // long demo
 }
 
 // ===========================================================================

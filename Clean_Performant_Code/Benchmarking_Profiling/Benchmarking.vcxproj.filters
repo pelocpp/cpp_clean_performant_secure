@@ -27,9 +27,6 @@
     <ClCompile Include="Advent_of_Code_2024_No_11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\LoggerUtility\Logger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ScopedTimer_GettingStarted.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

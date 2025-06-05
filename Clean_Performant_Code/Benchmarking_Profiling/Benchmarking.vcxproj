@@ -130,7 +130,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\LoggerUtility\Logger.cpp" />
     <ClCompile Include="Advent_of_Code_2024_No_10.cpp" />
     <ClCompile Include="Advent_of_Code_2024_No_11.cpp" />
     <ClCompile Include="Program.cpp" />

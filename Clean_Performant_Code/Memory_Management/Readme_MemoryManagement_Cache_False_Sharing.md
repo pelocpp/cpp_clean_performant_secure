@@ -95,7 +95,7 @@ Ein wichtiger Faktor, der die Leistung eines Computerprogramms, das den CPU-Cach
 in einem Programm zwischen verschiedenen *Cache Lines* &bdquo;hin- und her zu springen&rdquo;,
 an Stelle die Daten einer einzelnen *Cache Line* im Stück auszuwerten (solange das Programm eine derartige Funktionalität natürlich hergibt).
 
-Die Größe einer Cache Line ist in C++ einfach bestimmbar:
+Die Größe einer *Cache Line* ist in C++ einfach bestimmbar:
 
 *Beispiel*:
 
@@ -125,38 +125,40 @@ Dazu kommen einige Win32-API Betriebssystemfunktionen ins Spiel: `GetModuleHandl
 03:     typedef BOOL(WINAPI* LPFN_GLPI)(PSYSTEM_LOGICAL_PROCESSOR_INFORMATION, PDWORD);
 04: 
 05:     auto handle = GetModuleHandle(L"kernel32");
-06: 
-07:     auto glpi = (LPFN_GLPI) GetProcAddress(handle, "GetLogicalProcessorInformation");
-08:     if (glpi == NULL)
-09:         return;
-10: 
-11:     DWORD bufferBytes = 0;
-12:     int cacheSize = 0;
-13: 
-14:     // calculate buffer length
-15:     BOOL ret = glpi(0, &bufferBytes);
-16: 
-17:     std::size_t size = bufferBytes / sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION);
-18:             
-19:     SYSTEM_LOGICAL_PROCESSOR_INFORMATION* buffer = new SYSTEM_LOGICAL_PROCESSOR_INFORMATION[size];
-20:             
-21:     // retrieve array of SYSTEM_LOGICAL_PROCESSOR_INFORMATION structures
-22:     ret = glpi(buffer, &bufferBytes);
-23: 
-24:     for (std::size_t i = 0; i < size; i++)
-25:     {
-26:         if (buffer[i].Relationship == RelationCache && buffer[i].Cache.Level == 1)
-27:         {
-28:             cacheSize = (int)buffer[i].Cache.Size;
-29:             break;
-30:         }
-31:     }
-32: 
-33:     delete[] buffer;
+06:     if (handle == NULL)
+07:         return;
+08: 
+09:     auto glpi = (LPFN_GLPI)GetProcAddress(handle, "GetLogicalProcessorInformation");
+10:     if (glpi == NULL)
+11:         return;
+12: 
+13:     DWORD bufferBytes = 0;
+14:     int cacheSize = 0;
+15: 
+16:     // calculate buffer length
+17:     BOOL ret = glpi(0, &bufferBytes);
+18: 
+19:     std::size_t size = bufferBytes / sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION);
+20: 
+21:     SYSTEM_LOGICAL_PROCESSOR_INFORMATION* buffer = new SYSTEM_LOGICAL_PROCESSOR_INFORMATION[size];
+22: 
+23:     // retrieve array of SYSTEM_LOGICAL_PROCESSOR_INFORMATION structures
+24:     ret = glpi(buffer, &bufferBytes);
+25: 
+26:     for (std::size_t i = 0; i < size; i++)
+27:     {
+28:         if (buffer[i].Relationship == RelationCache && buffer[i].Cache.Level == 1)
+29:         {
+30:             cacheSize = (int)buffer[i].Cache.Size;
+31:             break;
+32:         }
+33:     }
 34: 
-35:     auto cacheSizeKB = cacheSize / 1024;
-36:     std::println("L1 Cache Size: {}", cacheSizeKB);
-37: }
+35:     delete[] buffer;
+36: 
+37:     auto cacheSizeKB = cacheSize / 1024;
+38:     std::println("L1 Cache Size: {} kB", cacheSizeKB);
+39: }
 ```
 
 *Ausgabe*: 
@@ -182,7 +184,7 @@ Die Einführung des L3-Cache verringerte die Wahrscheinlichkeit eines Fehlers und
 Wir betrachten nun ein Beispiel,
 in dem wir auf viele Daten im Speicher zugreifen.
 
-Dies kann vor den soeben gestellten Überlegungen &ndash; Stichwort *Cache Misses* &ndash;
+Dies kann vor den soeben gestellten Überlegungen &ndash; Stichwort &bdquo;*Cache Misses*&rdquo; &ndash;
 geschickt oder ungeschickt erfolgen.
 
 *Beispiel*:
@@ -245,7 +247,7 @@ Deshalb ist es sinnvoll, die gesamte Cache Line in den Cache zu laden, um sie sc
 
 Was passiert, wenn eine CPU den Inhalt einer Cache Line ändert, die aktuell mit anderen CPUs geteilt wird?
 Die Caches der anderen CPUs müssen **neu geladen** werden,
-bevor die auf diesen CPUs laufenden Prozesse fortgesetzt werden können, wodurch diese **blockiert** werden.
+bevor die auf diesen CPUs laufenden Prozesse (Threads) fortgesetzt werden können, wodurch diese **blockiert** werden.
 
 Dieser Mechanismus ermöglicht den verschiedenen Threads in einem Prozess eine zusammenhängende Ansicht des Speichers.
 
@@ -314,7 +316,7 @@ Neben `std::hardware_destructive_interference_size` gibt es eine zweite Konstant
 Diese Konstante gibt den garantierten Mindestabstand in Bytes zwischen zwei Speicherorten an,
 der &bdquo;*konstruktive Interferenz*&rdquo; gewährleistet.
 
-&bdquo;*konstruktive Interferenz*&rdquo; tritt auf,
+&bdquo;*Konstruktive Interferenz*&rdquo; tritt auf,
 wenn zwei Speicherorte nahe beieinander liegen, aber Zugriffe sich nicht gegenseitig stören.
 
 
