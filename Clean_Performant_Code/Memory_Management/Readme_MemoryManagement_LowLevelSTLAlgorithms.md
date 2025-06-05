@@ -78,7 +78,7 @@ um dies durchzuführen:
 Was ist in puncto Performanz kritisch an diesem Beispiel?
 
 Der Ziel-Container &ndash; in diesem Beispiel ein `std::vector`-Container mit `Integer`-Objekten &ndash; 
-wird zunächste mit &bdquo;leeren&rdquo; `Integer`-Objekten angelegt.
+wird zunächst mit &bdquo;leeren&rdquo; `Integer`-Objekten angelegt.
 Der Speicher des `std::vector`-Containers wird natürlich benötigt,
 aber die Vorbelegung (Initialisierung) der entsprechenden Anzahl von `Integer`-Objekten wird umsonst durchgeführt,
 da ja in der unmittelbar folgenden Anweisung ein Kopier-Vorgang mit dem `std::vector`-Container als Ziel eingeleitet wird.
@@ -100,7 +100,7 @@ zurückgreifen.
 *Beispiel* 2:
 
 ```cpp
-01: void static test_uninitialized_copy_03_01() {
+01: void test() {
 02: 
 03:     const size_t Size = 10;
 04: 
