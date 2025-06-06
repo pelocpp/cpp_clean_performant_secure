@@ -142,6 +142,8 @@
     <ClCompile Include="ScopedTimer_STL_Containers_Accessing.cpp" />
     <ClCompile Include="ScopedTimer_STL_Containers_Populating.cpp" />
     <ClCompile Include="Statistics_Firstnames_01.cpp" />
+    <ClCompile Include="Statistics_Firstnames_02.cpp" />
+    <ClCompile Include="Statistics_Firstnames_03.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Readme_Profiling.md" />

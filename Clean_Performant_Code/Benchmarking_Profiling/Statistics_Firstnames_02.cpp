@@ -1,18 +1,18 @@
 // ===========================================================================
-// Statistics_Firstnames_01.cpp // Profiling
+// Statistics_Firstnames_02.cpp // Profiling
 // From: Marc Gregoire, "Professional C++", 6.th Edition
-// Variant 01: Using std::vector as container
+// Variant 02: Using std::map as container
 // ===========================================================================
 
 #include "../LoggerUtility/ScopedTimer.h"
 
 #include <fstream>
+#include <map>
 #include <print>
 #include <stdexcept>
 #include <string>
-#include <vector>
 
-namespace NamesStatistics_V01 {
+namespace NamesStatistics_V02 {
 
     // ===========================================================================
     // Types
@@ -36,11 +36,10 @@ namespace NamesStatistics_V01 {
         int getAbsoluteNumber(const std::string& name) const;
 
     private:
-        std::vector<std::pair<std::string, int>> m_names;
+        std::map<std::string, int> m_names;
 
         // Helper member functions
-        bool nameExists(const std::string& name) const;
-        void incrementNameCount(const std::string& name);
+        bool incrementIfExists(const std::string& name);
         void addNewName(const std::string& name);
     };
 
@@ -64,46 +63,34 @@ namespace NamesStatistics_V01 {
         std::string name;
         while (inputFile >> name) {
             // Look up the name in the database so far.
-            if (nameExists(name)) {
-                // If the name exists in the database, just increment the count.
-                incrementNameCount(name);
-            }
-            else {
-                // If the name doesn't yet exist, add it with a count of 1.
+            if (!incrementIfExists(name)) {
+                // If the name exists in the database, the
+                // member function incremented it, so we just continue.
+                // We get here if it didn't exist, in which case
+                // we add it with a count of 1.
                 addNewName(name);
             }
         }
     }
 
 
-    // Returns true if the name exists in the database, false otherwise.
-    bool NameDB::nameExists(const std::string& name) const
+    // Returns true if the name exists in the database, false
+    // otherwise. If it finds it, it increments it.
+    bool NameDB::incrementIfExists(const std::string& name)
     {
-        // Iterate through the vector of names looking for the name.
-        for (auto& entry : m_names) {
-            if (entry.first == name) {
-                return true;
-            }
+        // Find the name in the map.
+        auto res{ m_names.find(name) };
+        if (res != end(m_names)) {
+            res->second += 1;
+            return true;
         }
         return false;
-    }
-
-    // Precondition: name exists in the vector of names.
-    // Postcondition: the count associated with name is incremented.
-    void NameDB::incrementNameCount(const std::string& name)
-    {
-        for (auto& entry : m_names) {
-            if (entry.first == name) {
-                entry.second += 1;
-                return;
-            }
-        }
     }
 
     // Adds a new name to the database.
     void NameDB::addNewName(const std::string& name)
     {
-        m_names.emplace_back(name, 1);
+        m_names[name] = 1;
     }
 
     // Returns the rank of the name.
@@ -112,7 +99,6 @@ namespace NamesStatistics_V01 {
     // count than the specified name. Returns that count as the rank.
     int NameDB::getNameRank(const std::string& name) const
     {
-        // Make use of the getAbsoluteNumber() member function.
         int num{ getAbsoluteNumber(name) };
 
         // Check if we found the name.
@@ -120,7 +106,7 @@ namespace NamesStatistics_V01 {
             return -1;
         }
 
-        // Now count all the names in the vector that have a
+        // Now count all the names in the map that have 
         // count higher than this one. If no name has a higher count,
         // this name is rank number 1. Every name with a higher count
         // decreases the rank of this name by 1.
@@ -137,11 +123,11 @@ namespace NamesStatistics_V01 {
     // Returns the count associated with the given name.
     int NameDB::getAbsoluteNumber(const std::string& name) const
     {
-        for (auto& entry : m_names) {
-            if (entry.first == name) {
-                return entry.second;
-            }
+        auto res{ m_names.find(name) };
+        if (res != end(m_names)) {
+            return res->second;
         }
+
         return -1;
     }
 }
@@ -149,9 +135,9 @@ namespace NamesStatistics_V01 {
 // ===========================================================================
 // Test Frame
 
-void performance_profiling_names_statistics_01()
+void performance_profiling_names_statistics_02()
 {
-    using namespace NamesStatistics_V01;
+    using namespace NamesStatistics_V02;
 
     ScopedTimer watch{};
 
