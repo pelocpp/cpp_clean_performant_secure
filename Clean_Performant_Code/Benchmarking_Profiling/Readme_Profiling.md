@@ -92,18 +92,17 @@ wie das des rechten Teils (`rightPart`).
 Das Profiling einer C++ Anwendung innerhalb von Visual Studio aktiviert man mit folgenden Schritten:
 
   * Das Profiling sollte sowohl im Debug-Modus als auch im Release-Modus funktionieren,
-    es hier &ndash; zumindest bei Verwendung einer aktuellen Version von Visual Studio &ndash; nichts zu tun.
+    es ist hier &ndash; zumindest bei Verwendung einer aktuellen Version von Visual Studio &ndash; nichts zu tun.
+    In früheren Versionen von Visual Studio wurde eine &bdquo;Release-Variante mit Debug-Symbolen&rdquo; vorausgesetzt.
 
-  * In früheren Versionen von Visual Studio wurde eine Release-Variante mit Debug-Symbolen vorausgesetzt.
+  * Zwei Haltepunkte setzen &ndash; in Bezug auf den zu analysierenden Codeabschnitt.
 
-  * Zwei Haltepunkte setzen (in Bezug auf den zu analysierenden Codeabschnitt).
+  * Die Anwendung starten und beim ersten Haltepunkt anhalten.
 
-  * Man starte die Anwendung und halte beim ersten Haltepunkt an.
+  * Das Fenster &bdquo;*Show Diagnostic Tools*&rdquo; aktivieren:
+    Dieses findet man im Menü &bdquo;Debug&rdquo; &Rightarrow; &bdquo;Window&rdquo; &Rightarrow; &bdquo;Show Diagnostic Tools&rdquo;.
 
-  * Man aktiviere das Fenster &bdquo;*Show Diagnostic Tools*&rdquo;<br />
-    Dieses findet man im Menü &bdquo;Debug&rdquo; &Rightarrow; &bdquo;Window&rdquo; &Rightarrow; &bdquo;Show Diagnostic Tools&rdquo;
-
-  * Man führe das Programm solange aus (*Continue*), bis es beim zweiten Haltepunkt anhält.
+  * Das Programm solange ausführen (*Continue*), bis es beim zweiten Haltepunkt anhält.
 
   * Nun lassen sich die Ergebnisse im Fenster &bdquo;Show Diagnostic Tools&rdquo; betrachten.
 
@@ -125,25 +124,34 @@ man muss die Ausführung des Programms noch einmal von vorne beginnen.
 Neben den *Visual Studio Diagnostic Tools* gibt es auch die Möglichkeit,
 eine Anwendung im Ganzen zu *instrumentieren*. 
 
-Das Tool ähnelt den *Diagnostic Tools*, mit der Ausnahme,
+Das Tool ähnelt den *Diagnostic Tools* mit der Ausnahme,
 dass es auf der Wanduhrzeit anstelle der CPU-Auslastung basiert. 
 
 Dieses Tool zeigt die genaue Anzahl der Aufrufe Ihrer Funktionen an.
 
 Folgende Schritt sind notwendig:
 
-  * Das Menü &bdquo;Debug&rdquo; &Rightarrow; &bdquo;Performance Profiler ...&rdquo; selektieren.
-   Es erscheint in etwas das folgende Fenster:
+  * Menü &bdquo;Debug&rdquo; &Rightarrow; &bdquo;Performance Profiler ...&rdquo;:<br />
+   Bei Anwahl dieses Menüs erscheint in etwas das folgende Fenster:
 
    <img src="Instrumentation_01.png" width="600">
 
    *Abbildung* 5: Auswahl eines Instrumentierungstools.
 
-  * Linker-Einstellung `/Profile`<br />
+  * Linker-Einstellung `/Profile`:<br />
   In den Projekteinstellungen muss das Flag `Profile` auf `Yes` gesetzt sein (`/Profile`).
 
-  * Start der Programms<br />
+   <img src="Instrumentation_02.png" width="600">
+
+   *Abbildung* 6:  Linker-Einstellung `/Profile`.
+
+  * Start der Programms:<br />
   Nun kann das Programm ausgeführt werden, die Instrumentierung erfolgt.
+
+   <img src="Instrumentation_03.png" width="600">
+
+   *Abbildung* 7: Auswahl und Start der zu instrumentierenden Anwendung.
+
 
 ---
 
