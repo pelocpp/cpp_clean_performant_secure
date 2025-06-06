@@ -5,6 +5,8 @@
 extern void performance_profiling_puzzle_10();
 extern void performance_profiling_puzzle_11();
 
+extern void performance_profiling_names_statistics_01();
+
 extern void benchmarking_folding(); 
 extern void benchmarking_getting_started();
 extern void benchmarking_lambda_vs_std_function();
@@ -24,7 +26,9 @@ int main()
     //benchmarking_stl_containers_accessing();
 
     //performance_profiling_puzzle_10();
-    performance_profiling_puzzle_11();
+    //performance_profiling_puzzle_11();
+
+    performance_profiling_names_statistics_01();
 
     return 0;
 }

@@ -48,6 +48,9 @@
     <ClCompile Include="ScopedTimer_StdArray_Constant_Initialization.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Statistics_Firstnames_01.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Readme_Benchmarking.md">
@@ -137,6 +140,12 @@
     </Text>
     <Text Include="Benchmarking_Placement_New.txt">
       <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="Names_Long.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Names_Short.txt">
+      <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
 </Project>

@@ -440,7 +440,7 @@ static void puzzle_11_part_two()
 void performance_profiling_puzzle_11()
 {
     puzzle_11_part_one();
-    puzzle_11_part_two();
+    //puzzle_11_part_two();
 }
 
 // ===========================================================================

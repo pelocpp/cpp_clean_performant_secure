@@ -141,6 +141,7 @@
     <ClCompile Include="ScopedTimer_StdStringView_vs_StdString.cpp" />
     <ClCompile Include="ScopedTimer_STL_Containers_Accessing.cpp" />
     <ClCompile Include="ScopedTimer_STL_Containers_Populating.cpp" />
+    <ClCompile Include="Statistics_Firstnames_01.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Readme_Profiling.md" />
@@ -175,6 +176,8 @@
     <Text Include="Data\Puzzle10_TestData.txt" />
     <Text Include="Data\Puzzle11_RealData.txt" />
     <Text Include="Data\Puzzle11_TestData.txt" />
+    <Text Include="Names_Long.txt" />
+    <Text Include="Names_Short.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
