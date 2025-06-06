@@ -79,6 +79,18 @@
     <Image Include="AdventOfCode.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Window_Diagnostic_Tools.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Instrumentation_01.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Instrumentation_02.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Instrumentation_03.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Data\Puzzle10_RealData.txt">

@@ -7,8 +7,10 @@
 ## Inhalt
 
   * [Allgemeines](#link1)
-  * [Visual Studio Diagnostic Tools](#link2)
-  * [Ein Beispiel: &bdquo;*Plutonian Pebbles*&rdquo;](#link3)
+  * [*Visual Studio Diagnostic Tools*](#link2)
+  * [Aktivieren der *Visual Studio Diagnostic Tools*](#link3)
+  * [Instrumentierung einer C++ Anwendung mit Visual Studio](#link4)
+  * [Ein Beispiel: &bdquo;*Plutonian Pebbles*&rdquo;](#link5)
 
 ---
 
@@ -85,7 +87,67 @@ wie das des rechten Teils (`rightPart`).
 
 ---
 
-## Ein Beispiel: &bdquo;*Plutonian Pebbles*&rdquo; <a name="link3"></a>
+## Aktivieren der *Visual Studio Diagnostic Tools* <a name="link3"></a>
+
+Das Profiling einer C++ Anwendung innerhalb von Visual Studio aktiviert man mit folgenden Schritten:
+
+  * Das Profiling sollte sowohl im Debug-Modus als auch im Release-Modus funktionieren,
+    es hier &ndash; zumindest bei Verwendung einer aktuellen Version von Visual Studio &ndash; nichts zu tun.
+
+  * In früheren Versionen von Visual Studio wurde eine Release-Variante mit Debug-Symbolen vorausgesetzt.
+
+  * Zwei Haltepunkte setzen (in Bezug auf den zu analysierenden Codeabschnitt).
+
+  * Man starte die Anwendung und halte beim ersten Haltepunkt an.
+
+  * Man aktiviere das Fenster &bdquo;*Show Diagnostic Tools*&rdquo;<br />
+    Dieses findet man im Menü &bdquo;Debug&rdquo; &Rightarrow; &bdquo;Window&rdquo; &Rightarrow; &bdquo;Show Diagnostic Tools&rdquo;
+
+  * Man führe das Programm solange aus (*Continue*), bis es beim zweiten Haltepunkt anhält.
+
+  * Nun lassen sich die Ergebnisse im Fenster &bdquo;Show Diagnostic Tools&rdquo; betrachten.
+
+
+*Hinweis*:<br />
+Es kann sein, dass das CPU Profiling nicht aktiviert ist (siehe *Abbildung* 4):
+
+<img src="Window_Diagnostic_Tools.png" width="600">
+
+*Abbildung* 4: Aktivieren der *Visual Studio Diagnostic Tools*.
+
+Mit einem Mausclick im unteren Bereich des Fensters lässt sich das Profiling aktivieren,
+man muss die Ausführung des Programms noch einmal von vorne beginnen.
+
+---
+
+## Instrumentierung einer C++ Anwendung mit Visual Studio <a name="link4"></a>
+
+Neben den *Visual Studio Diagnostic Tools* gibt es auch die Möglichkeit,
+eine Anwendung im Ganzen zu *instrumentieren*. 
+
+Das Tool ähnelt den *Diagnostic Tools*, mit der Ausnahme,
+dass es auf der Wanduhrzeit anstelle der CPU-Auslastung basiert. 
+
+Dieses Tool zeigt die genaue Anzahl der Aufrufe Ihrer Funktionen an.
+
+Folgende Schritt sind notwendig:
+
+  * Das Menü &bdquo;Debug&rdquo; &Rightarrow; &bdquo;Performance Profiler ...&rdquo; selektieren.
+   Es erscheint in etwas das folgende Fenster:
+
+   <img src="Instrumentation_01.png" width="600">
+
+   *Abbildung* 5: Auswahl eines Instrumentierungstools.
+
+  * Linker-Einstellung `/Profile`<br />
+  In den Projekteinstellungen muss das Flag `Profile` auf `Yes` gesetzt sein (`/Profile`).
+
+  * Start der Programms<br />
+  Nun kann das Programm ausgeführt werden, die Instrumentierung erfolgt.
+
+---
+
+## Ein Beispiel: &bdquo;*Plutonian Pebbles*&rdquo; <a name="link5"></a>
 
 Wir benötigen ein geeignetes Beispiel, um Profiling Tools anzuwenden.
 
