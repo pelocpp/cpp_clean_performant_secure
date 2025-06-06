@@ -130,9 +130,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="MemoryManagement_False_Sharing.cpp" />
     <ClCompile Include="_Arena.cpp" />
     <ClCompile Include="MemoryManagement_Alignment_Padding.cpp" />
-    <ClCompile Include="MemoryManagement_Cache_False_Sharing.cpp" />
+    <ClCompile Include="MemoryManagement_Cache.cpp" />
     <ClCompile Include="MemoryManagement_Heap.cpp" />
     <ClCompile Include="MemoryManagement_LowLevelSTLAlgorithms.cpp" />
     <ClCompile Include="MemoryManagement_Placement_New.cpp" />
@@ -147,8 +148,9 @@
     <None Include="False_Sharing_Example_02.svg" />
     <None Include="False_Sharing_Example_03.svg" />
     <None Include="Readme_MemoryManagement_Alignment_Padding.md" />
-    <None Include="Readme_MemoryManagement_Cache_False_Sharing.md" />
+    <None Include="Readme_MemoryManagement_Cache.md" />
     <None Include="Readme_MemoryManagement.md" />
+    <None Include="Readme_MemoryManagement_False_Sharing.md" />
     <None Include="Readme_MemoryManagement_Heap.md" />
     <None Include="Readme_MemoryManagement_LowLevelSTLAlgorithms.md" />
     <None Include="Readme_MemoryManagement_Placement_New.md" />

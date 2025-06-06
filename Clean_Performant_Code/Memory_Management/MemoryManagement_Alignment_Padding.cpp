@@ -1,5 +1,5 @@
 // ===========================================================================
-// MemoryManagement_Alignment_Padding.cpp.cpp // Memory Management
+// MemoryManagement_Alignment_Padding.cpp // Memory Management
 // ===========================================================================
 
 #include <bitset>

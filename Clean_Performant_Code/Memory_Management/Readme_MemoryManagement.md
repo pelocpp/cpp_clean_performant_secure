@@ -6,7 +6,9 @@
 
 ## Inhalt
 
-### [CPU-Cache-Speicher / *False Sharing*](Readme_MemoryManagement_Cache_False_Sharing.md)
+### [CPU-Cache-Speicher / *Cache Lines*](Readme_MemoryManagement_Cache.md)
+
+### [*False Sharing*](Readme_MemoryManagement_False_Sharing.md)
 
 ### [Der Stack (Stapel)](Readme_MemoryManagement_Stack.md)
 
