@@ -36,6 +36,15 @@
 
 ---
 
+  * Fog, Agner, &bdquo;Optimizing Software in C++ &ndash; An Optimization Guide for Windows, Linux, and Mac Platforms.</br> 
+    Technical University of Denmark, Copyright &copy; 2004 - 2024. Last updated 2024-03-15.
+
+    <img src="Skript_Agner_Fog_Optimizing_Cpp.png" width="150">
+
+    [Verfügbar hier](https://www.agner.org/optimize/optimizing_cpp.pdf)<br/>
+
+---
+
   * [*Quick C++ Benchmark*](https://quick-bench.com/)<br/>
     (abgerufen am 25.01.2025).
 
