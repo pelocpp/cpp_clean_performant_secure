@@ -6,15 +6,9 @@
 
 ## Inhalt
 
-  * [Allgemeines](#link1)
+### [&bdquo;*Zeigerwäsche*&rdquo;: `std::launder`](Performance_Optimization_Advanced_Laundry.md)
 
----
-
-#### Quellcode
-
----
-
-## Allgemeines <a name="link1"></a>
+### [Object Pool]()
 
 ---
 
