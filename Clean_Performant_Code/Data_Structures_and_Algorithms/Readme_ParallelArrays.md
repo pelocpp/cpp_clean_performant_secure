@@ -4,6 +4,16 @@
 
 ---
 
+## Inhalt
+
+  * [Allgemeines](#link1)
+  * [Erstes Beispiel: Vergleich von `SmallObject`- und `BigObject`-Objekten](#link2)
+  * [Zweites Beispiel: Zerlegung größerer Objekte](#link3)
+  * [Drittes Beispiel: Vergleich Array von Strukturen (AoS) versus Struktur von Arrays (SoA)](#link4)
+  * [Literatur](#link5)
+
+---
+
 #### Quellcode
 
 [*ParallelArrays.cpp*](ParallelArrays.cpp)<br />
@@ -20,23 +30,23 @@ Zwei Faktoren spielen eine Rolle:
   * räumliche Lokalität (*spatial locality*).
   * zeitliche Lokalität (*temporal locality*).
 
-Bei der Iteration über zusammenhängend im Speicher abgelegte Elemente
-erhöht sich die Wahrscheinlichkeit, dass die benötigten Daten bereits zwischengespeichert sind,
+Bei der Iteration über zusammenhängend im Speicher abgelegte Daten
+erhöht sich die Wahrscheinlichkeit, dass die benötigten Werte bereits zwischengespeichert sind,
 wenn es uns dank räumlicher Lokalität gelingt, unsere Objekte klein zu halten.
 
 Dies hat bisweilen erhebliche Auswirkungen auf die Performance.
 
 ---
 
-## Erstes Beispiel: Vergleich von `SmallObject`- und `BigObject`-Objekten <a name="link1"></a>
+## Erstes Beispiel: Vergleich von `SmallObject`- und `BigObject`-Objekten <a name="link2"></a>
 
 Wir betrachten in diesem Beispiel die Iteration
 von `std::vector`-Containern, die aus
 `SmallObject`- und `BigObject`-Objekten bestehen.
 
 
-`SmallObject` und `BigObject` sind bis auf die Größe eines enthaltenen Datenarrays identisch.
-Beide Strukturen enthalten einen `int`-Wert namens `m_score`,
+Die beiden Klassen `SmallObject` und `BigObject` sind bis auf die Größe eines enthaltenen Datenarrays identisch.
+Beide Klassen enthalten einen `int`-Wert namens `m_score`,
 den wir zu Testzwecken mit einem zufälligen Wert initialisieren.
 
 Nun können wir vergleichen, wie lange es dauert,
@@ -76,7 +86,7 @@ zu summieren:
 29:     return sum;
 30: }
 31: 
-32: static void test_parallel_arrays_02() {
+32: void test() {
 33: 
 34:     size_t sum{ 0 };
 35:     sum += sumScores(smallObjects);
@@ -86,16 +96,16 @@ zu summieren:
 
 ---
 
-## Zweites Beispiel: Zerlegung größerer Objekte <a name="link1"></a>
+## Zweites Beispiel: Zerlegung größerer Objekte <a name="link3"></a>
 
 Wir haben gesehen, dass es von Vorteil ist,
-die Größe unserer Klassen klein zu halten.´,
+die Größe unserer Klassen klein zu halten,
 auch wenn dies oft leichter gesagt als getan ist.
 
 Wir betrachten nun eine Klasse `User` und überlegen,
 wie wir sie in kleinere Teile aufteilen können.
 
-*Variante* 1:
+### *Variante* 1:
 
 ```cpp
 struct User
@@ -118,13 +128,15 @@ struct User
 
 *Abbildung* 2: Struktur `User` in einem ersten Entwurf: Detaildarstellung.
 
-Um bessere Laufzeiten zu erzielen, sollten man die Struktur `User` aufteilen.
-In einem ersten Blick könnte man meinen, das Programm muss zwingend langsamer werden,
+### *Variante* 2:
+
+Um bessere Laufzeiten zu erzielen, sollte man die Struktur `User` aufteilen.
+In einem ersten Blick könnte man meinen, das Programm wird auf diese Weise zwingend langsamer,
 da man bei mehreren Objekten/Strukturen mehr indirekte Zugriffe hat.
 Das ist prinzipiell auch richtig beobachtet. Eine Aufteilung sollte diejenigen Informationen auslagern,
-auf die man zur Laufzeit seltener zugreift.
+auf die man zur Laufzeit eher seltener zugreift.
 
-In unserem Beispiel werden vier Daten der `User`-Struktur in eine zweite Struktur `AuthInfo` ausgelagert.
+In unserem Beispiel werden vier Elemente der `User`-Struktur in eine zweite Struktur `AuthInfo` ausgelagert.
 Das Passwort als auch die Namen spielen während der Laufzeit eine eher untergeordnetere Rolle:
 
 ```cpp
@@ -164,6 +176,8 @@ Es kommt nun neben Struktur `User` eine zweite Struktur `AuthInfo` ins Spiel:
 
 *Abbildung* 6: Struktur `AuthInfo`: Detaildarstellung.
 
+### *Variante* 3:
+
 Die dritte Variante beherbergt den radikalsten Ansatz.
 Es wird auf die Objektorientierung verzichtet!
 Stattdessen kommen mehrere Arrays zum Einsatz.
@@ -178,6 +192,58 @@ Vergleichen Sie die Ausführungszeiten dieser drei Varianten!
 
 ---
 
+## Drittes Beispiel: Vergleich Array von Strukturen (AoS) versus Struktur von Arrays (SoA) <a name="link4"></a>
+
+Die Strukturierung und der Zugriff auf Daten können sich auf die Qualität ihrer Platzierung im Cache auswirken:
+
+  * Array von Strukturen (AoS): Jedes Element ist eine Struktur, die alle Attribute enthält. Dies kann beim Zugriff auf einzelne Attribute zu Cache-Fehlern führen, da möglicherweise nicht zusammenhängende Daten in den Cache gelangen.
+  * Struktur von Arrays (SoA): Attribute werden in separaten Arrays gespeichert. Dadurch wird in engen Schleifen nur auf die relevanten Daten zugegriffen, was die Cache-Auslastung verbessert.
+
+
+Vergleichen Sie die Ausführungszeiten des Beispiels im Quellcode:
+
+```cpp
+struct Pixel
+{
+    uint8_t m_red;
+    uint8_t m_green;
+    uint8_t m_blue;
+};
+
+std::vector<Pixel> pixels(Width * Height);
+```
+
+versus
+
+```cpp
+struct Pixels
+{
+    std::vector<uint8_t> red;
+    std::vector<uint8_t> green;
+    std::vector<uint8_t> blue;
+};
+
+Pixels pixels;
+
+pixels.red.resize(Width * Height);
+pixels.green.resize(Width * Height);
+pixels.blue.resize(Width * Height);
+```
+
+---
+
+## Literatur <a name="link5"></a>
+
+Die Anregungen zum Vergleich von
+Arrays von Strukturen (AoS) und Strukturen von Arrays (SoA)
+finden sich 
+[hier](https://medium.com/@AlexanderObregon/optimizing-c-code-for-performance-a6b89e2b09bf)
+
+---
+
 [Zurück](Readme_Data_Structures_and_Algorithms.md)
 
 ---
+
+
+

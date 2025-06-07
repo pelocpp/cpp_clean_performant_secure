@@ -22,8 +22,6 @@ namespace False_Sharing {
 
     // https://curiouslyrecurringthoughts.home.blog/2019/06/10/c17-and-false-sharing/
 
-// #define FALSE_SHARING
-
     static void test_false_sharing() {
 
         // const auto numConcurrentThreads = std::thread::hardware_concurrency(); // doesn't compile
@@ -35,6 +33,8 @@ namespace False_Sharing {
         constexpr std::size_t NumProcessors = 8;
         constexpr std::size_t NumIterations = 1000000;
 #endif
+
+// #define FALSE_SHARING
 
 #ifdef FALSE_SHARING
         std::cout << "With false sharing \n";

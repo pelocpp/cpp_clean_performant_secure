@@ -13,7 +13,7 @@
 
 namespace DataStructuresAndAlgorithms {
 
-    namespace UsingParallelArrays {
+    namespace SmallVsBigObjects {
 
         // =======================================================
         // calculate sizes of SmallObject and BigObject objects
@@ -45,7 +45,7 @@ namespace DataStructuresAndAlgorithms {
         // For 2'000'000 the results in Release Mode are:
         // Elapsed time : 2 milliseconds.
         // Elapsed time : 12 milliseconds.
-        
+
         constexpr auto Size = 1;  // just to prevent huge compilation times!
         // constexpr auto Size = 1'000'000;
 #else
@@ -84,16 +84,13 @@ namespace DataStructuresAndAlgorithms {
     // =======================================================
     // Examine small and big objects 
 
-    // debug mode:   use 5'000'000
-    // release mode: use 30'000'000
-
 #ifdef _DEBUG
-    constexpr size_t NumObjects{ 5'000'000 };
+    constexpr size_t NumObjects{ 5'000'000 };    // debug mode
 #else
-    constexpr size_t NumObjects{ 30'000'000 };
+    constexpr size_t NumObjects{ 30'000'000 };   // release mode
 #endif
 
-    namespace UsingParallelArrays_OriginalUser {
+    namespace ParallelArrays_OriginalUser {
 
         struct User
         {
@@ -188,7 +185,7 @@ namespace DataStructuresAndAlgorithms {
         }
     }
 
-    namespace UsingParallelArrays_ImprovedUser {
+    namespace ParallelArrays_ImprovedUser {
 
         struct AuthInfo {
             std::string m_username;
@@ -285,7 +282,7 @@ namespace DataStructuresAndAlgorithms {
         }
     }
 
-    namespace UsingParallelArrays_ParallelUserData {
+    namespace ParallelArrays_ParallelUserData {
 
         // =============================================
         // Some utility functions for creating test data
@@ -345,6 +342,99 @@ namespace DataStructuresAndAlgorithms {
             std::println("n: {}\n", n);
         }
     }
+
+    namespace Structuring_Data_For_Cache_Efficiency {
+
+#ifdef _DEBUG
+
+        constexpr size_t Iterations{ 100 };      // debug mode
+        constexpr size_t Width{ 1'000 };         // debug mode
+        constexpr size_t Height{ 1'000 };        // debug mode
+#else
+        constexpr size_t Iterations{ 1'000 };    // release mode
+        constexpr size_t Width{ 2'000 };         // release mode
+        constexpr size_t Height{ 2'000 };        // release mode
+#endif
+
+        static uint8_t modifyGreenIntensity(uint8_t green) {
+            green += 5;
+            return green;
+        }
+
+        namespace Array_of_Structures_AoS {
+
+            struct Pixel
+            {
+                uint8_t m_red;
+                uint8_t m_green;
+                uint8_t m_blue;
+            };
+
+            static void test_aos_single()
+            {
+                std::println("Running Array of Structures (AoS) ...");
+
+                // array of structures (AoS)
+                std::vector<Pixel> pixels(Width * Height);
+
+                ScopedTimer watch{};
+
+                for (size_t k = 0; k < Iterations; k++) {
+                    // example loop for modifying green channel intensity
+                    for (size_t i = 0; i < Width * Height; i++) {
+                        pixels[i].m_green = modifyGreenIntensity(pixels[i].m_green);
+                    }
+                }
+            }
+
+            static void test_aos()
+            {
+                test_aos_single();
+                test_aos_single();
+                test_aos_single();
+                test_aos_single();
+            }
+        }
+
+        namespace Structure_of_Arrays_SoA {
+
+            // better cache usage with Structure of Arrays (SoA)
+            struct Pixels
+            {
+                std::vector<uint8_t> red;
+                std::vector<uint8_t> green;
+                std::vector<uint8_t> blue;
+            };
+
+            static void test_soa_single()
+            {
+                std::println("Running Structure of Arrays (SoA) ...");
+
+                Pixels pixels;
+                pixels.red.resize(Width * Height);
+                pixels.green.resize(Width * Height);
+                pixels.blue.resize(Width * Height);
+
+                ScopedTimer watch{};
+
+                for (size_t k = 0; k < Iterations; k++) {
+
+                    // example loop for modifying green channel intensity
+                    for (size_t i = 0; i < Width * Height; i++) {
+                        pixels.green[i] = modifyGreenIntensity(pixels.green[i]);
+                    }
+                }
+            }
+
+            static void test_soa()
+            {
+                test_soa_single();
+                test_soa_single();
+                test_soa_single();
+                test_soa_single();
+            }
+        }
+    }
 }
 
 // =================================================================
@@ -353,18 +443,23 @@ void test_parallel_arrays()
 {
     using namespace DataStructuresAndAlgorithms;
 
-    //using namespace UsingParallelArrays;
-    //test_parallel_arrays_01();
-    //test_parallel_arrays_02();
+    using namespace SmallVsBigObjects;
+    test_parallel_arrays_01();
+    test_parallel_arrays_02();
 
-    using namespace UsingParallelArrays_OriginalUser;
+    using namespace ParallelArrays_OriginalUser;
     test_parallel_arrays_with_original_users();
 
-    using namespace UsingParallelArrays_ImprovedUser;
+    using namespace ParallelArrays_ImprovedUser;
     test_parallel_arrays_with_improved_users();
 
-    using namespace UsingParallelArrays_ParallelUserData;
+    using namespace ParallelArrays_ParallelUserData;
     test_parallel_arrays_with_parallel_user_data();
+
+    using namespace Structuring_Data_For_Cache_Efficiency;
+    Array_of_Structures_AoS::test_aos();
+    std::println();
+    Structure_of_Arrays_SoA::test_soa();
 }
 
 // ===========================================================================

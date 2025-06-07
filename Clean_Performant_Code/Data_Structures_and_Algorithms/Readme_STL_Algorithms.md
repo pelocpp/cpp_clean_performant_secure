@@ -15,7 +15,6 @@
   * [Best Practice: Unerwartete Ausnahmen und Performanzprobleme](#link7)
   * [Best Practice: Optimierungstechniken der STL](#link8)
 
-
 ---
 
 #### Quellcode
