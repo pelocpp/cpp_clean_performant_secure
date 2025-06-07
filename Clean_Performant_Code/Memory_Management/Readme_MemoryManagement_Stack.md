@@ -10,6 +10,7 @@
   * [Unterschiede des Stapels im Debug- und Relase-Modus](#link2)
   * [Ausdehnung des Stapels](#link3)
   * [Größe des Stapels bestimmen](#link4)
+  * [Literatur](#link5)
 
 ---
 
@@ -236,6 +237,14 @@ Auf einem Windows Rechner erhalten wir folgende Ausgaben &ndash; im Mittelteil d
 Unter Windows ist die Standardgröße des Stacks normalerweise auf 1 MB eingestellt.
 Die Ausgaben des Programms bestätigen dies in etwa &ndash; der Wert 1.020.980 ist
 nicht weit von 1.048.576 (1.024 * 1.024) entfernt.
+
+---
+
+## Literatur <a name="link5"></a>
+
+Hinweise auf das Vorhandensein von Extra-Speicher im Debug-Modus zu Kontrollzwecken kann man hier nachlesen:
+
+[Why does VS Debug build allocates variables so far apart?](https://stackoverflow.com/questions/60419126/why-does-vs-debug-build-allocates-variables-so-far-apart)
 
 ---
 

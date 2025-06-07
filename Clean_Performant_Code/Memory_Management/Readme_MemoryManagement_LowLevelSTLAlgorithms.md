@@ -8,6 +8,7 @@
   
   * [Allgemeines](#link1)
   * [Ein Beispiel: `std::uninitialized_copy`](#link2) 
+  * [Literatur](#link3) 
 
 ---
 
@@ -196,6 +197,19 @@ Hierzu folgen nun zwei weitere Beispiele, wir wechseln von der Klasse `Integer` 
 26:     std::free(buffer);
 27: }
 ```
+
+---
+
+## Literatur <a name="link3"></a>
+
+Gute Beispiele und Beschreibungen der neuen *Low-level* Speicherverwaltungsfunktionen findet man unter
+
+[Daily bit(e) of C++ | `std::uninitialized_copy`, `std::uninitialized_fill`, `std::uninitialized_move`, etc.](https://medium.com/@simontoth/daily-bit-e-of-c-std-uninitialized-copy-std-uninitialized-fill-std-uninitialized-move-f4a6b5afb7ba),<br />
+verfasst von *Simon Toth*.
+
+oder in einem Artikel von *Sandor Dargo*:
+
+[The big STL Algorithms tutorial: the memory header](https://www.sandordargo.com/blog/2022/02/02/stl-alogorithms-tutorial-part-30-memory-header).
 
 ---
 

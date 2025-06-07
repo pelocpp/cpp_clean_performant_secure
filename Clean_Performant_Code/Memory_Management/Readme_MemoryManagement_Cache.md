@@ -233,6 +233,15 @@ Beide Ausführungen beziehen sich auf den *Release*-Mode.
 
 ## Literatur <a name="link8"></a>
 
+Ein interessanter Artikel zum Thema *Demystifying CPU Caches with Examples*
+findet sich [hier](https://mecha-mind.medium.com/demystifying-cpu-caches-with-examples-810534628d71).
+
+Eine *Gallery of Processor Cache Effects* beschreibt *Igor Ostrovsky*
+in seinem [Blog](https://igoro.com/archive/gallery-of-processor-cache-effects/).
+
+Die Anregungen zur Berechnung der L1 Cache Größe finden Sie unter dem Github Gist<br />
+[Get L1 data cache size on most operating systems](https://gist.github.com/kimwalisch/16c34ae16447b245464a)
+
 ---
 
 [Zurück](Readme_MemoryManagement.md)
