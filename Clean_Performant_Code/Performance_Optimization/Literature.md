@@ -36,7 +36,7 @@
 
 ---
 
-  * Fog, Agner, &bdquo;Optimizing Software in C++ &ndash; An Optimization Guide for Windows, Linux, and Mac Platforms.</br> 
+  * Fog, Agner, &bdquo;Optimizing Software in C++ &ndash; An Optimization Guide for Windows, Linux, and Mac Platforms&rdquo;.</br> 
     Technical University of Denmark, Copyright &copy; 2004 - 2024. Last updated 2024-03-15.
 
     <img src="Skript_Agner_Fog_Optimizing_Cpp.png" width="150">
