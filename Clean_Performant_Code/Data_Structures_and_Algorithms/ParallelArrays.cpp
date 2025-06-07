@@ -22,13 +22,13 @@ namespace DataStructuresAndAlgorithms {
         class Object {
         private:
             std::array<char, Size> m_data{};
-            int m_score{ std::rand() };
+            int                    m_score{ std::rand() };
         public:
+            Object() = default;
             auto getScore() const { return m_score; }
         };
 
         using SmallObject = Object<4>;
-
         using BigObject = Object<256>;
 
         static void test_parallel_arrays_01() {
@@ -40,10 +40,20 @@ namespace DataStructuresAndAlgorithms {
         // =======================================================
         // evaluating performance - using a lot of objects
 
-        constexpr auto Size = 1;  // set to 1'000'000
+#ifdef _DEBUG
+        // Note: Extremely long compilation times: Values greater than 2'000'000 won't work
+        // For 2'000'000 the results in Release Mode are:
+        // Elapsed time : 2 milliseconds.
+        // Elapsed time : 12 milliseconds.
+        
+        constexpr auto Size = 1;  // just to prevent huge compilation times!
+        // constexpr auto Size = 1'000'000;
+#else
+        constexpr auto Size = 1;  // just to prevent huge compilation times!
+        // constexpr auto Size = 2'000'000; 
+#endif
 
         auto smallObjects = std::vector<SmallObject>(Size);
-
         auto bigObjects = std::vector<BigObject>(Size);
 
         template <class T>
@@ -51,7 +61,7 @@ namespace DataStructuresAndAlgorithms {
 
             ScopedTimer watch{};
 
-            size_t sum{ 0 };
+            volatile size_t sum{ 0 };
 
             for (const auto& obj : objects) {
                 sum += obj.getScore();
@@ -76,7 +86,12 @@ namespace DataStructuresAndAlgorithms {
 
     // debug mode:   use 5'000'000
     // release mode: use 30'000'000
-    constexpr size_t NumObjects{ 10 };
+
+#ifdef _DEBUG
+    constexpr size_t NumObjects{ 5'000'000 };
+#else
+    constexpr size_t NumObjects{ 30'000'000 };
+#endif
 
     namespace UsingParallelArrays_OriginalUser {
 
@@ -336,17 +351,19 @@ namespace DataStructuresAndAlgorithms {
 
 void test_parallel_arrays()
 {
-    using namespace DataStructuresAndAlgorithms::UsingParallelArrays;
-    test_parallel_arrays_01();
-    test_parallel_arrays_02();
+    using namespace DataStructuresAndAlgorithms;
 
-    using namespace DataStructuresAndAlgorithms::UsingParallelArrays_OriginalUser;
+    //using namespace UsingParallelArrays;
+    //test_parallel_arrays_01();
+    //test_parallel_arrays_02();
+
+    using namespace UsingParallelArrays_OriginalUser;
     test_parallel_arrays_with_original_users();
 
-    using namespace DataStructuresAndAlgorithms::UsingParallelArrays_ImprovedUser;
+    using namespace UsingParallelArrays_ImprovedUser;
     test_parallel_arrays_with_improved_users();
 
-    using namespace DataStructuresAndAlgorithms::UsingParallelArrays_ParallelUserData;
+    using namespace UsingParallelArrays_ParallelUserData;
     test_parallel_arrays_with_parallel_user_data();
 }
 

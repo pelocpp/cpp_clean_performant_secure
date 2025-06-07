@@ -86,9 +86,30 @@
     <None Include="cpp_stl_container_overview_01.svg">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="cpp_stl_parallel_arrays.svg">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="cpp_stl_big_o_notation.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Struct_Auth_Memory_Layout_Long_Variant_02.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Struct_Auth_Memory_Layout_Short_Variant_02.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Struct_User_Memory_Layout_Long_Variant_01.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Struct_User_Memory_Layout_Long_Variant_02.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Struct_User_Memory_Layout_Short_Variant_01.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Struct_User_Memory_Layout_Short_Variant_02.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
