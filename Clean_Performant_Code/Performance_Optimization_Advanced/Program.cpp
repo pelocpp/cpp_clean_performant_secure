@@ -8,7 +8,7 @@
 int main()
 {
     //performance_best_practices();
-    //object_pool_best_practices();
+    object_pool_best_practices();
     return 0;
 }
 
