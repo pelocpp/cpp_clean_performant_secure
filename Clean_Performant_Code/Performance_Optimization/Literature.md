@@ -63,6 +63,13 @@
 
 ---
 
+  * [*Optimizing C++*](https://en.m.wikibooks.org/wiki/Optimizing_C%2B%2B)<br/>
+    (abgerufen am 29.06.2025).
+
+    Wikibook Guidelines Website.
+
+---
+
 [Zurück](./Readme_Performance_Optimization.md)
 
 ---
