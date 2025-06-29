@@ -89,6 +89,9 @@
     <None Include="cpp_stl_parallel_arrays.svg">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="cpp_stl_container_span.svg">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="cpp_stl_big_o_notation.png">

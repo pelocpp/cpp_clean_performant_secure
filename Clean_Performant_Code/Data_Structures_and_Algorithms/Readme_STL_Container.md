@@ -745,6 +745,11 @@ Alice exists in the flat_map: false.
 
 ## Ansichten (*Views*) <a name="link18"></a>
 
+<img src="cpp_stl_container_span.svg" width="400">
+
+*Abbildung* 11: Sicht `std::span`.
+
+
 *Beispiel*:
 
 ```cpp

@@ -149,6 +149,7 @@
     <None Include="cpp_stl_container_list.svg" />
     <None Include="cpp_stl_container_overview_01.svg" />
     <None Include="cpp_stl_container_queue.svg" />
+    <None Include="cpp_stl_container_span.svg" />
     <None Include="cpp_stl_container_stack.svg" />
     <None Include="cpp_stl_container_tree.svg" />
     <None Include="cpp_stl_container_vector.svg" />
