@@ -4,6 +4,8 @@
 
 #include <print>
 
+// #define Verbose
+
 class Person
 {
 private:
@@ -15,30 +17,40 @@ public:
     // Rule-of-Six methods
     Person() : m_age{ }
     {
-        // std::println("default c'tor Person");
+#if defined (Verbose)
+        std::println("default c'tor Person");
+#endif
     }
 
     Person(std::string first, std::string last, size_t age)
         : m_first{ first }, m_last{ last }, m_age{ age }
     {
-        // std::println("user defined c'tor Person");
+#if defined (Verbose)
+        std::println("user defined c'tor Person");
+#endif
     }
 
     Person(const Person& other)
         : m_first{ other.m_first }, m_last{ other.m_last }, m_age{ other.m_age }
     {
-        // std::println("copy c'tor Person");
+#if defined (Verbose)
+        std::println("copy c'tor Person");
+#endif
     }
 
     Person(Person&& other) noexcept
         : m_first{ std::move(other.m_first) }, m_last{ std::move(other.m_last) }, m_age{ std::move(other.m_age) }
     {
-        // std::println("move c'tor Person");
+#if defined (Verbose)
+        std::println("move c'tor Person");
+#endif
     }
 
     Person& operator= (const Person& other)
     {
-        // std::println("copy operator= Person");
+#if defined (Verbose)
+        std::println("copy operator= Person");
+#endif
 
         m_first = other.m_first;
         m_last = other.m_last;
@@ -49,7 +61,9 @@ public:
 
     Person& operator= (Person&& other) noexcept
     {
-        // std::println("move operator= Person");
+#if defined (Verbose)
+        std::println("move operator= Person");
+#endif
 
         m_first = std::move(other.m_first);
         m_last = std::move(other.m_last);
@@ -59,7 +73,9 @@ public:
     }
 
     ~Person() {
-        // std::println("d'tor Person");
+#if defined (Verbose)
+        std::println("d'tor Person");
+#endif
     }
 
     // operators - needed for hashing

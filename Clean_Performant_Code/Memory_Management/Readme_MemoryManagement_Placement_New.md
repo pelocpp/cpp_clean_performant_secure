@@ -27,10 +27,8 @@ von der Objekterstellung zu trennen.
 
 ### Erstes Beispiel <a name="link2"></a>
 
-Wir könnten beispielsweise mit `malloc()` ein Byte-Array reservieren
-und in diesem Speicherbereich ein neues benutzerdefiniertes Objekt erstellen.
-
-*Beispiel*:
+Wir können beispielsweise mit `malloc()` ein Byte-Array reservieren
+und in diesem Speicherbereich ein neues, benutzerdefiniertes Objekt erstellen.
 
 Die möglicherweise ungewohnte Syntax, die `::new (memory)` verwendet, heißt *Placement new*.
 
@@ -69,7 +67,7 @@ um Objekte zu konstruieren und zu zerstören, ohne Speicher zuzuweisen oder freiz
 
 Anstatt *Placement new* zu verwenden, ist es jetzt also möglich,
 einige der Funktionen aus der STL zu verwenden,
-deren Namen mit `std::uninitialized_` beginnen, um Objekte in einen nicht initialisierten Speicherbereich
+deren Namen mit `std::uninitialized_` beginnen, um Objekte in einem nicht initialisierten Speicherbereich
 zu konstruieren, zu kopieren und zu verschieben.
 
 Und anstatt den Destruktor explizit aufzurufen, können wir jetzt `std::destroy_at()` verwenden,
@@ -282,22 +280,22 @@ Zwischen `std::fill` und `std::uninitialized_fill` gibt es folgenden Unterschied
   Der zu belegende Speicherbereich kann beliebige Werte enthalten.
   Es wird der gesamte Speicherbereich im Stile des *Placement new*&ndash;Mechanismus mit dem letzten Argument von `std::uninitialized_fill` vorbelegt.
 
-Die Ausführungszeiten erfüllen auf meinem Rechner nicht alle Erwartungen:
+Die Ausführungszeiten sehen auf meinem Rechner wie folgt im *Release*-Modus aus:
 Jeweils drei aufeinanderfolgende Zeilen betrachten ein `BigData`-Objekt
 mit `int`, `std::string` oder `Person`-Objekten:
 
 ```
-[1]:    Elapsed time: 4 [milliseconds]
-[1]:    Elapsed time: 4602 [milliseconds]
-[1]:    Elapsed time: 7700 [milliseconds]
+Elapsed time: 2 milliseconds.
+Elapsed time: 2666 milliseconds.
+Elapsed time: 4958 milliseconds.
 
-[1]:    Elapsed time: 3 [milliseconds]
-[1]:    Elapsed time: 3315 [milliseconds]
-[1]:    Elapsed time: 7693 [milliseconds]
+Elapsed time: 2 milliseconds.
+Elapsed time: 2035 milliseconds.
+Elapsed time: 4503 milliseconds.
 
-[1]:    Elapsed time: 4 [milliseconds]
-[1]:    Elapsed time: 3371 [milliseconds]
-[1]:    Elapsed time: 7717 [milliseconds]
+Elapsed time: 2 milliseconds.
+Elapsed time: 2026 milliseconds.
+Elapsed time: 4484 milliseconds.
 ```
 
 ---

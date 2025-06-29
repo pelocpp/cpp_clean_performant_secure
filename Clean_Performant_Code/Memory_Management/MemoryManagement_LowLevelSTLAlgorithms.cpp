@@ -17,6 +17,8 @@
 #include <set>
 #include <vector>
 
+// #define Verbose
+
 namespace LowLevel_MemoryFunctions_Functions {
 
     namespace Class_Integer {
@@ -31,11 +33,13 @@ namespace LowLevel_MemoryFunctions_Functions {
             // getter
             int get() const { return m_value; }
 
-            //Integer& operator=(const Integer& other) {
-            //    std::println("operator=");
-            //    m_value = other.m_value;
-            //    return *this;
-            //}
+#if defined (Verbose)
+            Integer& operator=(const Integer& other) {
+                std::println("operator=");
+                m_value = other.m_value;
+                return *this;
+            }
+#endif
 
         private:
             int m_value;
@@ -181,10 +185,12 @@ namespace LowLevel_MemoryFunctions_Functions {
                     vec.begin()
                 );
 
-                //for (auto it{ vec.begin()}; it != vec.end(); ++it) {
-                //    std::print("{} ", (*it).get());
-                //}
-                //std::println();
+#if defined (Verbose)
+                for (auto it{ vec.begin()}; it != vec.end(); ++it) {
+                    std::print("{} ", (*it).get());
+                }
+                std::println();
+#endif
             }
         }
 
@@ -210,10 +216,12 @@ namespace LowLevel_MemoryFunctions_Functions {
                     first
                 );
 
-                //for (auto it{ first }; it != last; ++it) {
-                //    std::print("{} ", (*it).get());
-                //}
-                //std::println();
+#if defined (Verbose)
+                for (auto it{ first }; it != last; ++it) {
+                    std::print("{} ", (*it).get());
+                }
+                std::println();
+#endif
 
                 std::free(buffer);
             }
@@ -240,10 +248,12 @@ namespace LowLevel_MemoryFunctions_Functions {
                     vec.begin()
                 );
 
-                //for (auto it{ vec.begin() }; it != vec.end(); ++it) {
-                //    std::print("{} ", *it);
-                //}
-                //std::println();
+#if defined (Verbose)
+                for (auto it{ vec.begin() }; it != vec.end(); ++it) {
+                    std::print("{} ", *it);
+                }
+                std::println();
+#endif
             }
         }
 
@@ -270,10 +280,12 @@ namespace LowLevel_MemoryFunctions_Functions {
                     first
                 );
 
-                //for (auto it{ first }; it != last; ++it) {
-                //    std::print("{} ", *it);
-                //}
-                //std::println();
+#if defined (Verbose)
+                for (auto it{ first }; it != last; ++it) {
+                    std::print("{} ", *it);
+                }
+                std::println();
+#endif
 
                 std::destroy(first, last);
 
@@ -356,8 +368,6 @@ namespace LowLevel_MemoryFunctions_Functions {
             
             auto first = static_cast<T*>(buffer);
             auto last = first + Size;
-
-            std::println("Hexadecimal:  {:X}", 30);
 
             std::println("Memory (std::malloc): ");
             for (auto it{ first }; it != last; ++it) {

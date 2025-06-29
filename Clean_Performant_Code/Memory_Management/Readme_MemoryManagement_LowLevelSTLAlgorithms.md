@@ -21,9 +21,9 @@
 ## Allgemeines <a name="link1"></a>
 
 Die manuelle Lebensdauerverwaltung und das Erstellen von Objekten in nicht initialisierten Speicherblöcken
-ist ein spezielleres Thema.
+ist ein spezielles Thema.
 
-Es gibt Situationen, in denen `std::vector` nicht die Performanz bietet, die man benötigt
+Es gibt Situationen, in denen die Klasse `std::vector` nicht die Performanz bietet, die man benötigt
 oder die vielleicht in C machbar wäre. Ein Umstieg von C auf C++ sollte generell nicht angestrebt werden,
 aber eine Erweiterung der STL um neue, performantere Funktionen könnte Abhilfe schaffen.
 
@@ -97,6 +97,12 @@ Das geht, aber nicht mit der Klasse `std::vector`. Wir müssen auf Funktionen wie
   * `_aligned_malloc` / `_aligned_free` (Alternative Funktionen, von Visual C++ bereitgestellt)
 
 zurückgreifen.
+
+*Bemerkung*:
+
+Auch wenn es auch der Definition der Schnittstelle von `std:malloc` nicht ersichtlich ist:
+`std:malloc` liefert einen Zeiger auf das niedrigste (erste) Byte eines zugewiesenen Speicherblocks zurück,
+der für jeden Skalartyp geeignet ausgerichtet (*Alignment*) ist &ndash; mindestens so streng wie `std::max_align_t`.
 
 *Beispiel* 2:
 

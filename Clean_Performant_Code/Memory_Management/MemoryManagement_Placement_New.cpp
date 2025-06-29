@@ -438,10 +438,14 @@ namespace Placement_New_Example_Quickbench {
 
 void memory_management_placement_new()
 {
-    //Placement_New::test_placement_new_01();
-    //Placement_New::test_placement_new_02();
-    //Placement_New::test_placement_new_03();
-    //Placement_New::test_placement_new_04();
+    Placement_New::test_placement_new_01();
+    std::println();
+    Placement_New::test_placement_new_02();
+    std::println();
+    Placement_New::test_placement_new_03();
+    std::println();
+    Placement_New::test_placement_new_04();
+    std::println();
 
     Placement_New_Example::test_placement_new_example_00();
     Placement_New_Example::test_placement_new_example_01();
