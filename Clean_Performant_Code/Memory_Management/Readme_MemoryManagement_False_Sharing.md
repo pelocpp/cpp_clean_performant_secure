@@ -15,7 +15,7 @@
 
 #### Quellcode
 
-[*MemoryManagement_Cache_False_Sharing.cpp*](MemoryManagement_Cache_False_Sharing.cpp)<br />
+[*MemoryManagement_Cache_False_Sharing.cpp*](MemoryManagement_False_Sharing.cpp)<br />
 
 ---
  
@@ -29,7 +29,6 @@ in ihren eigenen Cache.
 Dadurch soll die *Datenlokalität* optimal genutzt werden:
 Wenn Sie auf Daten zugreifen, greifen Sie höchstwahrscheinlich auch auf andere Daten zu,
 die sich in der Nähe befinden.
-Deshalb ist es sinnvoll, die gesamte Cache Line in den Cache zu laden, um sie schneller abrufen zu können.
 
 Was passiert, wenn eine CPU den Inhalt einer Cache Line ändert, die aktuell mit anderen CPUs geteilt wird?
 Die Caches der anderen CPUs müssen **neu geladen** werden,

@@ -288,7 +288,7 @@ Wir erstellen eine neue Version der Klasse `Document`:
 06: };
 ```
 
-<img src="Memory_Padding_01.png" width="600">
+<img src="Memory_Padding_02.png" width="600">
 
 *Abbildung* 5: Die Datenelemente der `Document`-Klasse neu arrangiert.
 

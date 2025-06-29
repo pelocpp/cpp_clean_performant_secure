@@ -148,7 +148,7 @@ namespace Placement_New_Example {
                 volatile BigData_Classic_Implementation::BigData<Person> data{ DataSize, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
             }
         }
-        std::println("");
+        std::println();
     }
 
     namespace BigData_Classic_Improved_Implementation
@@ -216,7 +216,7 @@ namespace Placement_New_Example {
                 volatile BigData_Classic_Implementation::BigData<Person> data{ DataSize, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
             }
         }
-        std::println("");
+        std::println();
     }
 
     namespace BigData_Classic_More_Improved_Implementation
@@ -276,7 +276,7 @@ namespace Placement_New_Example {
                 volatile BigData_Classic_Implementation::BigData<Person> data{ DataSize, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
             }
         }
-        std::println("");
+        std::println();
     }
 }
 

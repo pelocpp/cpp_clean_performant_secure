@@ -55,10 +55,10 @@ zu summieren:
 
 
 ```cpp
-01: template <size_t Size>
+01: template <size_t Length>
 02: class Object {
 03: private:
-04:     std::array<char, Size> m_data{};
+04:     std::array<char, Length> m_data{};
 05:     int m_score{ std::rand() };
 06: public:
 07:     auto getScore() const { return m_score; }

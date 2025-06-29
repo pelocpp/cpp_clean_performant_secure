@@ -18,11 +18,11 @@ namespace DataStructuresAndAlgorithms {
         // =======================================================
         // calculate sizes of SmallObject and BigObject objects
 
-        template <size_t Size>
+        template <size_t Length>
         class Object {
         private:
-            std::array<char, Size> m_data{};
-            int                    m_score{ std::rand() };
+            std::array<char, Length> m_data{};
+            int m_score{ std::rand() };
         public:
             Object() = default;
             auto getScore() const { return m_score; }
@@ -444,22 +444,22 @@ void test_parallel_arrays()
     using namespace DataStructuresAndAlgorithms;
 
     using namespace SmallVsBigObjects;
-    test_parallel_arrays_01();
+   // test_parallel_arrays_01();
     test_parallel_arrays_02();
 
-    using namespace ParallelArrays_OriginalUser;
-    test_parallel_arrays_with_original_users();
+    //using namespace ParallelArrays_OriginalUser;
+    //test_parallel_arrays_with_original_users();
 
-    using namespace ParallelArrays_ImprovedUser;
-    test_parallel_arrays_with_improved_users();
+    //using namespace ParallelArrays_ImprovedUser;
+    //test_parallel_arrays_with_improved_users();
 
-    using namespace ParallelArrays_ParallelUserData;
-    test_parallel_arrays_with_parallel_user_data();
+    //using namespace ParallelArrays_ParallelUserData;
+    //test_parallel_arrays_with_parallel_user_data();
 
-    using namespace Structuring_Data_For_Cache_Efficiency;
-    Array_of_Structures_AoS::test_aos();
-    std::println();
-    Structure_of_Arrays_SoA::test_soa();
+    //using namespace Structuring_Data_For_Cache_Efficiency;
+    //Array_of_Structures_AoS::test_aos();
+    //std::println();
+    //Structure_of_Arrays_SoA::test_soa();
 }
 
 // ===========================================================================

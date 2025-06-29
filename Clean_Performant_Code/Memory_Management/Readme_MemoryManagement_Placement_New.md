@@ -61,8 +61,8 @@ d'tor Person
 ```
 
 Es gibt kein *Placement delete*.
-Um das Objekt zu zerstören und den Speicher freizugeben, müssen wir also yum Einen den Destruktor explizit aufrufen
-und dann zum Zweiten den Speicher separat freigeben.
+Um das Objekt zu zerstören und den Speicher freizugeben, müssen wir also zum einen den Destruktor explizit aufrufen
+und dann zum zweiten den Speicher separat freigeben.
 
 C++17 führt eine Reihe von Hilfsfunktionen in der STL (Include-Datei `<memory>`) ein,
 um Objekte zu konstruieren und zu zerstören, ohne Speicher zuzuweisen oder freizugeben.
@@ -128,13 +128,6 @@ c'tor Person
 d'tor Person
 d'tor Person
 ```
-
-
-Bitte beachte, dass wir diese *Low-Level*-Speicherfunktionen betrachten,
-um ein besseres Verständnis der Speicherverwaltung in C++ zu vermitteln.
-
-Die Verwendung von `reinterpret_cast` und die hier gezeigten Speicherverwaltungsfunktionen
-sollte in einer C++-Codebasis auf ein absolutes Minimum beschränkt werden.
 
 ---
 
