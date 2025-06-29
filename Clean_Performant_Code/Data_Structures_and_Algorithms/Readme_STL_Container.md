@@ -745,6 +745,16 @@ Alice exists in the flat_map: false.
 
 ## Ansichten (*Views*) <a name="link18"></a>
 
+Die Klasse `std::span` ist ein leichtgewichtiger Wrapper um 
+ein Array im C-Stil, ein `std::array`- oder ein `std::vector`-Objekt.
+
+*Beachte*:<br />
+`std::span`-Objekte verweisen auf die tatsächlichen Daten mit Zeigervariablen.
+Werden beispielsweise im Falle von `std::vector`-Objekten derartige Zeigervariablen
+auf Grund einer Neuallokation der Daten im Vektor ungültig, wird das `std::span`-Objekt ebenfalls ungültig.
+
+Man spricht deshalb auch von so genanten &bdquo;*Non-Owning*&rdquo;-Objekten.
+
 <img src="cpp_stl_container_span.svg" width="400">
 
 *Abbildung* 11: Sicht `std::span`.
