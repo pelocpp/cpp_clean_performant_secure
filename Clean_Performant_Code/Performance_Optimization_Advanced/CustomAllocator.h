@@ -20,9 +20,6 @@ public:
 
     T* allocate(std::size_t n)
     {
-        T dummy{};
-
-
         size_t numBytes{ n * sizeof(T) };
 
         std::println("Allocating {} bytes", numBytes);
