@@ -2,13 +2,13 @@
 // Program.cpp // Performance Optimization Advanced
 // ===========================================================================
 
-//extern void performance_best_practices();
-//extern void object_pool_best_practices();
+extern void test_custom_allocator();
+extern void test_object_pool();
 
 int main()
 {
-    //performance_best_practices();
-    object_pool_best_practices();
+    test_custom_allocator();
+  //  test_object_pool();
     return 0;
 }
 

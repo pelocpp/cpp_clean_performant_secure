@@ -18,7 +18,7 @@
     <ClCompile Include="ObjectPool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestObjectPool.cpp">
+    <ClCompile Include="ObjectPool_Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Program.cpp">
@@ -27,17 +27,32 @@
     <ClCompile Include="Laundry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CustomAllocator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomAllocator_Test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ObjectPool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CustomAllocator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Performance_Optimization_Advanced.md">
+    <None Include="Performance_Optimization_Advanced_Laundry.md">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Performance_Optimization_Advanced_Laundry.md">
+    <None Include="Readme_Performance_Optimization_Advanced.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Readme_Performance_Optimization_Advanced_Custom_Allocator.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Readme_Performance_Optimization_Advanced_Object_Pool.md">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

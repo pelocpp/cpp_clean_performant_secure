@@ -125,17 +125,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CustomAllocator.cpp" />
+    <ClCompile Include="CustomAllocator_Test.cpp" />
     <ClCompile Include="Laundry.cpp" />
     <ClCompile Include="ObjectPool.cpp" />
     <ClCompile Include="Program.cpp" />
-    <ClCompile Include="TestObjectPool.cpp" />
+    <ClCompile Include="ObjectPool_Test.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CustomAllocator.h" />
     <ClInclude Include="ObjectPool.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Performance_Optimization_Advanced.md" />
     <None Include="Performance_Optimization_Advanced_Laundry.md" />
+    <None Include="Readme_Performance_Optimization_Advanced.md" />
+    <None Include="Readme_Performance_Optimization_Advanced_Custom_Allocator.md" />
+    <None Include="Readme_Performance_Optimization_Advanced_Object_Pool.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
