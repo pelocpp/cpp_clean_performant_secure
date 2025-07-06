@@ -137,7 +137,7 @@
     <ClInclude Include="ObjectPool.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Performance_Optimization_Advanced_Laundry.md" />
+    <None Include="Readme_Performance_Optimization_Advanced_Laundry.md" />
     <None Include="Readme_Performance_Optimization_Advanced.md" />
     <None Include="Readme_Performance_Optimization_Advanced_Custom_Allocator.md" />
     <None Include="Readme_Performance_Optimization_Advanced_Object_Pool.md" />

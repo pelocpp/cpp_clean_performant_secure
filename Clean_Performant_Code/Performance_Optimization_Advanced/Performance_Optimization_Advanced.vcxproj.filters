@@ -43,7 +43,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Performance_Optimization_Advanced_Laundry.md">
+    <None Include="Readme_Performance_Optimization_Advanced_Laundry.md">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Readme_Performance_Optimization_Advanced.md">
