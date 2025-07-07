@@ -46,8 +46,8 @@ namespace DataStructuresAndAlgorithms {
         // Elapsed time : 2 milliseconds.
         // Elapsed time : 12 milliseconds.
 
-        constexpr auto Size = 1;  // just to prevent huge compilation times!
-        // constexpr auto Size = 1'000'000;
+        // constexpr auto Size = 1;  // just to prevent huge compilation times!
+        constexpr auto Size = 1'000'000;
 #else
         constexpr auto Size = 1;  // just to prevent huge compilation times!
         // constexpr auto Size = 2'000'000; 
@@ -435,19 +435,19 @@ void test_parallel_arrays()
     test_parallel_arrays_01();
     test_parallel_arrays_02();
 
-    using namespace ParallelArrays_OriginalUser;
-    test_parallel_arrays_with_original_users();
+    //using namespace ParallelArrays_OriginalUser;
+    //test_parallel_arrays_with_original_users();
 
-    using namespace ParallelArrays_ImprovedUser;
-    test_parallel_arrays_with_improved_users();
+    //using namespace ParallelArrays_ImprovedUser;
+    //test_parallel_arrays_with_improved_users();
 
-    using namespace ParallelArrays_ParallelUserData;
-    test_parallel_arrays_with_parallel_user_data();
+    //using namespace ParallelArrays_ParallelUserData;
+    //test_parallel_arrays_with_parallel_user_data();
 
-    using namespace Structuring_Data_For_Cache_Efficiency;
-    Array_of_Structures_AoS::test_aos();
-    std::println();
-    Structure_of_Arrays_SoA::test_soa();
+    //using namespace Structuring_Data_For_Cache_Efficiency;
+    //Array_of_Structures_AoS::test_aos();
+    //std::println();
+    //Structure_of_Arrays_SoA::test_soa();
 }
 
 // ===========================================================================

@@ -7,11 +7,23 @@
 ## Inhalt
   
   * [Allgemeines](#link1)
+  * [Zu den Details](#link2)
 
+---
+
+## Voraussetzungen
+
+  * *Placement New*
+  * &bdquo;*Zeigerwäsche*&rdquo;: `std::launder`
+  * Speicher-Allokatoren (`std::allocator`)
+  
 ---
 
 #### Quellcode
 
+[*ObjectPool.h*](ObjectPool.h)<br />
+[*ObjectPool.cpp*](ObjectPool.cpp)<br />
+[*ObjectPool_Test.cpp*](ObjectPool_Test.cpp)
 
 ---
 
@@ -23,7 +35,7 @@ geeignet ist.
 
 ---
 
-## Einige Details <a name="link1"></a>
+## Zu den Details <a name="link2"></a>
 
 Die Implementierung des Objektpools verwaltet einen Vektor mit Objektblöcken vom Typ `T`.
 Nach dem Start gibt es in diesem Vektor nur ein Element (Zeiger).
