@@ -287,21 +287,17 @@ namespace DataStructuresAndAlgorithms {
         // =============================================
         // Some utility functions for creating test data
 
-        static auto createLevels(size_t count) {
-            auto vec = std::vector<short>(count);
-            for (auto& level : vec) {
-                level = std::rand() % 100;
-            }
-            return vec;
-        };
+        static auto createLevelsAndPlayingUsers(size_t count)
+        {
+            auto vec1 = std::vector<short>(count);
+            auto vec2 = std::vector<bool>(count); // Note: std::vector<bool> is special
 
-        static auto createPlayingUsers(size_t count) {
-
-            auto vec = std::vector<bool>(count); // Note: std::vector<bool> is special
-            for (auto&& is_playing : vec) {
-                is_playing = static_cast<bool>(std::rand() % 2);
+            for (size_t i{}; i != count; ++i) {
+                vec1[i] = std::rand() % 100;
+                vec2[i] = static_cast<bool>(std::rand() % 2);
             }
-            return vec;
+
+            return std::pair{ vec1, vec2 };
         };
 
         static auto numUsersAtLevel(short level, const std::vector<short>& users) {
@@ -320,8 +316,7 @@ namespace DataStructuresAndAlgorithms {
 
             std::println("Creating Parallel Arrays ...");
 
-            auto userLevels{ createLevels(NumObjects) };
-            auto playingUsers{ createPlayingUsers(NumObjects) };
+            const auto& [userLevels, playingUsers] = createLevelsAndPlayingUsers(NumObjects);
 
             std::println("Done.");
 
@@ -345,16 +340,9 @@ namespace DataStructuresAndAlgorithms {
 
     namespace Structuring_Data_For_Cache_Efficiency {
 
-#ifdef _DEBUG
-
-        constexpr size_t Iterations{ 100 };      // debug mode
-        constexpr size_t Width{ 1'000 };         // debug mode
-        constexpr size_t Height{ 1'000 };        // debug mode
-#else
-        constexpr size_t Iterations{ 1'000 };    // release mode
-        constexpr size_t Width{ 2'000 };         // release mode
-        constexpr size_t Height{ 2'000 };        // release mode
-#endif
+        constexpr size_t Iterations{ 100 };
+        constexpr size_t Width{ 1'000 };
+        constexpr size_t Height{ 1'000 };
 
         static uint8_t modifyGreenIntensity(uint8_t green) {
             green += 5;
@@ -444,22 +432,22 @@ void test_parallel_arrays()
     using namespace DataStructuresAndAlgorithms;
 
     using namespace SmallVsBigObjects;
-   // test_parallel_arrays_01();
+    test_parallel_arrays_01();
     test_parallel_arrays_02();
 
-    //using namespace ParallelArrays_OriginalUser;
-    //test_parallel_arrays_with_original_users();
+    using namespace ParallelArrays_OriginalUser;
+    test_parallel_arrays_with_original_users();
 
-    //using namespace ParallelArrays_ImprovedUser;
-    //test_parallel_arrays_with_improved_users();
+    using namespace ParallelArrays_ImprovedUser;
+    test_parallel_arrays_with_improved_users();
 
-    //using namespace ParallelArrays_ParallelUserData;
-    //test_parallel_arrays_with_parallel_user_data();
+    using namespace ParallelArrays_ParallelUserData;
+    test_parallel_arrays_with_parallel_user_data();
 
-    //using namespace Structuring_Data_For_Cache_Efficiency;
-    //Array_of_Structures_AoS::test_aos();
-    //std::println();
-    //Structure_of_Arrays_SoA::test_soa();
+    using namespace Structuring_Data_For_Cache_Efficiency;
+    Array_of_Structures_AoS::test_aos();
+    std::println();
+    Structure_of_Arrays_SoA::test_soa();
 }
 
 // ===========================================================================

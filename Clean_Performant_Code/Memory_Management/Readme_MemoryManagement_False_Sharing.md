@@ -53,7 +53,7 @@ CPU 2 wiederum ausschlieﬂlich auf der Zelle, die den Wert &bdquo;2&rdquo; enth‰l
 
 <img src="False_Sharing_Example_02.svg" width="600">
 
-*Abbildung* 4: CPU 1 andert eine Zelle in ihrem Cache.
+*Abbildung* 4: CPU 1 ‰ndert eine Zelle in ihrem Cache.
 
 CPU 1 hat den Wert in &bdquo;ihrer&rdquo; Zelle von &bdquo;1&rdquo; auf &bdquo;123&rdquo; ge‰ndert.
 

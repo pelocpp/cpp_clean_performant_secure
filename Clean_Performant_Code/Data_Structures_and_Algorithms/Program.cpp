@@ -9,9 +9,9 @@ extern void test_parallel_arrays();
 
 int main()
 {
-    //test_stl_container();
-    //test_algorithms();
-    //test_hashing();
+    test_stl_container();
+    test_algorithms();
+    test_hashing();
     test_parallel_arrays();
 
     return 0;

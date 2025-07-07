@@ -15,7 +15,7 @@ namespace Placement_New {
     // =======================================================================
     // Placement New
 
-    unsigned char g_memory[sizeof(Person)];
+    unsigned char alignas (std::max_align_t) g_memory[sizeof(Person)];
 
     static void test_placement_new_01() {
 
