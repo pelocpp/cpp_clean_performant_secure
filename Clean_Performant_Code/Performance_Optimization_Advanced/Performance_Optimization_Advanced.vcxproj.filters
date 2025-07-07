@@ -61,5 +61,11 @@
     <None Include="cpp_object_pool_02.svg">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="cpp_object_pool_03.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="cpp_object_pool_04.svg">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

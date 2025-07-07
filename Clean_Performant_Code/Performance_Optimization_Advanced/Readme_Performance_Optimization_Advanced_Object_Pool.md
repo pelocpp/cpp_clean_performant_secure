@@ -25,7 +25,11 @@ geeignet ist.
 
 ## Einige Details <a name="link1"></a>
 
-Die Implementierung verwaltet einen Vektor mit Objektblöcken vom Typ `T`:
+Die Implementierung des Objektpools verwaltet einen Vektor mit Objektblöcken vom Typ `T`.
+Nach dem Start gibt es in diesem Vektor nur ein Element (Zeiger).
+Dieser Zeiger verweist auf einen Speicherbereich,
+der eine bestimmte Anzahl von Objekten (Typ `T`) aufnehmen kann, 
+die dieser Pool verwaltet:
 
 ```cpp
 std::vector<T*>  m_pool;
@@ -37,6 +41,11 @@ Zusätzlich werden freie Objekte in einem Vektor mit Zeigern auf alle freien Obje
 std::vector<T*>  m_free;
 ```
 
+Da zu Beginn alle Objekte im Pool verfügbar sind,
+sind hier alle Adressen verfügbar, die durch den ersten Block
+im Pool angesprochen werden können.
+
+
 Wir versuchen, in den beiden folgenden Abbildungen das Szenario im
 Objektpool &bdquo;bildlich&rdquo; darzustellen.
 
@@ -46,21 +55,43 @@ in der zweiten Liste `m_free` aller verfügbaren Objekte eingetragen.
 
 <img src="cpp_object_pool_01.svg" width="600">
 
-*Abbildung* 1: m_pool und m_free nach dem Start.
+*Abbildung* 1: `m_pool` und `m_free` nach dem Start.
 
-
-Jetzt stellen wir uns vor, dass zwei Objektblöcken der Anwendung
+Jetzt stellen wir uns vor, dass zwei Objektblöcke der Anwendung
 zur Verfügung gestellt wurden. In *Abbildung* 2 erkennen wir, 
 dass am Ende von `m_free` zwei Adressen fehlen: Diese Adressen
 sind nun in der Obhut der Anwendung, sie können allerdings,
 wenn die Anwendung die Objekte nicht mehr benötigt,
-in die  `m_free`-Liste zurückgegeben werden.
+in die  `m_free`-Liste wieder eingereiht werden.
 
 <img src="cpp_object_pool_02.svg" width="600">
 
-*Abbildung* 2: m_pool und m_free nach Zuteilung zweier Objekte.
+*Abbildung* 2: `m_pool` und `m_free` nach Zuteilung zweier Objekte.
+
+Sind alle Objekte des Pools zugeteilt, erkennen wir in
+Abbildung 3, dass die Liste  `m_free` leer ist.
+Es gibt keine freien Blöcke mehr.
+
+<img src="cpp_object_pool_03.svg" width="600">
+
+*Abbildung* 3: Ein Pool ohne freie Objekte.
 
 
+Wird jetzt ein neues Objekt angefordert,
+muss zunächst der Pool an sich wieder nachladen.
+
+Die grafische Darstellung wird nun ein wenig komplexer.
+In *Abbildung* 4 erkennen wir, dass zunächst der Pool
+neuen Speicher bekommen hat. Dieser wird komplett in die Liste
+der freien Blöcke aufgenommen und neue Blöcke sind wieder verfügbar.
+
+<img src="cpp_object_pool_03.svg" width="800">
+
+*Abbildung* 4: Ein Pool mit neuen Chunks.
+
+
+
+---
 
 
 Der Pool gibt Objekte über die Memberfunktion `acquireObject()` aus.

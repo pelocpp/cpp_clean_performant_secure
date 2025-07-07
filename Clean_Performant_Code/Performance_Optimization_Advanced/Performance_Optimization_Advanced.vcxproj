@@ -139,6 +139,8 @@
   <ItemGroup>
     <None Include="cpp_object_pool_01.svg" />
     <None Include="cpp_object_pool_02.svg" />
+    <None Include="cpp_object_pool_03.svg" />
+    <None Include="cpp_object_pool_04.svg" />
     <None Include="Readme_Performance_Optimization_Advanced_Laundry.md" />
     <None Include="Readme_Performance_Optimization_Advanced.md" />
     <None Include="Readme_Performance_Optimization_Advanced_Custom_Allocator.md" />
