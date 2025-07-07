@@ -85,7 +85,7 @@ In *Abbildung* 4 erkennen wir, dass zunächst der Pool
 neuen Speicher bekommen hat. Dieser wird komplett in die Liste
 der freien Blöcke aufgenommen und neue Blöcke sind wieder verfügbar.
 
-<img src="cpp_object_pool_03.svg" width="800">
+<img src="cpp_object_pool_04.svg" width="800">
 
 *Abbildung* 4: Ein Pool mit neuen Chunks.
 
