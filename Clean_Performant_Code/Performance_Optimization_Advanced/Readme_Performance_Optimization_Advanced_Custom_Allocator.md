@@ -17,7 +17,9 @@
 
 #### Quellcode
 
-[*MemoryManagement_Stack.cpp*](MemoryManagement_Stack.cpp)<br />
+[*CustomAllocator.h*](CustomAllocator.h)<br />
+[*CustomAllocator.cpp*](CustomAllocator.cpp)<br />
+[*CustomAllocator_Test.cpp*](CustomAllocator_Test.cpp)
 
 ---
 
@@ -25,7 +27,7 @@
 
 Warum verwendet man benutzerdefinierte Allokatoren?
 
-Diese gibt es aus mehreren Gründen:
+Dafür gibt es mehrere Gründen:
 
   * Leistungsoptimierung:<br />Durch die Anpassung der Speicherzuweisung in bestimmten Situationen können Sie die Fragmentierung reduzieren und die Cache-Lokalität verbessern.
   * Speicherpooling:<br />Allokatoren können einen Speicherpool für eine schnelle Zuweisung und Freigabe verwalten, was in Echtzeitsystemen nützlich ist.
@@ -66,19 +68,19 @@ Die Memberfunktionen `allocate()` und `deallocate()` von `std::allocator<T>` sin
 
 ## `allocate`, `deallocate`, `construct` und `destroy` <a name="link3"></a>
 
-`allocate`:
+`allocate`:<br />
 Zweck: Diese Methode ist für die Zuweisung von rohem (uninitialisiertem) Speicher zuständig.
 Aufruf: STL-Container rufen `allocate` auf, wenn sie Speicher zum Speichern von Elementen benötigen.
 
-`deallocate`:
+`deallocate`:<br />
 Zweck: Diese Methode ist für die Freigabe von zuvor zugewiesenem rohem Speicher zuständig.
 Aufruf: STL-Container rufen `deallocate` auf, wenn sie zuvor zugewiesenen Speicher freigeben müssen.
 
-`construct`:
+`construct`:<br />
 Zweck: Diese Methode ist für die Erstellung eines Objekts im zugewiesenen Speicher zuständig.
 Aufruf: STL-Container rufen `construct` auf, wenn sie ein Objekt im zugewiesenen Speicher erstellen müssen.
 
-`destroy`:
+`destroy`:<br />
 Zweck: Diese Methode ist für die Zerstörung eines Objekts zuständig.
 Aufruf: STL-Container rufen `destroy` auf, wenn sie ein Objekt zerstören und seine Ressourcen freigeben müssen.
 

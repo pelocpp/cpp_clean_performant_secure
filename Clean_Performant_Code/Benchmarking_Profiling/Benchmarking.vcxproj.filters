@@ -57,6 +57,9 @@
     <ClCompile Include="Statistics_Firstnames_03.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ScopedTimer_Folding2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Readme_Benchmarking.md">
@@ -152,6 +155,9 @@
     </Text>
     <Text Include="Names_Short.txt">
       <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Benchmarking_Folding2.txt">
+      <Filter>Source Files</Filter>
     </Text>
   </ItemGroup>
 </Project>

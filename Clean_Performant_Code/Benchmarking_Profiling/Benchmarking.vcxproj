@@ -135,6 +135,7 @@
     <ClCompile Include="Advent_of_Code_2024_No_11.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="ScopedTimer_Folding.cpp" />
+    <ClCompile Include="ScopedTimer_Folding2.cpp" />
     <ClCompile Include="ScopedTimer_GettingStarted.cpp" />
     <ClCompile Include="ScopedTimer_Lambda_vs_Std_Function.cpp" />
     <ClCompile Include="ScopedTimer_StdArray_Constant_Initialization.cpp" />
@@ -164,6 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Benchmarking_Folding.txt" />
+    <Text Include="Benchmarking_Folding2.txt" />
     <Text Include="Benchmarking_GettingStarted.txt" />
     <Text Include="Benchmarking_Lambda_vs_Std_Function.txt" />
     <Text Include="Benchmarking_Placement_New.txt" />

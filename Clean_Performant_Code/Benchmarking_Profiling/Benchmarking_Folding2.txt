@@ -1,0 +1,47 @@
+// ===========================================================================
+// Benchmarking_Folding2.txt
+// Comparing Folding Expression solution with iterative solution.
+// Status: Working!
+// ===========================================================================
+
+// =======================================================================
+// folding and iterating functions
+
+static auto addFolding(auto ... values) {
+  return (... + values);
+}
+
+static auto addIterating(auto ... values) {      
+  auto list = { values ...};
+  volatile auto sum{ (size_t) 0 };
+  for (auto elem : list) {
+    sum += elem;
+  }
+  return sum;
+}
+
+// =======================================================================
+// benchmark functions
+
+static void FoldingSolution(benchmark::State& state) {
+
+  for (auto _ : state) {
+    volatile auto sum{ addFolding(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) };
+    benchmark::DoNotOptimize(sum);
+  }
+}
+
+static void IterativeSolution(benchmark::State& state) {
+
+  for (auto _ : state) {
+    volatile auto sum{ addIterating(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) };
+    benchmark::DoNotOptimize(sum);
+  }
+}
+
+BENCHMARK(FoldingSolution);
+BENCHMARK(IterativeSolution);
+
+// ===========================================================================
+// End-of-File
+// ===========================================================================
