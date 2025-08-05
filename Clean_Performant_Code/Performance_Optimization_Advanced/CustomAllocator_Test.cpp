@@ -72,11 +72,31 @@ static void test_custom_allocator_03()
     vec.clear();
 }
 
+static void test_custom_allocator_04()
+{
+    //SimpleAllocator<Person> alloc;
+
+    //std::vector<int, SimpleAllocator<int>> vec(alloc);
+
+    std::vector<Person, SimpleAllocator<Person>> vec;  // works too
+
+    vec.push_back({ "Sepp", "Mueller", (size_t)30} );
+    vec.push_back({ "Sepp", "Mueller", (size_t)30} );
+    vec.push_back({ "Sepp", "Mueller", (size_t)30} );
+
+    for (const auto& person : vec) {
+        std::println("{} ", person);
+    }
+    std::println();
+}
+
+
 void test_custom_allocator()
 {
     test_custom_allocator_01();
     test_custom_allocator_02();
     test_custom_allocator_03();
+    test_custom_allocator_04();
 }
 
 // ===========================================================================
