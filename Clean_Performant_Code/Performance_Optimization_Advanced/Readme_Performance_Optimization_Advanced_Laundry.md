@@ -7,6 +7,7 @@
 ## Inhalt
 
   * [Allgemeines](#link1)
+  * [Literatur](#link2)
 
 ---
 
@@ -16,7 +17,7 @@
 
 ---
 
-### &bdquo;*Zeigerwäsche*&rdquo;: `std::launder` <a name="link15"></a>
+### Allgemeines <a name="link1"></a>
 
 Die STL-Funktion ist etwas kurios, sie führt eine &bdquo;*Zeigerwäsche*&rdquo; durch.
 
@@ -77,7 +78,7 @@ Definieren eines Zeigers
 mit Hilfe eines anderen Zeigers, der auf einen Speicherbereich verweist,
 in dem ein mittels *Placement new* erzeugtes Objekt residiert.
 Der Zeiger, der für *Placement new* den Speicher bereitstellt,
-ist meist von einem skalaren Typ wie `std::byte`, `unsigned char` oder ähnliches.
+ist meist von einem skalaren Typ wie `std::byte`, `unsigned char` oder Ähnliches.
 
 Einige ergänzende Erläuterungen dazu:
 
@@ -85,9 +86,9 @@ Einige ergänzende Erläuterungen dazu:
   Betrachtung von Lebensdauererwartungen bestimmter Objekte,
   um die Nachverfolgung und Optimierungen zur Kompilierzeit zu deaktivieren, die möglicherweise nicht korrekt sind.
 
-  * Wird normalerweise nur verwendet, wenn Sie die Lebensdauer eines Objekts über oder innerhalb eines anderen starten.
+  * `std::launder` wird normalerweise nur verwendet, wenn Sie die Lebensdauer eines Objekts über oder innerhalb eines anderen starten.
 
-  * Wenn Sie möchten, dass der Compiler dumm ist, waschen Sie im Wesentlichen den Zeiger,
+  * Wenn Sie möchten, dass sich der Compiler naiv verhält, waschen Sie im Wesentlichen den Zeiger,
   damit der Compiler die komplexe Zustandsnachverfolgung zur Kompilierzeit, die Compiler durchführen, absichtlich vergisst und so tut,
   als wäre der Zeiger tatsächlich ein brandneues Objekt, von dem er nichts wusste.
 
@@ -102,6 +103,13 @@ Einige ergänzende Erläuterungen dazu:
 
   * `std::launder` und `volatile` sind sich insofern ähnlich, als sie existieren, um dem Compiler mitzuteilen,
   dass er keine Annahmen über die Werte/Objekte auf Grund möglicher Beobachtungen treffen soll.
+
+---
+
+## Literatur <a name="link2"></a>
+
+Ein interessanter Artikel zur &bdquo;*Zeigerwäsche*&rdquo;
+findet sich in [*stackoverflow*](https://stackoverflow.com/questions/39382501/what-is-the-purpose-of-stdlaunder).
 
 ---
 

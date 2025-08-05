@@ -10,7 +10,7 @@
 
 ### [Benutzerdefinierte Speicher-Allokatoren / *Custom Allocator*](Readme_Performance_Optimization_Advanced_Custom_Allocator.md)
 
-### [Object Pool](Readme_Performance_Optimization_Advanced_Object_Pool.md)
+### [Realisierung eines *Object Pools*](Readme_Performance_Optimization_Advanced_Object_Pool.md)
 
 ---
 

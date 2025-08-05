@@ -2,18 +2,6 @@
 // ObjectPool.h // Best Practices
 // ===========================================================================
 
-// Vorraussetzungen: std::allocator<T>: NOCH NICHT BESCHRIEBEN
-
-// placement new: IST BESCHRIEBEN
-
-// std::launder IST BESCHRIEBEN
-// https://stackoverflow.com/questions/39382501/what-is-the-purpose-of-stdlaunder
-
-// Das muss ebenfalls rein:  IST BESCHRIEBEN
-// https://en.cppreference.com/w/cpp/memory/destroy_at
-
-// deleter NOCH NICHT BESCHRIEBEN
-
 #pragma once
 
 #include <cassert>

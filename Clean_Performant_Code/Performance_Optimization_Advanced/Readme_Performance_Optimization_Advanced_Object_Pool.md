@@ -1,4 +1,4 @@
-# Object Pool
+# Realisierung eines *Object Pools*
 
 [Zurück](Readme_Performance_Optimization_Advanced.md)
 
@@ -8,6 +8,7 @@
   
   * [Allgemeines](#link1)
   * [Zu den Details](#link2)
+  * [Literatur](#link3)
 
 ---
 
@@ -74,7 +75,7 @@ zur Verfügung gestellt wurden. In *Abbildung* 2 erkennen wir,
 dass am Ende von `m_free` zwei Adressen fehlen: Diese Adressen
 sind nun in der Obhut der Anwendung, sie können allerdings,
 wenn die Anwendung die Objekte nicht mehr benötigt,
-in die  `m_free`-Liste wieder eingereiht werden.
+in der `m_free`-Liste wieder eingereiht werden.
 
 <img src="cpp_object_pool_02.svg" width="600">
 
@@ -101,13 +102,10 @@ der freien Blöcke aufgenommen und neue Blöcke sind wieder verfügbar.
 
 *Abbildung* 4: Ein Pool mit neuen Chunks.
 
-
-
 ---
 
-
-Der Pool gibt Objekte über die Memberfunktion `acquireObject()` aus.
-Wird `acquireObject()` aufgerufen, sind aber keine freien Objekte mehr vorhanden,
+Der Pool stellt Objekte über die Memberfunktion `acquireObject()` zur Verfügung.
+Wird `acquireObject()` aufgerufen und sind aber keine freien Objekte mehr vorhanden,
 allokiert der Pool einen weiteren Vektor mit Objektblöcken vom Typ `T`.
 
 Die Klasse `ObjectPool` ist ein Klassentemplate.
@@ -130,17 +128,25 @@ d.h. es werden keine Objektkonstruktoren aufgerufen.
 Dies geschieht später in `acquireObject()`, wenn Instanzen vergeben werden.
 
 Der zweite Teil von `addChunk()` erstellt Zeiger auf die neuen Instanzen von `T`. 
-Er verwendet den iota()-Algorithmus, definiert in
-<numeric>.
+Er verwendet den `iota()`-Algorithmus, definiert in der Datei `<numeric>`.
 
-Zur Erinnerung: iota() füllt einen durch die ersten beiden Argumente vorgegebenen Bereich mit Werten.
+Zur Erinnerung: `iota()` füllt einen durch die ersten beiden Argumente vorgegebenen Bereich mit Werten.
 
-Die Werte beginnen mit dem Wert des dritten Arguments und werden für jeden nachfolgenden Wert um eins erhöht.
+Die Werte beginnen mit dem Wert des dritten Arguments und werden für jeden nachfolgenden Wert um Eins erhöht.
 
-Da wir mit T*-Zeigern arbeiten, springt das Erhöhen eines T*-Zeigers um eins zum nächsten T im Speicherblock. Abschließend wird der Wert von m_newChunkSize verdoppelt, sodass der nächste hinzugefügte Block doppelt so groß ist wie der aktuell hinzugefügte Block.
+Da wir mit `T*`-Zeigern arbeiten, springt das Erhöhen eines `T*`-Zeigers um Eins
+zum nächsten `T` im Speicherblock. Abschließend wird der Wert von `m_newChunkSize` verdoppelt,
+sodass der nächste hinzugefügte Block doppelt so groß ist wie der aktuelle Block.
 
-Dies geschieht aus Performancegründen und folgt dem Prinzip von std::vector.
+Dies geschieht aus Performancegründen und folgt dem Prinzip von `std::vector`.
 
+---
+
+## Literatur <a name="link3"></a>
+
+Die Realisierung des Object Pools wurde in dem Buch 
+&bdquo;[*Professional C++*](https://www.amazon.de/Professional-C-Marc-Gregoire/dp/1394193173)&rdquo; von Marc Gregoire
+vorgefunden.
 
 ---
 
