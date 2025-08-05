@@ -45,7 +45,7 @@ public:
     explicit ObjectPool(const TAllocator& allocator);
     ~ObjectPool();
 
-    // prevent copy/move construction and copy/move assignment
+    // no copy / no move
     ObjectPool(const ObjectPool&) = delete;
     ObjectPool(ObjectPool&&) = delete;
     ObjectPool& operator=(const ObjectPool&) = delete;
@@ -86,7 +86,7 @@ ObjectPool<T, TAllocator>::~ObjectPool()
     //       The following statement asserts if that is not the case.
     assert(m_freeObjects.size() == InitialChunkSize * (std::pow(2, m_pool.size()) - 1));
 
-    // Deallocate all allocated memory.
+    // deallocate all allocated memory
     std::size_t chunkSize{ InitialChunkSize };
     for (auto* chunk : m_pool) {
         m_allocator.deallocate(chunk, chunkSize);
@@ -97,7 +97,7 @@ ObjectPool<T, TAllocator>::~ObjectPool()
 
 template <typename T, typename TAllocator>
 template <typename... TArgs>
-std::shared_ptr<T> ObjectPool<T, TAllocator>::acquireObject(TArgs&&... args)
+std::shared_ptr<T> ObjectPool<T, TAllocator>::acquireObject(TArgs&& ... args)
 {
     // if there are no free objects, need to allocate a new chunk
     if (m_freeObjects.empty()) { 

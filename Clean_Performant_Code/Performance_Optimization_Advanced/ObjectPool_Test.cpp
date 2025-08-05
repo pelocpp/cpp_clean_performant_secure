@@ -2,12 +2,12 @@
 // ObjectPool_Test.cpp // Performance Optimization Advanced
 // ===========================================================================
 
+#include "../LoggerUtility/ScopedTimer.h"
 #include "../Person/Person.h"
 
 #include "ObjectPool.h"
 
 #include <array>
-#include <chrono>
 #include <memory>
 #include <print>
 
@@ -28,78 +28,71 @@ namespace ObjectPool_SimpleTest {
     }
 }
 
-
 namespace ObjectPool_AdvancedTest {
-
 
     class ExpensiveObject
     {
-    public:
-        ExpensiveObject() : m_data{} { /* ... */ }
-        virtual ~ExpensiveObject() = default;
-
-        // Member functions to populate the object with specific information.
-        // Member functions to retrieve the object data.
-        // (not shown)
-
     private:
-        // An expensive data member.
-        std::array<double, 4 * 1024 * 1024> m_data;
+        // an expensive data member
+        static constexpr std::size_t Size1{ 100'000 };
+        static constexpr std::size_t Size2{ 1'024 * 1'024 };
+        static constexpr std::size_t Size3{ 4 * 1'024 * 1'024 };
 
-        // Other data members (not shown)
+        std::array<double, Size1> m_data;
+
+    public:
+        ExpensiveObject() : m_data{} {}
+        virtual ~ExpensiveObject() = default;
     };
 
     using MyPool = ObjectPool<ExpensiveObject>;
 
-    std::shared_ptr<ExpensiveObject> getExpensiveObject(MyPool& pool)
+    static std::shared_ptr<ExpensiveObject> getExpensiveObject(MyPool& pool)
     {
-        // Obtain an ExpensiveObject object from the pool.
+        // obtain an ExpensiveObject object from the pool.
         auto object{ pool.acquireObject() };
 
-        // Populate the object. (not shown)
-
+        // using the object - not shown
         return object;
     }
 
-    void processExpensiveObject(ExpensiveObject& /*object*/)
+    static void processExpensiveObject(ExpensiveObject& /*object*/)
     {
         // Process the object. (not shown)
     }
 
-    void test_object_pool_02()
+    static void test_object_pool_02()
     {
-        const size_t NumberOfIterations{ 500'000 };
+        const size_t NumberOfIterations{ 10'000 };
+
+        MyPool pool;
 
         std::println("Starting loop using pool...");
-        MyPool requestPool;
-        auto start1{ std::chrono::steady_clock::now() };
-        for (size_t i{ 0 }; i < NumberOfIterations; ++i) {
-            auto object{ getExpensiveObject(requestPool) };
-            processExpensiveObject(*object.get());
+        {
+            ScopedTimer watch{};
+
+            for (size_t i{ 0 }; i < NumberOfIterations; ++i) {
+                auto object{ getExpensiveObject(pool) };
+                processExpensiveObject(*object.get());
+            }
         }
-        auto end1{ std::chrono::steady_clock::now() };
-        auto diff1{ end1 - start1 };
-        std::println("{}", std::chrono::duration<double, std::milli>(diff1));
 
         std::println("Starting loop using new/delete...");
-        auto start2{ std::chrono::steady_clock::now() };
-        for (size_t i{ 0 }; i < NumberOfIterations; ++i) {
-            auto object{ std::make_unique<ExpensiveObject>() };
-            processExpensiveObject(*object);
+        {
+            ScopedTimer watch{};
+
+            for (size_t i{ 0 }; i < NumberOfIterations; ++i) {
+                auto object{ std::make_unique<ExpensiveObject>() };
+                processExpensiveObject(*object);
+            }
         }
-        auto end2{ std::chrono::steady_clock::now() };
-        auto diff2{ end2 - start2 };
-        std::println("{}", std::chrono::duration<double, std::milli>(diff2));
     }
 }
 
 void test_object_pool()
 {
-    using namespace ObjectPool_SimpleTest;
-    //test_object_pool_01();
-
-    using namespace ObjectPool_AdvancedTest;
-    test_object_pool_02();
+    // ObjectPool_SimpleTest::test_object_pool_01();
+    ObjectPool_AdvancedTest::test_object_pool_02();
 }
 
 // ===========================================================================
