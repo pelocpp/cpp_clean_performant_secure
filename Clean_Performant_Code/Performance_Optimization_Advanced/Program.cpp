@@ -7,8 +7,8 @@ extern void test_object_pool();
 
 int main()
 {
-    //test_custom_allocator();
-    test_object_pool();
+    test_custom_allocator();
+    //test_object_pool();
     return 0;
 }
 

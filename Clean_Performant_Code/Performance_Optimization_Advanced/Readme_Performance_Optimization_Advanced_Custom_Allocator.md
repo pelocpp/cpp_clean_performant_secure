@@ -69,19 +69,19 @@ Die Memberfunktionen `allocate()` und `deallocate()` von `std::allocator<T>` sin
 ## `allocate`, `deallocate`, `construct` und `destroy` <a name="link3"></a>
 
 `allocate`:<br />
-Zweck: Diese Methode ist für die Zuweisung von rohem (uninitialisiertem) Speicher zuständig.
+Zweck: Diese Methode ist für die Zuweisung von rohem (uninitialisiertem) Speicher zuständig.<br />
 Aufruf: STL-Container rufen `allocate` auf, wenn sie Speicher zum Speichern von Elementen benötigen.
 
 `deallocate`:<br />
-Zweck: Diese Methode ist für die Freigabe von zuvor zugewiesenem rohem Speicher zuständig.
+Zweck: Diese Methode ist für die Freigabe von zuvor zugewiesenem rohem Speicher zuständig.<br />
 Aufruf: STL-Container rufen `deallocate` auf, wenn sie zuvor zugewiesenen Speicher freigeben müssen.
 
 `construct`:<br />
-Zweck: Diese Methode ist für die Erstellung eines Objekts im zugewiesenen Speicher zuständig.
+Zweck: Diese Methode ist für die Erstellung eines Objekts im zugewiesenen Speicher zuständig.<br />
 Aufruf: STL-Container rufen `construct` auf, wenn sie ein Objekt im zugewiesenen Speicher erstellen müssen.
 
 `destroy`:<br />
-Zweck: Diese Methode ist für die Zerstörung eines Objekts zuständig.
+Zweck: Diese Methode ist für die Zerstörung eines Objekts zuständig.<br />
 Aufruf: STL-Container rufen `destroy` auf, wenn sie ein Objekt zerstören und seine Ressourcen freigeben müssen.
 
 ---
@@ -105,13 +105,13 @@ Der folgende Codeausschnitt zeigt ein etwas konstruiertes Beispiel.
 06:     // allocate an uninitialized memory block for 1 instance of 'Person'
 07:     auto* memory{ alloc.allocate(1) };
 08: 
-09:     // use placement new operator to construct a 'Person' in place
+09:     // use 'placement new' operator to construct a 'Person' object in place
 10:     ::new (memory) Person{};
 11: 
 12:     // destroy 'Person' instance
 13:     std::destroy_at(memory);
 14: 
-15:     // Deallocate memory block
+15:     // deallocate memory block
 16:     alloc.deallocate(memory, 1);
 17: 
 18:     memory = nullptr;

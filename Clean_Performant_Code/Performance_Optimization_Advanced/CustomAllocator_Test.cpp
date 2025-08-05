@@ -16,13 +16,13 @@ static void test_custom_allocator_01()
     // allocate an uninitialized memory block for 1 instance of 'Person'
     auto* memory{ alloc.allocate(1) };
 
-    // use placement new operator to construct a 'Person' in place
+    // use 'placement new' operator to construct a 'Person' object in place
     ::new (memory) Person{};
 
     // destroy 'Person' instance
     std::destroy_at(memory);
 
-    // Deallocate memory block
+    // deallocate memory block
     alloc.deallocate(memory, 1);
 
     memory = nullptr;
@@ -70,7 +70,7 @@ static void test_custom_allocator_03()
 
 void test_custom_allocator()
 {
-    //test_custom_allocator_01();
+    test_custom_allocator_01();
     test_custom_allocator_02();
     test_custom_allocator_03();
 }
