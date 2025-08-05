@@ -1,11 +1,7 @@
 // ===========================================================================
 // Benchmarking_Placement_New.txt
-//
-//
-//
-
-
-// 'Getting Started' Example from the Quick C++ Benchmark WebSite
+// Comparing classical object allocation with low-level functions
+// (std::malloc, std::free, std::uninitialized_fill, std::destroy)
 // Status: Working!
 // ===========================================================================
 

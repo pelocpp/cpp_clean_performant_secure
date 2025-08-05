@@ -332,7 +332,7 @@ namespace False_Sharing {
 void memory_management_false_sharing()
 {
     False_Sharing::test_false_sharing();
-    //False_Sharing::another_test_cache_lines();
+    False_Sharing::another_test_cache_lines();
 }
 
 // ===========================================================================

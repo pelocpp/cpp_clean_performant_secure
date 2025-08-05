@@ -4,7 +4,7 @@
 
 #include <print>
 
-// #define Verbose
+#define Verbose
 
 class Person
 {

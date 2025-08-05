@@ -172,6 +172,9 @@ Der folgende Codeausschnitt zeigt ein etwas konstruiertes Beispiel.
 
 ## Literatur <a name="link6"></a>
 
+Die Anregungen zu den Beispielen aus diesem Abschnitt stammen
+aus [Custom Allocators in C++: High Performance Memory Management](https://johnfarrier.com/custom-allocators-in-c-high-performance-memory-management/).
+
 ---
 
 [Zurück](Readme_Performance_Optimization_Advanced.md)

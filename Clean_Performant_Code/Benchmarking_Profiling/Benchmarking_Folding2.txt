@@ -6,6 +6,8 @@
 
 // =======================================================================
 // folding and iterating functions
+//
+// Note: use of keyword 'volatile' to prevent excessive optimizations!
 
 static auto addFolding(auto ... values) {
   return (... + values);

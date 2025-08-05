@@ -41,10 +41,10 @@ dass eine überladene Version des Operators `new` verwendet wird.
 *Beispiel*:
 
 ```cpp
-01:  void test() {
+01: void test() {
 02: 
 03:     auto* memory = std::malloc(sizeof(Person));
-04:     auto* person = ::new (memory) Person{ "Sepp", "Mueller", (size_t)30 };
+04:     auto* person = ::new (memory) Person{ "Sepp", "Mueller", static_cast<size_t>(30) };
 05: 
 06:     person->~Person();
 07:     std::free(memory);

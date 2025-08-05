@@ -34,6 +34,8 @@ static void test_custom_allocator_02()
 
     std::vector<int, SimpleAllocator<int>> vec(alloc);
 
+    // std::vector<int, SimpleAllocator<int>> vec;  // works too
+
     vec.push_back(1);
     vec.push_back(2);
     vec.push_back(3);
@@ -49,6 +51,8 @@ static void test_custom_allocator_03()
     SimpleAllocator<int> alloc;
 
     std::vector<int, SimpleAllocator<int>> vec(alloc);
+
+    // std::vector<int, SimpleAllocator<int>> vec;  // works too
 
     std::println("Adding elements to vector:");
     vec.push_back(1);

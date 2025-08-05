@@ -29,9 +29,11 @@ namespace Placement_New {
     static void test_placement_new_02() {
 
         auto* memory = std::malloc(sizeof(Person));
+
         auto* person = ::new (memory) Person{ "Sepp", "Mueller", static_cast<size_t>(30) };
 
         person->~Person();
+        
         std::free(memory);
     }
 
@@ -51,7 +53,7 @@ namespace Placement_New {
         auto* memory = std::malloc(sizeof(Person));
         auto* person = reinterpret_cast<Person*>(memory);
 
-        std::construct_at(person, Person{ "Sepp", "Mueller", static_cast<size_t>(30) }); // C++20
+        std::construct_at(person, Person{ "Sepp", "Mueller", static_cast<size_t>(30) });   // C++20
 
         std::destroy_at(person);
         std::free(memory);
