@@ -15,11 +15,11 @@ namespace ObjectPool_SimpleTest {
 
     static void test_object_pool_01()
     {
-        using PersonPool = ObjectPool<Person>;
+        using PersonPool = ObjectPool<Person>; 
 
         PersonPool pool{};
 
-        auto person{ pool.acquireObject("Sepp", "Mueller", (size_t)30) };
+        auto person{ pool.acquireObject("Sepp", "Mueller", (size_t) 30) };
 
         std::println("{} {} has age {}",
             person->getFirstname(), person->getLastname(), person->getAge());

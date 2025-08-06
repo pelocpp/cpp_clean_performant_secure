@@ -128,10 +128,10 @@ void performance_best_practices()
 {
     using namespace PerformanceBestPractices;
 
-    //best_practices_01_avoid_unnecessary_copying();
-    //best_practices_02_prefer_stack_allocation();
-    //best_practices_03_optimize_loops();
-    //best_practices_04_reduce_function_calls();
+    best_practices_01_avoid_unnecessary_copying();
+    best_practices_02_prefer_stack_allocation();
+    best_practices_03_optimize_loops();
+    best_practices_04_reduce_function_calls();
 
     best_practices_0x_raw_loops();
 }

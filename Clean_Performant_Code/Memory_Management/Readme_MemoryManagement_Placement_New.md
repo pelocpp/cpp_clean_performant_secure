@@ -112,7 +112,7 @@ Diese Funktion ist bzgl. ihres Aufrufs etwas einfacher in der Handhabung:
 03:     auto* memory = std::malloc(sizeof(Person));
 04:     auto* person = reinterpret_cast<Person*>(memory);
 05: 
-06:     std::construct_at(person, Person{ "Sepp", "Mueller", (size_t)30 }); // C++20
+06:     std::construct_at(person, Person{ "Sepp", "Mueller", 30 }); // C++20
 07: 
 08:     std::destroy_at(person);
 09:     std::free(memory);

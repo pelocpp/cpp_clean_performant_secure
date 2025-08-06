@@ -168,6 +168,53 @@ Der folgende Codeausschnitt zeigt ein etwas konstruiertes Beispiel.
 43: };
 ```
 
+Wir setzen diesen Allokator im folgenden Beispiel ein:
+
+```cpp
+01: void test()
+02: {
+03:     SimpleAllocator<int> alloc;
+04:     std::vector<int, SimpleAllocator<int>> vec(alloc);
+05: 
+06:     vec.push_back(1);
+07:     vec.push_back(2);
+08:     vec.push_back(3);
+09: 
+10:     for (int i : vec) {
+11:         std::println("{} ", i);
+12:     }
+13: }
+```
+
+*Ausgabe*:
+
+```
+Allocating 16 bytes
+Allocating 4 bytes
+Constructing element
+Allocating 8 bytes
+Constructing element
+Constructing element
+Destroying element
+Deallocating memory
+Allocating 12 bytes
+Constructing element
+Constructing element
+Constructing element
+Destroying element
+Destroying element
+Deallocating memory
+1
+2
+3
+Destroying element
+Destroying element
+Destroying element
+Deallocating memory
+Deallocating memory
+```
+
+
 ---
 
 ## Literatur <a name="link6"></a>

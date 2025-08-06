@@ -43,10 +43,22 @@ static void test_custom_allocator_02()
     for (int i : vec) {
         std::println("{} ", i);
     }
-    std::println();
 }
 
 static void test_custom_allocator_03()
+{
+    std::vector<Person, SimpleAllocator<Person>> vec;
+
+    vec.push_back({ "Sepp", "Mueller", 30 });
+    vec.push_back({ "Hans", "Wagner", 30 });
+    vec.push_back({ "Anton", "Meier", 30 });
+
+    for (const auto& person : vec) {
+        std::println("{} ", person);
+    }
+}
+
+static void test_custom_allocator_04()
 {
     SimpleAllocator<int> alloc;
 
@@ -71,25 +83,6 @@ static void test_custom_allocator_03()
     std::println("Clearing vector:");
     vec.clear();
 }
-
-static void test_custom_allocator_04()
-{
-    //SimpleAllocator<Person> alloc;
-
-    //std::vector<int, SimpleAllocator<int>> vec(alloc);
-
-    std::vector<Person, SimpleAllocator<Person>> vec;  // works too
-
-    vec.push_back({ "Sepp", "Mueller", (size_t)30} );
-    vec.push_back({ "Sepp", "Mueller", (size_t)30} );
-    vec.push_back({ "Sepp", "Mueller", (size_t)30} );
-
-    for (const auto& person : vec) {
-        std::println("{} ", person);
-    }
-    std::println();
-}
-
 
 void test_custom_allocator()
 {
