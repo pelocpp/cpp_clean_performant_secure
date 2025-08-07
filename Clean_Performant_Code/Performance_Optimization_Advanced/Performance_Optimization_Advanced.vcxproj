@@ -127,6 +127,7 @@
   <ItemGroup>
     <ClCompile Include="CustomAllocator.cpp" />
     <ClCompile Include="CustomAllocator_Test.cpp" />
+    <ClCompile Include="FixedArenaController_Test.cpp" />
     <ClCompile Include="Laundry.cpp" />
     <ClCompile Include="ObjectPool.cpp" />
     <ClCompile Include="Program.cpp" />
@@ -134,6 +135,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CustomAllocator.h" />
+    <ClInclude Include="FixedArenaController.h" />
+    <ClInclude Include="FixedBlockMemoryManager.h" />
     <ClInclude Include="ObjectPool.h" />
   </ItemGroup>
   <ItemGroup>

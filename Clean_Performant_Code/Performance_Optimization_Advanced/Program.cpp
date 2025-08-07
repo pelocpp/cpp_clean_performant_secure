@@ -3,11 +3,13 @@
 // ===========================================================================
 
 extern void test_custom_allocator();
+extern void test_fixed_arena_controller();
 extern void test_object_pool();
 
 int main()
 {
-    test_custom_allocator();
+    //test_custom_allocator();
+    test_fixed_arena_controller();
     //test_object_pool();
     return 0;
 }

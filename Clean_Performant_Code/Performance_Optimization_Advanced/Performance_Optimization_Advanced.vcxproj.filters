@@ -33,12 +33,21 @@
     <ClCompile Include="CustomAllocator_Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FixedArenaController_Test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ObjectPool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CustomAllocator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FixedArenaController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FixedBlockMemoryManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
