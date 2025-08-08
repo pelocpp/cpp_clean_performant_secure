@@ -1,6 +1,10 @@
 // ===========================================================================
-// FixedBlockMemoryManager.h //  // Performance Optimization Advanced
-// ==================================
+// FixedBlockMemoryManager.h // Performance Optimization Advanced
+// ===========================================================================
+
+#pragma once
+
+#include "FixedArenaController.h"
 
 template <class TArena>
 class FixedBlockMemoryManager
@@ -19,7 +23,7 @@ public:
 
     // public interface
     void* allocate(size_t);
-    size_t block_size() const;
+    size_t blockSize() const;
     size_t capacity() const;
     void   clear();
     void   deallocate(void*);
@@ -49,7 +53,7 @@ inline void* FixedBlockMemoryManager<TArena>::allocate(size_t size) {
         m_freePtr = reinterpret_cast<free_block*>(m_arena.allocate(size));
 
         // m_blockSize = size;   // Original: Hmmm, wenn die Arena die angefordere Size ändert, dann ist das falsch ....
-        m_blockSize = m_arena.block_size();
+        m_blockSize = m_arena.blockSize();
 
         if (empty())
             throw std::bad_alloc();
@@ -87,7 +91,7 @@ inline bool FixedBlockMemoryManager<TArena>::empty() const {
 }
 
 template <class TArena>
-inline size_t FixedBlockMemoryManager<TArena>::block_size() const {
+inline size_t FixedBlockMemoryManager<TArena>::blockSize() const {
 
     return m_blockSize;
 }

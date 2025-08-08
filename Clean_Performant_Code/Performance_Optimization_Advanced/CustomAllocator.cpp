@@ -1,5 +1,5 @@
 // ===========================================================================
-// CustomAllocator.cpp //  // Performance Optimization Advanced
+// CustomAllocator.cpp // Performance Optimization Advanced
 // ===========================================================================
 
 #include "CustomAllocator.h"

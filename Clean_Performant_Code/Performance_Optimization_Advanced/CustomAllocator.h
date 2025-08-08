@@ -1,22 +1,23 @@
 // ===========================================================================
-// CustomAllocator.h //  // Performance Optimization Advanced
+// CustomAllocator.h // Performance Optimization Advanced
 // ===========================================================================
 
-#include <iostream>
+#pragma once
+
 #include <memory>
 #include <print>
 
 template<typename T>
-class SimpleAllocator {
+class CustomAllocator {
 public:
     using value_type = T;
 
-    SimpleAllocator() = default;
+    CustomAllocator() = default;
 
     // The reason that allocators must be copy constructible is
     // that container classes store a copy of the allocator
     template<typename U>
-    constexpr SimpleAllocator(const SimpleAllocator<U>&) noexcept {}
+    constexpr CustomAllocator(const CustomAllocator<U>&) noexcept {}
 
     T* allocate(std::size_t n)
     {
@@ -55,8 +56,8 @@ public:
         p->~U();
     }
 
-    friend bool operator==(const SimpleAllocator&, const SimpleAllocator&) { return true; }
-    friend bool operator!=(const SimpleAllocator&, const SimpleAllocator&) { return false; }
+    friend bool operator==(const CustomAllocator&, const CustomAllocator&) { return true; }
+    friend bool operator!=(const CustomAllocator&, const CustomAllocator&) { return false; }
 };
 
 // ===========================================================================

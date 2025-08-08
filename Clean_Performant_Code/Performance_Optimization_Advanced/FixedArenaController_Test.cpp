@@ -1,5 +1,5 @@
 // ===========================================================================
-// FixedArenaController_Test.cpp //  // Performance Optimization Advanced
+// FixedArenaController_Test.cpp // Performance Optimization Advanced
 // ===========================================================================
 
 #include "FixedArenaController.h"

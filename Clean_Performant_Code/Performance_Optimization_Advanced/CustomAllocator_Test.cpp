@@ -30,11 +30,11 @@ static void test_custom_allocator_01()
 
 static void test_custom_allocator_02()
 {
-    SimpleAllocator<int> alloc;
+    CustomAllocator<int> alloc;
 
-    std::vector<int, SimpleAllocator<int>> vec(alloc);
+    std::vector<int, CustomAllocator<int>> vec(alloc);
 
-    // std::vector<int, SimpleAllocator<int>> vec;  // works too
+    // std::vector<int, CustomAllocator<int>> vec;  // works too
 
     vec.push_back(1);
     vec.push_back(2);
@@ -47,7 +47,7 @@ static void test_custom_allocator_02()
 
 static void test_custom_allocator_03()
 {
-    std::vector<Person, SimpleAllocator<Person>> vec;
+    std::vector<Person, CustomAllocator<Person>> vec;
 
     vec.push_back({ "Sepp", "Mueller", 30 });
     vec.push_back({ "Hans", "Wagner", 30 });
@@ -60,9 +60,9 @@ static void test_custom_allocator_03()
 
 static void test_custom_allocator_04()
 {
-    SimpleAllocator<int> alloc;
+    CustomAllocator<int> alloc;
 
-    std::vector<int, SimpleAllocator<int>> vec(alloc);
+    std::vector<int, CustomAllocator<int>> vec(alloc);
 
     // std::vector<int, SimpleAllocator<int>> vec;  // works too
 

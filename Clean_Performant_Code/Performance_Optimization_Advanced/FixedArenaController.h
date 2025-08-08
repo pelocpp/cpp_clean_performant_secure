@@ -1,11 +1,19 @@
 // ===========================================================================
-// FixedArenaController.h //  // Performance Optimization Advanced
+// FixedArenaController.h // Performance Optimization Advanced
 // ===========================================================================
+
+#pragma once
+
+// TBD: rename   allocate ==> initialize
+// TBD: rename  number of free blocks // Getter
 
 #include <algorithm>
 #include <print>
 
 // TBD: rename   allocate ==> initialize
+// TBD: rename  number of free blocks // Getter
+
+// #define Verbose
 
 class FixedArenaController
 {
@@ -22,7 +30,7 @@ public:
     FixedArenaController& operator=(FixedArenaController&&) noexcept = delete;
 
     void*  allocate(size_t);
-    size_t block_size() const;
+    size_t blockSize() const;
     size_t capacity() const;
     void   clear();
     bool   empty() const;
@@ -39,8 +47,7 @@ inline FixedArenaController::FixedArenaController(char(&arena)[N])
     : m_arena{ arena }, m_arenaSize{ N }, m_blockSize{ 0 }
 {
     std::println("FixedArenaController: N = {}", N);
-
-    std::println("  Start of Arena: {:#X} ", reinterpret_cast<intptr_t>(m_arena));
+    std::println("Start of Arena: {:#X} ", reinterpret_cast<intptr_t>(m_arena));
 }
 
 inline void* FixedArenaController::allocate(size_t size) {
@@ -49,34 +56,43 @@ inline void* FixedArenaController::allocate(size_t size) {
         return nullptr;           // arena already allocated
     }
 
-    m_blockSize = std::max(size, sizeof(void*));
+    // Original
+    // m_blockSize = std::max(size, sizeof(void*));
+
+    // TBD: Möchte forward_list für Zeichenketten hinbekommen ...
+    m_blockSize = std::max(size, (size_t) 50);
+
     size_t count = capacity();
 
     if (count == 0) {
         return nullptr;           // arena not big enough for even one item
     }
 
-    char* p;
-    for (p = (char*) m_arena; count > 1; --count, p += m_blockSize) {
-        *reinterpret_cast<char**>(p) = p + m_blockSize;
+    char* ptr;
+    for (ptr = (char*) m_arena; count > 1; --count, ptr += m_blockSize) {
+        *reinterpret_cast<char**>(ptr) = ptr + m_blockSize;
 
+#if defined (Verbose)
         std::println("{:#X} => {:#X}", 
-            reinterpret_cast<intptr_t>(p),
-            reinterpret_cast<intptr_t>(p + m_blockSize)
+            reinterpret_cast<intptr_t>(ptr),
+            reinterpret_cast<intptr_t>(ptr + m_blockSize)
         );
+#endif
     }
-    *reinterpret_cast<char**>(p) = nullptr;
 
+    *reinterpret_cast<char**>(ptr) = nullptr;
+
+#if defined (Verbose)
     std::println("{:#X} => {:#X}",
-        reinterpret_cast<intptr_t>(p),
+        reinterpret_cast<intptr_t>(ptr),
         0
     );
-    std::println();
+#endif
 
     return m_arena;
 }
 
-inline size_t FixedArenaController::block_size() const {
+inline size_t FixedArenaController::blockSize() const {
     return m_blockSize;
 }
 
