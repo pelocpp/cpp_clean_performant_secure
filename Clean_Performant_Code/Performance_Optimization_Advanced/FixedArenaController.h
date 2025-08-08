@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <print>
 
+// TBD: rename   allocate ==> initialize
+
 class FixedArenaController
 {
 public:
@@ -38,7 +40,7 @@ inline FixedArenaController::FixedArenaController(char(&arena)[N])
 {
     std::println("FixedArenaController: N = {}", N);
 
-    std::print("Start of Arena: {:#X} ", reinterpret_cast<intptr_t>(m_arena));
+    std::println("  Start of Arena: {:#X} ", reinterpret_cast<intptr_t>(m_arena));
 }
 
 inline void* FixedArenaController::allocate(size_t size) {
@@ -111,7 +113,6 @@ inline void FixedArenaController::dump() const {
         }
     }
 }
-
 
 // ===========================================================================
 // End-of-File

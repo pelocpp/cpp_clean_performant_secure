@@ -36,6 +36,9 @@
     <ClCompile Include="FixedArenaController_Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FixedBlockMemoryManager_Test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ObjectPool.h">

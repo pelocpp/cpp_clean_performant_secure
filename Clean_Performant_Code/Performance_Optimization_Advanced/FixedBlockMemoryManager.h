@@ -1,24 +1,21 @@
 // ===========================================================================
 // FixedBlockMemoryManager.h //  // Performance Optimization Advanced
-// ===========================================================================
+// ==================================
 
-//#include <iostream>
-//#include <memory>
-//#include <print>
-
-template <class Arena>
-struct fixed_block_memory_manager
+template <class TArena>
+class FixedBlockMemoryManager
 {
+public:
     template <int N>
-    fixed_block_memory_manager(char(&a)[N]);
+    FixedBlockMemoryManager(char(&a)[N]);
 
-    ~fixed_block_memory_manager() = default;
+    ~FixedBlockMemoryManager() = default;
 
     // no copy / no move
-    fixed_block_memory_manager(const fixed_block_memory_manager&) = delete;
-    fixed_block_memory_manager& operator=(const fixed_block_memory_manager&) = delete;
-    fixed_block_memory_manager(fixed_block_memory_manager&&) noexcept = delete;
-    fixed_block_memory_manager& operator=(fixed_block_memory_manager&&) noexcept = delete;
+    FixedBlockMemoryManager(const FixedBlockMemoryManager&) = delete;
+    FixedBlockMemoryManager& operator=(const FixedBlockMemoryManager&) = delete;
+    FixedBlockMemoryManager(FixedBlockMemoryManager&&) noexcept = delete;
+    FixedBlockMemoryManager& operator=(FixedBlockMemoryManager&&) noexcept = delete;
 
     // public interface
     void* allocate(size_t);
@@ -33,10 +30,67 @@ private:
         free_block* next;
     };
 
-    free_block* free_ptr_;
-    size_t      block_size_;
-    Arena       arena_;
+    free_block* m_freePtr;
+    size_t      m_blockSize;
+    TArena      m_arena;
 };
+
+template <class TArena>
+template <int N>
+inline FixedBlockMemoryManager<TArena>::FixedBlockMemoryManager(char(&a)[N]) :
+    m_arena{ a }, m_freePtr{ nullptr }, m_blockSize{ 0 }
+{
+    std::println("FixedBlockMemoryManager: N = {}", N);
+}
+
+template <class TArena>
+inline void* FixedBlockMemoryManager<TArena>::allocate(size_t size) {
+    if (empty()) {
+        m_freePtr = reinterpret_cast<free_block*>(m_arena.allocate(size));
+
+        // m_blockSize = size;   // Original: Hmmm, wenn die Arena die angefordere Size ändert, dann ist das falsch ....
+        m_blockSize = m_arena.block_size();
+
+        if (empty())
+            throw std::bad_alloc();
+    }
+    if (size > m_blockSize)       // Hmmm, wenn es tatsächlich gleich große BLöcke sind: !=
+        throw std::bad_alloc();
+    auto p = m_freePtr;
+    m_freePtr = m_freePtr->next;
+    return p;
+}
+
+template <class TArena>
+inline void FixedBlockMemoryManager<TArena>::deallocate(void* p) {
+    if (p == nullptr)
+        return;
+    auto fp = reinterpret_cast<free_block*>(p);
+    fp->next = m_freePtr;
+    m_freePtr = fp;
+}
+
+template <class TArena>
+inline size_t FixedBlockMemoryManager<TArena>::capacity() const {
+    return m_arena.capacity();
+}
+
+template <class TArena>
+inline void FixedBlockMemoryManager<TArena>::clear() {
+    m_freePtr = nullptr;
+    m_arena.clear();
+}
+
+template <class TArena>
+inline bool FixedBlockMemoryManager<TArena>::empty() const {
+    return m_freePtr == nullptr;
+}
+
+template <class TArena>
+inline size_t FixedBlockMemoryManager<TArena>::block_size() const {
+
+    return m_blockSize;
+}
 
 // ===========================================================================
 // End-of-File
