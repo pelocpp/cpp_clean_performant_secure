@@ -9,8 +9,9 @@
   * [Allgemeines](#link1)
   * [Klasse `FixedArenaController`](#link2)
   * [Klasse `FixedBlockMemoryManager`](#link3)
-  * [Klasse `FixedBlockAllocator`](#link4)
-  * [Literatur](#link5)
+  * [Einfach verkettete Liste für freie Speicherblöcke](#link4)
+  * [Klasse `FixedBlockAllocator`](#link5)
+  * [Literatur](#link6)
 
 ---
 
@@ -35,14 +36,13 @@
 
 ## Allgemeines <a name="link1"></a>
 
-In diesem Abschnitt stellen wir einen einfachen Speichermanager mit fester Blockgröße,
+In diesem Abschnitt stellen wir einen einfachen Speichermanager mit fester Blockgröße vor,
 der Blöcke aus einem einzelnen, statisch deklarierten Speicherblock, einer sogenannten &bdquo;*Arena*&rdquo;, allokiert.
 
 Derartige Speichermanager mit fester Blockgröße findet man häufig im Umfeld des *Embedded Programming* vor.
 
 Die vorgestellten zwei Klassen `FixedArenaController` und `FixedBlockMemoryManager` sind intern sehr einfach aufgebaut:
 Sie verwalten einzig und allein eine einfach verkettete Liste freier Speicherblöcke.
-Dieses einfache Design wird in diesem Kapitel für verschiedene Zwecke verwendet.
 Dieses einfache Design ist es wert, im Detail betrachtet zu werden.
 
 ---
@@ -84,7 +84,7 @@ Dieses einfache Design ist es wert, im Detail betrachtet zu werden.
 02: class FixedBlockMemoryManager
 03: {
 04: public:
-05:     template <int N>
+05:     template <size_t N>
 06:     FixedBlockMemoryManager(char(&a)[N]);
 07: 
 08:     ~FixedBlockMemoryManager() = default;
@@ -112,24 +112,64 @@ Dieses einfache Design ist es wert, im Detail betrachtet zu werden.
 Um die Definitionen von Klassentemplates übersichtlich zu halten, können Memberfunktionen der Template-Klasse außerhalb der Template-Klassendefinition definiert werden.
 
 Dies kann in derselben Datei nach der Klassendefinition erfolgen
-oder beispielsweise in einer ausgelagerten Datei,
+oder in einer ausgelagerten Datei,
 die häufig die Ending &bdquo;*.inl*&rdquo; besitzt und nach der Klassendefinition inkludiert wird.
 
 Wenn die Methodendefinitionen jedoch außerhalb der Template-Klassen erscheinen,
 ist eine ausführlichere Syntax erforderlich, um dem Compiler die Verknüpfung der Definition mit der Deklaration im Template-Klassenrumpf zu erleichtern.
 
 Die erste Zeile des vorherigen Beispiels, `template <class TArena>`, deklariert den Template-Parameter der Klasse.
-Die fünfte Zeile, `template <class TArena>`, bezieht sich nur auf den Konstruktor selbst,
+Die fünfte Zeile, `template <size_t N>`, bezieht sich nur auf den Konstruktor selbst,
 der eine so genannte *Template-Member-Methode* ist.
 
 Wenn die Memberfunktionsdefinition außerhalb des Template-Klassenrumpfs erscheint,
 muss das Schlüsselwort `inline` explizit angegeben werden, da eine Inline-Verknüpfung nur dann angenommen wird,
 wenn die Definition innerhalb der Klasse erscheint.
 
+---
+
+## Einfach verkettete Liste für freie Speicherblöcke <a name="link4"></a>
+
+Die interne Arbeitsweise der beiden Klassen `FixedArenaController` und `FixedBlockMemoryManager`
+wollen wir an einem Szenario aufzeigen.
+
+Zunächst wird die Arena initialisiert.
+Dies bedeutet, dass *innerhalb* der freien Speicherblöcke eine verkette Liste mit Adressen aufgebaut wird,
+die alle Blöcke miteinander verkettet.
+
+Die Adresse des ersten freien Blocks ist in der Klasse `FixedArenaController`
+in einer Variablen `m_arena` abgelegt.
+
+<img src="cpp_arena_01.svg" width="700">
+
+*Abbildung* 1: Eine *Arena* im Grundzustand.
+
+Nun kommt es zweimal zum Aufruf der Methode `allocate`:
+
+<img src="cpp_arena_02.svg" width="700">
+
+*Abbildung* 2: Erster Aufruf der Methode `allocate`.
+
+<img src="cpp_arena_03.svg" width="700">
+
+*Abbildung* 3: Zweiter Aufruf der Methode `allocate`.
+
+Die beiden Blöcke werden nun in umgekehrter Reihenfolge wieder in die verkette Liste zurückgeführt.
+Dies kann zur Folge haben, dass die Verkettung abweicht von der natürlichen Reihenfolge der Blöcke im Speicher.
+Dies hat aber keinerlei Einfluss auf die Arbeitsweise des  *Fixed-Size-Block Memory Managers*:
+
+<img src="cpp_arena_04.svg" width="700">
+
+*Abbildung* 4: Erster Aufruf der Methode `deallocate`.
+
+<img src="cpp_arena_05.svg" width="700">
+
+*Abbildung* 5: Zweiter Aufruf der Methode `deallocate`.
+
 
 ---
 
-## Klasse `FixedBlockAllocator` <a name="link4"></a>
+## Klasse `FixedBlockAllocator` <a name="link5"></a>
 
 ```cpp
 01: template<typename T>
@@ -177,10 +217,9 @@ und aus dem nach Anfrage einzelne Blöcke zugewiesen werden können.
 06: *reinterpret_cast<char**>(ptr) = nullptr;
 ```
 
-
 ---
 
-## Literatur <a name="link5"></a>
+## Literatur <a name="link6"></a>
 
 Die Realisierung dieses Speichermanagers für Blöcke mit fester Größewurde wurde in dem Buch 
 &bdquo;[*Optimized C++: Proven Techniques for Heightened Performance*](https://www.amazon.de/-/en/Optimized-Proven-Techniques-Heightened-Performance/dp/1491922060)&rdquo;

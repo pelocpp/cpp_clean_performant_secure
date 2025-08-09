@@ -10,7 +10,7 @@ template <typename TArena>
 class FixedBlockMemoryManager
 {
 public:
-    template <int N>
+    template <size_t N>
     FixedBlockMemoryManager(char(&a)[N]);
 
     ~FixedBlockMemoryManager() = default;
@@ -40,7 +40,7 @@ private:
 };
 
 template <typename TArena>
-template <int N>
+template <size_t N>
 inline FixedBlockMemoryManager<TArena>::FixedBlockMemoryManager(char(&a)[N]) :
     m_arena{ a }, m_freePtr{ nullptr }, m_blockSize{ 0 }
 {

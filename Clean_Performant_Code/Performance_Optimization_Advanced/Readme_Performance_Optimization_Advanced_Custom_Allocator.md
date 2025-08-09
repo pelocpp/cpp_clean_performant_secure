@@ -214,13 +214,14 @@ Deallocating memory
 Deallocating memory
 ```
 
-
 ---
 
 ## Literatur <a name="link6"></a>
 
 Die Anregungen zu den Beispielen aus diesem Abschnitt stammen
-aus [Custom Allocators in C++: High Performance Memory Management](https://johnfarrier.com/custom-allocators-in-c-high-performance-memory-management/).
+aus dem Artikel
+[Custom Allocators in C++: High Performance Memory Management](https://johnfarrier.com/custom-allocators-in-c-high-performance-memory-management/)
+von John Farrier.
 
 ---
 
