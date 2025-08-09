@@ -85,5 +85,8 @@
     <None Include="cpp_object_pool_04.svg">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Readme_Performance_Optimization_Advanced_Fixed_Size_Block_Memory_Manager.md">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -29,6 +29,13 @@
 
 ---
 
+  * Guntheroth, Kurt &bdquo;*Optimized C++: Proven Techniques for Heightened Performance*&rdquo;.</br>
+    Packt Publishing (21. Mai 2016), 388 Seiten. Sprache: Englisch. ISBN-13: 978-1491922064, ISBN-10: 9781491922064.
+
+    <img src="Buch_Kurt_Guntheroth_Optimized_Cpp.png" width="150">
+
+---
+
   * Josuttis, Nicolai M., &bdquo;*C++ Move Semantics &ndash; The Complete Guide*&rdquo;.</br> 
     NicoJosuttis (30. August 2020), 262 Seiten. Sprache: Englisch. ISBN-10: 3967309002, ISBN-13: 978-3967309003.
 

@@ -151,6 +151,7 @@
     <None Include="Readme_Performance_Optimization_Advanced.md" />
     <None Include="Readme_Performance_Optimization_Advanced_Custom_Allocator.md" />
     <None Include="Readme_Performance_Optimization_Advanced_Object_Pool.md" />
+    <None Include="Readme_Performance_Optimization_Advanced_Fixed_Size_Block_Memory_Manager.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

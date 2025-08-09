@@ -6,7 +6,7 @@
 
 #include "FixedArenaController.h"
 
-template <class TArena>
+template <typename TArena>
 class FixedBlockMemoryManager
 {
 public:
@@ -22,7 +22,7 @@ public:
     FixedBlockMemoryManager& operator=(FixedBlockMemoryManager&&) noexcept = delete;
 
     // public interface
-    void* allocate(size_t);
+    void*  allocate(size_t);
     size_t blockSize() const;
     size_t capacity() const;
     void   clear();
@@ -39,7 +39,7 @@ private:
     TArena      m_arena;
 };
 
-template <class TArena>
+template <typename TArena>
 template <int N>
 inline FixedBlockMemoryManager<TArena>::FixedBlockMemoryManager(char(&a)[N]) :
     m_arena{ a }, m_freePtr{ nullptr }, m_blockSize{ 0 }
@@ -47,7 +47,7 @@ inline FixedBlockMemoryManager<TArena>::FixedBlockMemoryManager(char(&a)[N]) :
     std::println("FixedBlockMemoryManager: N = {}", N);
 }
 
-template <class TArena>
+template <typename TArena>
 inline void* FixedBlockMemoryManager<TArena>::allocate(size_t size) {
     if (empty()) {
         m_freePtr = reinterpret_cast<free_block*>(m_arena.allocate(size));
@@ -65,7 +65,7 @@ inline void* FixedBlockMemoryManager<TArena>::allocate(size_t size) {
     return p;
 }
 
-template <class TArena>
+template <typename TArena>
 inline void FixedBlockMemoryManager<TArena>::deallocate(void* p) {
     if (p == nullptr)
         return;
@@ -74,23 +74,23 @@ inline void FixedBlockMemoryManager<TArena>::deallocate(void* p) {
     m_freePtr = fp;
 }
 
-template <class TArena>
+template <typename TArena>
 inline size_t FixedBlockMemoryManager<TArena>::capacity() const {
     return m_arena.capacity();
 }
 
-template <class TArena>
+template <typename TArena>
 inline void FixedBlockMemoryManager<TArena>::clear() {
     m_freePtr = nullptr;
     m_arena.clear();
 }
 
-template <class TArena>
+template <typename TArena>
 inline bool FixedBlockMemoryManager<TArena>::empty() const {
     return m_freePtr == nullptr;
 }
 
-template <class TArena>
+template <typename TArena>
 inline size_t FixedBlockMemoryManager<TArena>::blockSize() const {
 
     return m_blockSize;

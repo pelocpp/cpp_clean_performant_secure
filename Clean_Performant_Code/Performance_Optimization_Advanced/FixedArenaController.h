@@ -29,6 +29,7 @@ public:
     FixedArenaController(FixedArenaController&&) noexcept = delete;
     FixedArenaController& operator=(FixedArenaController&&) noexcept = delete;
 
+    // public interface
     void*  allocate(size_t);
     size_t blockSize() const;
     size_t capacity() const;
