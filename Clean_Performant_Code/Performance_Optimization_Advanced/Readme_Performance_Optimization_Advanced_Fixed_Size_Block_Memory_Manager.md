@@ -133,36 +133,55 @@ wenn die Definition innerhalb der Klasse erscheint.
 Die interne Arbeitsweise der beiden Klassen `FixedArenaController` und `FixedBlockMemoryManager`
 wollen wir an einem Szenario aufzeigen.
 
+
 Zunächst wird die Arena initialisiert.
-Dies bedeutet, dass *innerhalb* der freien Speicherblöcke eine verkette Liste mit Adressen aufgebaut wird,
-die alle Blöcke miteinander verkettet.
+Die einzige Komplexität in der Klasse `FixedBlockAllocator` ergibt sich aus der Erstellung einer
+einfach verkettete Liste für freie Speicherblöcke. Diese Liste besteht aus Adressen,
+die *innerhalb* der freien Speicherblöcke abgelegt werden!
+
+Diese Komplexität wird von der separaten Klasse `FixedArenaController` erbracht.
+
+Diese Klasse verwaltet einen einzigen (statischen) Speicherblock,
+der aber als verkettete Liste von vielen, gleich-großen kleineren Speicherblöcken angesehen wird
+und aus dem nach Anfrage einzelne Blöcke zugewiesen werden können.
+
+
+```cpp
+01: char* ptr;
+02: for (ptr = (char*) m_arena; count > 1; --count, ptr += m_blockSize) {
+03:     *reinterpret_cast<char**>(ptr) = ptr + m_blockSize;
+04: }
+05: 
+06: *reinterpret_cast<char**>(ptr) = nullptr;
+```
+
 
 Die Adresse des ersten freien Blocks ist in der Klasse `FixedArenaController`
 in einer Variablen `m_arena` abgelegt.
 
-<img src="cpp_arena_01.svg" width="700">
+<img src="cpp_arena_01.svg" width="800">
 
 *Abbildung* 1: Eine *Arena* im Grundzustand.
 
 Nun kommt es zweimal zum Aufruf der Methode `allocate`:
 
-<img src="cpp_arena_02.svg" width="700">
+<img src="cpp_arena_02.svg" width="800">
 
 *Abbildung* 2: Erster Aufruf der Methode `allocate`.
 
-<img src="cpp_arena_03.svg" width="700">
+<img src="cpp_arena_03.svg" width="800">
 
 *Abbildung* 3: Zweiter Aufruf der Methode `allocate`.
 
 Die beiden Blöcke werden nun in umgekehrter Reihenfolge wieder in die verkette Liste zurückgeführt.
 Dies kann zur Folge haben, dass die Verkettung abweicht von der natürlichen Reihenfolge der Blöcke im Speicher.
-Dies hat aber keinerlei Einfluss auf die Arbeitsweise des  *Fixed-Size-Block Memory Managers*:
+Dies hat aber keinerlei Einfluss auf die Arbeitsweise des *Fixed-Size-Block Memory Managers*:
 
-<img src="cpp_arena_04.svg" width="700">
+<img src="cpp_arena_04.svg" width="800">
 
 *Abbildung* 4: Erster Aufruf der Methode `deallocate`.
 
-<img src="cpp_arena_05.svg" width="700">
+<img src="cpp_arena_05.svg" width="800">
 
 *Abbildung* 5: Zweiter Aufruf der Methode `deallocate`.
 
@@ -170,6 +189,14 @@ Dies hat aber keinerlei Einfluss auf die Arbeitsweise des  *Fixed-Size-Block Mem
 ---
 
 ## Klasse `FixedBlockAllocator` <a name="link5"></a>
+
+
+Um die Realisierung des *Fixed-Size-Block Memory Managers* in Standard-Klassend der STL
+(z.B. `std::forward_list`) einsetzen zu können, müssen wir diesen in einem
+benutzerdefinierte Speicher-Allokator unterbringen.
+
+Dazu implementieren wir eine Klasse ` FixedBlockAllocator` wie folgt:
+
 
 ```cpp
 01: template<typename T>
@@ -196,25 +223,6 @@ Dies hat aber keinerlei Einfluss auf die Arbeitsweise des  *Fixed-Size-Block Mem
 22:     friend bool operator== (const FixedBlockAllocator&, const FixedBlockAllocator&);
 23:     friend bool operator!= (const FixedBlockAllocator&, const FixedBlockAllocator&);
 24: };
-```
-
-Die einzige Komplexität in der Klasse `FixedBlockAllocator` ergibt sich aus der Erstellung einer
-einfach verkettete Liste für freie Speicherblöcke.
-
-Diese Komplexität wird in einer separaten Klasse `FixedArenaController` berücksichtigt.
-
-Diese Klasse verwaltet einen einzelnen statischen Speicherblock,
-der aber als verkettete Liste von vielen, gleich-großen kleineren Speicherblöcken angesehen wird
-und aus dem nach Anfrage einzelne Blöcke zugewiesen werden können.
-
-
-```cpp
-01: char* ptr;
-02: for (ptr = (char*) m_arena; count > 1; --count, ptr += m_blockSize) {
-03:     *reinterpret_cast<char**>(ptr) = ptr + m_blockSize;
-04: }
-05: 
-06: *reinterpret_cast<char**>(ptr) = nullptr;
 ```
 
 ---
