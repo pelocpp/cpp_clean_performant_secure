@@ -11,7 +11,8 @@
   * [Klasse `FixedBlockMemoryManager`](#link3)
   * [Einfach verkettete Liste für freie Speicherblöcke](#link4)
   * [Klasse `FixedBlockAllocator`](#link5)
-  * [Literatur](#link6)
+  * [Klassen mit klassenspezifischen `new` und `delete` Operatoren](#link6)
+  * [Literatur](#link7)
 
 ---
 
@@ -185,17 +186,20 @@ Dies hat aber keinerlei Einfluss auf die Arbeitsweise des *Fixed-Size-Block Memo
 
 *Abbildung* 5: Zweiter Aufruf der Methode `deallocate`.
 
-
 ---
 
 ## Klasse `FixedBlockAllocator` <a name="link5"></a>
 
+Die Containerklassen der STL nutzen den dynamischen Speicher intensiv.
+Sie sind daher ein naheliegender Ort für Optimierungsmöglichkeiten,
+einschließlich benutzerdefinierter Speichermanager wie den von uns
+betrachteten *Fixed-Size-Block Memory Manager*.
 
-Um die Realisierung des *Fixed-Size-Block Memory Managers* in Standard-Klassend der STL
+Um die Realisierung des *Fixed-Size-Block Memory Managers* in Standard-Klassen der STL
 (z.B. `std::forward_list`) einsetzen zu können, müssen wir diesen in einem
-benutzerdefinierte Speicher-Allokator unterbringen.
+benutzerdefinierten Speicher-Allokator unterbringen.
 
-Dazu implementieren wir eine Klasse ` FixedBlockAllocator` wie folgt:
+Dazu implementieren wir eine Klasse `FixedBlockAllocator` wie folgt:
 
 
 ```cpp
@@ -225,11 +229,135 @@ Dazu implementieren wir eine Klasse ` FixedBlockAllocator` wie folgt:
 24: };
 ```
 
+*Bemerkung*:
+
+Bei der Integration unseres *Fixed-Size-Block Memory Manager* in STL-Klassen wie z. B `std::list<T>`
+gibt es jedoch ein Problem.
+
+Die dynamisch allokierten Variablen in einem `std::list<T>`-Objekt sind *nicht* vom benutzerdefinierten Typ `T`.
+Sie sind von einem versteckten Typ, wie z. B. `_list_item<T>` (Visual C++: `std::_Container_proxy>`),
+der die Zeiger auf das vorherige und nächste Listenelement sowie den Nutzdatentyp `T` enthält.
+Diese Klassenvorlagen sind in den vom Compiler bereitgestellten Header-Dateien verborgen.
+
+Es sind mit in diesen Container-Klassen Objekte unterschiedlicher Größe abgelegt:
+
+  * Objekte vom Typ `std::_Container_proxy>`
+  * Objekte vom Typ `T`
+
+Damit muss man vor der Entwicklung eines solchen benutzerdefinierten Speicher-Allokators eruieren,
+welches die maximale Blockgröße ist, um alle derartigen Objekte ablegen zu können.
+
+
+*Beispiel*:
+
+```cpp
+01: static void test_fixed_block_allocator_01()
+02: {
+03:     FixedBlockAllocator<double> alloc;
+04: 
+05:     std::forward_list<double, FixedBlockAllocator<double>> list{ alloc };
+06: 
+07:     list.push_front(1.5);
+08:     list.push_front(2.5);
+09:     list.push_front(3.5);
+10:     list.push_front(4.5);
+11:     list.push_front(5.5);
+12: 
+13:     for (auto elem : list) {
+14:         std::println("{} ", elem);
+15:     }
+16: }
+```
+
+*Ausführung*:
+
+```
+FixedArenaController: N = 100
+Start of Arena: 0X7FF789894C80
+FixedBlockMemoryManager: N = 100
+Allocating 16 bytes
+Allocating 16 bytes
+Constructing element
+Allocating 16 bytes
+Constructing element
+Allocating 16 bytes
+Constructing element
+Allocating 16 bytes
+Constructing element
+Allocating 16 bytes
+Constructing element
+5.5
+4.5
+3.5
+2.5
+1.5
+Destroying element
+Deallocating memory
+Destroying element
+Deallocating memory
+Destroying element
+Deallocating memory
+Destroying element
+Deallocating memory
+Destroying element
+Deallocating memory
+Deallocating memory
+```
+
 ---
 
-## Literatur <a name="link6"></a>
+## Klassen mit klassenspezifischen `new` und `delete` Operatoren  <a name="link6"></a>
 
-Die Realisierung dieses Speichermanagers für Blöcke mit fester Größewurde wurde in dem Buch 
+Neben der Injektion von benutzerdefinierten Speicher-Allokatoren in die Container-Klassen der STL
+kann man in ausgewählten C++-Klassen den `new` und `delete` Operator auch direkt überladen bzw. durch
+eine eigene Implementierung ersetzen.
+
+An einem einfachen Bespiel einer Klasse `MemoryManagerTester` könnte dies so aussehen:
+
+```cpp
+01: class MemoryManagerTester
+02: {
+03: private:
+04:     size_t m_contents;
+05: 
+06: public:
+07:     MemoryManagerTester(size_t contents) 
+08:         : m_contents{ contents } 
+09:     {}
+10: 
+11:     static void* operator new(size_t s)
+12:     { 
+13:         return memoryManager.allocate(s); 
+14:     }
+15: 
+16:     static void  operator delete(void* p)
+17:     {
+18:         memoryManager.deallocate(p);
+19:     }
+20: };
+```
+
+`memoryManager` ist dabei eine globale Variable des Typs `FixedBlockMemoryManager<FixedArenaController>`.
+
+Möchte man die ausgetauschten Operatoren `new` und `delete` verwenden ist quasi nichts zu tun,
+im folgenden Beispiel wird der klassenspezifische `new`-Operator aufgerufen:
+
+```
+new MemoryManagerTester(0);
+```
+
+Der globale `new`-Operator ist nicht ganz aus dem Spiel,
+mit der folgenden Syntax ist dieser ansprechbar:
+
+```
+::new MemoryManagerTester(0);
+```
+
+---
+
+## Literatur <a name="link7"></a>
+
+Die Realisierung dieses Speichermanagers für Blöcke mit fester Größe wurde wurde in dem Buch 
 &bdquo;[*Optimized C++: Proven Techniques for Heightened Performance*](https://www.amazon.de/-/en/Optimized-Proven-Techniques-Heightened-Performance/dp/1491922060)&rdquo;
 von Kurt Guntheroth vorgefunden.
 

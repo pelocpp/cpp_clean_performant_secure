@@ -4,6 +4,9 @@
 
 #pragma once
 
+// TBD:
+// Blockgröße über einen Template Parameter einbringen ... 
+
 #include "FixedArenaController.h"
 
 template <typename TArena>
@@ -49,17 +52,18 @@ inline FixedBlockMemoryManager<TArena>::FixedBlockMemoryManager(char(&a)[N]) :
 
 template <typename TArena>
 inline void* FixedBlockMemoryManager<TArena>::allocate(size_t size) {
+
     if (empty()) {
         m_freePtr = reinterpret_cast<free_block*>(m_arena.allocate(size));
 
-        // m_blockSize = size;   // Original: Hmmm, wenn die Arena die angefordere Size ändert, dann ist das falsch ....
         m_blockSize = m_arena.blockSize();
 
         if (empty())
             throw std::bad_alloc();
     }
-    if (size > m_blockSize)       // Hmmm, wenn es tatsächlich gleich große BLöcke sind: !=
+    if (size > m_blockSize)        // Hmmm, want to respect nodes of different size
         throw std::bad_alloc();
+
     auto p = m_freePtr;
     m_freePtr = m_freePtr->next;
     return p;

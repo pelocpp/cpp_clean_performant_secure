@@ -4,9 +4,6 @@
 
 #pragma once
 
-// TBD: rename   allocate ==> initialize
-// TBD: rename  number of free blocks // Getter
-
 #include <algorithm>
 #include <print>
 
@@ -57,11 +54,11 @@ inline void* FixedArenaController::allocate(size_t size) {
         return nullptr;           // arena already allocated
     }
 
-    // Original
-    // m_blockSize = std::max(size, sizeof(void*));
+    // block must be at least this large to hold a pointer
+    m_blockSize = std::max(size, sizeof(void*));
 
-    // TBD: Möchte forward_list für Zeichenketten hinbekommen ...
-    m_blockSize = std::max(size, (size_t) 50);
+    // need to adjust block size for std::string objects with std::list object for example
+    // m_blockSize = 24;
 
     size_t count = capacity();
 
