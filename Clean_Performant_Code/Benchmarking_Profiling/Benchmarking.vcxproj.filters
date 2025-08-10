@@ -60,6 +60,9 @@
     <ClCompile Include="ScopedTimer_Folding.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ScopedTimer_StdVector_Reserve.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Readme_Benchmarking.md">
@@ -135,7 +138,7 @@
     <Text Include="Benchmarking_Folding2.txt">
       <Filter>Source Files</Filter>
     </Text>
-    <Text Include="Benchmarking_StdUninitializedCopy_Demo.txt">
+    <Text Include="Benchmarking_StdUninitializedCopy.txt">
       <Filter>Source Files</Filter>
     </Text>
     <Text Include="Benchmarking_Lambda_vs_Std_Function.txt">

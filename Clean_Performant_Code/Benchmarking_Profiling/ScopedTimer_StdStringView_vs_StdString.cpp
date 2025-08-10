@@ -16,7 +16,6 @@ namespace Benchmarking_Std_Stringview_vs_Std_String {
     static constexpr int Iterations = 100'000'000;      // release
 #endif
 
-
     // Note: take care of SSO
     static auto StringArgument1 = "1234567890";
     static auto StringArgument2 = "The quick brown fox jumps over the lazy dog";

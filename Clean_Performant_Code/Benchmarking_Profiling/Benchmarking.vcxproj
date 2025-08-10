@@ -140,6 +140,7 @@
     <ClCompile Include="ScopedTimer_Lambda_vs_Std_Function.cpp" />
     <ClCompile Include="ScopedTimer_StdArray_Constant_Initialization.cpp" />
     <ClCompile Include="ScopedTimer_StdStringView_vs_StdString.cpp" />
+    <ClCompile Include="ScopedTimer_StdVector_Reserve.cpp" />
     <ClCompile Include="ScopedTimer_STL_Containers_Accessing.cpp" />
     <ClCompile Include="ScopedTimer_STL_Containers_Populating.cpp" />
     <ClCompile Include="Statistics_Firstnames_01.cpp" />
@@ -171,7 +172,7 @@
     <Text Include="Benchmarking_Placement_New.txt" />
     <Text Include="Benchmarking_StdArray_Constant_Initialization.txt" />
     <Text Include="Benchmarking_StdStringView_vs_StdString.txt" />
-    <Text Include="Benchmarking_StdUninitializedCopy_Demo.txt" />
+    <Text Include="Benchmarking_StdUninitializedCopy.txt" />
     <Text Include="Benchmarking_StdVector_Constant_Initialization.txt" />
     <Text Include="Benchmarking_StdVector_Reserve.txt" />
     <Text Include="Benchmarking_STL_Containers_Accessing.txt" />

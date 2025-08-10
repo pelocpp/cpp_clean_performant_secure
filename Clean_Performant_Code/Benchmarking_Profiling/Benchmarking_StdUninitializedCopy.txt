@@ -1,7 +1,7 @@
 // ===========================================================================
-// Benchmarking_StdUninitializedCopy_Demo.txt
+// Benchmarking_StdUninitializedCopy.txt
 // Comparing std::vector vs. std::uninitialized_copy
-// Status: Not Working!
+// Status: Working!
 // ===========================================================================
 
 #include <array>
@@ -36,7 +36,7 @@ static void CopyClassicalWay(benchmark::State& state) {
   }
 }
 
-static void CopyOPtimizedWay(benchmark::State& state) {
+static void CopyOptimizedWay(benchmark::State& state) {
   std::array<int, Size> numbers{};
   std::iota(numbers.begin(), numbers.end(), 1);
 
@@ -60,7 +60,7 @@ static void CopyOPtimizedWay(benchmark::State& state) {
 }
 
 BENCHMARK(CopyClassicalWay);
-BENCHMARK(CopyOPtimizedWay);
+BENCHMARK(CopyOptimizedWay);
 
 // ===========================================================================
 // End-of-File

@@ -11,12 +11,17 @@
 
 namespace Benchmarking_StdArray_Constant_Initialization {
 
-    static const size_t Iterations = 100'000;       // release
 
-    static const int Size = 10'000;                 // release
+#ifdef _DEBUG
+    static const size_t Iterations = 10'000;       // debug
+    static const size_t Size = 10'000;              // debug
+#else
+    static const size_t Iterations = 100'000;       // release
+    static const size_t Size = 10'000;              // release
+#endif
 
     // need array in global data space, stack isn't suited for large objects
-    std::array<double, Size> values{};
+    std::array <double, Size> values{};
 
     static void ArrayConstantInitializationClassicForLoop() {
 
@@ -126,6 +131,3 @@ void benchmarking_std_array_constant_initialization()
 // ===========================================================================
 // End-of-File
 // ===========================================================================
-
-
-

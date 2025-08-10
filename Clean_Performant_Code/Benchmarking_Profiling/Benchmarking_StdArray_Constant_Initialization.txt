@@ -1,6 +1,7 @@
 // ===========================================================================
 // Benchmarking_StdArray_Constant_Initialization.txt
 // Initialization of std::array with a constant value
+// Status: Working! 
 // ===========================================================================
 
 #include <execution>
