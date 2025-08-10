@@ -1,4 +1,4 @@
-# Performanzbetrachtungen bei Objekten unterschiedlicher Größe / Parallele Arrays
+# Performanzbetrachtungen bei Objekten unterschiedlicher Größe: Parallele Arrays
 
 [Zurück](Readme_Data_Structures_and_Algorithms.md)
 

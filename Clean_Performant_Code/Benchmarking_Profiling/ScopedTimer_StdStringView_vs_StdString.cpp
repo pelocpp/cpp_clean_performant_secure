@@ -10,7 +10,12 @@
 
 namespace Benchmarking_Std_Stringview_vs_Std_String {
 
-    static const size_t Iterations = 100'000'000;
+#ifdef _DEBUG
+    static constexpr int Iterations = 1'000'000;        // debug
+#else
+    static constexpr int Iterations = 100'000'000;      // release
+#endif
+
 
     // Note: take care of SSO
     static auto StringArgument1 = "1234567890";

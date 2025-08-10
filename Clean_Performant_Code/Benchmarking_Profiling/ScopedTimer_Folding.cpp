@@ -10,29 +10,9 @@
 #include <cstdlib>
 #include <algorithm>
 
+// Note: use of keyword 'volatile' to prevent excessive optimizations!
+
 namespace Benchmarking_Folding {
-
-    // =======================================================================
-    // generating random numbers
-
-    static constexpr size_t NumInputs = 10;
-
-    static std::vector<size_t> randomNumbers = [] {
-
-        std::vector<size_t> numbers;
-        numbers.resize(NumInputs);
-
-        for (auto& n : numbers) {
-            n = static_cast<size_t>(std::rand());
-        }
-
-        std::sort(
-            numbers.begin(),
-            numbers.end()
-        );
-
-        return numbers;
-    } ();
 
     // =======================================================================
 
@@ -42,7 +22,7 @@ namespace Benchmarking_Folding {
 
     static auto addIterating(auto ... values) {
         auto list = { values ... };
-        auto sum{ (size_t) 0 };
+        volatile auto sum{ (size_t)0 };
         for (auto elem : list) {
             sum += elem;
         }
@@ -51,42 +31,21 @@ namespace Benchmarking_Folding {
 
     // =======================================================================
 
-    // const size_t Iterations = 10'000'000;
-
-    static const size_t Iterations = 10'000'000;
+#ifdef _DEBUG
+    static constexpr int Iterations = 10'000'000;        // debug
+#else
+    static constexpr int Iterations = 100'000'000;       // release
+#endif
 
     static void FoldingSolution() {
 
         std::println("FoldingSolution");
 
-        //size_t a0{ randomNumbers[0] };
-        //size_t a1{ randomNumbers[1] };
-        //size_t a2{ randomNumbers[2] };
-        //size_t a3{ randomNumbers[3] };
-        //size_t a4{ randomNumbers[4] };
-        //size_t a5{ randomNumbers[5] };
-        //size_t a6{ randomNumbers[6] };
-        //size_t a7{ randomNumbers[7] };
-        //size_t a8{ randomNumbers[8] };
-        //size_t a9{ randomNumbers[9] };
-
-        size_t a0{ static_cast<size_t>(std::rand()) };
-        size_t a1{ static_cast<size_t>(std::rand()) };
-        size_t a2{ static_cast<size_t>(std::rand()) };
-        size_t a3{ static_cast<size_t>(std::rand()) };
-        size_t a4{ static_cast<size_t>(std::rand()) };
-        size_t a5{ static_cast<size_t>(std::rand()) };
-        size_t a6{ static_cast<size_t>(std::rand()) };
-        size_t a7{ static_cast<size_t>(std::rand()) };
-        size_t a8{ static_cast<size_t>(std::rand()) };
-        size_t a9{ static_cast<size_t>(std::rand()) };
-
-        // ScopedTimer watch{ ScopedTimer::Resolution::Nano };
         ScopedTimer watch{ ScopedTimer::Resolution::Micro };
 
         for (size_t i{}; i != Iterations; ++i) {
 
-            volatile auto sum{ addFolding(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) };
+            volatile auto sum{ addFolding(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) };
         }
     }
 
@@ -94,39 +53,16 @@ namespace Benchmarking_Folding {
 
         std::println("IterativeSolution");
 
-        //size_t a0{ randomNumbers[0] };
-        //size_t a1{ randomNumbers[1] };
-        //size_t a2{ randomNumbers[2] };
-        //size_t a3{ randomNumbers[3] };
-        //size_t a4{ randomNumbers[4] };
-        //size_t a5{ randomNumbers[5] };
-        //size_t a6{ randomNumbers[6] };
-        //size_t a7{ randomNumbers[7] };
-        //size_t a8{ randomNumbers[8] };
-        //size_t a9{ randomNumbers[9] };
-
-        size_t a0{ static_cast<size_t>(std::rand()) };
-        size_t a1{ static_cast<size_t>(std::rand()) };
-        size_t a2{ static_cast<size_t>(std::rand()) };
-        size_t a3{ static_cast<size_t>(std::rand()) };
-        size_t a4{ static_cast<size_t>(std::rand()) };
-        size_t a5{ static_cast<size_t>(std::rand()) };
-        size_t a6{ static_cast<size_t>(std::rand()) };
-        size_t a7{ static_cast<size_t>(std::rand()) };
-        size_t a8{ static_cast<size_t>(std::rand()) };
-        size_t a9{ static_cast<size_t>(std::rand()) };
-
-        // ScopedTimer watch{ ScopedTimer::Resolution::Nano };
         ScopedTimer watch{ ScopedTimer::Resolution::Micro };
 
         for (size_t i{}; i != Iterations; ++i) {
 
-            volatile auto sum{ addIterating(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) };
+            volatile auto sum{ addIterating(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) };
         }
     }
 }
 
-void benchmarking_folding()
+void benchmarking_folding2()
 {
     using namespace Benchmarking_Folding;
 

@@ -1,4 +1,4 @@
-# Der Stack (Stapel)
+# Der Stapel (*Stack*)
 
 [Zurück](Readme_MemoryManagement.md)
 

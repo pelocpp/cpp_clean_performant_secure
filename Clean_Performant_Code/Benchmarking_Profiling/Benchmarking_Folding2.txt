@@ -1,13 +1,33 @@
 // ===========================================================================
 // Benchmarking_Folding2.txt
 // Comparing Folding Expression solution with iterative solution.
-// Status: Working!
+// Status: Not Working!
 // ===========================================================================
 
 // =======================================================================
+// generating random numbers
+
+static constexpr size_t NumInputs = 10;
+
+static std::vector<size_t> randomNumbers = [] {
+
+    std::vector<size_t> numbers;
+    numbers.resize(NumInputs);
+
+    for (auto& n : numbers) {
+        n = static_cast<size_t>(std::rand());
+    }
+
+    std::sort(
+        numbers.begin(),
+        numbers.end()
+    );
+
+    return numbers;
+} ();
+
+// =======================================================================
 // folding and iterating functions
-//
-// Note: use of keyword 'volatile' to prevent excessive optimizations!
 
 static auto addFolding(auto ... values) {
   return (... + values);
@@ -15,7 +35,7 @@ static auto addFolding(auto ... values) {
 
 static auto addIterating(auto ... values) {      
   auto list = { values ...};
-  volatile auto sum{ (size_t) 0 };
+  auto sum{ (size_t) 0 };
   for (auto elem : list) {
     sum += elem;
   }
@@ -27,16 +47,38 @@ static auto addIterating(auto ... values) {
 
 static void FoldingSolution(benchmark::State& state) {
 
+  size_t a0{ randomNumbers[0] };
+  size_t a1{ randomNumbers[1] };
+  size_t a2{ randomNumbers[2] };
+  size_t a3{ randomNumbers[3] };
+  size_t a4{ randomNumbers[4] };
+  size_t a5{ randomNumbers[5] };
+  size_t a6{ randomNumbers[6] };
+  size_t a7{ randomNumbers[7] };
+  size_t a8{ randomNumbers[8] };
+  size_t a9{ randomNumbers[9] };
+
   for (auto _ : state) {
-    volatile auto sum{ addFolding(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) };
+    volatile auto sum{ addFolding(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) };
     benchmark::DoNotOptimize(sum);
   }
 }
 
 static void IterativeSolution(benchmark::State& state) {
 
+  size_t a0{ randomNumbers[0] };
+  size_t a1{ randomNumbers[1] };
+  size_t a2{ randomNumbers[2] };
+  size_t a3{ randomNumbers[3] };
+  size_t a4{ randomNumbers[4] };
+  size_t a5{ randomNumbers[5] };
+  size_t a6{ randomNumbers[6] };
+  size_t a7{ randomNumbers[7] };
+  size_t a8{ randomNumbers[8] };
+  size_t a9{ randomNumbers[9] };
+
   for (auto _ : state) {
-    volatile auto sum{ addIterating(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) };
+    volatile auto sum{ addIterating(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) };
     benchmark::DoNotOptimize(sum);
   }
 }

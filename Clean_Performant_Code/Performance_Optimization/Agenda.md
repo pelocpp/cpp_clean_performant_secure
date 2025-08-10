@@ -10,15 +10,6 @@
   * Übersetzungszeit (*Compile-Time*) versus Laufzeit (*Run-Time*)
 
 
-## Speicherverwaltung (Memory Management)
-
-  * Speicherbereiche eine C/C++&ndash;Programms
-  * Globales Datensegment, Stack und Heap
-  * CPU Cache-Speicher
-  * Ausrichtung (*Alignment*) und *Padding* 
-  * *Placement New*: Trennung von Speicherallokation und Objektkonstruktion
-
-
 ## Einfache Code-Optimierungstechniken
 
   * *Call*-*by*-*Value* versus *Call*-*by*-*Reference* bei elementaren Datentypen
@@ -33,6 +24,7 @@
   * IIFE &ndash; *Immediately Invoked Functional Expression*
   * *Copy*/*Move* Elision
   * Die Technik der `emplace`-Methoden
+  * Vorsicht vor versteckten Kopien: Verwende Referenzen bei `auto` und in *Range-based for Loops*
 
 
 ## Fortgeschrittene Code-Optimierungstechniken
@@ -40,7 +32,8 @@
   * &bdquo;*Folding*&rdquo;-Ausdrücke
   * Verschieben ist besser als Kopieren (`std::move`)
   * Perfektes Weiterleiten (*Perfect Forwarding*, `std::forward`)
-  * CRTP &ndash; Curiously Recurring Template Pattern
+  * Die *Capture-Clause* von Lambdas: Es geht auch &bdquo;Verschieben&rdquo;
+  * *CRTP* &ndash; *Curiously Recurring Template Pattern*
   * Statischer versus dynamischer Polymorphismus
   * `std::variant`, `std::visit` und statische Methodenaufrufe
 
@@ -53,6 +46,41 @@
   * Die richtige Auswahl eines Algorithmus
   * STL-Algorithmen und generische Lambda-Objekte
   * STL-Algorithmen versus klassische Wiederholunganweisungen
+  * Performanzbetrachtungen bei Objekten unterschiedlicher Größe: Parallele Arrays
+
+
+## Speicherverwaltung / *Memory Management*
+
+  * Speicherbereiche eine C/C++&ndash;Programms
+  * Globales Datensegment
+  * Der Stapel (*Stack*)
+  * Die Halde (*Heap*)
+  * CPU-Cache-Speicher / *Cache Lines*
+  * Das &bdquo;False Sharing&rdquo; Problem
+  * Ausrichtung und Abstand (*Alignment*) und *Padding*)
+  * *Placement New*: Trennung von Speicherallokation und Objektkonstruktion
+  * Low-level Speicherverwaltungsfunktionen
+
+
+## Optimierung der Speicherverwaltung / *Memory Management Optimization*
+
+  * &bdquo;*Zeigerwäsche*&rdquo;: `std::launder`
+  * Benutzerdefinierte Speicher-Allokatoren / *Custom Allocator*
+  * Speichermanager für Blöcke mit fester Größe / *Fixed-Size-Block Memory Manager*
+  * Realisierung eines Objektpools / *Object Pool*
+
+
+## Tools zur Performance-Messung
+
+  * Quick C++ Benchmark
+  * Visual Studio Diagnostic Tools
+  * Visual Studio Analysis Tools (CPU Usage, Memory Usage und weitere)
+
+ 
+## Compile-Time Programming
+
+  * Metaprogramming
+  * `constexpr`
 
 
 ## Multithreading / Concurrency
@@ -63,13 +91,6 @@
   * Parallelisierung von STL-Algorithmen (`std::execution::parallel_policy`)
 
 
-## Tools zur Performance-Messung
-
-  * Quick C++ Benchmark
-  * Visual Studio Diagnostic Tools
-  * Visual Studio Analysis Tools (CPU Usage, Memory Usage und weitere)
-
- 
 ## Funktionale Programmierung: Die Bibliothek `std::ranges`
 
   * Was ist funktionale Programmierung?

@@ -33,7 +33,7 @@
     <ClCompile Include="ScopedTimer_StdStringView_vs_StdString.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScopedTimer_Folding.cpp">
+    <ClCompile Include="ScopedTimer_Folding2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ScopedTimer_Lambda_vs_Std_Function.cpp">
@@ -57,7 +57,7 @@
     <ClCompile Include="Statistics_Firstnames_03.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScopedTimer_Folding2.cpp">
+    <ClCompile Include="ScopedTimer_Folding.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -132,7 +132,7 @@
     <Text Include="Benchmarking_GettingStarted.txt">
       <Filter>Source Files</Filter>
     </Text>
-    <Text Include="Benchmarking_Folding.txt">
+    <Text Include="Benchmarking_Folding2.txt">
       <Filter>Source Files</Filter>
     </Text>
     <Text Include="Benchmarking_StdUninitializedCopy_Demo.txt">
@@ -156,7 +156,7 @@
     <Text Include="Names_Short.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="Benchmarking_Folding2.txt">
+    <Text Include="Benchmarking_Folding.txt">
       <Filter>Source Files</Filter>
     </Text>
   </ItemGroup>

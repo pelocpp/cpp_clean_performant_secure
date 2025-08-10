@@ -1,4 +1,4 @@
-# Realisierung eines Objektpools / *Object Pools*
+# Realisierung eines Objektpools / *Object Pool*
 
 [Zurück](Readme_Performance_Optimization_Advanced.md)
 

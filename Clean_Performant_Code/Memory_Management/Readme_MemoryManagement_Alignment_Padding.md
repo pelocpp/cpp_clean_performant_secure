@@ -1,4 +1,4 @@
-# Alignment und Padding (Ausrichtung und Abstand)
+# Ausrichtung und Abstand (*Alignment*) und *Padding*)
 
 [Zurück](Readme_MemoryManagement.md)
 

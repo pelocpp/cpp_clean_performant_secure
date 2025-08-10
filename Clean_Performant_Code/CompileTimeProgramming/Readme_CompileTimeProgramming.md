@@ -95,6 +95,21 @@
 
 ---
 
+## Programmieren mit konstanten Ausdrücken und Funktionen <a name="link6"></a>
+
+*Beispiel*:
+
+```cpp
+01: constexpr auto hashFunction(const char* str) -> size_t {
+02:     auto sum{ size_t{ 0 } };
+03:     for (auto ptr{ str }; *ptr != '\0'; ++ptr)
+04:         sum += *ptr;
+05:     return sum;
+06: }
+```
+
+---
+
 ## Abgekürzte Funktionstemplates &ndash; *Abbreviated Function Templates* <a name="link5"></a>
 
 *Beispiel*:
@@ -117,7 +132,7 @@
 
 ---
 
-## Literatur <a name="link6"></a>
+## Literatur <a name="link7"></a>
 
 Die Anregungen zum konzeptionellen Beispiel finden Sie unter
 

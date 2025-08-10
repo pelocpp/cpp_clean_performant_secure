@@ -1,4 +1,4 @@
-# *False Sharing*
+# Das &bdquo;False Sharing&rdquo; Problem
 
 [Zurück](Readme_MemoryManagement.md)
 

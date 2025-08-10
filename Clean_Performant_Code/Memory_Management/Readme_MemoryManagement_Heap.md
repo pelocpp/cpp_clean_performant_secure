@@ -1,4 +1,4 @@
-# Der Heap (Halde)
+# Die Halde (*Heap*)
 
 [Zurück](Readme_MemoryManagement.md)
 
