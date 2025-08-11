@@ -10,10 +10,10 @@ extern void test_object_pool();
 
 int main()
 {
-    //test_custom_allocator();
-    //test_fixed_arena_controller();
-    //test_block_memory_manager();
-    //test_fixed_block_allocator();
+    test_custom_allocator();
+    test_fixed_arena_controller();
+    test_block_memory_manager();
+    test_fixed_block_allocator();
     test_object_pool();
 
     return 0;

@@ -123,8 +123,8 @@ namespace ObjectPool_AdvancedTest {
 
 void test_object_pool()
 {
-    //ObjectPool_SimpleTest::test_object_pool_01();
-    //ObjectPool_SimpleTest::test_object_pool_02();
+    ObjectPool_SimpleTest::test_object_pool_01();
+    ObjectPool_SimpleTest::test_object_pool_02();
     ObjectPool_AdvancedTest::test_object_pool_02();
 }
 
