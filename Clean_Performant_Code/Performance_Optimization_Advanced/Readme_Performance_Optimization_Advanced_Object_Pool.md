@@ -8,7 +8,9 @@
   
   * [Allgemeines](#link1)
   * [Zu den Details](#link2)
-  * [Literatur](#link3)
+  * [Die Memberfunktion `addChunk()`](#link3)
+  * [Die Memberfunktion `acquireObject()`](#link4)
+  * [Literatur](#link5)
 
 ---
 
@@ -31,8 +33,19 @@
 ## Allgemeines <a name="link1"></a>
 
 In diesem Abschnitt beschreiben wir die Implementierung
-einer Object Pool Klasse, die sehr wohl für einen produktiven Einsatz
+einer *Object Pool* Klasse, die sehr wohl für einen produktiven Einsatz
 geeignet ist.
+
+Es gibt verschiedene Arten von Objektpool-Klassen.
+Dieser Abschnitt beschreibt einen Objektpool, der einen großen Speicherblock auf einmal allokiert
+und kleinere Objekte direkt &bdquo;*in-place*&rdquo; erstellt.
+
+Diese Objekte können an Clients ausgehändigt und wiederverwendet werden,
+wenn diese sie nicht mehr benötigen.
+
+Dies erfordert *keine* zusätzlichen Aufrufe des Speichermanagers,
+um Speicher für einzelne Objekte zuzuweisen (`new`) oder freizugeben (`delete`).
+
 
 ---
 
@@ -48,7 +61,7 @@ die dieser Pool verwaltet:
 std::vector<T*>  m_pool;
 ```
 
-Zusätzlich werden freie Objekte in einem Vektor mit Zeigern auf alle freien Objekte protokolliert.
+Zusätzlich werden freie Objekte in einem Vektor mit Zeigern auf alle freien Objekte protokolliert:
 
 ```cpp
 std::vector<T*>  m_free;
@@ -59,7 +72,7 @@ sind hier alle Adressen verfügbar, die durch den ersten Block
 im Pool angesprochen werden können.
 
 
-Wir versuchen, in den beiden folgenden Abbildungen das Szenario im
+Wir versuchen, in den folgenden Abbildungen das Szenario im
 Objektpool &bdquo;bildlich&rdquo; darzustellen.
 
 Zu Beginn wird im Pool eine bestimmte Menge an freien Objektblöcken eingerichtet.
@@ -89,7 +102,6 @@ Es gibt keine freien Blöcke mehr.
 
 *Abbildung* 3: Ein Pool ohne freie Objekte.
 
-
 Wird jetzt ein neues Objekt angefordert,
 muss zunächst der Pool an sich wieder nachladen.
 
@@ -102,11 +114,10 @@ der freien Blöcke aufgenommen und neue Blöcke sind wieder verfügbar.
 
 *Abbildung* 4: Ein Pool mit neuen Chunks.
 
----
 
 Der Pool stellt Objekte über die Memberfunktion `acquireObject()` zur Verfügung.
 Wird `acquireObject()` aufgerufen und sind aber keine freien Objekte mehr vorhanden,
-allokiert der Pool einen weiteren Vektor mit Objektblöcken vom Typ `T`.
+allokiert der Pool (durch die Methode `addChunk`) einen weiteren Vektor mit Objektblöcken vom Typ `T`.
 
 Die Klasse `ObjectPool` ist ein Klassentemplate.
 Die beiden Templateparameter `T` und `TAllocator` parametrisieren
@@ -118,10 +129,44 @@ template <typename T, typename TAllocator = std::allocator<T>>
 class ObjectPool final
 ```
 
+---
+
+## Die Memberfunktion `addChunk()` <a name="link3"></a>
+
 Die Memberfunktion `addChunk()` zum Zuweisen eines neuen Chunks ist wie folgt implementiert.
 Der erste Teil von `addChunk()` führt die eigentliche Zuweisung eines neuen Chunks durch.
-Ein „Chunk“ ist ein nicht initialisierter Speicherblock, der mithilfe eines Allocators zugewiesen wird und groß genug ist,
-um `m_newChunkSize` Instanzen von `T` aufzunehmen.
+Ein &bdquo;Chunk&rdquo; ist ein nicht initialisierter Speicherblock, der mithilfe eines Allocators zugewiesen wird und groß genug ist,
+um `m_newChunkSize` Instanzen von `T` aufzunehmen:
+
+```cpp
+01: template <typename T, typename TAllocator>
+02: inline void ObjectPool<T, TAllocator>::addChunk()
+03: {
+04:     std::println("allocating new chunk ...");
+05: 
+06:     m_pool.push_back(nullptr);
+07:     try {
+08:         m_pool.back() = m_allocator.allocate(m_currentChunkSize);
+09:     }
+10:     catch (...) {
+11:         m_pool.pop_back();
+12:         throw;
+13:     }
+14: 
+15:     auto oldFreeObjectsSize{ m_freeObjects.size() };
+16: 
+17:     m_freeObjects.resize(oldFreeObjectsSize + m_currentChunkSize);
+18: 
+19:     // create pointers to the new instances of T (using std::iota)
+20:     std::iota(
+21:         std::begin(m_freeObjects) + oldFreeObjectsSize, 
+22:         std::end(m_freeObjects), 
+23:         m_pool.back()
+24:     );
+25: 
+26:     m_currentChunkSize *= 2;
+27: }
+```
 
 Durch das Hinzufügen eines Objekt-Chunks werden noch keine Objekte erstellt;
 d.h. es werden keine Objektkonstruktoren aufgerufen.
@@ -131,18 +176,82 @@ Der zweite Teil von `addChunk()` erstellt Zeiger auf die neuen Instanzen von `T`
 Er verwendet den `iota()`-Algorithmus, definiert in der Datei `<numeric>`.
 
 Zur Erinnerung: `iota()` füllt einen durch die ersten beiden Argumente vorgegebenen Bereich mit Werten.
-
 Die Werte beginnen mit dem Wert des dritten Arguments und werden für jeden nachfolgenden Wert um Eins erhöht.
 
 Da wir mit `T*`-Zeigern arbeiten, springt das Erhöhen eines `T*`-Zeigers um Eins
-zum nächsten `T` im Speicherblock. Abschließend wird der Wert von `m_newChunkSize` verdoppelt,
-sodass der nächste hinzugefügte Block doppelt so groß ist wie der aktuelle Block.
+zum nächsten `T` im Speicherblock.
 
+Abschließend wird der Wert von `m_newChunkSize` verdoppelt,
+sodass der nächste hinzugefügte Block doppelt so groß ist wie der aktuelle Block.
 Dies geschieht aus Performancegründen und folgt dem Prinzip von `std::vector`.
 
 ---
 
-## Literatur <a name="link3"></a>
+## Die Memberfunktion `acquireObject()` <a name="link4"></a>
+
+```cpp
+01: template <typename T, typename TAllocator>
+02: template <typename... TArgs>
+03: inline std::shared_ptr<T> ObjectPool::acquireObject(TArgs&& ... args)
+04: {
+05:     // if there are no free objects, need to allocate a new chunk
+06:     if (m_freeObjects.empty()) { 
+07:         addChunk();
+08:     }
+09: 
+10:     // get a free object
+11:     T* object{ m_freeObjects.back() };
+12: 
+13:     // construct an instance of T in this block using placement new
+14:     ::new(object) T{ std::forward<TArgs>(args)... };
+15: 
+16:     // launder the object pointer.
+17:     T* constructedObject{ std::launder(object) };
+18: 
+19:     // remove the object from the list of free objects
+20:     m_freeObjects.pop_back();
+21: 
+22:     // wrap the constructed object and return it
+23:     return std::shared_ptr<T>{
+24:         constructedObject,
+25:         [this] (T* object) {
+26:             std::destroy_at(object);          // destroy object
+27:             m_freeObjects.push_back(object);  // put object back in the list of free objects.
+28:         }
+29:     };
+30: }
+```
+
+Methode `acquireObject()`, eine variadische *Member Template Function*,
+gibt ein freies Objekt aus dem Pool zurück und allokiert einen neuen Block,
+wenn keine freien Objekte mehr verfügbar sind.
+
+Wie bereits erläutert, allokiert das Hinzufügen eines neuen Blocks lediglich einen Block nicht initialisierten Speichers.
+
+`acquireObject()` ist dafür verantwortlich, eine neue Instanz von `T` an der richtigen Stelle im Speicher zu erstellen.
+Dies geschieht mithilfe der *Placement-New* Technik.
+
+Alle an `acquireObject()` übergebenen Argumente werden &bdquo;perfekt&rdquo;
+an einen Konstruktor vom Typ `T` weitergeleitet.
+
+*Hinweis*:<br />
+`acquireObject()` verwendet die *Placement-New* Technik,
+um eine neue Instanz eines Objekts vom Typ `T` an einem explizit vorgegebenen Speicherort zu erstellen.
+
+Enthält Typ `T` Konstanten- oder Referenzen, führt der Zugriff auf das neu erstellte Objekt
+über den ursprünglichen Zeiger zu undefiniertem Verhalten.
+
+Um dieses Verhalten in definiertes Verhalten umzuwandeln, muss der Speicher mit `std::launder()`,
+definiert in `<new>`, &bdquo;gewaschen&rdquo; werden.
+
+Abschließend wird der &bdquo;gewaschene&rdquo; `T*`-Zeiger in einen `std::shared_ptr`-Objekt
+mit einem benutzerdefinierten *Deleter* eingebettet.
+Dieser *Deleter* gibt keinen Speicher frei, sondern ruft den Destruktor manuell mit `std::destroy_at()` auf und fügt den Zeiger anschließend wieder in die Liste der verfügbaren Objekte ein (`m_freeObjects`).
+
+
+---
+
+## Literatur <a name="link5"></a>
 
 Die Realisierung des Object Pools wurde in dem Buch 
 &bdquo;[*Professional C++*](https://www.amazon.de/Professional-C-Marc-Gregoire/dp/1394193173)&rdquo; von Marc Gregoire

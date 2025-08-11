@@ -7,6 +7,8 @@
 #include <functional>
 #include <print>
 
+// Note: volatile is used to prevent aggressive optimizing
+
 namespace Benchmarking_Lambda_vs_Std_Function {
 
     static const size_t Iterations = 100000;
@@ -30,7 +32,7 @@ namespace Benchmarking_Lambda_vs_Std_Function {
         ScopedTimer watch{};
 
         for (size_t i{}; i != Iterations; ++i) {
-            auto total = 0.0;
+            volatile auto total = 0.0;
             for (size_t i{}; i != InnerIterations; ++i) {
                 total += lambda(total);
             }
@@ -51,7 +53,7 @@ namespace Benchmarking_Lambda_vs_Std_Function {
         ScopedTimer watch{};
 
         for (size_t i{}; i != Iterations; ++i) {
-            auto total = 0.0;
+            volatile auto total = 0.0;
             for (size_t i{}; i != InnerIterations; ++i) {
                 total += func(total);
             }
@@ -67,7 +69,7 @@ namespace Benchmarking_Lambda_vs_Std_Function {
         ScopedTimer watch{};
 
         for (size_t i{}; i != Iterations; ++i) {
-            auto total = 0.0;
+            volatile auto total = 0.0;
             for (size_t i{}; i != InnerIterations; ++i) {
                 total += func(total);
             }

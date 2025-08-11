@@ -19,12 +19,43 @@ namespace ObjectPool_SimpleTest {
 
         PersonPool pool{};
 
+        pool.addChunk();
+        pool.addChunk();
+
+        return;
+
         auto person{ pool.acquireObject("Sepp", "Mueller", (size_t) 30) };
 
         std::println("{} {} has age {}",
             person->getFirstname(), person->getLastname(), person->getAge());
 
         std::println("Done.");
+    }
+
+    static void test_object_pool_02()
+    {
+        using PersonPool = ObjectPool<Person>;
+
+        PersonPool pool{};
+
+        auto sepp{ pool.acquireObject("Sepp", "Mueller", (size_t) 30) };
+        auto hans{ pool.acquireObject("Hans", "Meier", (size_t) 40) };
+        auto susi{ pool.acquireObject("Susi", "Wagner", (size_t) 50) };
+
+        std::println("{} {} has age {}",
+            sepp->getFirstname(), sepp->getLastname(), sepp->getAge());
+
+        std::println("{} {} has age {}",
+            hans->getFirstname(), hans->getLastname(), hans->getAge());
+
+        std::println("{} {} has age {}",
+            susi->getFirstname(), susi->getLastname(), susi->getAge());
+
+        std::println("Done.");
+
+        // Note:
+        // 3 std::shared:ptr objects are going out of scope,
+        // the according objects are put back in the list of free objects.
     }
 }
 
@@ -36,9 +67,10 @@ namespace ObjectPool_AdvancedTest {
         // an expensive data member
         static constexpr std::size_t Size1{ 100'000 };
         static constexpr std::size_t Size2{ 1'024 * 1'024 };
-        static constexpr std::size_t Size3{ 4 * 1'024 * 1'024 };
+        static constexpr std::size_t Size3{ 2 * 1'024 * 1'024 };
+        static constexpr std::size_t Size4{ 4 * 1'024 * 1'024 };
 
-        std::array<double, Size1> m_data;
+        std::array<double, Size2> m_data;
 
     public:
         ExpensiveObject() : m_data{} {}
@@ -67,7 +99,7 @@ namespace ObjectPool_AdvancedTest {
 
         MyPool pool;
 
-        std::println("Starting loop using pool...");
+        std::println("Starting loop using Object Pool ...");
         {
             ScopedTimer watch{};
 
@@ -77,7 +109,7 @@ namespace ObjectPool_AdvancedTest {
             }
         }
 
-        std::println("Starting loop using new/delete...");
+        std::println("Starting loop using standard New/Delete ...");
         {
             ScopedTimer watch{};
 
@@ -91,7 +123,8 @@ namespace ObjectPool_AdvancedTest {
 
 void test_object_pool()
 {
-    // ObjectPool_SimpleTest::test_object_pool_01();
+    //ObjectPool_SimpleTest::test_object_pool_01();
+    //ObjectPool_SimpleTest::test_object_pool_02();
     ObjectPool_AdvancedTest::test_object_pool_02();
 }
 

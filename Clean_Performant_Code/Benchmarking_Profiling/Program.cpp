@@ -24,8 +24,8 @@ int main()
     //benchmarking_folding();
     //benchmarking_folding2();
     //benchmarking_getting_started();
-    //benchmarking_lambda_vs_std_function();
-    benchmarking_std_array_constant_initialization();
+    benchmarking_lambda_vs_std_function();
+    //benchmarking_std_array_constant_initialization();
     //benchmarking_std_stringview_vs_std_string();
     //benchmarking_std_vector_reserve();
     //benchmarking_stl_containers_populating();

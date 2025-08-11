@@ -82,7 +82,7 @@ Beachten Sie folgende Hinweise bei der Wahl eines Containers:
   * Verwenden Sie ein `std::list`-Objekt (nicht: `std::deque`), wenn Sie häufig Elemente in der Mitte des Containers einfügen/entfernen müssen.
   * Verwenden Sie nicht die Klasse `std::list`, wenn Sie wahlfreien Zugriff auf Objekte benötigen (Zugriff mit einem Index).
   * Bevorzugen Sie die Klasse `std::vector` gegenüber der Klasse `std::list`, wenn Ihr System einen Cache verwendet &ndash;
-  siehe hierzu auch [CPU-Cache-Speicher](Readme_Caches.md).
+  siehe hierzu auch [CPU-Cache-Speicher / *Cache Lines*](..\Memory_Management\Readme_MemoryManagement_Cache.md).
   * Die Klasse `std::string` ist fast immer besser als eine  C-Style Zeichenkette.
 
 
