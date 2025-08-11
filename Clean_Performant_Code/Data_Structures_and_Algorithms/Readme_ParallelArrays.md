@@ -58,7 +58,7 @@ zu summieren:
 01: template <size_t Length>
 02: class Object {
 03: private:
-04:     std::array<char, Length> m_data{};
+04:     char m_data[Length] {};
 05:     int m_score{ std::rand() };
 06: public:
 07:     auto getScore() const { return m_score; }
@@ -141,10 +141,10 @@ Das Passwort als auch die Namen spielen während der Laufzeit eine eher untergeor
 
 ```cpp
 struct User {
-    std::string m_name;
-    std::unique_ptr<AuthInfo> auth_info_;
-    short m_level{};
-    bool m_isPlaying{};
+    std::string               m_name;
+    std::unique_ptr<AuthInfo> m_authInfo;
+    short                     m_level{};
+    bool                      m_isPlaying{};
 };
 ```
 
@@ -182,7 +182,7 @@ Die dritte Variante beherbergt den radikalsten Ansatz.
 Es wird auf die Objektorientierung verzichtet!
 Stattdessen kommen mehrere Arrays zum Einsatz.
 Datentechnisch könnten dies `std::array`- oder `std::vector`-Objekte sein,
-in jedem Fall sollten sie ihre Daten im Speicher konsekutiv abgelegt haben:
+in jedem Fall sollten Sie ihre Daten im Speicher konsekutiv abgelegt haben:
 
 <img src="cpp_stl_parallel_arrays.svg" width="600">
 

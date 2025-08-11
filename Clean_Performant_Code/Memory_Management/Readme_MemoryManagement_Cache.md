@@ -191,7 +191,7 @@ geschickt oder ungeschickt erfolgen.
 ```cpp
 01: constexpr auto capacityL1CacheSize = 32768;  // L1 Data Cache Size
 02:         
-03: constexpr auto Size = capacityL1CacheSize / sizeof(int);
+03: constexpr size_t Size = capacityL1CacheSize / sizeof(int);
 04: 
 05: using MatrixType = std::array<std::array<size_t, Size>, Size>;
 06: 

@@ -67,7 +67,7 @@ namespace CacheMisses {
 
     constexpr auto capacityL1CacheSize = 32768; // L1 Data Cache Size
 
-    constexpr auto Size = capacityL1CacheSize / sizeof(int);
+    constexpr size_t Size = capacityL1CacheSize / sizeof(int);
 
     // static const size_t Iterations = 10'000'000;
     static const size_t Iterations = 10;

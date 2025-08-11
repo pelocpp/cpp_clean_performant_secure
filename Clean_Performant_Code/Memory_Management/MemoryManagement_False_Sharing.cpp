@@ -38,18 +38,20 @@ namespace False_Sharing {
 
 #ifdef FALSE_SHARING
         std::cout << "With false sharing \n";
-        struct resultType {
+        struct ResultType
+        {
             int val;
         };
 #else
         std::cout << "Without false sharing\n";
-        struct resultType {
+        struct ResultType
+        {
             alignas(std::hardware_destructive_interference_size) int val;
         };
 #endif
-        std::println("Sizeof:       {}", sizeof(struct resultType));
+        std::println("Sizeof:       {}", sizeof(struct ResultType));
 
-        std::array<resultType, NumProcessors> results{ 0 };
+        std::array<ResultType, NumProcessors> results{ 0 };
         std::array<std::thread, NumProcessors> threads;
 
         {
@@ -60,7 +62,7 @@ namespace False_Sharing {
                 auto& result = results[i];
 
                 threads[i] = std::thread{
-                    [&result, NumIterations]() mutable {
+                    [&result]() mutable {
                         for (std::size_t j = 0; j < NumIterations; ++j) {
                             result.val = (result.val + std::rand() % 10) % 50;
                             // std::println("val: {}", result.val);
@@ -79,10 +81,10 @@ namespace False_Sharing {
         const auto res = std::accumulate(
             cbegin(results),
             cend(results),
-            resultType{ 0 },
-            [](const resultType a, const resultType b) {
+            ResultType{ 0 },
+            [](const ResultType a, const ResultType b) {
                 auto s = a.val + b.val;
-                return resultType{ s };
+                return ResultType{ s };
             }
         );
 

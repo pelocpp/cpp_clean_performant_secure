@@ -66,10 +66,10 @@ namespace Placement_New {
 namespace Placement_New_Example {
 
 #ifdef _DEBUG
-    constexpr std::size_t DataSize = 50'000;
+    constexpr std::size_t Size = 50'000;
     constexpr std::size_t NumIterations = 100;
 #else
-    constexpr std::size_t DataSize = 100'000;
+    constexpr std::size_t Size = 100'000;
     constexpr std::size_t NumIterations = 300;
 #endif
 
@@ -133,21 +133,21 @@ namespace Placement_New_Example {
         {
             ScopedTimer watch;
             for (size_t i{}; i != NumIterations; ++i) {
-                volatile BigData_Classic_Implementation::BigData<int> data{ DataSize, 123 };
+                volatile BigData_Classic_Implementation::BigData<int> data{ Size, 123 };
             }
         }
 
         {
             ScopedTimer watch;
             for (size_t i{}; i != NumIterations; ++i) {
-                volatile BigData_Classic_Implementation::BigData<std::string> data{ DataSize, std::string{ "C++ Memory Management" } };
+                volatile BigData_Classic_Implementation::BigData<std::string> data{ Size, std::string{ "C++ Memory Management" } };
             }
         }
 
         {
             ScopedTimer watch;
             for (size_t i{}; i != NumIterations; ++i) {
-                volatile BigData_Classic_Implementation::BigData<Person> data{ DataSize, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
+                volatile BigData_Classic_Implementation::BigData<Person> data{ Size, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
             }
         }
         std::println();
@@ -201,21 +201,21 @@ namespace Placement_New_Example {
         {
             ScopedTimer watch;
             for (size_t i{}; i != NumIterations; ++i) {
-                volatile BigData_Classic_Improved_Implementation::BigData<int> data{ DataSize, 123 };
+                volatile BigData_Classic_Improved_Implementation::BigData<int> data{ Size, 123 };
             }
         }
 
         {
             ScopedTimer watch;
             for (size_t i{}; i != NumIterations; ++i) {
-                volatile BigData_Classic_Improved_Implementation::BigData<std::string> data{ DataSize, "C++ Memory Management" };
+                volatile BigData_Classic_Improved_Implementation::BigData<std::string> data{ Size, "C++ Memory Management" };
             }
         }
 
         {
             ScopedTimer watch;
             for (size_t i{}; i != NumIterations; ++i) {
-                volatile BigData_Classic_Implementation::BigData<Person> data{ DataSize, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
+                volatile BigData_Classic_Implementation::BigData<Person> data{ Size, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
             }
         }
         std::println();
@@ -261,181 +261,25 @@ namespace Placement_New_Example {
         {
             ScopedTimer watch;
             for (size_t i{}; i != NumIterations; ++i) {
-                volatile BigData_Classic_Improved_Implementation::BigData<int> data{ DataSize, 123 };
+                volatile BigData_Classic_Improved_Implementation::BigData<int> data{ Size, 123 };
             }
         }
 
         {
             ScopedTimer watch;
             for (size_t i{}; i != NumIterations; ++i) {
-                volatile BigData_Classic_Improved_Implementation::BigData<std::string> data{ DataSize, "C++ Memory Management" };
+                volatile BigData_Classic_Improved_Implementation::BigData<std::string> data{ Size, "C++ Memory Management" };
             }
         }
 
         {
             ScopedTimer watch;
             for (size_t i{}; i != NumIterations; ++i) {
-                volatile BigData_Classic_Implementation::BigData<Person> data{ DataSize, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
+                volatile BigData_Classic_Implementation::BigData<Person> data{ Size, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
             }
         }
         std::println();
     }
-}
-
-// =======================================================================
-// Placement New: Quickbench Examples
-
-namespace Placement_New_Example_Quickbench {
-
-    // To-Copy Begin
-    // ======================================================================
-
-#if defined (QUICKBENCH_BEGIN)
-
-    constexpr std::size_t Max = 10;
-
-    class Person
-    {
-    private:
-        std::string m_first;
-        std::string m_last;
-        std::size_t m_age;
-
-    public:
-        Person() : m_first{}, m_last{}, m_age{} {}
-
-        Person(std::string first, std::string last, size_t age)
-            : m_first{ first }, m_last{ last }, m_age{ age }
-        {
-        }
-    };
-
-    namespace BigData_Classic_Implementation
-    {
-        template <typename T>
-        class BigData
-        {
-        private:
-            T* m_elems{};
-            std::size_t m_size{};
-
-        public:
-            // c'tor(s) / d'tor
-            BigData() = default;
-
-            BigData(std::size_t size, const T& init)
-                : m_elems{ new T[size] }, m_size{ size }
-            {
-                std::fill(m_elems, m_elems + m_size, init);
-            }
-
-            ~BigData()
-            {
-                delete[] m_elems;
-            }
-        };
-    }
-
-    static void BigDataClassicInt(benchmark::State& state) {
-        // Code inside this loop is measured repeatedly
-        for (auto _ : state) {
-            volatile BigData_Classic_Implementation::BigData<int> data{ Max, 123 };
-            // Make sure the variable is not optimized away by compiler
-            benchmark::DoNotOptimize(data);
-        }
-    }
-    // Register the function as a benchmark
-    BENCHMARK(BigDataClassicInt);
-
-    static void BigDataClassicString(benchmark::State& state) {
-        // Code inside this loop is measured repeatedly
-        for (auto _ : state) {
-            volatile BigData_Classic_Implementation::BigData<std::string> data{ Max, std::string{ "C++ Memory Management" } };
-            // Make sure the variable is not optimized away by compiler
-            benchmark::DoNotOptimize(data);
-        }
-    }
-    // Register the function as a benchmark
-    BENCHMARK(BigDataClassicString);
-
-    static void BigDataClassicPerson(benchmark::State& state) {
-        // Code inside this loop is measured repeatedly
-        for (auto _ : state) {
-            volatile BigData_Classic_Implementation::BigData<Person> data{ Max, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
-            // Make sure the variable is not optimized away by compiler
-            benchmark::DoNotOptimize(data);
-        }
-    }
-    // Register the function as a benchmark
-    BENCHMARK(BigDataClassicPerson);
-
-    //============================================================
-
-    namespace BigData_Classic_More_Improved_Implementation
-    {
-        template <typename T>
-        class BigData
-        {
-        private:
-            T* m_elems{};
-            std::size_t m_size{};
-
-        public:
-            // c'tor(s)
-            BigData() = default;
-
-            BigData(std::size_t size, const T& init)
-            {
-                m_elems = static_cast<T*> (std::malloc(size * sizeof(T)));
-                m_size = size;
-                std::uninitialized_fill(m_elems, m_elems + m_size, init);
-            }
-
-            ~BigData()
-            {
-                std::destroy(m_elems, m_elems + m_size);
-                std::free(m_elems);
-            }
-        };
-    }
-
-    static void BigDataImprovedInt(benchmark::State& state) {
-        // Code inside this loop is measured repeatedly
-        for (auto _ : state) {
-            volatile BigData_Classic_More_Improved_Implementation::BigData<int> data{ Max, 123 };
-            // Make sure the variable is not optimized away by compiler
-            benchmark::DoNotOptimize(data);
-        }
-    }
-    // Register the function as a benchmark
-    BENCHMARK(BigDataImprovedInt);
-
-    static void BigDataImprovedString(benchmark::State& state) {
-        // Code inside this loop is measured repeatedly
-        for (auto _ : state) {
-            volatile BigData_Classic_More_Improved_Implementation::BigData<std::string> data{ Max, std::string{ "C++ Memory Management" } };
-            // Make sure the variable is not optimized away by compiler
-            benchmark::DoNotOptimize(data);
-        }
-    }
-    // Register the function as a benchmark
-    BENCHMARK(BigDataImprovedString);
-
-    static void BigDataImprovedPerson(benchmark::State& state) {
-        // Code inside this loop is measured repeatedly
-        for (auto _ : state) {
-            volatile BigData_Classic_More_Improved_Implementation::BigData<Person> data{ Max, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
-            // Make sure the variable is not optimized away by compiler
-            benchmark::DoNotOptimize(data);
-        }
-    }
-    // Register the function as a benchmark
-    BENCHMARK(BigDataImprovedPerson);
-
-#endif
-
-    // To-Copy End
-    // ======================================================================
 }
 
 void memory_management_placement_new()

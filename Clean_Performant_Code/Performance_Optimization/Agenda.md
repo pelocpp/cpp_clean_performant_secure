@@ -15,6 +15,7 @@
   * *Call*-*by*-*Value* versus *Call*-*by*-*Reference* bei elementaren Datentypen
   * *Call*-*by*-*Value* versus *Call*-*by*-*Reference* bei nicht-elementaren Datentypen
   * *getter*-Methoden von Klassen: Rückgabetyp *By*-*Value* oder *By*-*Reference*
+  * Warum Schlüsselwort `const` verwenden?
   * Klassen (Strukturen) und die Ausrichtung der Daten: Je kleiner, desto besser 
   * Klasse `std::vector`: Bedeutung der `reserve`-Methode
   * Wozu Klasse `std::initializer_list` verwenden?

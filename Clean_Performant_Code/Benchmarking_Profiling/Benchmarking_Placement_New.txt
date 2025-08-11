@@ -5,7 +5,7 @@
 // Status: Working!
 // ===========================================================================
 
-constexpr std::size_t Max = 10;
+constexpr std::size_t Size = 10;
 
 class Person
 {
@@ -50,7 +50,7 @@ namespace BigData_Classic_Implementation
 
 static void BigDataClassicInt(benchmark::State& state) {
     for (auto _ : state) {
-        BigData_Classic_Implementation::BigData<int> data{ Max, 123 };
+        BigData_Classic_Implementation::BigData<int> data{ Size, 123 };
         benchmark::DoNotOptimize(data);
     }
 }
@@ -58,7 +58,7 @@ BENCHMARK(BigDataClassicInt);
 
 static void BigDataClassicString(benchmark::State& state) {
     for (auto _ : state) {
-        BigData_Classic_Implementation::BigData<std::string> data{ Max, std::string{ "C++ Memory Management" } };
+        BigData_Classic_Implementation::BigData<std::string> data{ Size, std::string{ "C++ Memory Management" } };
         benchmark::DoNotOptimize(data);
     }
 }
@@ -66,7 +66,7 @@ BENCHMARK(BigDataClassicString);
 
 static void BigDataClassicPerson(benchmark::State& state) {
     for (auto _ : state) {
-        BigData_Classic_Implementation::BigData<Person> data{ Max, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
+        BigData_Classic_Implementation::BigData<Person> data{ Size, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
         benchmark::DoNotOptimize(data);
     }
 }
@@ -104,7 +104,7 @@ namespace BigData_Classic_More_Improved_Implementation
 
 static void BigDataImprovedInt(benchmark::State& state) {
     for (auto _ : state) {
-        BigData_Classic_More_Improved_Implementation::BigData<int> data{ Max, 123 };
+        BigData_Classic_More_Improved_Implementation::BigData<int> data{ Size, 123 };
         benchmark::DoNotOptimize(data);
     }
 }
@@ -112,7 +112,7 @@ BENCHMARK(BigDataImprovedInt);
 
 static void BigDataImprovedString(benchmark::State& state) {
     for (auto _ : state) {
-        BigData_Classic_More_Improved_Implementation::BigData<std::string> data{ Max, std::string{ "C++ Memory Management" } };
+        BigData_Classic_More_Improved_Implementation::BigData<std::string> data{ Size, std::string{ "C++ Memory Management" } };
         benchmark::DoNotOptimize(data);
     }
 }
@@ -120,7 +120,7 @@ BENCHMARK(BigDataImprovedString);
 
 static void BigDataImprovedPerson(benchmark::State& state) {
     for (auto _ : state) {
-        BigData_Classic_More_Improved_Implementation::BigData<Person> data{ Max, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
+        BigData_Classic_More_Improved_Implementation::BigData<Person> data{ Size, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
         benchmark::DoNotOptimize(data);
     }
 }

@@ -102,7 +102,7 @@ zurückgreifen.
 
 Auch wenn es auch der Definition der Schnittstelle von `std:malloc` nicht ersichtlich ist:
 `std:malloc` liefert einen Zeiger auf das niedrigste (erste) Byte eines zugewiesenen Speicherblocks zurück,
-der für jeden Skalartyp geeignet ausgerichtet (*Alignment*) ist &ndash; mindestens so streng wie `std::max_align_t`.
+der für jeden Skalartyp geeignet ausgerichtet ist &ndash; mindestens so streng wie das Alignment `std::max_align_t`.
 
 *Beispiel* 2:
 
@@ -172,7 +172,7 @@ Hierzu folgen nun zwei weitere Beispiele, wir wechseln von der Klasse `Integer` 
 19: }
 ```
 
-*Beispiel* 3:
+*Beispiel* 4:
 
 ```cpp
 01: void test() {

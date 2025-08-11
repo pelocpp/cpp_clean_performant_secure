@@ -75,7 +75,7 @@ Diff b <=> c: 32
 Diff c <=> d: 32
 ```
 
-Im Release-Modus haben die Variablen den erwarteten Abstand von 8 Bytes.
+Im Release-Modus haben die Variablen den erwarteten Abstand von 4 Bytes.
 Dies lässt sich nicht ohne Weiteres durch die Ausgaben bestätigen, da der Compiler/Optimizer
 offensichtlich an der Reihenfolge der Variablen bzgl. ihrer Ablage im Speicher Änderungen vornimmt.
 Damit werden die Ausgaben sinnlos,

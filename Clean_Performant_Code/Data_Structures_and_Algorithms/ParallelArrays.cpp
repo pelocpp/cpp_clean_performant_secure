@@ -21,7 +21,7 @@ namespace DataStructuresAndAlgorithms {
         template <size_t Length>
         class Object {
         private:
-            std::array<char, Length> m_data{};
+            char m_data[Length]{};
             int m_score{ std::rand() };
         public:
             Object() = default;
@@ -195,10 +195,10 @@ namespace DataStructuresAndAlgorithms {
         };
 
         struct User {
-            std::string m_name;
-            std::unique_ptr<AuthInfo> auth_info_;
-            short m_level{};
-            bool m_isPlaying{};
+            std::string               m_name;
+            std::unique_ptr<AuthInfo> m_authInfo;
+            short                     m_level{};
+            bool                      m_isPlaying{};
         };
 
         // =============================================
