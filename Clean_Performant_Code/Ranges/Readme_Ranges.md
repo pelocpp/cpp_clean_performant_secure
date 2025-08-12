@@ -23,7 +23,7 @@
   * [`std::map`: Views für Schlüssel und Werte von Assoziativ-Containern](#link15)
   * [`std::views::common`](#link16)
   * [Das Trio `std::all_of`, `std::any_of` und `std::none_of`](#link17)
-  * [Zwei Beispiele zum Abschluss: `std::variant` und `std::variant`](#link18)
+    * [Zwei Beispiele zum Abschluss: `std::variant` und `std::unordered_map`](#link18)
   * [Literatur](#link19)
 
 ---
@@ -274,14 +274,15 @@ range | std::ranges::views::operation(arguments...)
 ```cpp
 01: std::vector<int> numbers = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 02: 
-03: auto result = numbers | std::views::filter([](auto n) { return n % 2 == 0; })
-04:     | std::views::transform([](auto n) { return n * n; })
-05:     | std::views::take(4)
-06:     | std::views::reverse;
-07: 
-08: for (auto n : result) {
-09:     std::print("{} ", n);
-10: }
+03: auto result = numbers 
+04:     | std::views::filter([](auto n) { return n % 2 == 0; })
+05:     | std::views::transform([](auto n) { return n * n; })
+06:     | std::views::take(4)
+07:     | std::views::reverse;
+08: 
+09: for (auto n : result) {
+10:     std::print("{} ", n);
+11: }
 ```
 
 ---
@@ -315,7 +316,7 @@ range | std::ranges::views::operation(arguments...)
 
 ## *Eager Evaluation* (*Gierige* Auswertung) <a name="link9"></a>
 
-  * Ab C++ 23 gibt es mit `std::ranges::to` ein einfache `Möglichkeit`,
+  * Ab C++ 23 gibt es mit `std::ranges::to` eine einfache Möglichkeit,
   dass eine View *gierig* ausgewertet wird und das Ergebnis in einem Container gespeichert wird.
 
   * `std::ranges::to` ist ein Klassentemplate, der Elementtyp kann infolgedessen weggelassen werden
@@ -512,7 +513,7 @@ sort( R&& r, Comp comp = {}, Proj proj = {} );
     * `-1` als Ende einer Liste mit nicht-negativen Ganzzahlen
     * `\n` als Ende einer Zeile
 
-  * Im Gegensatz zum traditionellen iteratorenbasierten STL-Ansatz,
+  * Im Gegensatz zum traditionellen, iteratorenbasierten STL-Ansatz,
   bei dem Anfang und Ende einer Sequenz (STL-Container) durch Iteratoren desselben Typs gekennzeichnet sind,
   können der Typ des Sentinels und der des Anfangsiterators unterschiedlich sein.
 
@@ -598,13 +599,23 @@ sort( R&& r, Comp comp = {}, Proj proj = {} );
 *Beispiel*:
 
 ```cpp
-01: const char* str = "Hello, World!";
-02: 
-03: std::ranges::for_each(
-04:     str,
-05:     TerminatingZero{},
-06:     [] (char c) { std::print("{} ", c); }
-07: );
+01: struct TerminatingZero
+02: {
+03:     bool operator== (std::input_iterator auto iter) const {
+04:         return *iter == '\0';
+05:     }
+06: };
+07: 
+08: void test()
+09: {
+10:     const char* str = "Hello, World!";
+11: 
+12:     std::ranges::for_each(
+13:         str,
+14:         TerminatingZero{},
+15:         [] (char c) { std::print("{} ", c); }
+16:     );
+17: }
 ```
 
 
@@ -826,7 +837,7 @@ all_of:  true
 
 ---
 
-## Zwei Beispiele zum Abschluss: `std::variant` und `std::variant` <a name="link18"></a>
+## Zwei Beispiele zum Abschluss: `std::variant` und `std::unordered_map` <a name="link18"></a>
 
 Wir beenden unsere *Ranges*-Betrachtungen mit zwei Beispielen:
 
@@ -844,7 +855,7 @@ Wir beenden unsere *Ranges*-Betrachtungen mit zwei Beispielen:
 03: auto stringValues = mixedData 
 04:     | std::views::filter([](const auto& var) { return std::holds_alternative<std::string>(var); }
 05: );
-06:         
+06: 
 07: for (const auto& str : stringValues) {
 08:     std::cout << std::get<std::string>(str) << " ";
 09: }
@@ -858,7 +869,7 @@ three five six
 
 #### Beispiel mit der Klasse `std::unordered_map`
 
-  * Das Transformieren von Elementen eines Bereichs erfordert nicht unbedint, dass der resultierende Bereich Elemente desselben Typs enthält..
+  * Das Transformieren von Elementen eines Bereichs erfordert nicht unbedingt, dass der resultierende Bereich Elemente desselben Typs enthält.
   * Man kann Elemente Elementen eines anderen Typs zuordnen.
 
 *Beispiel*:
@@ -875,8 +886,8 @@ three five six
 09: };
 10:         
 11: auto result = numbers
-12:     | std::views::filter([](const auto& n) { return n <= 5; })
-13:     | std::views::transform([&](const auto& n) { return map[n]; });
+12:     | std::views::filter([](auto n) { return n <= 5; })
+13:     | std::views::transform([&](auto n) { return map[n]; });
 14:         
 15: for (const auto& str : result) {
 16:     std::cout << str << " ";

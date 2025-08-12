@@ -139,7 +139,8 @@ namespace Ranges {
     {
         std::vector<int> numbers = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-        auto result = numbers | std::views::filter([](auto n) { return n % 2 == 0; })
+        auto result = numbers 
+            | std::views::filter([](auto n) { return n % 2 == 0; })
             | std::views::transform([](auto n) { return n * n; })
             | std::views::take(4)
             | std::views::reverse;
@@ -636,6 +637,14 @@ namespace Ranges {
         }
     }
 
+    static void ranges_keys_view_and_values_view()
+    {
+        ranges_keys_view_and_values_view_01();
+        ranges_keys_view_and_values_view_02();
+        ranges_keys_view_and_values_view_03();
+        ranges_keys_view_and_values_view_04();
+    }
+
     // =======================================================================
     // std::ranges::common_view
 
@@ -704,8 +713,8 @@ namespace Ranges {
         };
         
         auto result = numbers
-            | std::views::filter([](const auto& n) { return n <= 5; })
-            | std::views::transform([&](const auto& n) { return map[n]; });
+            | std::views::filter([](auto n) { return n <= 5; })
+            | std::views::transform([&](auto n) { return map[n]; });
         
         for (const auto& str : result) {
             std::cout << str << " ";
@@ -719,22 +728,22 @@ void ranges_clean_code_examples()
 {
     using namespace Ranges;
 
-    //comparison_iterators_vs_ranges();
-    //ranges_example_concepts();
-    //ranges_views();
-    //ranges_range_adaptors();
-    //ranges_composition_of_views();
-    //ranges_lazy_evaluation();
-    //ranges_eager_evaluation();
-    //ranges_bounded_vs_unbounded_range();
-    //ranges_lazy_primes();
-    //ranges_projections();
-    //ranges_sentinels();
-    //ranges_dangling_iterators();
-    //ranges_keys_view_and_values_view();
-    //ranges_common_view();
-    //ranges_all_of_any_of_none_of();
-    //ranges_example_variant();
+    comparison_iterators_vs_ranges();
+    ranges_example_concepts();
+    ranges_views();
+    ranges_range_adaptors();
+    ranges_composition_of_views();
+    ranges_lazy_evaluation();
+    ranges_eager_evaluation();
+    ranges_bounded_vs_unbounded_range();
+    ranges_lazy_primes();
+    ranges_projections();
+    ranges_sentinels();
+    ranges_dangling_iterators();
+    ranges_keys_view_and_values_view();
+    ranges_common_view();
+    ranges_all_of_any_of_none_of();
+    ranges_example_variant();
     ranges_example_unordered_map();
 }
 
