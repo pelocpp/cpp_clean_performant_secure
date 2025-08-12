@@ -17,8 +17,8 @@ int main()
     //memory_management_stack();
     //memory_management_heap();
     //memory_management_alignment_padding();
-    //memory_management_placement_new();
-    memory_management_low_level_stl_functions();
+    memory_management_placement_new();
+    //memory_management_low_level_stl_functions();
     
     return 0;
 }

@@ -19,6 +19,9 @@ static void test_custom_allocator_01()
     // use 'placement new' operator to construct a 'Person' object in place
     ::new (memory) Person{};
 
+    // or using std::construct_at
+    // std::construct_at(memory, Person{ "Hans", "Mueller", 30 });
+
     // destroy 'Person' instance
     std::destroy_at(memory);
 
@@ -35,6 +38,8 @@ static void test_custom_allocator_02()
     std::vector<int, CustomAllocator<int>> vec(alloc);
 
     // std::vector<int, CustomAllocator<int>> vec;  // works too
+
+    // vec.reserve(3);  // remove comment, see output
 
     vec.push_back(1);
     vec.push_back(2);

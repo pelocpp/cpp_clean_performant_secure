@@ -15,7 +15,7 @@ namespace Placement_New {
     // =======================================================================
     // Placement New
 
-    unsigned char alignas (std::max_align_t) g_memory[sizeof(Person)];
+    unsigned char alignas (Person) g_memory[sizeof(Person)];
 
     static void test_placement_new_01() {
 
@@ -73,7 +73,7 @@ namespace Placement_New_Example {
     constexpr std::size_t NumIterations = 300;
 #endif
 
-    static void test_placement_new_example_00()
+    static void test_placement_new_example_01()
     {
         // remove comments from class Person
 
@@ -128,26 +128,37 @@ namespace Placement_New_Example {
         };
     }
 
-    static void test_placement_new_example_01()
+    static void test_placement_new_example_02()
     {
+        using namespace BigData_Classic_Implementation;
+
+        // watch interactions with class 'Person'
+        Person hans{ "Hans", "Mueller", 30 };
+        BigData<Person> persons(5, hans);
+    }
+
+    static void test_placement_new_example_03()
+    {
+        using namespace BigData_Classic_Implementation;
+
         {
             ScopedTimer watch;
             for (size_t i{}; i != NumIterations; ++i) {
-                volatile BigData_Classic_Implementation::BigData<int> data{ Size, 123 };
+                volatile BigData<int> data{ Size, 123 };
             }
         }
 
         {
             ScopedTimer watch;
             for (size_t i{}; i != NumIterations; ++i) {
-                volatile BigData_Classic_Implementation::BigData<std::string> data{ Size, std::string{ "C++ Memory Management" } };
+                volatile BigData<std::string> data{ Size, std::string{ "C++ Memory Management" } };
             }
         }
 
         {
             ScopedTimer watch;
             for (size_t i{}; i != NumIterations; ++i) {
-                volatile BigData_Classic_Implementation::BigData<Person> data{ Size, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
+                volatile BigData<Person> data{ Size, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
             }
         }
         std::println();
@@ -196,26 +207,28 @@ namespace Placement_New_Example {
         };
     }
 
-    static void test_placement_new_example_02()
+    static void test_placement_new_example_04()
     {
+        using namespace BigData_Classic_Improved_Implementation;
+
         {
             ScopedTimer watch;
             for (size_t i{}; i != NumIterations; ++i) {
-                volatile BigData_Classic_Improved_Implementation::BigData<int> data{ Size, 123 };
+                volatile BigData<int> data{ Size, 123 };
             }
         }
 
         {
             ScopedTimer watch;
             for (size_t i{}; i != NumIterations; ++i) {
-                volatile BigData_Classic_Improved_Implementation::BigData<std::string> data{ Size, "C++ Memory Management" };
+                volatile BigData<std::string> data{ Size, "C++ Memory Management" };
             }
         }
 
         {
             ScopedTimer watch;
             for (size_t i{}; i != NumIterations; ++i) {
-                volatile BigData_Classic_Implementation::BigData<Person> data{ Size, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
+                volatile BigData<Person> data{ Size, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
             }
         }
         std::println();
@@ -256,26 +269,28 @@ namespace Placement_New_Example {
         };
     }
 
-    static void test_placement_new_example_03()
+    static void test_placement_new_example_05()
     {
+        using namespace BigData_Classic_More_Improved_Implementation;
+
         {
             ScopedTimer watch;
             for (size_t i{}; i != NumIterations; ++i) {
-                volatile BigData_Classic_Improved_Implementation::BigData<int> data{ Size, 123 };
+                volatile BigData<int> data{ Size, 123 };
             }
         }
 
         {
             ScopedTimer watch;
             for (size_t i{}; i != NumIterations; ++i) {
-                volatile BigData_Classic_Improved_Implementation::BigData<std::string> data{ Size, "C++ Memory Management" };
+                volatile BigData<std::string> data{ Size, "C++ Memory Management" };
             }
         }
 
         {
             ScopedTimer watch;
             for (size_t i{}; i != NumIterations; ++i) {
-                volatile BigData_Classic_Implementation::BigData<Person> data{ Size, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
+                volatile BigData<Person> data{ Size, Person{ "AAAAAAAAAAAAAAAAAAAA", "BBBBBBBBBBBBBBBBBBBB", static_cast<size_t>(30) } };
             }
         }
         std::println();
@@ -293,10 +308,11 @@ void memory_management_placement_new()
     Placement_New::test_placement_new_04();
     std::println();
 
-    Placement_New_Example::test_placement_new_example_00();
     Placement_New_Example::test_placement_new_example_01();
     Placement_New_Example::test_placement_new_example_02();
     Placement_New_Example::test_placement_new_example_03();
+    Placement_New_Example::test_placement_new_example_04();
+    Placement_New_Example::test_placement_new_example_05();
 }
 
 // ===========================================================================

@@ -177,10 +177,11 @@ Der Konstruktor reserviert zunächst auf der Halde dynamisch Speicher für `size` 
 Das bedeutet insbesondere, dass `size` Mal der Standardkonstruktor des Typs `T` ausgeführt wird.
 
 Nun gibt es aber einen Vorbelegungswert `init`, mit dem alle Objekte im Speicherbereich `m_elems` vorbelegt werden sollen.
-Es kommt also noch zusätzlich `size` Mal der Kopierkonstruktor der Klasse `T` mit `init` als Vorlage zur Ausführung.
+Es kommt also noch zusätzlich `size` Mal der Wertzuweisungsoperator `operator=`
+der Klasse `T` mit `init` als rechter Seite zur Ausführung.
 
 Im Prinzip belegen wir den Speicherbereich `m_elems` zweimal vor:
-Zum Ersten mit dem Standardkonstruktor des Typs `T` und zum Zweiten mit seinem Kopierkonstruktor.
+Zum Ersten mit dem Standardkonstruktor des Typs `T` und zum Zweiten mit seinem Wertzuweisungsoperator.
 Wie könnte man dies vermeiden?
 
 #### Zweiter Ansatz

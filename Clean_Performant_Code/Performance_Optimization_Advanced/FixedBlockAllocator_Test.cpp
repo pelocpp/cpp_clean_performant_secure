@@ -78,11 +78,11 @@ namespace FixedBlockAllocatorTest {
 class MemoryManagerTester
 {
 private:
-    size_t m_contents;
+    size_t m_content;
 
 public:
-    MemoryManagerTester(size_t contents) 
-        : m_contents{ contents } 
+    MemoryManagerTester(size_t content) 
+        : m_content{ content } 
     {}
 
     static void* operator new(size_t s)
@@ -98,7 +98,6 @@ public:
 
 static void test_fixed_block_allocator_10()
 {
-    const size_t MaxIterations = 1000;
     {
         {
             std::println("MemoryManagerTester: class specific new");

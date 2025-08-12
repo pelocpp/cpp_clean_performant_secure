@@ -46,7 +46,7 @@ public:
     void construct(U* p, TArgs&&... args)
     {
         std::println("Constructing element");
-        new(p) U(std::forward<TArgs>(args)...);
+        new(p) U{ std::forward<TArgs>(args)... };
     }
 
     template<typename U>
