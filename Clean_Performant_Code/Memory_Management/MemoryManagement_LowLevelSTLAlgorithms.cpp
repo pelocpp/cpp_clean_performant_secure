@@ -176,6 +176,8 @@ namespace LowLevel_MemoryFunctions_Functions {
 
         void static test_class_integer_standard_copy() {
 
+            std::println("std::copy: int => Integer");
+
             std::array<int, Size> numbers{};
             std::iota(numbers.begin(), numbers.end(), 1);
 
@@ -202,6 +204,8 @@ namespace LowLevel_MemoryFunctions_Functions {
         }
 
         void static test_class_integer_uninitialized_copy() {
+
+            std::println("std::uninitialized_copy: int => Integer");
 
             std::array<int, Size> numbers{};
             std::iota(numbers.begin(), numbers.end(), 1);
@@ -239,6 +243,8 @@ namespace LowLevel_MemoryFunctions_Functions {
 
         void static test_class_std_string_standard_copy() {
 
+            std::println("std::copy: std::string => std::string");
+
             const size_t Size = 6;
             std::array<std::string, Size> strings{ "This", "is", "an", "array", "of", "strings" };
 
@@ -265,6 +271,8 @@ namespace LowLevel_MemoryFunctions_Functions {
         }
 
         void static test_class_std_string_uninitialized_copy() {
+
+            std::println("std::uninitialized_copy: std::string => std::string");
 
             const size_t Size = 6;
 

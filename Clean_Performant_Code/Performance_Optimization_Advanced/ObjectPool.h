@@ -97,15 +97,17 @@ inline std::shared_ptr<T> ObjectPool<T, TAllocator>::acquireObject(TArgs&& ... a
     // get a free object
     T* object{ m_freeObjects.back() };
 
-    // Initialize, i.e. construct, an instance of T in an
+    // initialize, i.e. construct, an instance of T in an
     // uninitialized block of memory using placement new, and
     // perfectly forward any provided arguments to the constructor.
     ::new(object) T{ std::forward<TArgs>(args)... };
+    // or
+    // std::construct_at(object, std::forward<TArgs>(args) ...);
 
-    // Launder the object pointer.
+    // launder the object pointer
     T* constructedObject{ std::launder(object) };
 
-    // Remove the object from the list of free objects.
+    // remove the object from the list of free objects
     m_freeObjects.pop_back();
 
     // wrap the constructed object and return it
@@ -123,9 +125,9 @@ inline void ObjectPool<T, TAllocator>::addChunk()
 {
     std::println("allocating new chunk ...");
 
-    // Allocate a new chunk of uninitialized memory big enough to hold
+    // allocate a new chunk of uninitialized memory big enough to hold
     // m_newChunkSize instances of T, and add the chunk to the pool.
-    // Care is taken that everything is cleaned up in the event of an exception.
+    // (care is taken that everything is cleaned up in the event of an exception)
     m_pool.push_back(nullptr);
     try {
         m_pool.back() = m_allocator.allocate(m_currentChunkSize);

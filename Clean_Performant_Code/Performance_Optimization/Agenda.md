@@ -77,7 +77,16 @@
   * Visual Studio Diagnostic Tools
   * Visual Studio Analysis Tools (CPU Usage, Memory Usage und weitere)
 
- 
+
+## Coroutines
+
+  * Erste Schritte
+  * `struct promise_type`,  `std::coroutine_handle<promise_type>`
+  * `co_await`
+  * `co_yield ` und  `co_return`
+  * *Awaitable* und *Awaiters*
+  
+
 ## Compile-Time Programming
 
   * Metaprogramming

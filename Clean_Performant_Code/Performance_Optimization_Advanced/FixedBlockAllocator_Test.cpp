@@ -10,11 +10,9 @@
 #include <list>
 #include <print>
 
-//static const size_t ArenaSize = 200;
-static const size_t ArenaSize = 8'000;    // needed for new / delete examples
+static const size_t ArenaSize = 200;
 static alignas(std::max_align_t) char arena[ArenaSize]{};
-
-FixedBlockMemoryManager<FixedArenaController> memoryManager{ arena };
+static FixedBlockMemoryManager<FixedArenaController> memoryManager{ arena };
 
 namespace FixedBlockAllocatorTest {
 

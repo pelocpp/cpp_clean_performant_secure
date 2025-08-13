@@ -93,7 +93,7 @@ namespace ObjectPool_AdvancedTest {
         // Process the object. (not shown)
     }
 
-    static void test_object_pool_02()
+    static void test_object_pool_01()
     {
         const size_t NumberOfIterations{ 10'000 };
 
@@ -119,12 +119,56 @@ namespace ObjectPool_AdvancedTest {
             }
         }
     }
+
+    static void test_object_pool_02()
+    {
+        const size_t NumberOfIterations{ 1'000 };
+
+        MyPool pool;
+
+        std::println("Starting loop using pool...");
+
+        {
+            std::println("Using pool...");
+
+            ScopedTimer watch{};
+
+            std::vector<std::shared_ptr<ExpensiveObject>> listObjectsPool;
+
+            for (size_t i{ 0 }; i < NumberOfIterations; ++i) {
+                auto object{ getExpensiveObject(pool) };
+                processExpensiveObject(*object.get());
+                listObjectsPool.push_back(object);
+            }
+
+            std::println("Done");
+        }
+
+        std::vector<std::unique_ptr<ExpensiveObject>> listObjectsUnique;
+
+        std::println("Starting loop using new/delete...");
+        {
+            std::println("Using std::make_unique...");
+
+            ScopedTimer watch{};
+
+            for (size_t i{ 0 }; i < NumberOfIterations; ++i) {
+                auto object{ std::make_unique<ExpensiveObject>() };
+                processExpensiveObject(*object);
+                listObjectsUnique.push_back(std::move(object));
+            }
+
+            std::println("Done");
+        }
+    }
 }
 
 void test_object_pool()
 {
     ObjectPool_SimpleTest::test_object_pool_01();
     ObjectPool_SimpleTest::test_object_pool_02();
+
+    ObjectPool_AdvancedTest::test_object_pool_01();
     ObjectPool_AdvancedTest::test_object_pool_02();
 }
 

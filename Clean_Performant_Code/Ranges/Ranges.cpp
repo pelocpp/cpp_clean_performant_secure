@@ -104,6 +104,35 @@ namespace Ranges {
         }
     }
 
+    static void ranges_range_adaptors_classic()
+    {
+        std::vector<int> numbers = { 1, 2, 3, 4, 5, 6 };
+
+        std::vector<int> filteringResults;
+
+        std::copy_if(
+            numbers.begin(),
+            numbers.end(),
+            std::back_inserter(filteringResults),
+            [](auto n) {
+                return n % 2 == 0;
+            }
+        );
+
+        std::vector<int> result;
+
+        std::transform(
+            filteringResults.begin(),
+            filteringResults.end(),
+            std::back_inserter(result),
+            [](auto n) { return n * 2; }
+        );
+
+        for (auto n : result) {
+            std::print("{} ", n);
+        }
+    }
+
     // =======================================================================
     // Function Composition, Pipelines
 
@@ -139,7 +168,7 @@ namespace Ranges {
     {
         std::vector<int> numbers = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-        auto result = numbers 
+        auto result = numbers
             | std::views::filter([](auto n) { return n % 2 == 0; })
             | std::views::transform([](auto n) { return n * n; })
             | std::views::take(4)
@@ -189,7 +218,7 @@ namespace Ranges {
         std::string str{ "hello world" };
 
         auto upper = str
-            | std::views::transform([] (char c) { return std::toupper(c); }) 
+            | std::views::transform([](char c) { return std::toupper(c); })
             | std::ranges::to<std::string>();
 
         std::print("Result: {} ", upper);
@@ -315,7 +344,9 @@ namespace Ranges {
         }
         std::println();
     }
+}
 
+namespace Ranges {
     struct Person
     {
         std::string m_name{};
@@ -494,7 +525,6 @@ namespace Ranges {
         ranges_sentinels_04();
     }
 
-
     // =======================================================================
     // Dangling Iterators
 
@@ -513,7 +543,7 @@ namespace Ranges {
 
     static void ranges_dangling_iterators_02()
     {
-        const auto& values = getData();               // declare const lvalue reference
+        const auto& values = getData();         // declare const lvalue reference
 
         auto value{ 3 };
 
@@ -532,7 +562,6 @@ namespace Ranges {
         ranges_dangling_iterators_01();
         ranges_dangling_iterators_02();
     }
-
 
     // =======================================================================
     // Keys View and Values View
@@ -663,7 +692,6 @@ namespace Ranges {
         std::print("Sum: {} ", sum);
     }
 
-
     // =======================================================================
     // all_of, any_of, none_of
 
@@ -732,6 +760,7 @@ void ranges_clean_code_examples()
     ranges_example_concepts();
     ranges_views();
     ranges_range_adaptors();
+    ranges_range_adaptors_classic();
     ranges_composition_of_views();
     ranges_lazy_evaluation();
     ranges_eager_evaluation();

@@ -22,7 +22,7 @@ public:
 #endif
     }
 
-    Person(std::string first, std::string last, size_t age)
+    Person(const std::string& first, const std::string& last, size_t age)
         : m_first{ first }, m_last{ last }, m_age{ age }
     {
 #if defined (Verbose)
@@ -88,8 +88,8 @@ public:
     }
 
     // getter
-    std::string getFirstname() const { return m_first; }
-    std::string getLastname() const { return m_last; }
+    const std::string& getFirstname() const { return m_first; }
+    const std::string& getLastname() const { return m_last; }
     std::size_t getAge() const { return m_age; }
 };
 
