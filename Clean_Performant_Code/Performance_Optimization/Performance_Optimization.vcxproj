@@ -133,6 +133,7 @@
     <None Include="Agenda.md" />
     <None Include="Literature.md" />
     <None Include="Readme_Performance_Optimization.md" />
+    <None Include="Roadmap.md" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Buch_Andrist_Sehr_High_Performance_Cpp.png" />

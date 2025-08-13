@@ -29,6 +29,9 @@
     <None Include="Agenda.md">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Roadmap.md">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Buch_Andrist_Sehr_High_Performance_Cpp.png">
