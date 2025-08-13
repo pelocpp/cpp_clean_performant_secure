@@ -70,7 +70,7 @@
     * Module als Rettung
     * Unter der Haube
 
-## Funktionale Programmierung
+## Funktionale Programmierung: Die `std::ranges` Bibliothek
 
   * Was ist funktionale Programmierung?
   * Funktionale Programmierung in modernem C++

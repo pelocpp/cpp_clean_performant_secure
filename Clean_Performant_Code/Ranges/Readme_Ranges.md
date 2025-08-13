@@ -18,14 +18,14 @@
   * [*Lazy Evaluation* (*Lazy* Auswertung)](#link8)
   * [*Eager Evaluation* (*Gierige* Auswertung)](#link9)
   * [Begrenzte vs. unbegrenzte (unendliche) Ranges](#link10)
-  * [*Lazy* Auswertung, Beispiel für Primzahlen](#link11)
+  * [*Lazy* Auswertung: Beispiel für Primzahlen](#link11)
   * [Projektionen (*Projections*)](#link12)
   * [Sentinels](#link13)
   * [*Dangling Iterators* / *Borrowed Iterators* ](#link14)
   * [`std::map`: Views für Schlüssel und Werte von Assoziativ-Containern](#link15)
   * [`std::views::common`](#link16)
   * [Das Trio `std::all_of`, `std::any_of` und `std::none_of`](#link17)
-    * [Zwei Beispiele zum Abschluss: `std::variant` und `std::unordered_map`](#link18)
+  * [Zwei Beispiele zum Abschluss: `std::variant` und `std::unordered_map`](#link18)
   * [Literatur](#link19)
 
 ---
@@ -390,7 +390,7 @@ range | std::ranges::views::operation(arguments...)
 
 ---
 
-## *Lazy* Auswertung, Beispiel für Primzahlen <a name="link11"></a>
+## *Lazy* Auswertung: Beispiel für Primzahlen <a name="link11"></a>
 
 Wir betrachten ein Beispiel zur Berechnung von Primzahlen:
 

@@ -84,24 +84,26 @@
   * `constexpr`
 
 
+## Funktionale Programmierung: Die Bibliothek `std::ranges`
+
+  * Was ist ein *Range*
+  * *Ranges* versus traditionelle Iteratoren im Vergleich
+  * *Views* (Ansichten)
+  * *Range Adaptors* (Bereichsadapter)
+  * *Function Composition, Pipelines* (Komposition von Funktionen)
+  * *Lazy Evaluation* (*Lazy* Auswertung) / Eager Evaluation* (*Gierige* Auswertung)
+  * Projektionen (*Projections*)
+  * Sentinels
+  * *Dangling Iterators* / *Borrowed Iterators*
+  * `std::views::common`
+
+
 ## Multithreading / Concurrency
 
   * Grundlagen des Multithreading
   * Verwenden von Threads und elementare Synchronisationsmechanismen
   * `std::async` und `std::future`
   * Parallelisierung von STL-Algorithmen (`std::execution::parallel_policy`)
-
-
-## Funktionale Programmierung: Die Bibliothek `std::ranges`
-
-  * Was ist funktionale Programmierung?
-  * Funktionale Programmierung in modernem C++
-    * Lambda-Ausdrücke
-    * Generische Lambda-Ausdrücke
-  * Funktionen höherer Ordnung
-    * *Map*, *Filter* und *Reduce*
-  * Pipelining mit Bereichs-Adaptern
-
 
 ---
 
