@@ -45,7 +45,7 @@ public:
     template <typename ... TArgs>
     std::shared_ptr<T> acquireObject(TArgs&&... args);
 
-public:
+private:
     // private helper methods
     void addChunk();
 

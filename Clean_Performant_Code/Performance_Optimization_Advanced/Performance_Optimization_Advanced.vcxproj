@@ -136,6 +136,7 @@
     <ClCompile Include="ObjectPool_ThreadSafe_Test.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="ObjectPool_Test.cpp" />
+    <ClCompile Include="StandardAllocator_Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CustomAllocator.h" />

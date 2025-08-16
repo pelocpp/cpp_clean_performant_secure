@@ -31,9 +31,7 @@ static_assert(std::atomic<GuardedIndex>::is_always_lock_free,
 template <typename DataType, bool Awaitable = false>
 class Pool
 {
-    //...
 private:
-
     //Get the cache line size (typically 64 bytes)
     static constexpr auto sMemberAlign = std::hardware_destructive_interference_size;
 
@@ -46,25 +44,26 @@ private:
     int* mFreeList = nullptr;
     int mCapacity = 0;
 
+public:
     template <typename AllocatorType>
-    void Allocate(AllocatorType& aAllocator, int aCapacity);
+    void allocate(AllocatorType& aAllocator, int aCapacity);
 
     template <typename AllocatorType>
-    void Free(AllocatorType& aAllocator);
+    void free(AllocatorType& aAllocator);
 
     template <typename... ArgumentTypes>
-    std::pair<bool, int> Emplace(ArgumentTypes&&... aArguments);
+    std::pair<bool, int> emplace(ArgumentTypes&&... aArguments);
 
     template <typename... ArgumentTypes>
     //  requires (Awaitable)
-    int Emplace_Await(ArgumentTypes&&... aArguments);
+    int emplaceAwait(ArgumentTypes&&... aArguments);
 
     DataType& operator[](int aIndex);
     const DataType& operator[](int aIndex) const;
 
-    void Erase(int aIndex);
+    void erase(int aIndex);
 
-    void Decrease_Size();
+    void decreaseSize();
 
     int size() const;
     bool empty() const;
@@ -73,19 +72,45 @@ private:
 
 template <typename DataType, bool Awaitable >
 template <typename AllocatorType>
-inline void Pool<DataType, Awaitable>::Allocate(AllocatorType& aAllocator, int aCapacity)
+inline void Pool<DataType, Awaitable>::allocate(AllocatorType& aAllocator, int aCapacity)
 {
+    DataType* ptr = nullptr;
+
     //Allocate the object memory
-    static constexpr auto sDataAlign = std::max(alignof(DataType),
-        sMemberAlign);
-    mStorage = aAllocator.Allocate(aCapacity * sizeof(DataType), sDataAlign);
+    // Original
+    // static constexpr auto sDataAlign = std::max(alignof(DataType), sMemberAlign);
+
+
+    static auto sDataAlign = std::max(alignof(DataType), sMemberAlign);
+
+
+
+    // Original
+    // mStorage = aAllocator.allocate(aCapacity * sizeof(DataType), sDataAlign);
+
+    // adpopted
+    auto size = aCapacity * sizeof(DataType);
+    // auto* memory = aAllocator.allocate(aCapacity * sizeof(DataType));  // Da ist das Alignmenet Thema offen // original
+    // 
+    auto* memory = aAllocator.allocate(size);
+    mStorage = static_cast<DataType>(memory);
+
+
+
+
     mCapacity = aCapacity;
 
-    //Allocate the free list memory
+    // allocate the free list memory
     static constexpr auto sListAlign = std::max(alignof(int), sMemberAlign);
-    auto cFreeListMemory = aAllocator.Allocate(aCapacity * sizeof(int),
-        sListAlign);
+
+    // Original
+    //auto cFreeListMemory = aAllocator.allocate(aCapacity * sizeof(int), sListAlign);
+    //mFreeList = reinterpret_cast<int*>(cFreeListMemory);
+
+    auto cFreeListMemory = aAllocator.allocate(aCapacity * sizeof(int));
     mFreeList = reinterpret_cast<int*>(cFreeListMemory);
+
+
 
     //Initialize free list  // ????????????????????
     //for (int ci = 0; ci < (aCapacity - 1); ++ci)
@@ -102,7 +127,7 @@ inline void Pool<DataType, Awaitable>::Allocate(AllocatorType& aAllocator, int a
 
 template <typename DataType, bool Awaitable >
 template <typename AllocatorType>
-inline void Pool<DataType, Awaitable>::Free(AllocatorType& aAllocator)
+inline void Pool<DataType, Awaitable>::free(AllocatorType& aAllocator)
 {
     Assert(empty(), "Objects not destroyed!\n");
 
@@ -129,7 +154,7 @@ inline bool Pool<DataType, Awaitable>::empty() const
 
 template <typename DataType, bool Awaitable>
 template <typename... ArgumentTypes>
-inline std::pair<bool, int> Pool<DataType, Awaitable>::Emplace(ArgumentTypes&&... aArguments)
+inline std::pair<bool, int> Pool<DataType, Awaitable>::emplace(ArgumentTypes&&... aArguments)
 {
     //Get initial value
     auto cHead = std::atomic_ref(mHeadNodeIndex);
@@ -184,7 +209,7 @@ inline const DataType& Pool<DataType, Awaitable>::operator[](int aIndex) const
 }
 
 template <typename DataType, bool Awaitable>
-inline void Pool<DataType, Awaitable>::Erase(int aIndex)
+inline void Pool<DataType, Awaitable>::erase(int aIndex)
 {
     //Destroy the object
     (*this)[aIndex].~DataType();
@@ -208,12 +233,12 @@ inline void Pool<DataType, Awaitable>::Erase(int aIndex)
         std::memory_order::release, std::memory_order::relaxed));
 
     //Decrease the size
-    Decrease_Size();
+    decreaseSize();
 }
 
 template <typename DataType, bool Awaitable>
 template <typename... ArgumentTypes>
-inline int Pool<DataType, Awaitable>::Emplace_Await(ArgumentTypes&&... aArguments)
+inline int Pool<DataType, Awaitable>::emplaceAwait(ArgumentTypes&&... aArguments)
   //requires (Awaitable)
 {
     while (true)
@@ -230,7 +255,7 @@ inline int Pool<DataType, Awaitable>::Emplace_Await(ArgumentTypes&&... aArgument
 }
 
 template <typename DataType, bool Awaitable>
-inline void Pool<DataType, Awaitable>::Decrease_Size()
+inline void Pool<DataType, Awaitable>::decreaseSize()
 {
     //Release if awaiting (Syncs indices), else relaxed (nothing to sync)
     static constexpr auto sOrder = Awaitable ? std::memory_order::release : std::memory_order::relaxed;

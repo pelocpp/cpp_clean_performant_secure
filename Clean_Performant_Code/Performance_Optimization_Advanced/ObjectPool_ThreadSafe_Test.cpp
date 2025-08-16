@@ -4,10 +4,50 @@
 // Status: Not yet prepared // To be Done
 // ===========================================================================
 
+// #include "../LoggerUtility/ScopedTimer.h"
+#include "../Person/Person.h"
+
 #include "ObjectPool_ThreadSafe.h"
 
-static void test_object_pool_thread_safe()
+#include <memory>
+#include <print>
+
+namespace ObjectPool_ThreadSafe_SimpleTest {
+
+    static void test_object_pool_thread_safe_01()
+    {
+        using PersonPool = Pool<Person>;
+
+        // default allocator for Persons
+        std::allocator<Person> alloc;
+
+        PersonPool pool;
+
+        pool.allocate(alloc, 20);
+
+
+
+        //template <typename AllocatorType>
+        //void allocate(AllocatorType & aAllocator, int aCapacity);
+
+
+
+
+
+        //auto person{ pool.allocate("Sepp", "Mueller", (size_t)30) };
+
+        //std::println("{} {} has age {}",
+        //    person->getFirstname(), person->getLastname(), person->getAge());
+
+        std::println("Done.");
+    }
+}
+
+void test_object_pool_thread_safe()
 {
+    using namespace ObjectPool_ThreadSafe_SimpleTest;
+
+    test_object_pool_thread_safe_01();
 }
 
 // ===========================================================================

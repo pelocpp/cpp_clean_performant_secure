@@ -19,11 +19,6 @@ namespace ObjectPool_SimpleTest {
 
         PersonPool pool{};
 
-        pool.addChunk();
-        pool.addChunk();
-
-        return;
-
         auto person{ pool.acquireObject("Sepp", "Mueller", (size_t) 30) };
 
         std::println("{} {} has age {}",
