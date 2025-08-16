@@ -133,6 +133,7 @@
     <ClCompile Include="FixedBlockMemoryManager_Test.cpp" />
     <ClCompile Include="Laundry.cpp" />
     <ClCompile Include="ObjectPool.cpp" />
+    <ClCompile Include="ObjectPool_ThreadSafe_Test.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="ObjectPool_Test.cpp" />
   </ItemGroup>
@@ -142,6 +143,7 @@
     <ClInclude Include="FixedBlockAllocator.h" />
     <ClInclude Include="FixedBlockMemoryManager.h" />
     <ClInclude Include="ObjectPool.h" />
+    <ClInclude Include="ObjectPool_ThreadSafe.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp_arena_01.svg" />
