@@ -8,7 +8,6 @@
 #include <print>
 
 // TBD: rename   allocate ==> initialize
-// TBD: rename  number of free blocks // Getter
 
 // #define Verbose
 
@@ -111,7 +110,6 @@ inline void FixedArenaController::dump() const {
     std::println("Dump of Arena: ");
     std::println("    Total Size:  {}", m_arenaSize);
     std::println("    Block Size:  {}", m_blockSize);
-    std::println("    Free Blocks: {}", "???");
 
     if (!empty()) {
 

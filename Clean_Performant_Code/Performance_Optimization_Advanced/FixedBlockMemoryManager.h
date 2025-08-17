@@ -28,6 +28,9 @@ public:
     void*  allocate(size_t);
     size_t blockSize() const;
     size_t capacity() const;
+
+    size_t available() const;
+
     void   clear();
     void   deallocate(void*);
     bool   empty() const;
@@ -61,19 +64,19 @@ inline void* FixedBlockMemoryManager<TArena>::allocate(size_t size) {
         if (empty())
             throw std::bad_alloc();
     }
-    if (size > m_blockSize)        // Hmmm, want to respect nodes of different size
+    if (size > m_blockSize)        // Want to respect nodes of different size
         throw std::bad_alloc();
 
-    auto p = m_freePtr;
+    auto ptr = m_freePtr;
     m_freePtr = m_freePtr->next;
-    return p;
+    return ptr;
 }
 
 template <typename TArena>
-inline void FixedBlockMemoryManager<TArena>::deallocate(void* p) {
-    if (p == nullptr)
+inline void FixedBlockMemoryManager<TArena>::deallocate(void* ptr) {
+    if (ptr == nullptr)
         return;
-    auto fp = reinterpret_cast<free_block*>(p);
+    auto fp = reinterpret_cast<free_block*>(ptr);
     fp->next = m_freePtr;
     m_freePtr = fp;
 }
@@ -81,6 +84,20 @@ inline void FixedBlockMemoryManager<TArena>::deallocate(void* p) {
 template <typename TArena>
 inline size_t FixedBlockMemoryManager<TArena>::capacity() const {
     return m_arena.capacity();
+}
+
+template <typename TArena>
+inline size_t FixedBlockMemoryManager<TArena>::available() const {
+
+    size_t avail{};
+    auto ptr{ reinterpret_cast<free_block*>(m_freePtr) };
+
+    while (ptr != 0) {
+
+        ++avail;
+        ptr = ptr->next;
+    }
+    return avail;
 }
 
 template <typename TArena>

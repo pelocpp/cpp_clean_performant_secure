@@ -92,8 +92,12 @@ inline void Pool<DataType, Awaitable>::allocate(AllocatorType& aAllocator, int a
     auto size = aCapacity * sizeof(DataType);
     // auto* memory = aAllocator.allocate(aCapacity * sizeof(DataType));  // Da ist das Alignmenet Thema offen // original
     // 
-    auto* memory = aAllocator.allocate(size);
-    mStorage = static_cast<DataType>(memory);
+    
+    
+    
+    // WEITER: Ist nicht übersetzungsfähig
+    //auto* memory = aAllocator.allocate(size);
+    //mStorage = static_cast<DataType>(memory);
 
 
 

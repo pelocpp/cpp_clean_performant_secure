@@ -62,6 +62,22 @@ namespace FixedBlockMemoryManagerTest {
 
     static void test_fixed_block_memory_manager_04()
     {
+        const int ArenaLength = 16;
+        static alignas(std::max_align_t) char arena[ArenaLength];
+
+        FixedBlockMemoryManager<FixedArenaController> memoryManager{ arena };
+
+        int* p1 = static_cast<int*> (memoryManager.allocate(sizeof(int)));
+        std::println("Available: {}", memoryManager.available());
+
+        int* p2 = static_cast<int*> (memoryManager.allocate(sizeof(int)));
+        std::println("Available: {}", memoryManager.available());
+
+        memoryManager.deallocate(p1);
+        std::println("Available: {}", memoryManager.available());
+
+        memoryManager.deallocate(p2);
+        std::println("Available: {}", memoryManager.available());
     }
 }
 
@@ -69,9 +85,9 @@ void test_block_memory_manager()
 {
     using namespace FixedBlockMemoryManagerTest;
 
-    //test_fixed_block_memory_manager_01();
-    //test_fixed_block_memory_manager_02();
-    //test_fixed_block_memory_manager_03();
+    test_fixed_block_memory_manager_01();
+    test_fixed_block_memory_manager_02();
+    test_fixed_block_memory_manager_03();
     test_fixed_block_memory_manager_04();
 }
 

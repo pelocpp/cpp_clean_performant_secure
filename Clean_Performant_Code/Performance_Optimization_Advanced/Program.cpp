@@ -17,14 +17,14 @@ extern void test_object_pool_thread_safe();
 
 int main()
 {
-    //test_laundry();
-    //test_custom_allocator();
-    //test_standard_allocator();
-    //test_fixed_arena_controller();
-    //test_block_memory_manager();
-    //test_fixed_block_allocator();
-    //test_fixed_block_allocator_new_delete();
-    //test_object_pool();
+    test_laundry();
+    test_custom_allocator();
+    test_standard_allocator();
+    test_fixed_arena_controller();
+    test_block_memory_manager();
+    test_fixed_block_allocator();
+    test_fixed_block_allocator_new_delete();
+    test_object_pool();
     test_object_pool_thread_safe();
 
     return 0;
