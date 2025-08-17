@@ -41,12 +41,12 @@ namespace Benchmarking_Lambda_vs_Std_Function {
 
     static void StdFunctionWithLambda()
     {
-        auto lambda = [](double input) {
-            auto total = input * 2.0 + 1.0;
-            return total;
+        std::function<double(double)> func{
+            [](double input) {
+                auto total = input * 2.0 + 1.0;
+                return total;
+            }
         };
-
-        std::function<double(double)> func{ lambda };
 
         std::println("StdFunctionWithLambda");
 

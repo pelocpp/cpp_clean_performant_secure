@@ -164,11 +164,16 @@ namespace LowLevel_MemoryFunctions_Functions {
         }
     }
 
-    // =======================================================================
+    // ======================================================================= 
     // Benchmark Functions
 
-    static constexpr size_t Size = 1000;
+#ifdef _DEBUG
+    static constexpr size_t Size = 1000;                  
+    static constexpr size_t Iterations = 100'000;    // debug
+#else
+    static constexpr size_t Size = 1000;                // release
     static constexpr size_t Iterations = 1'000'000;
+#endif
 
     namespace Benchmark_Example_Using_Class_Integer {
 
@@ -432,12 +437,12 @@ void memory_management_low_level_stl_functions()
 
     using namespace LowLevel_MemoryFunctions_Functions;
 
-    // introductionary examples / copy construction
-    Introductionary_Example_Using_Class_Integer::test_class_integer_standard_copy();
-    Introductionary_Example_Using_Class_Integer::test_class_integer_uninitialized_copy();
+    //// introductionary examples / copy construction
+    //Introductionary_Example_Using_Class_Integer::test_class_integer_standard_copy();
+    //Introductionary_Example_Using_Class_Integer::test_class_integer_uninitialized_copy();
 
-    Introductionary_Example_Using_Class_StdString::test_class_std_string_standard_copy();
-    Introductionary_Example_Using_Class_StdString::test_class_std_string_uninitialized_copy();
+    //Introductionary_Example_Using_Class_StdString::test_class_std_string_standard_copy();
+    //Introductionary_Example_Using_Class_StdString::test_class_std_string_uninitialized_copy();
 
     // benchmark examples / copy construction
     Benchmark_Example_Using_Class_Integer::test_class_integer_standard_copy();
@@ -446,14 +451,14 @@ void memory_management_low_level_stl_functions()
     Benchmark_Example_Using_Class_StdString::test_class_std_string_standard_copy();
     Benchmark_Example_Using_Class_StdString::test_class_std_string_uninitialized_copy();
 
-    // copy construction from a single value
-    Introductionary_Example_Uninitialized_Fill::test_uninitialized_fill();
+    //// copy construction from a single value
+    //Introductionary_Example_Uninitialized_Fill::test_uninitialized_fill();
 
-    // move construction from a single value
-    Introductionary_Example_Uninitialized_Move::test_uninitialized_move();
+    //// move construction from a single value
+    //Introductionary_Example_Uninitialized_Move::test_uninitialized_move();
 
-    // Value and Default construction
-    Introductionary_Value_and_Default_Construction::test_value_and_default_construction();
+    //// Value and Default construction
+    //Introductionary_Value_and_Default_Construction::test_value_and_default_construction();
 }
 
 // ===========================================================================

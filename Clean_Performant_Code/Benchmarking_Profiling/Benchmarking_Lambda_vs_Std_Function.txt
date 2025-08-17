@@ -34,13 +34,12 @@ BENCHMARK(Lambda);
 
 static void StdFunctionWithLambda(benchmark::State& state)
 {
-    auto lambda = [](double input) {
-        auto total = input * 2.0 + 1.0;
-        return total;
+    std::function<double(double)> func{
+        [](double input) {
+            auto total = input * 2.0 + 1.0;
+            return total;
+        }
     };
-    benchmark::DoNotOptimize(lambda);
-
-    std::function<double(double)> func{ lambda };
     benchmark::DoNotOptimize(func);
 
     for (auto _ : state) {
