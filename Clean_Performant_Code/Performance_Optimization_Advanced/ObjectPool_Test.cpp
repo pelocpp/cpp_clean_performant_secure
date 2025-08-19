@@ -56,6 +56,64 @@ namespace ObjectPool_SimpleTest {
 
 namespace ObjectPool_AdvancedTest {
 
+    static void test_object_pool_01()
+    {
+#ifdef _DEBUG
+        static constexpr int Iterations = 1'000'000;        // debug
+#else
+        static constexpr int Iterations = 1'000'000;      // release
+#endif
+
+        ObjectPool<size_t> pool;
+
+        std::println("Starting loop using Object Pool ...");
+        {
+            ScopedTimer watch{};
+
+            for (size_t i{ 0 }; i < Iterations; ++i) {
+                auto ptr = pool.acquireObject(i);         // std::shared_ptr ... goes immediately out of scope
+            }
+        }
+
+        std::println("Starting loop using standard new / delete ...");
+        {
+            ScopedTimer watch{};
+
+            for (size_t i{ 0 }; i < Iterations; ++i) {
+                delete new size_t(i);
+            }
+        }
+    }
+
+    static void test_object_pool_02()
+    {
+#ifdef _DEBUG
+        static constexpr int Iterations = 1'000'000;        // debug
+#else
+        static constexpr int Iterations = 1'000'000;      // release
+#endif
+
+        ObjectPool<Person> pool;
+
+        std::println("Starting loop using Object Pool ...");
+        {
+            ScopedTimer watch{};
+
+            for (size_t i{ 0 }; i < Iterations; ++i) {
+                auto ptr = pool.acquireObject(Person{ "Hans", "Mueller", 30 });         // std::shared_ptr ... goes immediately out of scope
+            }
+        }
+
+        std::println("Starting loop using standard new / delete ...");
+        {
+            ScopedTimer watch{};
+
+            for (size_t i{ 0 }; i < Iterations; ++i) {
+                delete new Person{ "Hans", "Mueller", 30 };
+            }
+        }
+    }
+
     class ExpensiveObject
     {
     private:
@@ -88,7 +146,7 @@ namespace ObjectPool_AdvancedTest {
         // Process the object. (not shown)
     }
 
-    static void test_object_pool_01()
+    static void test_object_pool_03()
     {
         const size_t NumberOfIterations{ 10'000 };
 
@@ -104,7 +162,7 @@ namespace ObjectPool_AdvancedTest {
             }
         }
 
-        std::println("Starting loop using standard New/Delete ...");
+        std::println("Starting loop using standard new / delete ...");
         {
             ScopedTimer watch{};
 
@@ -115,7 +173,7 @@ namespace ObjectPool_AdvancedTest {
         }
     }
 
-    static void test_object_pool_02()
+    static void test_object_pool_04()
     {
         const size_t NumberOfIterations{ 1'000 };
 
@@ -141,7 +199,7 @@ namespace ObjectPool_AdvancedTest {
 
         std::vector<std::unique_ptr<ExpensiveObject>> listObjectsUnique;
 
-        std::println("Starting loop using new/delete...");
+        std::println("Starting loop using new / delete ...");
         {
             std::println("Using std::make_unique...");
 
@@ -165,6 +223,8 @@ void test_object_pool()
 
     ObjectPool_AdvancedTest::test_object_pool_01();
     ObjectPool_AdvancedTest::test_object_pool_02();
+    ObjectPool_AdvancedTest::test_object_pool_03();
+    ObjectPool_AdvancedTest::test_object_pool_04();
 }
 
 // ===========================================================================
