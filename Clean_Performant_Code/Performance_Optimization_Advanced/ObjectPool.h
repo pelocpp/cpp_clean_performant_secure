@@ -24,6 +24,9 @@
 template <typename T, typename TAllocator = std::allocator<T>>
 class ObjectPool final
 {
+public:
+    using value_type = T;
+
 private:
     // number of T instances that should fit in the first allocated chunk
     static constexpr std::size_t InitialChunkSize{ 2 };
