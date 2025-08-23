@@ -26,13 +26,12 @@ public:
 
     // public interface
     void*  allocate(size_t);
+    void   deallocate(void*);
+    void   clear();
+
     size_t blockSize() const;
     size_t capacity() const;
-
     size_t available() const;
-
-    void   clear();
-    void   deallocate(void*);
     bool   empty() const;
 
 private:
@@ -76,6 +75,7 @@ template <typename TArena>
 inline void FixedBlockMemoryManager<TArena>::deallocate(void* ptr) {
     if (ptr == nullptr)
         return;
+
     auto fp = reinterpret_cast<free_block*>(ptr);
     fp->next = m_freePtr;
     m_freePtr = fp;
