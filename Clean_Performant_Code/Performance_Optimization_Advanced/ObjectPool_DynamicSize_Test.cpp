@@ -1,17 +1,19 @@
 // ===========================================================================
-// ObjectPool_Test.cpp // Performance Optimization Advanced
+// ObjectPool_DynamicSize_Test.cpp // Performance Optimization Advanced
 // ===========================================================================
 
 #include "../LoggerUtility/ScopedTimer.h"
 #include "../Person/Person.h"
 
-#include "ObjectPool.h"
+#include "ObjectPool_DynamicSize.h"
 
 #include <array>
 #include <memory>
 #include <print>
 
-namespace ObjectPool_SimpleTest {
+namespace ObjectPool_DynamicSize_SimpleTest {
+
+    using namespace DynamicSizeObjectPool;
 
     static void test_object_pool_01()
     {
@@ -54,7 +56,9 @@ namespace ObjectPool_SimpleTest {
     }
 }
 
-namespace ObjectPool_AdvancedTest {
+namespace ObjectPool_DynamicSize_AdvancedTest {
+
+    using namespace DynamicSizeObjectPool;
 
     static void test_object_pool_01()
     {
@@ -216,15 +220,15 @@ namespace ObjectPool_AdvancedTest {
     }
 }
 
-void test_object_pool()
+void test_object_pool_dynamic_size()
 {
-    ObjectPool_SimpleTest::test_object_pool_01();
-    ObjectPool_SimpleTest::test_object_pool_02();
+    ObjectPool_DynamicSize_SimpleTest::test_object_pool_01();
+    ObjectPool_DynamicSize_SimpleTest::test_object_pool_02();
 
-    ObjectPool_AdvancedTest::test_object_pool_01();
-    ObjectPool_AdvancedTest::test_object_pool_02();
-    ObjectPool_AdvancedTest::test_object_pool_03();
-    ObjectPool_AdvancedTest::test_object_pool_04();
+    ObjectPool_DynamicSize_AdvancedTest::test_object_pool_01();
+    ObjectPool_DynamicSize_AdvancedTest::test_object_pool_02();
+    ObjectPool_DynamicSize_AdvancedTest::test_object_pool_03();
+    ObjectPool_DynamicSize_AdvancedTest::test_object_pool_04();
 }
 
 // ===========================================================================

@@ -132,10 +132,10 @@
     <ClCompile Include="FixedBlockAllocator_Test.cpp" />
     <ClCompile Include="FixedBlockMemoryManager_Test.cpp" />
     <ClCompile Include="Laundry.cpp" />
-    <ClCompile Include="ObjectPool.cpp" />
+    <ClCompile Include="ObjectPool_FixedSize_Test.cpp" />
     <ClCompile Include="ObjectPool_ThreadSafe_Test.cpp" />
     <ClCompile Include="Program.cpp" />
-    <ClCompile Include="ObjectPool_Test.cpp" />
+    <ClCompile Include="ObjectPool_DynamicSize_Test.cpp" />
     <ClCompile Include="StandardAllocator_Test.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -143,7 +143,8 @@
     <ClInclude Include="FixedArenaController.h" />
     <ClInclude Include="FixedBlockAllocator.h" />
     <ClInclude Include="FixedBlockMemoryManager.h" />
-    <ClInclude Include="ObjectPool.h" />
+    <ClInclude Include="ObjectPool_DynamicSize.h" />
+    <ClInclude Include="ObjectPool_FixedSize.h" />
     <ClInclude Include="ObjectPool_ThreadSafe.h" />
   </ItemGroup>
   <ItemGroup>

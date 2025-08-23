@@ -15,10 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ObjectPool.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectPool_Test.cpp">
+    <ClCompile Include="ObjectPool_DynamicSize_Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Program.cpp">
@@ -51,9 +48,12 @@
     <ClCompile Include="StandardAllocator_Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ObjectPool_FixedSize_Test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ObjectPool.h">
+    <ClInclude Include="ObjectPool_DynamicSize.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CustomAllocator.h">
@@ -69,6 +69,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ObjectPool_ThreadSafe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectPool_FixedSize.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
