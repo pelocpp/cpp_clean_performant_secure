@@ -7,9 +7,9 @@
 ## Inhalt
   
   * [Allgemeines](#link1)
-  * [Zu den Details](#link2)
-  * [Die Memberfunktion `addChunk()`](#link3)
-  * [Die Memberfunktion `acquireObject()`](#link4)
+  * [Ein Objektpool mit statischer Größe](#link2)
+  * [Ein Objektpool mit dynamischer Größe](#link3)
+  * [Ein Objektpool mit statischer Größe Multi-Threading sicher](#link4)
   * [Literatur](#link5)
 
 ---
@@ -33,12 +33,17 @@
 ## Allgemeines <a name="link1"></a>
 
 In diesem Abschnitt beschreiben wir die Implementierung
-einer *Object Pool* Klasse, die sehr wohl für einen produktiven Einsatz
-geeignet ist.
+mehrerer *Object Pool* Klassen, die sehr wohl für einen produktiven Einsatz
+geeignet sind:
+
+* Objektpool mit statischer Größe (feste Anzahl von Objekten).
+* Objektpool mit dynamischer Größe (die Anzahl der Objekte kann sich zur Laufzeit vergrößern).
+* Objektpool mit statischer Größe Multi-Threading sicher.
+
 
 Es gibt verschiedene Arten von Objektpool-Klassen.
-Dieser Abschnitt beschreibt einen Objektpool, der einen großen Speicherblock auf einmal allokiert
-und kleinere Objekte direkt &bdquo;*in-place*&rdquo; erstellt.
+Dieser Abschnitt beschreibt mehrere Objektpool-Realisierungen, die einen großen Speicherblock auf einmal allokieren
+und kleinere Objekte direkt &bdquo;*in-place*&rdquo; erstellen.
 
 Diese Objekte können an Clients ausgehändigt und wiederverwendet werden,
 wenn diese sie nicht mehr benötigen.
@@ -46,10 +51,13 @@ wenn diese sie nicht mehr benötigen.
 Dies erfordert *keine* zusätzlichen Aufrufe des Speichermanagers,
 um Speicher für einzelne Objekte zuzuweisen (`new`) oder freizugeben (`delete`).
 
+---
+
+## Ein Objektpool mit statischer Größe <a name="link2"></a>
 
 ---
 
-## Zu den Details <a name="link2"></a>
+## Ein Objektpool mit dynamischer Größe <a name="link3"></a>
 
 Die Implementierung des Objektpools verwaltet einen Vektor mit Objektblöcken vom Typ `T`.
 Nach dem Start gibt es in diesem Vektor nur ein Element (Zeiger).
@@ -131,7 +139,7 @@ class ObjectPool final
 
 ---
 
-## Die Memberfunktion `addChunk()` <a name="link3"></a>
+### Die Memberfunktion `addChunk()` <a name="link3"></a>
 
 Die Memberfunktion `addChunk()` zum Zuweisen eines neuen Chunks ist wie folgt implementiert.
 Der erste Teil von `addChunk()` führt die eigentliche Zuweisung eines neuen Chunks durch.
@@ -187,7 +195,7 @@ Dies geschieht aus Performancegründen und folgt dem Prinzip von `std::vector`.
 
 ---
 
-## Die Memberfunktion `acquireObject()` <a name="link4"></a>
+### Die Memberfunktion `acquireObject()` <a name="link4"></a>
 
 ```cpp
 01: template <typename T, typename TAllocator>
@@ -248,14 +256,24 @@ Abschließend wird der &bdquo;gewaschene&rdquo; `T*`-Zeiger in einen `std::shared
 mit einem benutzerdefinierten *Deleter* eingebettet.
 Dieser *Deleter* gibt keinen Speicher frei, sondern ruft den Destruktor manuell mit `std::destroy_at()` auf und fügt den Zeiger anschließend wieder in die Liste der verfügbaren Objekte ein (`m_freeObjects`).
 
+---
+
+## Ein Objektpool mit statischer Größe Multi-Threading sicher <a name="link4"></a>
 
 ---
 
 ## Literatur <a name="link5"></a>
 
-Die Realisierung des Object Pools wurde in dem Buch 
+Die Realisierung des Object Pools mit einer statischen Größe kann man einem Youtube-Tutorial entnehmen:<br />
+&bdquo;[Efficient Object Pool - How-To](https://www.youtube.com/watch?v=37VhkrOiE8M)&rdquo;.
+
+Die Realisierung des Object Pools mit dynamischer Größe wurde in dem Buch 
 &bdquo;[*Professional C++*](https://www.amazon.de/Professional-C-Marc-Gregoire/dp/1394193173)&rdquo; von Marc Gregoire
 vorgefunden.
+
+Die multi-threading sichere Variante wiederum ist eine Weiterarbeit des Beispiels aus Youtube:<br />
+&bdquo;[Compare and Swap Loop - Learn Modern C++](https://www.youtube.com/watch?v=56Q4Ty4hfMM)&rdquo;.
+
 
 ---
 

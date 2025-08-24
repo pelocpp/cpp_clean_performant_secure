@@ -48,21 +48,44 @@ namespace FixedSizeObjectPool {
     public:
         struct FreeList
         {
-            // std::aligned_storage_t<sizeof(value_type), alignof(value_type)> mStorage;
-           // alignas (T)   std::byte m_storage;
-            //alignas (T) T m_storage;
             FreeList* m_next;
         };
 
     private:
-        //std::unique_ptr<Item[]> m_pool;
-        FreeList* m_pool;
-        FreeList* m_nextFree;
+        FreeList*  m_pool;
+        FreeList*  m_nextFree;
         size_t     m_size;
-
-        //std::unique_ptr<Item[]> mPool = std::make_unique<Item[]>(Size);
-        //Item* m_nextFree = nullptr;
     };
+
+    template <typename T, size_t Size>
+    inline ObjectPool<T, Size>::ObjectPool()
+        : m_pool{}, m_nextFree{}, m_size{ Size }
+    {
+        size_t blockSize = std::max(sizeof(T), sizeof(void*));
+
+        auto* storage = std::malloc(m_size * blockSize);
+        if (storage == nullptr) {
+            throw std::bad_alloc{};
+        }
+
+        m_pool = reinterpret_cast<FreeList*>(storage);
+
+        // setup list of free blocks pointers (within allocated memory arena)
+        std::byte* ptr = reinterpret_cast<std::byte*>(m_pool);
+        for (size_t count = m_size; count > 1; --count, ptr += blockSize) {
+            *reinterpret_cast<std::byte**>(ptr) = ptr + blockSize;
+
+            //std::println("{:#X} => {:#X}",
+            //    reinterpret_cast<intptr_t>(ptr),
+            //    reinterpret_cast<intptr_t>(ptr + blockSize)
+            //);
+        }
+
+        *reinterpret_cast<std::byte**>(ptr) = nullptr;
+
+        m_nextFree = &m_pool[0];
+
+    }
 
     template <typename T, size_t Size>
     inline ObjectPool<T, Size>::~ObjectPool()
@@ -113,6 +136,7 @@ namespace FixedSizeObjectPool {
         deallocate(ptr);
     }
 
+    // move semantics
     template <typename T, size_t Size>
     inline ObjectPool<T, Size>& ObjectPool<T, Size>::operator= (ObjectPool&& other) noexcept
     {
@@ -141,9 +165,7 @@ namespace FixedSizeObjectPool {
         other.m_nextFree = nullptr;
         other.m_size = 0;
     }
-
 }
-
 
 // ===========================================================================
 // End-of-File

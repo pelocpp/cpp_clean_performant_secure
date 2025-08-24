@@ -10,17 +10,6 @@
 #include <print>
 #include <vector>
 
-// Zentrale Eigenschaften dieser Realisierung:
-// == Der Pool kann für jede Klasse verwendet werden
-// == Der Pool wächst, wenn eine Anforderung nicht erfüllt werden kann.
-// 
-// 'acquireObject()' gibt ein Objekt aus der Liste der freien Objekte zurück.
-// Sind keine freien Objekte mehr vorhanden, vergößert acquireObject() die Anzahl der Objektblöck.
-// Der Pool wächst stetig : Objekte werden erst dann aus dem Pool entfernt, wenn diese zerstört werden.
-// acquireObject() gibt einen std::shared_ptr mit einem benutzerdefinierten Deleter zurück,
-// der das Objekt automatisch wieder in den Objektpool zurückfügt,
-// sobald der shared_ptr zerstört wird und sein Referenzzähler 0 erreicht.
-
 namespace DynamicSizeObjectPool {
 
     template <typename T, typename TAllocator = std::allocator<T>>
@@ -118,10 +107,10 @@ namespace DynamicSizeObjectPool {
         // wrap the constructed object and return it
         return std::shared_ptr<T>{
             constructedObject,
-                [this](T* object) {
+            [this](T* object) {
                 std::destroy_at(object);          // destroy object
                 m_freeObjects.push_back(object);  // put object back in the list of free objects.
-                }
+            }
         };
     }
 
@@ -157,7 +146,7 @@ namespace DynamicSizeObjectPool {
             m_pool.back()
         );
 
-        // alternative implementation to setup the m_freeObjects list
+        // alternative implementation to setup m_freeObjects list
         //for (std::size_t i{}; i != m_currentChunkSize; ++i) {
         //    m_freeObjects[oldFreeObjectsSize + i] = m_pool.back() + i;
         //}
