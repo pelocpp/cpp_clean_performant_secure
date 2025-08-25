@@ -14,7 +14,7 @@ extern void test_fixed_block_allocator_new_delete();
 
 extern void test_object_pool_fixed_size();
 extern void test_object_pool_dynamic_size();
-//extern void test_object_pool_thread_safe();
+extern void test_object_pool_thread_safe();
 
 int main()
 {
@@ -27,7 +27,7 @@ int main()
     test_fixed_block_allocator_new_delete();
     test_object_pool_fixed_size();
     test_object_pool_dynamic_size();
-    // test_object_pool_thread_safe();
+    test_object_pool_thread_safe();
 
     return 0;
 }

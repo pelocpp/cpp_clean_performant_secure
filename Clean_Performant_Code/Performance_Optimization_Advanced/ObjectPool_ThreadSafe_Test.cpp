@@ -1,11 +1,9 @@
 // ===========================================================================
 // ObjectPool_ThreadSafe_Test.cpp // Performance Optimization Advanced
-// From: https://radiantsoftware.hashnode.dev/c-lock-free-object-pool
-// Status: Not yet prepared // To be Done
 // ===========================================================================
 
 // #include "../LoggerUtility/ScopedTimer.h"
-#include "../Person/Person.h"
+//#include "../Person/Person.h"
 
 #include "ObjectPool_ThreadSafe.h"
 
@@ -16,29 +14,15 @@ namespace ObjectPool_ThreadSafe_SimpleTest {
 
     static void test_object_pool_thread_safe_01()
     {
-        using PersonPool = Pool<Person>;
+        using namespace FixedSizeObjectPoolThreadSafe;
 
-        // default allocator for Persons
-        std::allocator<Person> alloc;
+        ObjectPool<int> pool;
 
-        PersonPool pool;
+        auto ptr = pool.construct(123);
 
-        pool.allocate(alloc, 20);
+        std::println("*ptr: {}", *ptr);
 
-
-
-        //template <typename AllocatorType>
-        //void allocate(AllocatorType & aAllocator, int aCapacity);
-
-
-
-
-
-        //auto person{ pool.allocate("Sepp", "Mueller", (size_t)30) };
-
-        //std::println("{} {} has age {}",
-        //    person->getFirstname(), person->getLastname(), person->getAge());
-
+        pool.destroy(ptr);
         std::println("Done.");
     }
 }

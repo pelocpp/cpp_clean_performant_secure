@@ -4,16 +4,8 @@
 
 #pragma once
 
-//#include <cassert>
-//#include <memory>
-//#include <numeric>
-//#include <print>
-//#include <vector>
-
-// Zentrale Eigenschaften dieser Realisierung:
-// == Der Pool kann für jede Klasse verwendet werden
-// == Der Pool wächst, wenn eine Anforderung nicht erfüllt werden kann.
-// 
+#include <atomic>
+#include <new>
 
 namespace FixedSizeObjectPool {
 
@@ -21,22 +13,17 @@ namespace FixedSizeObjectPool {
     class ObjectPool final
     {
     public:
-        //  const static std::size_t Size = 100000;
-     //    const static std::size_t Size = 3;
-
         using value_type = T;
 
         // c'tor/d'tor
         ObjectPool();
         ~ObjectPool();
 
-        // nor copy nor assignment
+        // no copy / no move
         ObjectPool(const ObjectPool&) = delete;
         ObjectPool& operator =(const ObjectPool&) = delete;
-
-        // support moving
-        ObjectPool(ObjectPool&& other) noexcept;
-        ObjectPool& operator= (ObjectPool&& other) noexcept;
+        ObjectPool(ObjectPool&& other) noexcept = delete;
+        ObjectPool& operator= (ObjectPool&& other) noexcept = delete;
 
         [[nodiscard]] T* allocate();
         void deallocate(T* p) noexcept;
@@ -45,13 +32,12 @@ namespace FixedSizeObjectPool {
         [[nodiscard]] T* construct(TArgs&& ...args);
         void destroy(T* p) noexcept;
 
-    public:
+    private:
         struct FreeList
         {
             FreeList* m_next;
         };
 
-    private:
         FreeList*  m_pool;
         FreeList*  m_nextFree;
         size_t     m_size;
@@ -59,7 +45,7 @@ namespace FixedSizeObjectPool {
 
     template <typename T, size_t Size>
     inline ObjectPool<T, Size>::ObjectPool()
-        : m_pool{}, m_nextFree{}, m_size{ Size }
+        : m_pool{ nullptr }, m_nextFree{ nullptr }, m_size{ Size }
     {
         size_t blockSize = std::max(sizeof(T), sizeof(void*));
 
@@ -74,17 +60,10 @@ namespace FixedSizeObjectPool {
         std::byte* ptr = reinterpret_cast<std::byte*>(m_pool);
         for (size_t count = m_size; count > 1; --count, ptr += blockSize) {
             *reinterpret_cast<std::byte**>(ptr) = ptr + blockSize;
-
-            //std::println("{:#X} => {:#X}",
-            //    reinterpret_cast<intptr_t>(ptr),
-            //    reinterpret_cast<intptr_t>(ptr + blockSize)
-            //);
         }
 
         *reinterpret_cast<std::byte**>(ptr) = nullptr;
-
         m_nextFree = &m_pool[0];
-
     }
 
     template <typename T, size_t Size>
@@ -134,36 +113,6 @@ namespace FixedSizeObjectPool {
 
         std::destroy_at(ptr);
         deallocate(ptr);
-    }
-
-    // move semantics
-    template <typename T, size_t Size>
-    inline ObjectPool<T, Size>& ObjectPool<T, Size>::operator= (ObjectPool&& other) noexcept
-    {
-        if (this == &other) {
-            return *this;
-        }
-
-        m_pool = other.m_pool;
-        m_nextFree = other.m_nextFree;
-        m_size = other.m_size;
-
-        other.m_pool = nullptr;
-        other.m_nextFree = nullptr;
-        other.m_size = 0;
-
-        return *this;
-    }
-
-    template <typename T, size_t Size>
-    inline ObjectPool<T, Size>::ObjectPool(ObjectPool&& other) noexcept
-        : m_pool{ other.m_pool }
-        , m_nextFree{ other.m_nextFree }
-        , m_size{ other.m_size }
-    {
-        other.m_pool = nullptr;
-        other.m_nextFree = nullptr;
-        other.m_size = 0;
     }
 }
 

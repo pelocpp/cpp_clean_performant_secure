@@ -84,10 +84,14 @@ inline void FixedBlockAllocator<T>::destroy(U* p) noexcept
 }
 
 template <typename T>
-bool operator==(const FixedBlockAllocator<T>&, const FixedBlockAllocator<T>&) { return true; }
+bool operator==(const FixedBlockAllocator<T>&, const FixedBlockAllocator<T>&) { 
+    return true;
+}
 
 template <typename T>
-bool operator!=(const FixedBlockAllocator<T>&, const FixedBlockAllocator<T>&) { return false; }
+bool operator!=(const FixedBlockAllocator<T>&, const FixedBlockAllocator<T>&) {
+    return false; 
+}
 
 // ===========================================================================
 // End-of-File

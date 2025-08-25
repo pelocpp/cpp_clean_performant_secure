@@ -134,6 +134,7 @@
     <ClCompile Include="Laundry.cpp" />
     <ClCompile Include="ObjectPool_FixedSize_Test.cpp" />
     <ClCompile Include="ObjectPool_ThreadSafe_Test.cpp" />
+    <ClCompile Include="ObjectPool_ThreadSafe_Test_02.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="ObjectPool_DynamicSize_Test.cpp" />
     <ClCompile Include="StandardAllocator_Test.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="ObjectPool_DynamicSize.h" />
     <ClInclude Include="ObjectPool_FixedSize.h" />
     <ClInclude Include="ObjectPool_ThreadSafe.h" />
+    <ClInclude Include="ObjectPool_ThreadSafe_02.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp_arena_01.svg" />

@@ -42,13 +42,16 @@
     <ClCompile Include="FixedBlockAllocator_New_Delete_Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectPool_ThreadSafe_Test.cpp">
+    <ClCompile Include="ObjectPool_ThreadSafe_Test_02.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StandardAllocator_Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ObjectPool_FixedSize_Test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectPool_ThreadSafe_Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,10 +71,13 @@
     <ClInclude Include="FixedBlockAllocator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectPool_ThreadSafe.h">
+    <ClInclude Include="ObjectPool_ThreadSafe_02.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ObjectPool_FixedSize.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectPool_ThreadSafe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

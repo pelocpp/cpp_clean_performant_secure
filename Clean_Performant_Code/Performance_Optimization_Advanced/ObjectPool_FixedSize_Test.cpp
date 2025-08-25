@@ -29,12 +29,6 @@ namespace ObjectPool_FixedSize_SimpleTest {
 
     using namespace FixedSizeObjectPool;
 
-    static void test_object_pool_00()
-    {
-        std::println("sizeof(Item):           {}", sizeof(ObjectPool<Person>::FreeList));
-        std::println("sizeof(Item::mNext):    {}", sizeof(ObjectPool<Person>::FreeList::m_next));
-    }
-
     static void test_object_pool_01()
     {
         ObjectPool<int> pool;
@@ -152,7 +146,6 @@ void test_object_pool_fixed_size()
 {
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-    ObjectPool_FixedSize_SimpleTest::test_object_pool_00();
     ObjectPool_FixedSize_SimpleTest::test_object_pool_01();
     ObjectPool_FixedSize_SimpleTest::test_object_pool_02();
     ObjectPool_FixedSize_SimpleTest::test_object_pool_03();
