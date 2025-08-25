@@ -139,7 +139,7 @@ class ObjectPool final
 
 ---
 
-### Die Memberfunktion `addChunk()` <a name="link3"></a>
+### Die Memberfunktion `addChunk()`
 
 Die Memberfunktion `addChunk()` zum Zuweisen eines neuen Chunks ist wie folgt implementiert.
 Der erste Teil von `addChunk()` führt die eigentliche Zuweisung eines neuen Chunks durch.
@@ -195,7 +195,7 @@ Dies geschieht aus Performancegründen und folgt dem Prinzip von `std::vector`.
 
 ---
 
-### Die Memberfunktion `acquireObject()` <a name="link4"></a>
+### Die Memberfunktion `acquireObject()`
 
 ```cpp
 01: template <typename T, typename TAllocator>
@@ -260,14 +260,13 @@ Dieser *Deleter* gibt keinen Speicher frei, sondern ruft den Destruktor manuell 
 
 ## Ein Objektpool mit statischer Größe Multi-Threading sicher <a name="link4"></a>
 
-Wir orientieren bei der Realisierung eines thread-sicheren Objektpools 
+Wir orientieren uns bei der Realisierung eines thread-sicheren Objektpools 
 an dem Objektpool aus Abschnitt
-&bdquo;[Ein Objektpool mit statischer Größe](#ein-Objektpool-mit-statischer-größe)&rdquo;.
+&bdquo;[Ein Objektpool mit statischer Größe](#link2)&rdquo;.
 
 Da wir  die einzelnen Blöcke quasi im Stile einer einfach verketteten Liste verwalten,
-können wir das &bdquo;Compare-Exchange&bdquo;-Idiom anwenden.
-
-Dieses kommt in den beiden Methoden `` und `` zur Anwendung:
+können wir das &bdquo;Compare-Exchange&rdquo;-Idiom anwenden.
+Dieses kommt in den beiden Methoden `allocate` und `deallocate` zur Anwendung:
 
 ```cpp
 01: template <typename T, size_t Size>
@@ -301,7 +300,7 @@ und
 10: }
 ```
 
-Dabei wurde zu Grunde gelegt, dass die Variable `` atomar ist:
+Dabei wurde zu Grunde gelegt, dass die Variable `m_nextFree` atomar ist:
 
 ```
 std::atomic<FreeList*> m_nextFree;
