@@ -88,29 +88,11 @@ namespace FixedSizeObjectPoolThreadSafe {
         }
         
         return reinterpret_cast<T*>(item);
-
-        // ======================================
-
-        //if (m_nextFree == nullptr) {
-        //    throw std::bad_alloc{};
-        //}
-
-        //const auto item = m_nextFree;
-        //m_nextFree = item->m_next;
-
-        //return reinterpret_cast<T*>(item);
     }
 
     template <typename T, size_t Size>
     inline void ObjectPool<T, Size>::deallocate(T* ptr) noexcept
     {
-        //const auto item = reinterpret_cast<FreeList*>(ptr);
-
-        //item->m_next = m_nextFree;
-        //m_nextFree = item;
-
-        // ==============================
-
         const auto item = reinterpret_cast<FreeList*>(ptr);
 
         item->m_next = m_nextFree;

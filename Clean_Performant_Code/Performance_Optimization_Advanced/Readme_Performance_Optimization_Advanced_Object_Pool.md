@@ -260,6 +260,53 @@ Dieser *Deleter* gibt keinen Speicher frei, sondern ruft den Destruktor manuell 
 
 ## Ein Objektpool mit statischer Größe Multi-Threading sicher <a name="link4"></a>
 
+Wir orientieren bei der Realisierung eines thread-sicheren Objektpools 
+an dem Objektpool aus Abschnitt
+&bdquo;[Ein Objektpool mit statischer Größe](#ein-Objektpool-mit-statischer-größe)&rdquo;.
+
+Da wir  die einzelnen Blöcke quasi im Stile einer einfach verketteten Liste verwalten,
+können wir das &bdquo;Compare-Exchange&bdquo;-Idiom anwenden.
+
+Dieses kommt in den beiden Methoden `` und `` zur Anwendung:
+
+```cpp
+01: template <typename T, size_t Size>
+02: [[nodiscard]] inline T* ObjectPool<T, Size>::allocate()
+03: {
+04:     auto item = m_nextFree.load();
+05:     while (item != nullptr && !m_nextFree.compare_exchange_weak(item, item->m_next))
+06:     {
+07:     }
+08: 
+09:     if (item == nullptr) {
+10:         throw std::bad_alloc{};
+11:     }
+12:         
+13:     return reinterpret_cast<T*>(item);
+14: }
+```
+
+und
+
+```cpp
+01: template <typename T, size_t Size>
+02: inline void ObjectPool<T, Size>::deallocate(T* ptr) noexcept
+03: {
+04:     const auto item = reinterpret_cast<FreeList*>(ptr);
+05: 
+06:     item->m_next = m_nextFree;
+07:     while (!m_nextFree.compare_exchange_weak(item->m_next, item))
+08:     {
+09:     }
+10: }
+```
+
+Dabei wurde zu Grunde gelegt, dass die Variable `` atomar ist:
+
+```
+std::atomic<FreeList*> m_nextFree;
+```
+
 ---
 
 ## Literatur <a name="link5"></a>
