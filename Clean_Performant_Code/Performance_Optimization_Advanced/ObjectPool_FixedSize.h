@@ -32,6 +32,9 @@ namespace FixedSizeObjectPool {
         [[nodiscard]] T* construct(TArgs&& ...args);
         void destroy(T* p) noexcept;
 
+        size_t size() noexcept;
+        size_t capacity() noexcept;
+
     private:
         struct FreeList
         {
@@ -41,11 +44,12 @@ namespace FixedSizeObjectPool {
         FreeList*  m_pool;
         FreeList*  m_nextFree;
         size_t     m_size;
+        size_t     m_capacity;
     };
 
     template <typename T, size_t Size>
     inline ObjectPool<T, Size>::ObjectPool()
-        : m_pool{ nullptr }, m_nextFree{ nullptr }, m_size{ Size }
+        : m_pool{ nullptr }, m_nextFree{ nullptr }, m_size{ Size }, m_capacity{ Size }
     {
         size_t blockSize = std::max(sizeof(T), sizeof(void*));
 
@@ -83,6 +87,7 @@ namespace FixedSizeObjectPool {
         const auto item = m_nextFree;
         m_nextFree = item->m_next;
 
+        --m_capacity;
         return reinterpret_cast<T*>(item);
     }
 
@@ -93,6 +98,8 @@ namespace FixedSizeObjectPool {
 
         item->m_next = m_nextFree;
         m_nextFree = item;
+
+        ++m_capacity;
     }
 
     template <typename T, size_t Size>
@@ -113,6 +120,18 @@ namespace FixedSizeObjectPool {
 
         std::destroy_at(ptr);
         deallocate(ptr);
+    }
+
+    template <typename T, size_t Size>
+    size_t ObjectPool<T, Size>::size() noexcept
+    {
+        return m_size;
+    }
+
+    template <typename T, size_t Size>
+    size_t ObjectPool<T, Size>::capacity() noexcept
+    {
+        return m_capacity;
     }
 }
 
