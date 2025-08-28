@@ -263,7 +263,6 @@ Dieser *Deleter* gibt keinen Speicher frei, sondern ruft den Destruktor manuell 
 Wir orientieren uns bei der Realisierung eines thread-sicheren Objektpools 
 an dem Objektpool aus Abschnitt
 &bdquo;[Ein Objektpool mit statischer Größe](#link2)&rdquo;.
-
 Da wir  die einzelnen Blöcke quasi im Stile einer einfach verketteten Liste verwalten,
 können wir das &bdquo;Compare-Exchange&rdquo;-Idiom anwenden.
 Dieses kommt in den beiden Methoden `allocate` und `deallocate` zur Anwendung:
