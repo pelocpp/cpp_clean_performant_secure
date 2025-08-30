@@ -55,11 +55,50 @@ um Speicher für einzelne Objekte zuzuweisen (`new`) oder freizugeben (`delete`).
 
 ## Ein Objektpool mit statischer Größe <a name="link2"></a>
 
+Die vorgestellte Implementierung ist eine Klassenschablone mit zwei
+Templateparametern `T` und `Size`. `T` spezifiziert den Typ der Objekte, die 
+im Pool abgelegt werden sollen und `Size` deren Anzahl.
+
+Der Speicher wird durch einen einmaligen Aufruf von `std::malloc` bereitgestellt.
+
+In diesem Speicherbereich wird eine verkettete Liste von Zeigern abgelegt,
+um bei Anforderung eines Objekts schnell eine passende Adresse parat zu haben.
+Die jeweils nächste verfügbare Adresse wird in einer Instanzvariablen `m_free` berechnet.
+Weitere Instanzvariablen beschreiben die Anfangsadresses des Pools (`m_pool`, notwendig für `std::free`),
+die maximale Anzahl der verfügbaren Objekte (`m_size`, entspricht dem Templateparametern `Size`) und die aktuelle
+Anzahl der noch verfügbaren Objekte (`m_capacity`).
+
+In den folgenden vier Abbildungen kann man die prinzipielle Arbeitsweise
+der Pools nachverfolgen.
+
+In den Abbildungen 3 und 4 soll veranschaulicht werden,
+wie die verkettete Liste mit den Anfangsadressen der Objekte sich verändern kann.
+
+<img src="cpp_fixed_size_object_pool_01.svg" width="600">
+
+*Abbildung* 1: Der Objektpool nach dem Start.
+
+<img src="cpp_fixed_size_object_pool_02.svg" width="600">
+
+*Abbildung* 2: Der Objektpool nach Entnahme zweier Objekte
+
+<img src="cpp_fixed_size_object_pool_03.svg" width="600">
+
+*Abbildung* 3: Ein erstes Objekt wurde an den Pool zurückgegeben.
+
+<img src="cpp_fixed_size_object_pool_04.svg" width="600">
+
+*Abbildung* 4: Das zweite Objekt wurde an den Pool zurückgegeben.
+
+
 ---
 
 ## Ein Objektpool mit dynamischer Größe <a name="link3"></a>
 
-Die Implementierung des Objektpools verwaltet einen Vektor mit Objektblöcken vom Typ `T`.
+Die Implementierung eines Objektpools mit dynamischer Größe ist im Vergleich
+zum letzen Abschnitt ein klein wenig aufwendiger.
+
+Der nun vorgestellte Objektpool verwaltet einen Vektor mit Objektblöcken vom Typ `T`.
 Nach dem Start gibt es in diesem Vektor nur ein Element (Zeiger).
 Dieser Zeiger verweist auf einen Speicherbereich,
 der eine bestimmte Anzahl von Objekten (Typ `T`) aufnehmen kann, 
@@ -89,10 +128,10 @@ in der zweiten Liste `m_free` aller verfügbaren Objekte eingetragen.
 
 <img src="cpp_object_pool_01.svg" width="600">
 
-*Abbildung* 1: `m_pool` und `m_free` nach dem Start.
+*Abbildung* 5: `m_pool` und `m_free` nach dem Start.
 
 Jetzt stellen wir uns vor, dass zwei Objektblöcke der Anwendung
-zur Verfügung gestellt wurden. In *Abbildung* 2 erkennen wir, 
+zur Verfügung gestellt wurden. In *Abbildung* 5 erkennen wir, 
 dass am Ende von `m_free` zwei Adressen fehlen: Diese Adressen
 sind nun in der Obhut der Anwendung, sie können allerdings,
 wenn die Anwendung die Objekte nicht mehr benötigt,
@@ -100,7 +139,7 @@ in der `m_free`-Liste wieder eingereiht werden.
 
 <img src="cpp_object_pool_02.svg" width="600">
 
-*Abbildung* 2: `m_pool` und `m_free` nach Zuteilung zweier Objekte.
+*Abbildung* 6: `m_pool` und `m_free` nach Zuteilung zweier Objekte.
 
 Sind alle Objekte des Pools zugeteilt, erkennen wir in
 Abbildung 3, dass die Liste  `m_free` leer ist.
@@ -108,19 +147,19 @@ Es gibt keine freien Blöcke mehr.
 
 <img src="cpp_object_pool_03.svg" width="600">
 
-*Abbildung* 3: Ein Pool ohne freie Objekte.
+*Abbildung* 7: Ein Pool ohne freie Objekte.
 
 Wird jetzt ein neues Objekt angefordert,
 muss zunächst der Pool an sich wieder nachladen.
 
 Die grafische Darstellung wird nun ein wenig komplexer.
-In *Abbildung* 4 erkennen wir, dass zunächst der Pool
+In *Abbildung* 7 erkennen wir, dass zunächst der Pool
 neuen Speicher bekommen hat. Dieser wird komplett in die Liste
 der freien Blöcke aufgenommen und neue Blöcke sind wieder verfügbar.
 
 <img src="cpp_object_pool_04.svg" width="800">
 
-*Abbildung* 4: Ein Pool mit neuen Chunks.
+*Abbildung* 8: Ein Pool mit neuen Chunks.
 
 
 Der Pool stellt Objekte über die Memberfunktion `acquireObject()` zur Verfügung.

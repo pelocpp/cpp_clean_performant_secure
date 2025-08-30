@@ -155,6 +155,10 @@
     <None Include="cpp_arena_03.svg" />
     <None Include="cpp_arena_04.svg" />
     <None Include="cpp_arena_05.svg" />
+    <None Include="cpp_fixed_size_object_pool_01.svg" />
+    <None Include="cpp_fixed_size_object_pool_02.svg" />
+    <None Include="cpp_fixed_size_object_pool_03.svg" />
+    <None Include="cpp_fixed_size_object_pool_04.svg" />
     <None Include="cpp_object_pool_01.svg" />
     <None Include="cpp_object_pool_02.svg" />
     <None Include="cpp_object_pool_03.svg" />
