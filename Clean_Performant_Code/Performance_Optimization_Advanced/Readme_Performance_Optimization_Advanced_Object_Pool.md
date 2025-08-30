@@ -65,28 +65,28 @@ In diesem Speicherbereich wird eine verkettete Liste von Zeigern abgelegt,
 um bei Anforderung eines Objekts schnell eine passende Adresse parat zu haben.
 Die jeweils nächste verfügbare Adresse wird in einer Instanzvariablen `m_free` berechnet.
 Weitere Instanzvariablen beschreiben die Anfangsadresses des Pools (`m_pool`, notwendig für `std::free`),
-die maximale Anzahl der verfügbaren Objekte (`m_size`, entspricht dem Templateparametern `Size`) und die aktuelle
+die maximale Anzahl der verfügbaren Objekte (`m_size`, entspricht dem Templateparameter `Size`) und die aktuelle
 Anzahl der noch verfügbaren Objekte (`m_capacity`).
 
 In den folgenden vier Abbildungen kann man die prinzipielle Arbeitsweise
-der Pools nachverfolgen.
+des Pools nachverfolgen.
 
 In den Abbildungen 3 und 4 soll veranschaulicht werden,
 wie die verkettete Liste mit den Anfangsadressen der Objekte sich verändern kann.
 
-<img src="cpp_fixed_size_object_pool_01.svg" width="600">
+<img src="cpp_fixed_size_object_pool_01.svg" width="800">
 
 *Abbildung* 1: Der Objektpool nach dem Start.
 
-<img src="cpp_fixed_size_object_pool_02.svg" width="600">
+<img src="cpp_fixed_size_object_pool_02.svg" width="800">
 
 *Abbildung* 2: Der Objektpool nach Entnahme zweier Objekte
 
-<img src="cpp_fixed_size_object_pool_03.svg" width="600">
+<img src="cpp_fixed_size_object_pool_03.svg" width="800">
 
 *Abbildung* 3: Ein erstes Objekt wurde an den Pool zurückgegeben.
 
-<img src="cpp_fixed_size_object_pool_04.svg" width="600">
+<img src="cpp_fixed_size_object_pool_04.svg" width="800">
 
 *Abbildung* 4: Das zweite Objekt wurde an den Pool zurückgegeben.
 
