@@ -21,6 +21,17 @@
 
 ---
 
+  * Maximiliano Contieri: &bdquo;Clean Code Kochbuch&rdquo;.</br>
+    O'Reilly (27. Juni 2024), 424 Seiten. Sprache: Deutsch. ISBN-10: 3960092431, ISBN-13: 978-3960092438.
+
+    Anhand von Beispielen in unterschiedlichen Programmiersprachen bietet dieses Kochbuch bewährte Rezepte, die Sie bei der Erweiterung und Wartung größerer Systeme unterstützen. Contieri beschreibt grundlegende Konzepte wie Lesbarkeit, Kopplung, Testbarkeit, Sicherheit und Erweiterbarkeit sowie Code Smells und Rezepte zu deren Beseitigung.
+
+    Die Beispiele sind in JavaScript, PHP, Python und Java geschrieben.
+
+    <img src="Buch_Maximiliano_Contieri_Clean_Code_Kochbuch.png" width="150">
+
+---
+
   * [*Google C++ Style Guide*](https://google.github.io/styleguide/cppguide.html)<br/>
     (abgerufen am 26.02.2022).
 
@@ -53,13 +64,7 @@
 
 ---
 
-Die Beispiele und Anregungen des Abschnitts zur &bdquo;C++ 20 Ranges&rdquo; Bibliothek wurden sehr stark inspiriert von dem Aufsatz
-[&bdquo;C++ 20 Ranges. Practical examples&rdquo;](https://indico.gsi.de/event/19561/contributions/78837/attachments/46921/67160/cpp_ranges.pdf)
-von *Semen Lebedev*.
-
-Der folgende Artikel ist ebenfalls berücksichtigt:
-
-[How to Write Clean Code in C++: An Expert Guide](https://www.bomberbot.com/clean-code/how-to-write-clean-code-in-c-an-expert-guide/)
+  * [How to Write Clean Code in C++: An Expert Guide](https://www.bomberbot.com/clean-code/how-to-write-clean-code-in-c-an-expert-guide/)
 
 ---
 

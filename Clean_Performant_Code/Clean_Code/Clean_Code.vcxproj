@@ -135,6 +135,7 @@
     <None Include="Readme_Clean_Code.md" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Buch_Maximiliano_Contieri_Clean_Code_Kochbuch.png" />
     <Image Include="Buch_Stephan_Roth_Clean_Cpp_20.png" />
     <Image Include="CleanCodeImage.png" />
   </ItemGroup>

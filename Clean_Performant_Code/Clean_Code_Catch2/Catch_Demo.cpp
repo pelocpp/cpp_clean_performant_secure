@@ -2,16 +2,18 @@
 // Catch_Demo.cpp / Catch2 Demo
 // ===========================================================================
 
-#include <iostream>
-
 #include "Catch2/catch.hpp"
 
-unsigned int Factorial(unsigned int number) {
+#include <iostream>
+
+// ===============================================================
+
+static unsigned int Factorial(unsigned int number) {
     return number <= 1 ? number : Factorial(number - 1) * number;
 }
 
 // ===============================================================
-// test caces
+// test cases
 // note: requires vs. check
  
 TEST_CASE ("Factorials are computed", "[factorial]") {

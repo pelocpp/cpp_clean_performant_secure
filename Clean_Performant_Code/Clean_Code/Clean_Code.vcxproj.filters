@@ -37,5 +37,8 @@
     <Image Include="CleanCodeImage.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Buch_Maximiliano_Contieri_Clean_Code_Kochbuch.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
