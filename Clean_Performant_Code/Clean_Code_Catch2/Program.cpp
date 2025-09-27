@@ -8,14 +8,9 @@
 
 #include "Catch2/catch.hpp"
 
-extern void dummyTest();
-//
 //int main()
 //{
 //    std::cout << "Hello Catch2" << std::endl;
-//
-//    dummyTest();
-//
 //    return 0;
 //}
 

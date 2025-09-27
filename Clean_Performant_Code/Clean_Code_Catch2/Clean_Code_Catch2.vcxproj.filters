@@ -29,6 +29,12 @@
     <None Include="Readme_Catch2.md">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Readme_Catch2_Getting_Started.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Readme_UnitTesting_BestPractices.md">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Catch2\catch.hpp">
