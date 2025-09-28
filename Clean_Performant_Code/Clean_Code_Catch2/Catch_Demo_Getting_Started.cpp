@@ -5,6 +5,8 @@
 #include "Catch2/catch.hpp"
 
 #include <iostream>
+#include <stack>
+#include <stdexcept>
 
 // ===============================================================
 
@@ -209,6 +211,41 @@ TEMPLATE_TEST_CASE("more vectors", "[template]", int, std::string, (std::tuple<i
 }
 
 // ===============================================================
+// test fixtures
+
+class VectorFixture
+{
+protected:
+    std::stack<int> m_data;
+    const int       MaxValue;
+
+public:
+    VectorFixture() : m_data(), MaxValue{ 5 }
+    {
+        for (int i = 1; i <= MaxValue; ++i)
+            m_data.push(i);
+    };
+};
+
+TEST_CASE_METHOD(VectorFixture, "sum", "[stack]") {
+    int sum{ 0 };
+    while (!m_data.empty()) {
+        sum += m_data.top();
+        m_data.pop();
+    }
+    REQUIRE(sum == MaxValue * (MaxValue + 1) / 2);
+}
+
+TEST_CASE_METHOD(VectorFixture, "product", "[stack]") {
+    int prod{ 1 };
+    while (!m_data.empty()) {
+        prod *= m_data.top();
+        m_data.pop();
+    }
+    REQUIRE(prod == Factorial(MaxValue));
+}
+
+// ===============================================================
 // matchers
 
 TEST_CASE("Bugs, bugs, bugs", "[Bug]")
@@ -255,7 +292,6 @@ TEST_CASE("Sporadic Bug", "[Sporadic_Bug]")
    // for (int i = 0; ............)
     // Programm ganz normal
     // ......................................
-
 
     CHECK(Factorial(5) == 120);
 }

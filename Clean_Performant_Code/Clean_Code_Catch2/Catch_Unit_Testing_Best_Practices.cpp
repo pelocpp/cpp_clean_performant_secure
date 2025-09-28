@@ -23,7 +23,7 @@
 #include <tuple>
 
 // ===========================================================================
-// Follow test naming standards
+// follow test naming standards
 
 static bool IsPrime(size_t number)
 {
@@ -66,7 +66,7 @@ TEST_CASE("IsPrime // checks if argument is a prime number // returns true", "[I
 }
 
 // ===========================================================================
-// Use AAA Pattern
+// use AAA Pattern
 
 TEST_CASE("More IsPrime // checks if argument is a prime number // returns true", "[IsPrime__Demonstrate_AAA_Pattern__Returns_True]")
 {
@@ -82,7 +82,7 @@ TEST_CASE("More IsPrime // checks if argument is a prime number // returns true"
 }
 
 // ===========================================================================
-// Mocks and Stubs
+// mocks and stubs
 
 class User
 {
@@ -123,7 +123,7 @@ public:
 };
 
 // ---------------------------------------------------------------------------
-// Implementing a Stub
+// implementing a stub
 
 class UserRepositoryStub : public UserRepository
 {
@@ -151,7 +151,7 @@ TEST_CASE("getUserName", "[getUserName]")
 }
 
 // ---------------------------------------------------------------------------
-// Implementing a Mock
+// implementing a mock
 
 class UserRepositoryMock : public UserRepository
 {
@@ -190,7 +190,7 @@ TEST_CASE("UserService calls save on UserRepository", "[registerUser]")
 }
 
 // ===========================================================================
-// Avoid Using Complex Logic
+// avoid using complex logic
 
 TEST_CASE("Bad Example for testing IsPrime", "[Avoid_Using_Complex_Logic]")
 {
@@ -223,7 +223,7 @@ TEST_CASE("Good Example for testing IsPrime", "[Avoid_Using_Complex_Logic_Improv
 }
 
 // ===========================================================================
-// Avoid Multiple Acts
+// avoid multiple acts
 
 struct Calculator
 {
@@ -266,6 +266,78 @@ TEST_CASE("Good Example for testing a single method", "[Add_TwoNumbers_ReturnsSu
     CHECK(expected == actual);
 }
 
+// ===========================================================================
+// global variables
+
+// example for a global variable
+static int g_counter = 0;
+
+struct GlobalGuard
+{
+    int oldValue;
+    GlobalGuard() : oldValue(g_counter) {}
+    ~GlobalGuard() { g_counter = oldValue; }
+};
+
+// using a RAII object
+TEST_CASE("Global Variables with RAII Guard", "[global_variables_RAII_guard]")
+{
+    GlobalGuard guard;
+    g_counter = 123;
+    REQUIRE(g_counter == 123);
+}
+// automatically reset after test
+
+struct GlobalFixture
+{
+    GlobalFixture() { g_counter = 0; }   // setup
+    ~GlobalFixture() { g_counter = 0; }  // teardown
+};
+
+TEST_CASE_METHOD(GlobalFixture, "Global Variables with Test Fixture", "[global_variables_test_fixture]") {
+    g_counter++;
+    REQUIRE(g_counter == 1);
+}
+
+// ===========================================================================
+// magic strings
+
+class Action
+{
+public:
+    bool isValid() const { return true; }
+};
+
+class IdentityManager
+{
+public:
+    Action addIdentityNumber(const std::string& id) { return {}; }
+};
+
+TEST_CASE("Bad Example for magic strings", "[magic_strings]")
+{
+    // arrange
+    IdentityManager identityManager;
+
+    // act
+    Action actual = identityManager.addIdentityNumber("123456789");
+
+    // assert
+    CHECK(actual.isValid());
+}
+
+TEST_CASE("Good Example for magic strings", "[magic_strings]")
+{
+    // arrange
+    IdentityManager identityManager;
+    const std::string INVALID_IDENTITY_NUMBER = "123456789";
+
+    // act
+    Action actual = identityManager.addIdentityNumber(INVALID_IDENTITY_NUMBER);
+
+    // assert
+    CHECK(actual.isValid());
+}
 
 // ===========================================================================
 // End-of-File

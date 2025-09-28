@@ -128,7 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Catch_Demo.cpp" />
+    <ClCompile Include="Catch_Demo_Getting_Started.cpp" />
     <ClCompile Include="Catch_Unit_Testing_Best_Practices.cpp" />
     <ClCompile Include="Program.cpp" />
   </ItemGroup>
