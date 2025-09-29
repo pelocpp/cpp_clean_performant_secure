@@ -6,9 +6,11 @@
 
 ## Inhalt
 
-  * [Zum Ersten: Klasse (`class`) oder Struktur (`struct`)?](#link1)
-  * [Zum Zweiten: Klasse (`class`) oder Struktur (`struct`)?](#link2)
-  * [Zum Dritten: Klasse (`class`) oder Struktur (`struct`)?](#link3)
+  * [Namensgebung für Bezeichner](#link1)
+  * [Kommentare](#link1)
+  * [Klasse (`class`) oder Struktur (`struct`) zum Ersten](#link1)
+  * [Klasse (`class`) oder Struktur (`struct`) zum Zweiten](#link2)
+  * [Klasse (`class`) oder Struktur (`struct`) zum Dritten](#link3)
   * [Organisation von Include-Files](#link4)
   * [Interfaces (Schnittstellen): Wozu?](#link5)
   * [Minimieren Sie die Sichtbarkeit von Mitgliedern einer Klasse](#link6)
@@ -42,7 +44,69 @@
 
 ---
 
-### Zum Ersten: Klasse (`class`) oder Struktur (`struct`)? <a name="link1"></a>
+### Namensgebung für Bezeichner <a name="link1"></a>
+
+Auch wenn es überraschend klingen mag: Die Namensgebung für Bezeichner ist keine einfache Angelegenheit.
+
+Ein sprechender Variablenname &ndash; genauer auch selbsterklärender Variablenname &ndash; ist ein Bezeichner für eine Variable,
+aus dem die Bedeutung der Variablen sichtbar wird.
+
+Dies gilt nicht nur für Variablen, sondern auch für Klassen, Methoden, Funktionen und Ähnliches.
+
+Auch wenn Quellcode (oder Quelltext) für die Maschine lesbar sein muss und es dieser vollkommen egal ist,
+wie die Variablen heißen, so wird Code dennoch von Menschen entworfen und gepflegt.
+
+Gerade wenn man als Team an einem Projekt arbeitet, ist ein gut kommentierter, also menschenlesbarer Code wichtig.
+
+Bei Vermeidung sprechender Variablennamen werden Quelltexte unleserlich und damit fehleranfälliger sowie schwerer wartbar.
+
+*Beispiel*:
+
+```cpp
+double vatRate;       // Mehrwertsteuersatz
+double unitPrice;     // Einzelpreis
+double reduceVatRate; // reduzierter Mehrwertsteuersatz
+```
+
+versus
+
+```cpp
+double u, v, w;
+```
+
+*Bemerkung*:<br />
+*There are only two hard things in Computer Science: cache invalidation and naming things.* (Phil Karlton)
+
+---
+
+### Kommentare <a name="link1"></a>
+
+*Uncle Bob*<br />
+&bdquo;*Nothing can be quite so helpful as a well-placed comment.*&rdquo;
+
+#### Pro und Contra
+
+  * Pro: Code sollte klar genug geschrieben sein, um ohne Kommentare verstanden zu werden.
+  * Contra: Das Kommentieren von Code ist eine absolut notwendige Anforderung und Sie sollten Ihren Code so oft wie möglich kommentieren.
+
+
+#### Versuch einer neutralen Einschätzung
+
+  * Quellcode sollte so geschrieben sein, dass er klar genug ist, um ohne Kommentare verstehen zu können, was er tut.
+
+  * Kommentare, die erklären, was der Code tut, sind im besten Fall eine Krücke und im schlimmsten Fall veraltet, wenn der Code aktualisiert wurde, ohne die Kommentare zu aktualisieren.
+
+  * Es sollten Kommentare hinzugefügt werden, um in nicht zwingend einleuchtenden Situationen zu erklären, warum der Code tut, was er tut.
+
+  * Machen Sie Ihren Code selbstdokumentierend, indem Sie gute Namen für Variablen und Methoden wählen.
+
+  * Fügen Sie Kommentare hinzu, um zu erklären, warum der Code auf eine bestimmte Weise funktioniert. Geben Sie sich besonders viel Mühe, dies zu tun, wenn die Funktionsweise des Codes seltsam erscheint, die offensichtlichen Lösungen jedoch bereits ausprobiert wurden und besondere Probleme aufwerfen.
+
+
+---
+
+
+### Klasse (`class`) oder Struktur (`struct`) zum Ersten <a name="link1"></a>
 
   * Verwenden Sie Strukturen (`struct`), wenn der zu konzipierende Datentyp
    hauptsächlich ein Halter von Daten ist.
@@ -65,7 +129,7 @@
 
 ---
 
-### Zum Zweiten: Klasse (`class`) oder Struktur (`struct`)? <a name="link2"></a>
+### Klasse (`class`) oder Struktur (`struct`) zum Zweiten <a name="link2"></a>
 
 Eine Richtlinie stammt von Bjarne Stroustrup *himself*:
 
@@ -126,7 +190,7 @@ das eine Instanzvariable `m_position` hat, die sich bestimmten Grenzwerten
 
 ---
 
-### Zum Dritten: Klasse (`class`) oder Struktur (`struct`)? <a name="link3"></a>
+### Klasse (`class`) oder Struktur (`struct`) zum Dritten <a name="link3"></a>
 
 Wenn ein (oder mehrere Elemente) mit `private` zu kennzeichnen sind,
 sollte man `class` verwenden.
