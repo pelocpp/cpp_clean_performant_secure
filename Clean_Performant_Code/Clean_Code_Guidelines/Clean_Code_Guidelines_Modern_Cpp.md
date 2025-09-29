@@ -6,31 +6,30 @@
 
 ## Inhalt
 
-  * [Schlüsselwort `auto` verwenden oder nicht?](#link1)
-  * [Vorteile von `auto` (*Automatic Type Deduction*)]()
+  * [Schlüsselwort `auto` verwenden oder nicht? / *Automatic Type Deduction*](#link1)
   * [Schlüsselwort `auto`: *Left-to-Right* Initialisierungsstil](#link2)
   * [Konstante Referenzen (`const auto&`)](#link3)
   * [Veränderbare Referenzen (`auto&`)](#link4)
   * [*Forwarding* Referenzen (`auto&&`)](#link5)
-  * [Nutzung von Smart Pointer Klassen (`std::unique_ptr`, `std::shared_ptr` und `std::weak_ptr`)]()
-  * [Ressourcenverwaltung mit RAII]()
-  * [Verwenden Sie Container und Algorithmen der C++&ndash;Bibliothek STL]()
-  * [C-Style Arrays oder `std::array` zusammen mit `std::span`?]()
-  * [Wozu gibt es den &bdquo;*lightweight*&rdquo; Container `std::initializer_list`?]()
-  * [Welche Vorteile bietet die Klasse `std::string_view` gegenüber `std::string`?]()
-  * [Das *Copy-Swap* Idiom](#link6)
-  * [Verschieben ist besser als Kopieren (`std::move`)](#link7)
-  * [Perfektes Weiterleiten (*Perfect Forwarding*, `std::forward`)]()
-  * [Bessere Lesbarkeit durch *Structured Binding*]()
-  * [Vorteile von Lambda-Objekten]()
-  * [Typreiche Programmierung (*Type-Rich Programming*, *Type Traits*)]()
-  * [Verwendung von Konzepten (`concept`) und Anforderungen (`requires`)]()
-  * [Ausnahmesicherheit (*Exception Safety*)](#link8)
-  * [Die No-Throw-Garantie (*No-Throw Guarantee*)](#link9)
-  * [Das `noexcept` Schlüsselwort]()
-  * [*Strong Types*](#link10)
-  * [`const` Propagation für Zeiger](#link11)
-  * [Literatur](#link23)
+  * [Nutzung von Smart Pointer Klassen (`std::unique_ptr`, `std::shared_ptr` und `std::weak_ptr`)](#link6)
+  * [Ressourcenverwaltung mit RAII](#link7)
+  * [Verwenden Sie Container und Algorithmen der C++&ndash;Bibliothek STL](#link8)
+  * [C-Style Arrays oder `std::array` zusammen mit `std::span`?](#link9)
+  * [Wozu gibt es den &bdquo;*lightweight*&rdquo; Container `std::initializer_list`?](#link10)
+  * [Welche Vorteile bietet die Klasse `std::string_view` gegenüber `std::string`?](#link11)
+  * [Das *Copy-Swap* Idiom](#link12)
+  * [Verschieben ist besser als Kopieren (`std::move`)](#link13)
+  * [Perfektes Weiterleiten (*Perfect Forwarding*, `std::forward`)](#link14)
+  * [Bessere Lesbarkeit durch *Structured Binding*](#link15)
+  * [Vorteile von Lambda-Objekten](#link16)
+  * [Typreiche Programmierung (*Type-Rich Programming*, *Type Traits*)](#link17)
+  * [Verwendung von Konzepten (`concept`) und Anforderungen (`requires`)](#link18)
+  * [Ausnahmesicherheit (*Exception Safety*)](#link19)
+  * [Die No-Throw-Garantie (*No-Throw Guarantee*)](#link20)
+  * [Das `noexcept` Schlüsselwort](#link21)
+  * [*Strong Types*](#link22)
+  * [`const` Propagation für Zeiger](#link23)
+  * [Literatur](#link24)
 
 ---
 
@@ -40,7 +39,7 @@
 
 ---
 
-### Schlüsselwort `auto` verwenden oder nicht? <a name="link1"></a>
+### Schlüsselwort `auto` verwenden oder nicht? / *Automatic Type Deduction* <a name="link1"></a>
 
 Empfielt sich der Einsatz des Schlüsselworts `auto` oder nicht?
 
@@ -79,7 +78,7 @@ Es gibt im Wesentlichen drei Möglichkeiten, diese zu vereinbaren:
 
   * <i>Inplace</i> &ndash; also als anonyme Objekte.
   * Mit dem Schlüsselwort `auto`.
-  * Mit dem Klassentemplate `std::function`.
+  * Mit dem Klassentemplate `std::function<>`.
 
 Bei Lambda-Funktionen sollten wir den Weg mit `auto` einschlagen. Warum?
 
@@ -161,7 +160,7 @@ Verlust von `const` und `&` bei Verwendung von `auto`:
 17: }
 ```
 
-Es gibt  hier nur eine Warnung zu Zeile 16:<br />
+Es gibt hier nur eine Warnung zu Zeile 16:<br />
 *auto does not deduce references a possibly unintended copy is being made*.
 
 ---
@@ -378,7 +377,43 @@ man möchte sie lediglich an Code weitergeben, der die Variable tatsächlich verwe
 
 ---
 
-### Das *Copy-Swap* Idiom <a name="link6"></a>
+### Nutzung von Smart Pointer Klassen (`std::unique_ptr`, `std::shared_ptr` und `std::weak_ptr` <a name="link6"></a>
+
+Siehe Repository [*Modern C++*](https://github.com/pelocpp/cpp_modern).
+
+---
+
+### Ressourcenverwaltung mit RAII <a name="link7"></a>
+
+Siehe Repository [*C++ Design Patterns*](https://github.com/pelocpp/cpp_design_patterns).
+
+---
+
+### Verwenden Sie Container und Algorithmen der C++&ndash;Bibliothek STL <a name="link8"></a>
+
+Siehe Repository [*Modern C++*](https://github.com/pelocpp/cpp_modern).
+
+---
+
+### C-Style Arrays oder `std::array` zusammen mit `std::span`? <a name="link9"></a>
+
+Siehe Repository [*Modern C++*](https://github.com/pelocpp/cpp_modern).
+
+---
+
+### Wozu gibt es den &bdquo;*lightweight*&rdquo; Container `std::initializer_list`? <a name="link10"></a>
+
+Siehe Repository [*Modern C++*](https://github.com/pelocpp/cpp_modern).
+
+---
+
+### Welche Vorteile bietet die Klasse `std::string_view` gegenüber `std::string`? <a name="link11"></a>
+
+Siehe Repository [*Modern C++*](https://github.com/pelocpp/cpp_modern).
+
+---
+
+### Das *Copy-Swap* Idiom <a name="link12"></a>
 
 Das *Copy-and-Swap-Idiom* wurde eingeführt, um zwei Ziele zu erreichen:
 
@@ -439,7 +474,7 @@ Zuweisungsoperators betrachten:
 
 ---
 
-### Verschieben ist besser als Kopieren (`std::move`) <a name="link7"></a>
+### Verschieben ist besser als Kopieren (`std::move`) <a name="link13"></a>
 
 Wir haben bislang in der Klasse `SimpleString` die
 traditionellen Regel der drei speziellen Methoden
@@ -495,8 +530,37 @@ Nach der Ausführung dieser Anweisung hat
 
 ---
 
+### Perfektes Weiterleiten (*Perfect Forwarding*, `std::forward`) <a name="link14"></a>
 
-### Ausnahmesicherheit (*Exception Safety*) <a name="link8"></a>
+Siehe Repository [*Modern C++*](https://github.com/pelocpp/cpp_modern).
+
+---
+
+### Bessere Lesbarkeit durch *Structured Binding* <a name="link15"></a>
+
+Siehe Repository [*Modern C++*](https://github.com/pelocpp/cpp_modern).
+
+---
+
+### Vorteile von Lambda-Objekten <a name="link16"></a>
+
+Siehe Repository [*Modern C++*](https://github.com/pelocpp/cpp_modern).
+
+---
+
+### Typreiche Programmierung (*Type-Rich Programming*, *Type Traits*) <a name="link17"></a>
+
+Siehe Repository [*Modern C++*](https://github.com/pelocpp/cpp_modern).
+
+---
+
+### Verwendung von Konzepten (`concept`) und Anforderungen (`requires`) <a name="link18"></a>
+
+Siehe Repository [*Modern C++*](https://github.com/pelocpp/cpp_modern).
+
+---
+
+### Ausnahmesicherheit (*Exception Safety*) <a name="link19"></a>
 
 Die Idee hinter der Thematik *Exception Safety* besteht darin, dass Funktionen bzw. eine Klasse und ihre Methoden
 ihren Clients eine Art Versprechen bzw. eine Garantie hinsichtlich möglicherweise ausgelöster oder nicht ausgelöster Ausnahmen geben.
@@ -544,7 +608,7 @@ Die vierte und letzte Ebene der Ausnahmesicherheit behandeln wir im nächsten Abs
 
 ---
 
-### Die No-Throw-Garantie (*No-Throw Guarantee*) <a name="link22"></a>
+### Die No-Throw-Garantie (*No-Throw Guarantee*) <a name="link20"></a>
 
 
 Diese Ebene der Ausnahmesicherheit ist die höchste Ausnahmesicherheitsstufe:
@@ -590,10 +654,9 @@ Ein &bdquo;halbkonstruiertes Objekt&rdquo; wird kaum im weiteren Gebrauch seinen
 
 Eine `swap`-Funktion muss unter allen Umständen die No-Throw-Garantie gewährleiten.
 
-
 ---
 
-### Das `noexcept` Schlüsselwort <a name="link9"></a>
+### Das `noexcept` Schlüsselwort <a name="link21"></a>
 
 Der Spezifizierer `noexcept` in der Signatur einer Funktion gibt an,
 dass diese Funktion **keine** Ausnahme auslösen darf.
@@ -631,7 +694,7 @@ Destruktoren einer Klasse sind implizit als `noexcept` definiert.
 
 ---
 
-### *Strong Types* <a name="link10"></a>
+### *Strong Types* <a name="link22"></a>
 
 Was versteht man unter dem Begriff &bdquo;*Strong Typing*&rdquo;?
 
@@ -735,7 +798,7 @@ Hantierung aller Regeln, die mit einer bestimmten Instanzvariablen verbunden sin
 
 ---
 
-### `const` Propagation für Zeiger <a name="link11"></a>
+### `const` Propagation für Zeiger <a name="link23"></a>
 
 Mit dem Schlüsselwort `const` können wir dem Compiler mitteilen,
 welche Objekte unveränderlich sind.
@@ -821,7 +884,7 @@ für Zeiger.
 
 ---
 
-# Literatur <a name="link36"></a>
+# Literatur <a name="link24"></a>
 
 Zum Schlagwort &bdquo;*Temporary Lifetime Extension*&rdquo;
 gibt es im Netz zwei interessante Aufsätze:
@@ -831,7 +894,6 @@ gibt es im Netz zwei interessante Aufsätze:
 und
 
 [Lifetime extension of temporary objects in C++](https://pvs-studio.com/en/blog/posts/cpp/1006).
-
 
 ---
 

@@ -40,7 +40,7 @@ ist man häufig auf der sicheren Seite.
 
 Stellen wir uns vor, wir müssen ein komplexes System modellieren,
 das aus einer Reihe von Teilsystemen besteht.
-Im meinem Fall handelte es sich um die Werkzeuge einer Werkzeugmaschinensteuerung.
+In meinem Fall handelte es sich um die Werkzeuge einer Werkzeugmaschinensteuerung.
 
 Ein exemplarisches Werkzeug stellt die Schnittstelle zum Benutzer dar. 
 
@@ -69,8 +69,8 @@ ist damit relativ leicht im Top-down-Ansatz zu erfassen.
 12: };
 13: 
 14: class PushButton : public AbstractButton {
-15:     virtual void render() const override {};
-16:     virtual void onClick() override {};
+15:     void render() const override {};
+16:     void onClick() override {};
 17:     // ...
 18: };
 19: 
@@ -126,17 +126,18 @@ Wollte man das Interface `Container<T>` verwenden, muss man drei vollkommen vers
    Ist man von dem Vorhandensein als auch der Intention einer Methode in einer Weise überzeugt,
    dass es keinen Grund geben kann (oder sollte), diese in einer abgeleiteten Klasse
    zu überschreiben &ndash; und damit zu erweitern oder ggf. zu ersetzen &ndash;,
-   dann ist `virtual` nicht angesagt.
+   dann ist `virtual` **nicht** angesagt.
   * Gibt es hingegen in einer Vaterklasse eine Methode &ndash; ggf. mit einer Realisierung, aus welchen Gründen auch immer &ndash;,
    und ist diese Methode gewissermaßen als Hinweis für Kindklassen konzipiert, 
    an ihrem *Verhalten* einen Beitrag zu leisten, dann sollte diese Methode als `virtual` definiert werden.
-
 
 ---
 
 ### Haben virtuelle Methoden einen Overhead im Vergleich zu nicht virtuellen Methoden? <a name="link3"></a>
 
-Einfache Frage, einfache Antwort: Ja. In der Umsetzung von virtuellen Methoden auf den Maschinencode weisen Klassen bzw. deren
+Einfache Frage, einfache Antwort: Ja.
+
+In der Umsetzung von virtuellen Methoden auf den Maschinencode weisen Klassen bzw. deren
 Objekte mit virtuellen Methoden Nachteile in punkto
 
   * Geschwindigkeit und
@@ -151,7 +152,7 @@ Zu den Details:
   und auch Additionsbefehle: Die indirekten Zugriffe kommen dadurch zustande,
   dass die Adressen virtueller Methoden in Tabellen hinterlegt sind
   (so genannte *virtual function pointer table* oder kurz *vtable* genannt).
-  Die Additionen kommen durch Offsets zustande, mit denen innerhalb in dieser Tabelle zugegriffen wird.
+  Die Additionen kommen durch Offsets zustande, mit denen innerhalb dieser Tabelle zugegriffen wird.
 
   * Virtuelle Methoden können &ndash; im Regelfall &ndash; nicht zu `inline`-Code optimiert werden:<br />
    Das so genannte *Inlining* ist eine Optimierungstechnik des Compilers. Diese ist nicht anwendbar,
@@ -160,7 +161,7 @@ Zu den Details:
   * Pro Objekt ist mehr Speicher notwendig:<br />
    Jedes Objekt, das mindestens eine virtuelle Methode hat, besitzt eine zusätzliche, &bdquo;versteckte&rdquo; Variable.
    Es handelt sich dabei um eine Zeigervariable (typischerweise unter dem Namen `vptr` bekannt),
-   der in eine statische Klassentabelle (`vtable`) zeigt. 
+   der auf eine statische Klassentabelle (`vtable`) zeigt. 
    
 Wir betrachten diese Aussagen an zwei Beispielen:
 
@@ -259,7 +260,7 @@ Sizeof y: 16
 
 ### Abstrakte Klassen und Schnittstellen <a name="link4"></a>
 
-Wenn Ihr Design auf abstrakte Klassen und Schnittstellen baut, dann ist `virtual` natürlich angesagt.
+Wenn Ihr Design auf abstrakten Klassen und Schnittstellen baut, dann ist `virtual` natürlich angesagt.
 
 *Beispiel*:
 
@@ -281,23 +282,28 @@ Wenn Ihr Design auf abstrakte Klassen und Schnittstellen baut, dann ist `virtual
 *Beispiel*:
 
 ```cpp
-01: class DecoratorBase : public Component
+01: class Component
 02: {
-03: protected:
-04:    std::shared_ptr<Component> m_component;
-05: 
-06: public:
-07:     DecoratorBase(const std::shared_ptr<Component>& component) 
-08:         : m_component{ component }
-09:     {}
-10: 
-11:     // decorator delegates all work to the wrapped component
-12:     virtual std::string operation() const override {
-13:         return m_component->operation();
-14:     }
-15: };
+03: public:
+04:     virtual std::string operation() const {};
+05: };
+06: 
+07: class DecoratorBase : public Component
+08: {
+09: protected:
+10:     std::shared_ptr<Component> m_component;
+11: 
+12: public:
+13:     DecoratorBase(const std::shared_ptr<Component>&component)
+14:         : m_component{ component }
+15:     {}
+16: 
+17:     // decorator delegates all work to the wrapped component
+18:     std::string operation() const override {
+19:         return m_component->operation();
+20:     }
+21: };
 ```
-
 
 ---
 

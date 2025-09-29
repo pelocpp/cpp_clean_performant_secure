@@ -116,9 +116,7 @@ namespace CleanCodeGuidelines_ModernCpp {
 
             auto name = std::string{ "Hans" };
             auto anotherName = "Sepp";
-
             auto ptr = std::make_unique<Foo>(123);
-
             auto myLambda = [](auto n, auto m) { return n + m; };
 
             //X x1();
@@ -152,42 +150,42 @@ namespace CleanCodeGuidelines_ModernCpp {
         // --------------------------------------------------------------------------------------
 
         // class defined with new syntax with auto
-        //class Foo
-        //{
-        //public:
-        //    auto val() const {
-        //        return m_value;
-        //    }
-        //    auto& cref() const {
-        //        return m_value;
-        //    }
-        //    auto& mref() {
-        //        return m_value;
-        //    }
-
-        //private:
-        //    int m_value{};
-        //};
-
-        // class defined with traditional syntax with explicit type
         class Foo
         {
         public:
-            int val() const {
+            auto val() const {
                 return m_value;
             }
-
-            const int& cref() const {
+            auto& cref() const {
                 return m_value;
             }
-
-            int& mref() {
+            auto& mref() {
                 return m_value;
             }
 
         private:
             int m_value{};
         };
+
+        // class defined with traditional syntax with explicit type
+        //class Foo
+        //{
+        //public:
+        //    int val() const {
+        //        return m_value;
+        //    }
+
+        //    const int& cref() const {
+        //        return m_value;
+        //    }
+
+        //    int& mref() {
+        //        return m_value;
+        //    }
+
+        //private:
+        //    int m_value{};
+        //};
 
         static void guidelines_keyword_const_auto_references_02()
         {

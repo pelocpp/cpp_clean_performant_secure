@@ -2,12 +2,11 @@
 // Clean_Code_Guidelines_Inheritance.cpp
 // ===========================================================================
 
-#include <cassert>
 #include <print>
 
 namespace GuidelinesInheritance {
 
-    namespace GuidelinesCoreCpp_ClassVsStructInvariants {
+    namespace ClassVsStructInvariants {
 
         // =======================================================================
         // Class Hierarchy
@@ -26,8 +25,8 @@ namespace GuidelinesInheritance {
         };
 
         class PushButton : public AbstractButton {
-            virtual void render() const override {};
-            virtual void onClick() override {};
+            void render()  const override {};
+            void onClick() override {};
             // ...
         };
 
@@ -63,7 +62,7 @@ namespace GuidelinesInheritance {
         }
     }
 
-    namespace GuidelinesInheritance_Comparison 
+    namespace ComparisonVirtualNonVirtual
     {
         // =======================================================================
         // Comparison virtual / non virtual methods
@@ -123,7 +122,46 @@ namespace GuidelinesInheritance {
         }
     }
 
-    namespace GuidelinesInheritance_Keyword_Override
+    namespace AbstractClasses_and_Interfaces {
+
+        class IObserver {
+        public:
+            virtual ~IObserver() {};
+            virtual void update(const std::string & message) = 0;
+        };
+
+
+        class ISubject {
+        public:
+            virtual ~ISubject() {}
+            virtual void attach(IObserver * observer) = 0;
+            virtual void detach(IObserver * observer) = 0;
+        };
+
+        class Component
+        {
+        public:
+            virtual std::string operation() const {};
+        };
+
+        class DecoratorBase : public Component
+        {
+        protected:
+            std::shared_ptr<Component> m_component;
+
+        public:
+            DecoratorBase(const std::shared_ptr<Component>&component)
+                : m_component{ component }
+            {}
+
+            // decorator delegates all work to the wrapped component
+            std::string operation() const override {
+                return m_component->operation();
+            }
+        };
+    }
+    
+    namespace Keyword_Override
     {
         // =======================================================================
         // Keyword 'override'
@@ -157,7 +195,7 @@ namespace GuidelinesInheritance {
         }
     }
 
-    namespace GuidelinesInheritance_Keyword_Final_01
+    namespace Keyword_Final_01
     {
         // =======================================================================
         // Keyword 'final' // 1. Example
@@ -175,7 +213,7 @@ namespace GuidelinesInheritance {
         };
     }
 
-    namespace GuidelinesInheritance_Keyword_Final_02
+    namespace Keyword_Final_02
     {
         // =======================================================================
         // Keyword 'final' // 2. Example
@@ -188,7 +226,7 @@ namespace GuidelinesInheritance {
         };
     }
 
-    namespace GuidelinesInheritance_Keyword_Final_03
+    namespace Keyword_Final_03
     {
         // =======================================================================
         // Keyword 'final' // 3. Example
@@ -211,7 +249,7 @@ namespace GuidelinesInheritance {
         };
     }
 
-    namespace GuidelinesInheritance_Virtual_BaseClassDestructor
+    namespace Virtual_BaseClassDestructor
     {
         // =======================================================================
         // Virtual Base Class Destructor
@@ -245,9 +283,10 @@ void clean_code_guidelines_inheritance()
 {
     using namespace GuidelinesInheritance;
 
-    GuidelinesInheritance_Comparison::guidelines_inheritance_virtual();
-    GuidelinesInheritance_Keyword_Override::guidelines_inheritance_keyword_override();
-    GuidelinesInheritance_Virtual_BaseClassDestructor::test_base_class_destructor();
+    ClassVsStructInvariants::guidelines_inherently_hierarchical();
+    ComparisonVirtualNonVirtual::guidelines_inheritance_virtual();
+    Keyword_Override::guidelines_inheritance_keyword_override();
+    Virtual_BaseClassDestructor::test_base_class_destructor();
 }
 
 // ===========================================================================
