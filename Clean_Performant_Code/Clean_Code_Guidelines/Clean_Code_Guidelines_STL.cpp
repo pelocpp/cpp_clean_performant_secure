@@ -1,5 +1,5 @@
 // ===========================================================================
-// Guidelines_STL_Algorithms.cpp
+// Clean_Code_Guidelines_STL.cpp
 // ===========================================================================
 
 #include <algorithm>
@@ -281,7 +281,7 @@ namespace GuidelinesSTLAlgorithms {
     }
 }
 
-void guidelines_stl_algorithms()
+void clean_code_guidelines_stl()
 {
     using namespace GuidelinesSTLAlgorithms;
 

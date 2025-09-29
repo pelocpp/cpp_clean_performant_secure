@@ -14,7 +14,7 @@
   * Starker Zusammenhalt (*Strong Cohesion*)
   * Lose Kopplung (*Lose Coupling*)
 
-## Einfache Konzepte von Clean Code C++
+## Richtlinien Clean Code &bdquo;Klassisches C++&rdquo;
 
   * Namensgebung für Bezeichner
   * Kommentare
@@ -26,7 +26,7 @@
   * Schlüsselwort `auto`: Left-to-Right Initialisierungsstil
   * `if`- und `for`-Anweisungen mit Initialisierer
 
-## Fortgeschrittene Konzepte von Clean Code C++
+## Richtlinien Clean Code &bdquo;Modernes C++&rdquo;
 
   * Ressourcenverwaltung mit RAII
   * Nutzung von Smart Pointer Klassen (`std::unique_ptr`, `std::shared_ptr` und `std::weak_ptr`)

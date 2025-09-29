@@ -138,10 +138,11 @@
     <None Include="Clean_Code_Guidelines_STL.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Guidelines_Core_Cpp.cpp" />
-    <ClCompile Include="Guidelines_GenericProgramming.cpp" />
-    <ClCompile Include="Guidelines_Inheritance.cpp" />
-    <ClCompile Include="Guidelines_STL.cpp" />
+    <ClCompile Include="Clean_Code_Guidelines_Classic_Cpp.cpp" />
+    <ClCompile Include="Clean_Code_Guidelines_GenericProgramming.cpp" />
+    <ClCompile Include="Clean_Code_Guidelines_Inheritance.cpp" />
+    <ClCompile Include="Clean_Code_Guidelines_Modern_Cpp.cpp" />
+    <ClCompile Include="Clean_Code_Guidelines_STL.cpp" />
     <ClCompile Include="Program.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

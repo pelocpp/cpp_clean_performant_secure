@@ -21,6 +21,12 @@
 
 ---
 
+#### Quellcode
+
+[*Clean_Code_Guidelines_Inheritance.cpp*](Clean_Code_Guidelines_Inheritance.cpp)
+
+---
+
 ### Wann nutzen Sie eine Hierarchie von Klassen? <a name="link1"></a>
 
 Modelliert man etwas in Quellcode, das eine *inhärent hierarchische Struktur* besitzt,

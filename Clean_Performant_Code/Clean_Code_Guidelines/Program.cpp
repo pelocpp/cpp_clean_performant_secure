@@ -1,18 +1,20 @@
 // ===========================================================================
-// Program.cpp // Guidelines
+// Program.cpp // Clean Code Guidelines
 // ===========================================================================
 
-void guidelines_core_cpp();
-void guidelines_generic_programming();
-void guidelines_inheritance();
-void guidelines_stl_algorithms();
+void clean_code_guidelines_classic_cpp();
+void clean_code_guidelines_modern_cpp();
+void clean_code_guidelines_generic_programming();
+void clean_code_guidelines_inheritance();
+void clean_code_guidelines_stl();
 
 int main()
 {
-    guidelines_core_cpp();
-    guidelines_generic_programming();
-    guidelines_inheritance();
-    guidelines_stl_algorithms();
+    clean_code_guidelines_classic_cpp();
+    clean_code_guidelines_modern_cpp();
+    clean_code_guidelines_generic_programming();
+    clean_code_guidelines_inheritance();
+    clean_code_guidelines_stl();
 
     return 0;
 }

@@ -1,5 +1,5 @@
 // ===========================================================================
-// Guidelines_Core_Cpp.cpp
+// Clean_Code_Guidelines_Classic_Cpp.cpp
 // ===========================================================================
 
 #include <algorithm> 
@@ -1376,27 +1376,27 @@ namespace GuidelinesCoreCpp {
     }
 }
 
-void guidelines_core_cpp()
+void clean_code_guidelines_classic_cpp()
 {
     using namespace GuidelinesCoreCpp;
 
-    // GuidelinesCoreCpp_ClassVsStructInvariants::guidelines_invariants();  // crashes intentionally
-    //GuidelinesCoreCpp_DefaultedConstructors::guidelines_defaulted_constructor();
-    //GuidelinesCoreCpp_InitializationOfStructs::guidelines_initialization_of_structs();
-    //GuidelinesCoreCpp_InitializationOfObjects::guidelines_initialization_of_objects();
-    //GuidelinesCoreCpp_CopySwapIdiom::guidelines_copy_swap_idiom();
-    //GuidelinesCoreCpp_SmallFocusedFunctions::guidelines_small_focused_functions();
-    //GuidelinesCoreCpp_UseConstLiberally::guidelines_use_const_liberally();
-    //GuidelinesCoreCpp_PreferExceptionsOverErrorCodes::guidelines_error_handling();
-    //GuidelinesCoreCpp_MethodsReturnType_CopiedToCaller::guidelines_return_type();
-    //GuidelinesCoreCpp_MethodsReturnType_LifetimeByVoucher::guidelines_return_type();
-    //GuidelinesCoreCpp_CompositionOverInheritance::guidelines_prefer_composition_over_inheritance();
-    //GuidelinesCoreCpp_PreventImplicitConversions::guidelines_implicit_conversion();
-    //GuidelinesCoreCpp_Keyword_Auto::guidelines_keyword_auto();
-    //GuidelinesCoreCpp_Keyword_Auto_Left_to_Right_Initialization_Syntax::guidelines_keyword_auto_left_to_right_initialization_syntax();
-    //GuidelinesCoreCpp_Keyword_Const_Auto_References::guidelines_keyword_const_auto_references();
-    //GuidelinesCoreCpp_Const_Propagation_for_Pointer::guidelines_keyword_const_propagation_for_pointers();
-    //GuidelinesCoreCpp_StrongTyping::guidelines_keyword_const_auto_references();
+    GuidelinesCoreCpp_ClassVsStructInvariants::guidelines_invariants();  // crashes intentionally
+    GuidelinesCoreCpp_DefaultedConstructors::guidelines_defaulted_constructor();
+    GuidelinesCoreCpp_InitializationOfStructs::guidelines_initialization_of_structs();
+    GuidelinesCoreCpp_InitializationOfObjects::guidelines_initialization_of_objects();
+    GuidelinesCoreCpp_CopySwapIdiom::guidelines_copy_swap_idiom();
+    GuidelinesCoreCpp_SmallFocusedFunctions::guidelines_small_focused_functions();
+    GuidelinesCoreCpp_UseConstLiberally::guidelines_use_const_liberally();
+    GuidelinesCoreCpp_PreferExceptionsOverErrorCodes::guidelines_error_handling();
+    GuidelinesCoreCpp_MethodsReturnType_CopiedToCaller::guidelines_return_type();
+    GuidelinesCoreCpp_MethodsReturnType_LifetimeByVoucher::guidelines_return_type();
+    GuidelinesCoreCpp_CompositionOverInheritance::guidelines_prefer_composition_over_inheritance();
+    GuidelinesCoreCpp_PreventImplicitConversions::guidelines_implicit_conversion();
+    GuidelinesCoreCpp_Keyword_Auto::guidelines_keyword_auto();
+    GuidelinesCoreCpp_Keyword_Auto_Left_to_Right_Initialization_Syntax::guidelines_keyword_auto_left_to_right_initialization_syntax();
+    GuidelinesCoreCpp_Keyword_Const_Auto_References::guidelines_keyword_const_auto_references();
+    GuidelinesCoreCpp_Const_Propagation_for_Pointer::guidelines_keyword_const_propagation_for_pointers();
+    GuidelinesCoreCpp_StrongTyping::guidelines_keyword_const_auto_references();
     GuidelinesCoreCpp_IfForStatementWithInitializer::guidelines_if_for_statement_with_initializer();
 }
 

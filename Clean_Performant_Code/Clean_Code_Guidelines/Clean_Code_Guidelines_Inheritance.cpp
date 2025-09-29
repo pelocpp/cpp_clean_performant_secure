@@ -1,5 +1,5 @@
 // ===========================================================================
-// Guidelines_Inheritance.cpp
+// Clean_Code_Guidelines_Inheritance.cpp
 // ===========================================================================
 
 #include <cassert>
@@ -241,7 +241,7 @@ namespace GuidelinesInheritance {
     }
 }
 
-void guidelines_inheritance()
+void clean_code_guidelines_inheritance()
 {
     using namespace GuidelinesInheritance;
 

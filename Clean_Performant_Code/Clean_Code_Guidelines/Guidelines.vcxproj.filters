@@ -18,16 +18,19 @@
     <ClCompile Include="Program.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Guidelines_GenericProgramming.cpp">
+    <ClCompile Include="Clean_Code_Guidelines_GenericProgramming.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Guidelines_Inheritance.cpp">
+    <ClCompile Include="Clean_Code_Guidelines_Inheritance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Guidelines_Core_Cpp.cpp">
+    <ClCompile Include="Clean_Code_Guidelines_Classic_Cpp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Guidelines_STL.cpp">
+    <ClCompile Include="Clean_Code_Guidelines_STL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Clean_Code_Guidelines_Modern_Cpp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -7,6 +7,7 @@
 ## Inhalt
 
   * [Namensgebung für Bezeichner](#link1)
+  * [Lesbarkeit von Quelltext](#link1)
   * [Kommentare](#link2)
   * [Klasse (`class`) oder Struktur (`struct`) zum Ersten](#link3)
   * [Klasse (`class`) oder Struktur (`struct`) zum Zweiten](#link4)
@@ -45,17 +46,19 @@
 
 ---
 
+#### Quellcode
+
+[*Clean_Code_Guidelines_Classic_Cpp.cpp*](Clean_Code_Guidelines_Classic_Cpp.cpp)
+
+---
+
 ### Namensgebung für Bezeichner <a name="link1"></a>
 
 Auch wenn es überraschend klingen mag: Die Namensgebung für Bezeichner ist keine einfache Angelegenheit.
-
 Ein sprechender Variablenname &ndash; genauer auch selbsterklärender Variablenname &ndash; ist ein Bezeichner für eine Variable,
 aus dem die Bedeutung der Variablen sichtbar wird.
 
 Dies gilt nicht nur für Variablen, sondern auch für Klassen, Methoden, Funktionen und Ähnliches.
-
-Auch wenn Quellcode (oder Quelltext) für die Maschine lesbar sein muss und es dieser vollkommen egal ist,
-wie die Variablen heißen, so wird Code dennoch von Menschen entworfen und gepflegt.
 
 Gerade wenn man als Team an einem Projekt arbeitet, ist ein gut kommentierter, also menschenlesbarer Code wichtig.
 
@@ -80,7 +83,68 @@ double u, v, w;
 
 ---
 
-### Kommentare <a name="link2"></a>
+### Lesbarkeit von Quelltext <a name="link2"></a>
+
+Hierzu ein Beispiel:
+
+```c
+#include "stdio.h"
+#define e 3
+#define g (e/e)
+#define h ((g+e)/2)
+#define f (e-g-h)
+#define j (e*e-g)
+#define k (j-h)
+#define l(x) tab2[x]/h
+#define m(n,a) ((n&(a))==(a))
+
+long tab1[]={ 989L,5L,26L,0L,88319L,123L,0L,9367L };
+int tab2[]={ 4,6,10,14,22,26,34,38,46,58,62,74,82,86 };
+
+main(m1,s) char *s; {
+    int a,b,c,d,o[k],n=(int)s;
+    if(m1==1){ char b[2*j+f-g]; main(l(h+e)+h+e,b); printf(b); }
+    else switch(m1-=h){
+        case f:
+            a=(b=(c=(d=g)<<g)<<g)<<g;
+            return(m(n,a|c)|m(n,b)|m(n,a|d)|m(n,c|d));
+        case h:
+            for(a=f;a<j;++a)if(tab1[a]&&!(tab1[a]%((long)l(n))))return(a);
+        case g:
+            if(n<h)return(g);
+            if(n<j){n-=g;c='D';o[f]=h;o[g]=f;}
+            else{c='\r'-'\b';n-=j-g;o[f]=o[g]=g;}
+            if((b=n)>=e)for(b=g<<g;b<n;++b)o[b]=o[b-h]+o[b-g]+c;
+            return(o[b-g]%n+k-h);
+        default:
+            if(m1-=e) main(m1-g+e+h,s+g); else *(s+g)=f;
+            for(*s=a=f;a<e;) *s=(*s<<e)|main(h+a++,(char *)m1);
+        }
+}
+```
+
+<sup>[Hier gefunden](https://www.cise.ufl.edu/~manuel/obfuscate/obfuscate.html)</sup>
+
+Auch wenn Sie es nicht für möglich halten:
+Dieses Programm ist &ndash; mit einigen Schmerzen &ndash; übersetzungsfähig,
+die Ausgabe lautet
+
+```
+hello world!
+```
+
+Wartungsfreundlicher Code zeichnet sich in der Softwareentwicklung dadurch aus,
+dass er einfach geändert werden kann, beispielsweise um einen Programmfehler zu beheben,
+den Code zu pflegen, ein neues Feature zu implementieren oder Code an bestimmte Muster anzupassen.
+
+Die Wartungsfreundlichkeit von Code resultiert aus einer Vielzahl von Faktoren, darunter auch die *Lesbarkeit*.
+
+Schwer lesbarer Code ist gleichzeitig schwer verständlicher Code.
+
+
+---
+
+### Kommentare <a name="link3"></a>
 
 *Uncle Bob*<br />
 &bdquo;*Nothing can be quite so helpful as a well-placed comment.*&rdquo;

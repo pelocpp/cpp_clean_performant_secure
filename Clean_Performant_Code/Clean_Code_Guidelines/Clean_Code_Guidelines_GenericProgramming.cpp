@@ -1,5 +1,5 @@
 // ===========================================================================
-// Guidelines_GenericProgramming.cpp
+// Clean_Code_Guidelines_GenericProgramming.cpp
 // ===========================================================================
 
 #include <print>
@@ -9,18 +9,18 @@ namespace GuidelinesGenericProgramming {
     // =======================================================================
     // Level of Abstraction
 
-    bool isGreaterThanFifty(int n) {
+    static bool isGreaterThanFifty(int n) {
 
         return n > 50;
     }
 
     template <typename T>
-    bool isGreaterThanFifty(T n) {
+    static bool isGreaterThanFifty(T n) {
 
         return n > T{ 50 };
     }
 
-    //bool isGreaterThanFifty(auto n) {
+    //static bool isGreaterThanFifty(auto n) {
     //
     //    return n > decltype(n) { 50 };
     //}
@@ -44,7 +44,7 @@ namespace GuidelinesGenericProgramming {
     };
 }
 
-void guidelines_generic_programming()
+void clean_code_guidelines_generic_programming()
 {
     using namespace GuidelinesGenericProgramming;
 

@@ -11,6 +11,12 @@
 
 ---
 
+#### Quellcode
+
+[*Clean_Code_Guidelines_GenericProgramming.cpp*](Clean_Code_Guidelines_GenericProgramming.cpp)
+
+---
+
 ## Allgemeines <a name="link1"></a>
 
 ---

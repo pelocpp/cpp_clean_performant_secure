@@ -11,6 +11,12 @@
 
 ---
 
+#### Quellcode
+
+[*Clean_Code_Guidelines_STL.cpp*](Clean_Code_Guidelines_STL.cpp)
+
+---
+
 #### Bevorzugen Sie Elemente der Standardbibliothek <a name="link1"></a>
 
   * C++ verfügt über eine umfangreiche und leistungsstarke Standardbibliothek,
