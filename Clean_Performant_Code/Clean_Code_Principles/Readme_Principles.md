@@ -1,4 +1,4 @@
-# Clean Code Programming Principles
+# Clean Code Entwicklungsprinzipien
 
 [Zurück](../Clean_Code/Readme_Clean_Code.md)
 

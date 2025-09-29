@@ -1,6 +1,6 @@
 # Richtlinien zur STL (Standard Template Library)
 
-[Zurück](./Readme_Guidelines.md)
+[Zurück](../Clean_Code/Readme_Clean_Code.md)
 
 ---
 
@@ -230,6 +230,6 @@ von Arne Mertz gefunden.
 
 ---
 
-[Zurück](./Readme_Guidelines.md)
+[Zurück](../Clean_Code/Readme_Clean_Code.md)
 
 ---

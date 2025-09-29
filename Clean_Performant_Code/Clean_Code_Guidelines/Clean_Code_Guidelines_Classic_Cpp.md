@@ -1,7 +1,5 @@
 ﻿# Richtlinien Clean Code &bdquo;Klassisches C++&rdquo;
 
-[Zurück](./Readme_Guidelines.md)
-
 [Zurück](../Clean_Code/Readme_Clean_Code.md)
 
 ---
@@ -1966,6 +1964,6 @@ und
 
 ---
 
-[Zurück](./Readme_Guidelines.md)
+[Zurück](../Clean_Code/Readme_Clean_Code.md)
 
 ---

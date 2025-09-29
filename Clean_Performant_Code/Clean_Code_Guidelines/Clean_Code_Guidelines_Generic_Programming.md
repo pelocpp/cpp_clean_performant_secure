@@ -1,6 +1,6 @@
 # Richtlinien zur generischen Programmierung
 
-[Zurück](./Readme_Guidelines.md)
+[Zurück](../Clean_Code/Readme_Clean_Code.md)
 
 ---
 
@@ -62,6 +62,6 @@ von *Semen Lebedev*.
 
 ---
 
-[Zurück](./Readme_Guidelines.md)
+[Zurück](../Clean_Code/Readme_Clean_Code.md)
 
 ---

@@ -6,7 +6,7 @@
 
 ## [Agenda](./Agenda.md)
 
-## [Clean Code Programming Principles](../Clean_Code_Principles/Readme_Principles.md)
+## [Clean Code Entwicklungsprinzipien](../Clean_Code_Principles/Readme_Principles.md)
 
 
 
@@ -18,13 +18,13 @@
 
 ## [Richtlinien zur Vererbung](../Clean_Code_Guidelines/Clean_Code_Guidelines_Inheritance.md)
 
-## Richtlinien zur generischen Programmierung](../Clean_Code_Guidelines/Clean_Code_Guidelines_Generic_Programming.md)
+## [Richtlinien zur generischen Programmierung](../Clean_Code_Guidelines/Clean_Code_Guidelines_Generic_Programming.md)
 
 
 
-## [Funktionale Programmierung: Die Bibliothek `std::ranges`](../../Clean_Performant_Code/Ranges/Readme_Ranges.md)
+## [Funktionale Programmierung: Die Bibliothek `std::ranges`](../Ranges/Readme_Ranges.md)
 
-## [Catch2 Unit-Test Framework](../../Clean_Performant_Code/Clean_Code_Catch2/Readme_Catch2.md)
+## [Catch2 Unit-Test Framework](../Clean_Code_Catch2/Readme_Catch2.md)
 
 ## [Literatur](./Literature.md)
 
