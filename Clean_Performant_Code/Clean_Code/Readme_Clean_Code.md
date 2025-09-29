@@ -6,19 +6,19 @@
 
 ## [Agenda](./Agenda.md)
 
-## [Clean Code Programming Principles](../../Clean_Performant_Code/Clean_Code_Principles/Readme_Principles.md)
+## [Clean Code Programming Principles](../Clean_Code_Principles/Readme_Principles.md)
 
 
 
-## [Richtlinien für Clean Code &bdquo;Klassisches C++&rdquo;](../../Clean_Performant_Code/Guidelines/Clean_Code_Guidelines_Classic_Cpp.md)
+## [Richtlinien Clean Code &bdquo;Klassisches C++&rdquo;](../Clean_Code_Guidelines/Clean_Code_Guidelines_Classic_Cpp.md)
 
-## [Richtlinien für Clean Code &bdquo;Modernes C++&rdquo;](../../Clean_Performant_Code/Guidelines/Clean_Code_Guidelines_Modern_Cpp.md)
+## [Richtlinien Clean Code &bdquo;Modernes C++&rdquo;](../Clean_Code_Guidelines/Clean_Code_Guidelines_Modern_Cpp.md)
 
-## [Richtlinien zur STL (Standard Template Library)](../../Clean_Performant_Code/Guidelines/Clean_Code_Guidelines_STL.md)
+## [Richtlinien zur STL (Standard Template Library)](../Clean_Code_Guidelines/Clean_Code_Guidelines_STL.md)
 
-## [Richtlinien zur Vererbung](../../Clean_Performant_Code/Guidelines/Clean_Code_Guidelines_Inheritance.md)
+## [Richtlinien zur Vererbung](../Clean_Code_Guidelines/Clean_Code_Guidelines_Inheritance.md)
 
-## Richtlinien zur generischen Programmierung](../../Clean_Performant_Code/Guidelines/Clean_Code_Guidelines_Generic_Programming.md)
+## Richtlinien zur generischen Programmierung](../Clean_Code_Guidelines/Clean_Code_Guidelines_Generic_Programming.md)
 
 
 

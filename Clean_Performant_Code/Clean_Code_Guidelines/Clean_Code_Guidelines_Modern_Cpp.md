@@ -1,4 +1,4 @@
-# Richtlinien für Clean Code &bdquo;Modernes C++&rdquo;
+# Richtlinien Clean Code &bdquo;Modernes C++&rdquo;
 
 [Zurück](./Readme_Guidelines.md)
 
