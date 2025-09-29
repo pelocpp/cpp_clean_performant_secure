@@ -129,12 +129,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="Clean_Code_Guidelines_Modern_Cpp.md" />
     <None Include="cpp_special_member_functions.svg" />
-    <None Include="Readme_Guidelines.md" />
-    <None Include="Guidelines_Core_Cpp.md" />
-    <None Include="Guidelines_Generic_Programming.md" />
-    <None Include="Guidelines_Inheritance.md" />
-    <None Include="Guidelines_STL.md" />
+    <None Include="Clean_Code_Readme_Guidelines.md" />
+    <None Include="Clean_Code_Guidelines_Classic_Cpp.md" />
+    <None Include="Clean_Code_Guidelines_Generic_Programming.md" />
+    <None Include="Clean_Code_Guidelines_Inheritance.md" />
+    <None Include="Clean_Code_Guidelines_STL.md" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Guidelines_Core_Cpp.cpp" />

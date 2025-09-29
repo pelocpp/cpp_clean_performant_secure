@@ -1,4 +1,4 @@
-# Guidelines Generische Programmierung
+# Richtlinien zur generischen Programmierung
 
 [Zurück](./Readme_Guidelines.md)
 

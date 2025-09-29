@@ -8,7 +8,19 @@
 
 ## [Clean Code Programming Principles](../../Clean_Performant_Code/Clean_Code_Principles/Readme_Principles.md)
 
-## [Allgemeine Richtlinien für C++ Clean Code](../../Clean_Performant_Code/Guidelines/Readme_Guidelines.md)
+
+
+## [Richtlinien für Clean Code &bdquo;Klassisches C++&rdquo;](../../Clean_Performant_Code/Guidelines/Clean_Code_Guidelines_Classic_Cpp.md)
+
+## [Richtlinien für Clean Code &bdquo;Modernes C++&rdquo;](../../Clean_Performant_Code/Guidelines/Clean_Code_Guidelines_Modern_Cpp.md)
+
+## [Richtlinien zur STL (Standard Template Library)](../../Clean_Performant_Code/Guidelines/Clean_Code_Guidelines_STL.md)
+
+## [Richtlinien zur Vererbung](../../Clean_Performant_Code/Guidelines/Clean_Code_Guidelines_Inheritance.md)
+
+## Richtlinien zur generischen Programmierung](../../Clean_Performant_Code/Guidelines/Clean_Code_Guidelines_Generic_Programming.md)
+
+
 
 ## [Funktionale Programmierung: Die Bibliothek `std::ranges`](../../Clean_Performant_Code/Ranges/Readme_Ranges.md)
 

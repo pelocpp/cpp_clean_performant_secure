@@ -1,64 +1,28 @@
-ï»¿# Richtlinien Core C++
+# Richtlinien für Clean Code &bdquo;Modernes C++&rdquo;
 
-[ZurÃ¼ck](./Readme_Guidelines.md)
+[Zurück](./Readme_Guidelines.md)
 
 ---
 
 ## Inhalt
 
-  * [Namensgebung fÃ¼r Bezeichner](#link1)
-  * [Kommentare](#link1)
-  * [Klasse (`class`) oder Struktur (`struct`) zum Ersten](#link1)
-  * [Klasse (`class`) oder Struktur (`struct`) zum Zweiten](#link2)
-  * [Klasse (`class`) oder Struktur (`struct`) zum Dritten](#link3)
-  * [Organisation von Include-Files](#link4)
-  * [Interfaces (Schnittstellen): Wozu?](#link5)
-  * [Minimieren Sie die Sichtbarkeit von Mitgliedern einer Klasse](#link6)
-  * [Lebenszyklus eines Objekts: Spezielle Member-Funktionen](#link7)
-  * [Automatische Erzeugung der speziellen Member-Funktionen: Wann?](#link8)
-  * [Automatische Erzeugung der speziellen Member-Funktionen: Wie?](#link9)
-  * [*Explicitly defaulted* Standardkonstruktor](#link10)
-  * [*Explicitly deleted* Standardkonstruktor](#link11)
-  * [Automatische Erzeugung spezieller Member-Funktionen: *Rule-of-Zero*](#link12)
-  * [Initialisierung von Strukturen](#link13)
-  * [Initialisierung von Objekten](#link14)
-  * [Das Copy-and-Swap-Idiom](#link15)
-  * [Verschiebeoperationen](#link16)
-  * [Schreiben Sie kleine, fokussierte Funktionen (Methoden)](#link17)
-  * [Verwenden Sie `const` groÃŸzÃ¼gig](#link18)
-  * [Exception Safety](#link19)
-  * [Die No-Throw-Garantie (*No-Throw Guarantee*)](#link20)
-  * [Das `noexcept` SchlÃ¼sselwort](#link21)
-  * [Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen](#link22)
-  * [RÃ¼ckgabetyp einer Methode](#link23)
-  * [Bevorzuge Komposition der Vererbung gegenÃ¼ber](#link24)
-  * [Implizite Konvertierungen vermeiden](#link25)
-  * [SchlÃ¼sselwort `auto` verwenden oder nicht?](#link26)
-  * [SchlÃ¼sselwort `auto`: *Left-to-Right* Initialisierungsstil](#link27)
-  * [Konstante Referenzen (`const auto&`)](#link28)
-  * [VerÃ¤nderbare Referenzen (`auto&`)](#link29)
-  * [*Forwarding* Referenzen (`auto&&`)](#link30)
-  * [`const` Propagation fÃ¼r Zeiger](#link31)
-  * [Strong Typing](#link32)
-  * [`if`- und *Range-based* `for`-Anweisungen mit Initialisierer](#link33)
-
 ---
 
-### Namensgebung fÃ¼r Bezeichner <a name="link1"></a>
+### Namensgebung für Bezeichner <a name="link1"></a>
 
-Auch wenn es Ã¼berraschend klingen mag: Die Namensgebung fÃ¼r Bezeichner ist keine einfache Angelegenheit.
+Auch wenn es überraschend klingen mag: Die Namensgebung für Bezeichner ist keine einfache Angelegenheit.
 
-Ein sprechender Variablenname &ndash; genauer auch selbsterklÃ¤render Variablenname &ndash; ist ein Bezeichner fÃ¼r eine Variable,
+Ein sprechender Variablenname &ndash; genauer auch selbsterklärender Variablenname &ndash; ist ein Bezeichner für eine Variable,
 aus dem die Bedeutung der Variablen sichtbar wird.
 
-Dies gilt nicht nur fÃ¼r Variablen, sondern auch fÃ¼r Klassen, Methoden, Funktionen und Ã„hnliches.
+Dies gilt nicht nur für Variablen, sondern auch für Klassen, Methoden, Funktionen und Ähnliches.
 
-Auch wenn Quellcode (oder Quelltext) fÃ¼r die Maschine lesbar sein muss und es dieser vollkommen egal ist,
-wie die Variablen heiÃŸen, so wird Code dennoch von Menschen entworfen und gepflegt.
+Auch wenn Quellcode (oder Quelltext) für die Maschine lesbar sein muss und es dieser vollkommen egal ist,
+wie die Variablen heißen, so wird Code dennoch von Menschen entworfen und gepflegt.
 
 Gerade wenn man als Team an einem Projekt arbeitet, ist ein gut kommentierter, also menschenlesbarer Code wichtig.
 
-Bei Vermeidung sprechender Variablennamen werden Quelltexte unleserlich und damit fehleranfÃ¤lliger sowie schwerer wartbar.
+Bei Vermeidung sprechender Variablennamen werden Quelltexte unleserlich und damit fehleranfälliger sowie schwerer wartbar.
 
 *Beispiel*:
 
@@ -87,20 +51,20 @@ double u, v, w;
 #### Pro und Contra
 
   * Pro: Code sollte klar genug geschrieben sein, um ohne Kommentare verstanden zu werden.
-  * Contra: Das Kommentieren von Code ist eine absolut notwendige Anforderung und Sie sollten Ihren Code so oft wie mÃ¶glich kommentieren.
+  * Contra: Das Kommentieren von Code ist eine absolut notwendige Anforderung und Sie sollten Ihren Code so oft wie möglich kommentieren.
 
 
-#### Versuch einer neutralen EinschÃ¤tzung
+#### Versuch einer neutralen Einschätzung
 
-  * Quellcode sollte so geschrieben sein, dass er klar genug ist, um ohne Kommentare verstehen zu kÃ¶nnen, was er tut.
+  * Quellcode sollte so geschrieben sein, dass er klar genug ist, um ohne Kommentare verstehen zu können, was er tut.
 
-  * Kommentare, die erklÃ¤ren, was der Code tut, sind im besten Fall eine KrÃ¼cke und im schlimmsten Fall veraltet, wenn der Code aktualisiert wurde, ohne die Kommentare zu aktualisieren.
+  * Kommentare, die erklären, was der Code tut, sind im besten Fall eine Krücke und im schlimmsten Fall veraltet, wenn der Code aktualisiert wurde, ohne die Kommentare zu aktualisieren.
 
-  * Es sollten Kommentare hinzugefÃ¼gt werden, um in nicht zwingend einleuchtenden Situationen zu erklÃ¤ren, warum der Code tut, was er tut.
+  * Es sollten Kommentare hinzugefügt werden, um in nicht zwingend einleuchtenden Situationen zu erklären, warum der Code tut, was er tut.
 
-  * Machen Sie Ihren Code selbstdokumentierend, indem Sie gute Namen fÃ¼r Variablen und Methoden wÃ¤hlen.
+  * Machen Sie Ihren Code selbstdokumentierend, indem Sie gute Namen für Variablen und Methoden wählen.
 
-  * FÃ¼gen Sie Kommentare hinzu, um zu erklÃ¤ren, warum der Code auf eine bestimmte Weise funktioniert. Geben Sie sich besonders viel MÃ¼he, dies zu tun, wenn die Funktionsweise des Codes seltsam erscheint, die offensichtlichen LÃ¶sungen jedoch bereits ausprobiert wurden und besondere Probleme aufwerfen.
+  * Fügen Sie Kommentare hinzu, um zu erklären, warum der Code auf eine bestimmte Weise funktioniert. Geben Sie sich besonders viel Mühe, dies zu tun, wenn die Funktionsweise des Codes seltsam erscheint, die offensichtlichen Lösungen jedoch bereits ausprobiert wurden und besondere Probleme aufwerfen.
 
 
 ---
@@ -109,10 +73,10 @@ double u, v, w;
 ### Klasse (`class`) oder Struktur (`struct`) zum Ersten <a name="link1"></a>
 
   * Verwenden Sie Strukturen (`struct`), wenn der zu konzipierende Datentyp
-   hauptsÃ¤chlich ein Halter von Daten ist.
-  * Verwenden Sie Klassen (`class`), wenn fÃ¼r den zu konzipierenden Datentyp
+   hauptsächlich ein Halter von Daten ist.
+  * Verwenden Sie Klassen (`class`), wenn für den zu konzipierenden Datentyp
    die Daten eher als Implementierungsdetails anzusehen sind
-   und es das Verhalten (Methoden) ist, was man nach auÃŸen zeigen mÃ¶chte.
+   und es das Verhalten (Methoden) ist, was man nach außen zeigen möchte.
 
 *Beispiel*:
 
@@ -134,9 +98,9 @@ double u, v, w;
 Eine Richtlinie stammt von Bjarne Stroustrup *himself*:
 
   * Verwenden Sie Klasse (`class`), wenn es *Invarianten* gibt.
-  * Verwenden Sie Strukturen (`struct`), wenn alle Datenelemente sich unabhÃ¤ngig voneinander verÃ¤ndern kÃ¶nnen.
+  * Verwenden Sie Strukturen (`struct`), wenn alle Datenelemente sich unabhängig voneinander verändern können.
 
-Es bleibt nur noch zu klÃ¤ren, was man unter einer *Invarianten* versteht?
+Es bleibt nur noch zu klären, was man unter einer *Invarianten* versteht?
 Dazu ein Beispiel einer Klasse `Game`,
 das eine Instanzvariable `m_position` hat, die sich bestimmten Grenzwerten
 (hier: `m_width` und `m_height`) unterwerfen muss.
@@ -199,10 +163,10 @@ sollte man `class` verwenden.
 
 ### Organisation von Include-Files <a name="link4"></a>
 
-Die goldene Regel fÃ¼r #include-Dateien lautet:
+Die goldene Regel für #include-Dateien lautet:
 
 Wenn ein Modul `main.c` ein Untermodul `submodule.c` verwendet,
-sollte alles, was zum Kompilieren von `submodule.c` benÃ¶tigt wird,
+sollte alles, was zum Kompilieren von `submodule.c` benötigt wird,
 in `submodule.h` definiert sein.
 
 Die empfohlene Regel lautet:
@@ -241,7 +205,7 @@ Ohne Worte :)
 
 ### Lebenszyklus eines Objekts: Spezielle Member-Funktionen <a name="link7"></a>
 
-C++ definiert fÃ¼r den Lebenszyklus eines Objekts eine Reihe von Methoden/Operatoren,
+C++ definiert für den Lebenszyklus eines Objekts eine Reihe von Methoden/Operatoren,
 die eine besondere Rolle einnehmen.
 
 Die Schnittstellen dieser Operationen sehen so aus:
@@ -262,31 +226,31 @@ Die Schnittstellen dieser Operationen sehen so aus:
 ### Automatische Erzeugung der speziellen Member-Funktionen: Wann? <a name="link8"></a>
 
 In manchen Situationen nimmt der Compiler einem Entwickler die Arbeit ab und 
-erzeugt fÃ¼r eine oder mehrere der speziellen Member-Funktionen eine Realisierung.
+erzeugt für eine oder mehrere der speziellen Member-Funktionen eine Realisierung.
 
 Das gesamte Regelwerk in diesem Umfeld ist nicht ganz trivial,
-einen Ãœberblick versucht das folgende Bild zu geben ([hier](https://howardhinnant.github.io/classdecl.html) vorgefunden):
+einen Überblick versucht das folgende Bild zu geben ([hier](https://howardhinnant.github.io/classdecl.html) vorgefunden):
 
 <img src="cpp_special_member_functions.svg" width="700">
 
-*Abbildung* 1: Ãœberblick Ã¼ber die automatische Erzeugung spezieller Member-Funktionen.
+*Abbildung* 1: Überblick über die automatische Erzeugung spezieller Member-Funktionen.
 
 Aus *Abbildung* 1 kann man einige wesentliche Aussagen ableiten:
 
-  * Standardkonstruktor:<br/>Der Standardkonstruktor wird automatisch generiert, wenn Sie in der betroffenen Klasse selbst *Ã¼berhaupt keinen* Konstruktor implementiert haben.
+  * Standardkonstruktor:<br/>Der Standardkonstruktor wird automatisch generiert, wenn Sie in der betroffenen Klasse selbst *überhaupt keinen* Konstruktor implementiert haben.
   * Kopierkonstruktor:<br/>Der Kopierkonstruktor wird automatisch generiert, wenn Sie keine der beiden Verschiebeoperationen implementieren.
   * Kopierende Zuweisung:<br/>Die Kopierzuweisung wird automatisch generiert, wenn Sie keine der beiden Verschiebeoperationen implementieren.
-  * Verschiebekonstruktor:<br/>Der Verschiebekonstruktor wird automatisch generiert, wenn Sie keine der beiden Kopieroperationen implementieren und alle Elemente verschoben werden kÃ¶nnen.
-  * Verschiebende Zuweisung:<br/>Die verschiebende Zuweisung wird automatisch generiert, wenn Sie keine der beiden Kopieroperationen implementieren und alle Elemente verschoben werden kÃ¶nnen.
+  * Verschiebekonstruktor:<br/>Der Verschiebekonstruktor wird automatisch generiert, wenn Sie keine der beiden Kopieroperationen implementieren und alle Elemente verschoben werden können.
+  * Verschiebende Zuweisung:<br/>Die verschiebende Zuweisung wird automatisch generiert, wenn Sie keine der beiden Kopieroperationen implementieren und alle Elemente verschoben werden können.
   * Destruktor:<br/>Der Destruktor wird automatisch generiert, wenn Sie keinen Destruktor implementiert haben.
 
 Was erkennen wir an diesen Aussagen?
 
-  * Die beiden *Kopieroperationen* sind unabhÃ¤ngig voneinander:
+  * Die beiden *Kopieroperationen* sind unabhängig voneinander:
   Wenn in einer Klasse eine der beiden Kopieroperationen definiert ist,
-  kÃ¶nnte der Ãœbersetzer immer noch die andere Operation automatisch erzeugen.
+  könnte der Übersetzer immer noch die andere Operation automatisch erzeugen.
 
-  * FÃ¼r die beiden *Verschiebeoperationen* gilt das Gegenteil:
+  * Für die beiden *Verschiebeoperationen* gilt das Gegenteil:
   Wird vom Entwickler eine der beiden Operationen implementiert,
   stellt der Compiler *keine* Realisierung der anderen Operation bereit.
 
@@ -294,26 +258,26 @@ Was erkennen wir an diesen Aussagen?
 
 ### Automatische Erzeugung der speziellen Member-Funktionen: Wie? <a name="link9"></a>
 
-NatÃ¼rlich wÃ¤re es interessant zu wissen, wie der Quellcode von automatisch erzeugten Member-Funktionen aussieht.
+Natürlich wäre es interessant zu wissen, wie der Quellcode von automatisch erzeugten Member-Funktionen aussieht.
 Das ist keine triviale Frage, dennoch kann man ein paar Richtlinien erkennen:
 
   * Standardkonstruktor:<br/>
-    * FÃ¼r alle Instanzvariablen, die Objekte sind, wird deren Standardkonstruktor aufgerufen.
-    * FÃ¼r alle Instanzvariablen, die elementar sind (`int`, `double`), erfolgt **keine** Initialisierung, also auch keine Vorbelegung mit einem datentypspezifischen Null-Wert!
+    * Für alle Instanzvariablen, die Objekte sind, wird deren Standardkonstruktor aufgerufen.
+    * Für alle Instanzvariablen, die elementar sind (`int`, `double`), erfolgt **keine** Initialisierung, also auch keine Vorbelegung mit einem datentypspezifischen Null-Wert!
 
   * Kopierende Operationen:<br/>
     * Das Objekt wird elementweise kopiert.<br/>
-    * Darunter ist zu verstehen, dass fÃ¼r jedes Element, das selbst wieder ein Objekt
-    oder eine Variable elementaren Datentyps ist, der zugehÃ¶rige Zuweisungsoperator aufgerufen wird.
-    FÃ¼r Variablen elementaren Datentyps (und dazu zÃ¤hlen auch Zeigervariablen) bewirkt dies eine bitweise Kopie.
+    * Darunter ist zu verstehen, dass für jedes Element, das selbst wieder ein Objekt
+    oder eine Variable elementaren Datentyps ist, der zugehörige Zuweisungsoperator aufgerufen wird.
+    Für Variablen elementaren Datentyps (und dazu zählen auch Zeigervariablen) bewirkt dies eine bitweise Kopie.
     * Falls Konstanten oder Referenzen vorhanden sind, geschieht dies jedoch nicht, weil sie
-    nur initialisiert, aber nicht durch Zuweisung verÃ¤ndert werden kÃ¶nnen.
+    nur initialisiert, aber nicht durch Zuweisung verändert werden können.
     Der Zuweisungsoperator wird vom System in diesem Fall *nicht* erzeugt.
     * *Hinweis*:<br/>Im Falle  von (klassischen) Zeigervariablen entstehen in diesem Fall Probleme (Stichwort: flache versus tiefe Kopie).
 
   * Verschiebende Operationen:<br/>
-    * FÃ¼r alle Instanzvariablen, die Objekte sind, wird deren entsprechende Verschiebeoperation aufgerufen, falls vorhanden. Anderenfalls erfolgt eine Kopie.
-    * FÃ¼r alle Instanzvariablen, die elementar sind (`int`, `double`), erfolgt eine bitweise Kopie.
+    * Für alle Instanzvariablen, die Objekte sind, wird deren entsprechende Verschiebeoperation aufgerufen, falls vorhanden. Anderenfalls erfolgt eine Kopie.
+    * Für alle Instanzvariablen, die elementar sind (`int`, `double`), erfolgt eine bitweise Kopie.
 
 
 ---
@@ -321,10 +285,10 @@ Das ist keine triviale Frage, dennoch kann man ein paar Richtlinien erkennen:
 ### *Explicitly defaulted* Standardkonstruktor <a name="link10"></a>
 
 Um das manuelle Schreiben leerer Standardkonstruktoren zu vermeiden,
-unterstÃ¼tzt C++ das Konzept von *explicitly defaulted* Standardkonstruktoren (*Explicitly defaulted Default Constructors*).
+unterstützt C++ das Konzept von *explicitly defaulted* Standardkonstruktoren (*Explicitly defaulted Default Constructors*).
 
-Dadurch kÃ¶nnen Sie die Klassendefinition wie folgt schreiben,
-ohne eine leere Implementierung fÃ¼r den Standardkonstruktor bereitstellen zu mÃ¼ssen:
+Dadurch können Sie die Klassendefinition wie folgt schreiben,
+ohne eine leere Implementierung für den Standardkonstruktor bereitstellen zu müssen:
 
 ```cpp
 class X
@@ -340,28 +304,28 @@ public:
 Klasse `X` definiert zwei benutzerdefinierte Konstruktoren.
 
 Der Compiler generiert jedoch weiterhin einen vom Standardcompiler generierten Standardkonstruktor,
-da dieses mithilfe des SchlÃ¼sselworts `default` explizit festgelegt wird.
+da dieses mithilfe des Schlüsselworts `default` explizit festgelegt wird.
 
-Sie kÃ¶nnen das `= default` direkt in die Klassendefinition einfÃ¼gen,
-damit kann man sich in der Klassenimplementierung eine leere Implementierung fÃ¼r den Standardkonstruktor sparen.
+Sie können das `= default` direkt in die Klassendefinition einfügen,
+damit kann man sich in der Klassenimplementierung eine leere Implementierung für den Standardkonstruktor sparen.
 
-Zur Vermeidung von MissverstÃ¤ndnissen:<br />
+Zur Vermeidung von Missverständnissen:<br />
 Die Implementierung des automatisch erzeugten Standardkonstruktors ist so,
-als hÃ¤tte man `= default` in der Klassendefinition geschrieben.
-Diese Aussage gilt fÃ¼r alle speziellen Member-Funktionen.
+als hätte man `= default` in der Klassendefinition geschrieben.
+Diese Aussage gilt für alle speziellen Member-Funktionen.
 
 ---
 
 ### *Explicitly deleted* Standardkonstruktor <a name="link11"></a>
 
-Auch das Gegenteil von *Explicitly defaulted Default Constructors* ist mÃ¶glich
+Auch das Gegenteil von *Explicitly defaulted Default Constructors* ist möglich
 und wird als *Explicitly deleted Default Constructor* bezeichnet.
 
-Sie kÃ¶nnen beispielsweise eine Klasse mit nur statischen Memberfunktionen definieren,
-fÃ¼r die Sie keine Konstruktoren schreiben mÃ¶chten und fÃ¼r die Sie auch nicht mÃ¶chten,
+Sie können beispielsweise eine Klasse mit nur statischen Memberfunktionen definieren,
+für die Sie keine Konstruktoren schreiben möchten und für die Sie auch nicht möchten,
 dass der Compiler den Standardkonstruktor automatisch generiert.
 
-In diesem Fall mÃ¼ssen Sie den Standardkonstruktor explizit lÃ¶schen:
+In diesem Fall müssen Sie den Standardkonstruktor explizit löschen:
 
 ```cpp
 class X
@@ -379,11 +343,11 @@ Was sieht die einfachste Strategie aus:
 
 **Rule-of-Zero**
 
-  * Alles sechs speziellen Member-Funktionen dÃ¼rfen weder implementiert noch mit `= delete` gelÃ¶scht werden.
-  * Der Compiler generiert alle Member-Funktionen so, wie es benÃ¶tigt wird.
-  * Das funktioniert natÃ¼rlich nur dann, wenn die automatisch erzeugten Operationen das tun, was sie mÃ¼ssen:
-    Korrekt initialisieren, kopieren und verschieben &ndash; und keine Ressourcen Ã¼brig lassen.
-  * Wann funktioniert das? Wenn man sich auf folgenden Member-Variablen einschrÃ¤nkt:
+  * Alles sechs speziellen Member-Funktionen dürfen weder implementiert noch mit `= delete` gelöscht werden.
+  * Der Compiler generiert alle Member-Funktionen so, wie es benötigt wird.
+  * Das funktioniert natürlich nur dann, wenn die automatisch erzeugten Operationen das tun, was sie müssen:
+    Korrekt initialisieren, kopieren und verschieben &ndash; und keine Ressourcen übrig lassen.
+  * Wann funktioniert das? Wenn man sich auf folgenden Member-Variablen einschränkt:
     * Standard Datentypen
     * Aggregate (Strukturen)
     * STL Standard Container
@@ -393,8 +357,8 @@ Was sieht die einfachste Strategie aus:
     * Wenn Referenzen in den Instanzvariablen vorhanden sind.
 
 Wenn keine der sechs speziellen Member-Funktionen selbst geschrieben werden (*Rule-of-Zero*),
-weil Sie geschickt auf `new` usw. verzichten, werden diese sÃ¤mtlich vom Compiler erzeugt,
-einschlieÃŸlich des verschiebenden Konstruktors und des verschiebenden Zuweisungsoperators.
+weil Sie geschickt auf `new` usw. verzichten, werden diese sämtlich vom Compiler erzeugt,
+einschließlich des verschiebenden Konstruktors und des verschiebenden Zuweisungsoperators.
 
 Damit wird Ihr Programmcode performant, einfacher und wartbarer &ndash; und es spart Schreibarbeit.
 
@@ -402,7 +366,7 @@ Damit wird Ihr Programmcode performant, einfacher und wartbarer &ndash; und es s
 
 ### Initialisierung von Strukturen <a name="link13"></a>
 
-Wir starten eine Reihe von Ãœberlegungen zu folgender Struktur `Point2D`:
+Wir starten eine Reihe von Überlegungen zu folgender Struktur `Point2D`:
 
 ```cpp
 01: struct Point2D
@@ -422,7 +386,7 @@ Wir starten eine Reihe von Ãœberlegungen zu folgender Struktur `Point2D`:
 
 Im ersten Listing starten wir mit der schlechtesten aller Varianten:
 Die Struktur `Point2D` besitzt keine Vorkehrungen, um ihre Membervariablen vorzubelegen &ndash;
-und in Zeile 9 ist es sogar mÃ¶glich, eine Strukturvariable `point` anzulegen, deren Werte
+und in Zeile 9 ist es sogar möglich, eine Strukturvariable `point` anzulegen, deren Werte
 nicht vorbelegt sind.
 
 #### Variante 2
@@ -449,7 +413,7 @@ nicht vorbelegt sind.
 ```
 
 In dieser Variante besitzen alle Membervariablen so genannte &bdquo;Default Initializer&rdquo;.
-Eine Variable ` Point2D point;` reprÃ¤sentiert damit den Punkt (0,0) und alle sechs speziellen
+Eine Variable ` Point2D point;` repräsentiert damit den Punkt (0,0) und alle sechs speziellen
 Membermethoden funktionieren wie erwartet.
 
 *1. Bemerkung*:<br />
@@ -462,7 +426,7 @@ verhalten sich wie ihre kopierenden Pendants, da es nicht wirklich etwas zu vers
 
 #### Variante 3
 
-Was fÃ¤llt Ihnen an dieser dritten Variante auf?
+Was fällt Ihnen an dieser dritten Variante auf?
 
 ```cpp
 01: struct Point2D
@@ -481,10 +445,10 @@ Was fÃ¤llt Ihnen an dieser dritten Variante auf?
 ```
 
 Die Struktur weist nun einen benutzerdefinierten Konstruktor auf.
-Damit ist Zeile 11 des letzten Listings nicht mehr Ã¼bersetzungsfÃ¤hig,
+Damit ist Zeile 11 des letzten Listings nicht mehr übersetzungsfähig,
 es gibt also keinen Default-Konstruktor mehr.
 
-Das sollte so nicht sein, eine Abhilfe finden Sie in der nÃ¤chsten Variante 4 vor:
+Das sollte so nicht sein, eine Abhilfe finden Sie in der nächsten Variante 4 vor:
 
 #### Variante 4
 
@@ -505,7 +469,7 @@ Das sollte so nicht sein, eine Abhilfe finden Sie in der nÃ¤chsten Variante 4 vo
 14: }
 ```
 
-Die aktuelle Version der Struktur `Point2D` definiert nun alle erwÃ¼nschten Konstruktoren explizit;
+Die aktuelle Version der Struktur `Point2D` definiert nun alle erwünschten Konstruktoren explizit;
 damit besteht keine Notwendigkeit mehr, die Membervariablen mit Hilfe von
 &bdquo;Default Initializern&rdquo; vorzubelegen.
  
@@ -536,8 +500,8 @@ mit dem sprachlichen Mittel des &bdquo;*Constructor Chainings*&rdquo; zusammenfa
 #### Variante 6
 
 Wir kommen noch einmal auf eine Version der Struktur `Point2D` zu sprechen,
-die den Standardkonstruktor verloren hatte. Mit dem SchlÃ¼sselwort `default` kann man diesen wieder hinzufÃ¼gen.
-Dazu mÃ¼ssen alle Membervariablen aber mit &bdquo;Default Initializern&rdquo; vorbelegt werden,
+die den Standardkonstruktor verloren hatte. Mit dem Schlüsselwort `default` kann man diesen wieder hinzufügen.
+Dazu müssen alle Membervariablen aber mit &bdquo;Default Initializern&rdquo; vorbelegt werden,
 sonst funktioniert diese Variante nicht:
 
 
@@ -558,13 +522,13 @@ sonst funktioniert diese Variante nicht:
 14: }
 ```
 
-HÃ¤ufig kann man die Beobachtung machen, dass diese Art des Entwurfs zu gutem Maschinencode fÃ¼hrt.
+Häufig kann man die Beobachtung machen, dass diese Art des Entwurfs zu gutem Maschinencode führt.
 
 #### Variante 7
 
 Zum Abschluss stellen wir einen letzen, aber alternativen Ansatz vor:
-Die Struktur `Point2D` besitzt weder Konstruktoren noch &bdquo;Default Initializer&rdquo; fÃ¼r ihre Membervariablen.
-DafÃ¼r kommt bei Verwendung der Struktur die Aggregat-Initialisierung zum Einsatz:
+Die Struktur `Point2D` besitzt weder Konstruktoren noch &bdquo;Default Initializer&rdquo; für ihre Membervariablen.
+Dafür kommt bei Verwendung der Struktur die Aggregat-Initialisierung zum Einsatz:
 
 
 ```cpp
@@ -642,14 +606,14 @@ und ist mit mehreren Fehlern behaftet. Erkennen Sie diese?
 
 #### Variante 2
 
-FÃ¼r Klasse `SimpleString` werden die speziellen Member-Funktionen wie bei Strukturen automatisch
-erzeugt &ndash; nur funktionieren diese nicht! Die `SimpleString`-Klasse enthÃ¤lt Zeiger,
+Für Klasse `SimpleString` werden die speziellen Member-Funktionen wie bei Strukturen automatisch
+erzeugt &ndash; nur funktionieren diese nicht! Die `SimpleString`-Klasse enthält Zeiger,
 die durch `new` erzeugt worden sind. Prinzipiell sind derartige Zeiger kopierbar &ndash;
-nur dÃ¼rfen derartige Zeiger nicht zweimal mit `delete` freigegeben werden.
+nur dürfen derartige Zeiger nicht zweimal mit `delete` freigegeben werden.
 
-Ungeachtet dessen sollte man auch nicht Ã¼bersehen, dass eine Kopie eines Zeigers nicht zu einer
-Kopie der Daten fÃ¼hrt, auf die ein Zeiger zeigt. Also auch diese Schwachstelle wird von den
-automatisch generierten speziellen Member-Funktionen nicht berÃ¼cksichtigt.
+Ungeachtet dessen sollte man auch nicht übersehen, dass eine Kopie eines Zeigers nicht zu einer
+Kopie der Daten führt, auf die ein Zeiger zeigt. Also auch diese Schwachstelle wird von den
+automatisch generierten speziellen Member-Funktionen nicht berücksichtigt.
 
 Damit kommen wir zum zweiten Entwicklungsschritt der Klasse `SimpleString`,
 es sind die Kopieroperationen (Kopier-Konstruktor, kopierender Zuweisungsoperator) explizit realisiert:
@@ -708,7 +672,7 @@ es sind die Kopieroperationen (Kopier-Konstruktor, kopierender Zuweisungsoperato
 50: };
 ```
 
-Die vorgestelle Realisierung lÃ¤uft &ndash; in den meisten FÃ¤llen &ndash;,
+Die vorgestelle Realisierung läuft &ndash; in den meisten Fällen &ndash;,
 dennoch weist sie einen schweren Entwurfsfehler auf! Erkennen Sie die Schwachstellen?
 
 #### Variante 3
@@ -733,7 +697,7 @@ Wir versuchen es mit einem Redesign des Zuweisungsoperators `operator=`:
 10: }
 ```
 
-Diese Version ruiniert zumindest kein Objekt, wenn es wÃ¤hrend der AusfÃ¼hrung zu einer Ausnahme kommt.
+Diese Version ruiniert zumindest kein Objekt, wenn es während der Ausführung zu einer Ausnahme kommt.
 Dennoch weist auch diese Realisierung einen &ndash; subtilen &ndash; Fehler auf! Welchen?
 
 
@@ -748,18 +712,18 @@ Betrachten Sie hierzu folgendes Beispiel, dass Sie mit der Realisierung aus Vari
 03: std::println("{}", s.data());
 ```
 
-Das Programm enthÃ¤lt eine Selbstzuweisung. Das ergibt zwar keinen Sinn, in *Production-Ready* Quellcode 
-sollte das aber berÃ¼cksichtigt werden. AuÃŸerdem darf nicht Ã¼bersehen werden, dass das Beispiel zwar nicht abstÃ¼rzt,
-aber zu einem unerwarteten Ergebnis fÃ¼hrt, da auf Grund der Freigabe von `s` auf der rechten Seite der Wertzuweisung
-keine Daten mehr fÃ¼r den Kopiervorgang zur linken Seite vorhanden sind:
+Das Programm enthält eine Selbstzuweisung. Das ergibt zwar keinen Sinn, in *Production-Ready* Quellcode 
+sollte das aber berücksichtigt werden. Außerdem darf nicht übersehen werden, dass das Beispiel zwar nicht abstürzt,
+aber zu einem unerwarteten Ergebnis führt, da auf Grund der Freigabe von `s` auf der rechten Seite der Wertzuweisung
+keine Daten mehr für den Kopiervorgang zur linken Seite vorhanden sind:
 
 *Ausgabe*:
 
 ```
-â•â•â•â•â•â•â•â•â•â•â•
+???????????
 ```
 
-Damit kommen wir zur nÃ¤chsten Ãœberarbeitung des Zuweisungsoperators:
+Damit kommen wir zur nächsten Überarbeitung des Zuweisungsoperators:
 
 
 ```cpp
@@ -780,8 +744,8 @@ Damit kommen wir zur nÃ¤chsten Ãœberarbeitung des Zuweisungsoperators:
 15: }
 ```
 
-Diese Variante des Zuweisungsoperators ist nun fehlerfrei. Okay, sie zeichnet sich nicht gerade durch Ãœbersichtlichkeit aus, 
-und die Zeilen 4 bis 6 schmerzen etwas: Sie werden *immer* ausgefÃ¼hrt, und damit eben auch in fast allen FÃ¤llen,
+Diese Variante des Zuweisungsoperators ist nun fehlerfrei. Okay, sie zeichnet sich nicht gerade durch Übersichtlichkeit aus, 
+und die Zeilen 4 bis 6 schmerzen etwas: Sie werden *immer* ausgeführt, und damit eben auch in fast allen Fällen,
 in denen die beiden Objekte links und rechts von der Wertzuweisung verschieden sind.
 Wir haben es mit einem Fall von &bdquo;*Pessimization*&rdquo; zu tun:
 
@@ -789,40 +753,40 @@ Wir haben es mit einem Fall von &bdquo;*Pessimization*&rdquo; zu tun:
 ##### *Pessimization*
 
 Das Wort *Pessimization* wird im Allgemeinen als Gegenteil von *Optimierung* verwendet und bezeichnet
-ein ProgrammiermanÃ¶ver oder eine Technik, die das Programmverhalten weniger effizient macht als es sein sollte.
+ein Programmiermanöver oder eine Technik, die das Programmverhalten weniger effizient macht als es sein sollte.
 
-Der obige Fall ist ein bekanntes Beispiel fÃ¼r ein solches ManÃ¶ver: Jeder zahlt fÃ¼r eine potenzielle Sprung-Anweisung (Assembler: `jmp`-Befehl),
-der durch die `if`-Anweisung eingeleitet wird, obwohl dieser nur in seltenen und ungÃ¼nstigen FÃ¤llen erforderlich ist.
+Der obige Fall ist ein bekanntes Beispiel für ein solches Manöver: Jeder zahlt für eine potenzielle Sprung-Anweisung (Assembler: `jmp`-Befehl),
+der durch die `if`-Anweisung eingeleitet wird, obwohl dieser nur in seltenen und ungünstigen Fällen erforderlich ist.
 
-Bei einer *Pessimization*-Situation lohnt es sich oft, einen Schritt zurÃ¼ckzutreten und zu Ã¼berdenken.
+Bei einer *Pessimization*-Situation lohnt es sich oft, einen Schritt zurückzutreten und zu überdenken.
 Vielleicht haben wir das Problem aus dem falschen Blickwinkel angegangen.
 
-Und damit sind wir beim nÃ¤chsten Thema angekommen: Das *Copy-and-Swap-Idiom*.
+Und damit sind wir beim nächsten Thema angekommen: Das *Copy-and-Swap-Idiom*.
 
 ---
 
 ### Das *Copy-and-Swap-Idiom* <a name="link15"></a>
 
-Das *Copy-and-Swap-Idiom* wurde eingefÃ¼hrt, um zwei Ziele zu erreichen:
+Das *Copy-and-Swap-Idiom* wurde eingeführt, um zwei Ziele zu erreichen:
 
   * Realisierung der Kopier-Konstruktoren und Zuweisungsoperatoren (sowohl &bdquo;kopierende&rdquo; als auch &bdquo;verschiebende&rdquo; Semantik) auf eine einfache Weise (Vermeidung von Code-Duplikationen).
   * Bereitstellung der so genannten *Strong Exception Guarantee*.
 
-Auf die *Strong Exception Guarantee* gehen wir spÃ¤ter ein, wir verweilen beim *Copy-and-Swap-Idiom*:
+Auf die *Strong Exception Guarantee* gehen wir später ein, wir verweilen beim *Copy-and-Swap-Idiom*:
 Dieses besteht im Wesentlichen aus zwei Teilen:
 
 
-  * Einem destruktiven Teil, der den bestehenden Zustand des Zielobjekts aufrÃ¤umt (die linke Seite der Zuweisung).
+  * Einem destruktiven Teil, der den bestehenden Zustand des Zielobjekts aufräumt (die linke Seite der Zuweisung).
   * Einem konstruktiven Teil, der den Zustand vom Quellobjekt (rechte Seite der Zuweisung) zum Zielobjekt kopiert.
 
 Der destruktive Teil entspricht im Allgemeinen dem Code im Destruktor des Typs, der konstruktive Teil im Allgemeinen dem Code im Kopierkonstruktor des Typs.
 
-Der Name *Copy-and-Swap* fÃ¼r diese Technik rÃ¼hrt daher,
-dass sie Ã¼blicherweise durch eine Kombination aus dem Kopierkonstruktor des Typs,
+Der Name *Copy-and-Swap* für diese Technik rührt daher,
+dass sie üblicherweise durch eine Kombination aus dem Kopierkonstruktor des Typs,
 seinem Destruktor und einer `swap`()-Memberfunktion implementiert wird,
 die die Membervariablen einzeln austauscht.
 
-Mit dem *Copy-and-Swap*-Idiom kÃ¶nnen wir nun folgende Realisierung des 
+Mit dem *Copy-and-Swap*-Idiom können wir nun folgende Realisierung des 
 Zuweisungsoperators betrachten:
 
 ```cpp
@@ -842,23 +806,23 @@ Zuweisungsoperators betrachten:
 
 *Hinweise*:
 
-  * Am Beispiel des Parameters `other` wenden wir eine Ã¤uÃŸerst nÃ¼tzliche Richtlinie an:
+  * Am Beispiel des Parameters `other` wenden wir eine äußerst nützliche Richtlinie an:
   Wenn Sie in einer Funktion eine Kopie erstellen, lassen Sie den Compiler dies in der Parameterliste tun.
 
-  * Nachdem (durch den Aufruf) die Kopie erstellt ist, kÃ¶nnen wir mit dem Tauschen der Membervariableninhalte beginnen.
+  * Nachdem (durch den Aufruf) die Kopie erstellt ist, können wir mit dem Tauschen der Membervariableninhalte beginnen.
 
   * Beachten Sie, dass beim Aufrufen der Funktion alle neuen Daten bereits allokiert, kopiert und einsatzbereit sind.
-  Dadurch erhalten wir kostenlos eine *Strong Exception Guarantee* &ndash; dazu spÃ¤ter noch mehr.
+  Dadurch erhalten wir kostenlos eine *Strong Exception Guarantee* &ndash; dazu später noch mehr.
 
-  * An diesem Punkt sind wir quasi schon fertig, da `swap` keine Fehler auslÃ¶st.
-  Wir tauschen unsere aktuellen Daten mit den kopierten aus, Ã¤ndern unseren Zustand sicher und legen die alten Daten in einem temporÃ¤ren Objekt ab.
+  * An diesem Punkt sind wir quasi schon fertig, da `swap` keine Fehler auslöst.
+  Wir tauschen unsere aktuellen Daten mit den kopierten aus, ändern unseren Zustand sicher und legen die alten Daten in einem temporären Objekt ab.
   
   * Die alten Daten werden dann freigegeben, wenn die Funktion verlassen wird:
-  Es endet der GÃ¼ltigkeitsbereich des Parameterobjekts und sein Destruktor wird aufgerufen!
+  Es endet der Gültigkeitsbereich des Parameterobjekts und sein Destruktor wird aufgerufen!
 
-  * Beachten Sie, dass die Notwendigkeit einer SelbstzuweisungsprÃ¼fung beseitigt wurde
-  und eine einheitliche Implementierung des `operator=` ermÃ¶glicht wurde.
-  DarÃ¼berhinaus gibt es keine LeistungseinbuÃŸen mehr bei Nicht-Selbstzuweisungen.
+  * Beachten Sie, dass die Notwendigkeit einer Selbstzuweisungsprüfung beseitigt wurde
+  und eine einheitliche Implementierung des `operator=` ermöglicht wurde.
+  Darüberhinaus gibt es keine Leistungseinbußen mehr bei Nicht-Selbstzuweisungen.
 
 ---
 
@@ -868,14 +832,14 @@ Wir haben bislang in der Klasse `SimpleString` die
 traditionellen Regel der drei speziellen Methoden
 Kopier-Konstruktor, Zuweisungsoperator und Destruktor betrachtet.
 
-Seit C++ 11 kÃ¶nnen wir solchen Code durch die so genannte *Move-Semantik* effizienter (performanter) gestalten.
+Seit C++ 11 können wir solchen Code durch die so genannte *Move-Semantik* effizienter (performanter) gestalten.
 Es gesellen sich zwei weitere spezielle Methoden (Verschiebe-Konstruktor, Verschiebe-Zuweisungsoperator) zur Klasse hinzu.
 
 Ihr Aufruf wird vom Compiler implizit aktiviert, wenn der Compiler Objekte bearbeitet,
-von denen er weiÃŸ, dass sie nicht mehr verwendet werden. Das sind beispielsweise Objekte im Programm,
-die keinen Namen haben (temporÃ¤re Objekte, Objekte, die als Zwischenergebnis fungieren).
+von denen er weiß, dass sie nicht mehr verwendet werden. Das sind beispielsweise Objekte im Programm,
+die keinen Namen haben (temporäre Objekte, Objekte, die als Zwischenergebnis fungieren).
 
-Am Beispiel der Klasse `SimpleString` kÃ¶nnten diese beiden Methoden so aussehen:
+Am Beispiel der Klasse `SimpleString` könnten diese beiden Methoden so aussehen:
 
 ```cpp
 01: SimpleString(SimpleString&& other) noexcept
@@ -911,10 +875,10 @@ Die freie Funktion `std::exchange` funktioniert dabei wie folgt:
 int z = std::exchange(x, y);
 ```
 
-Nach der AusfÃ¼hrung dieser Anweisung hat
+Nach der Ausführung dieser Anweisung hat
 
   * `x` den Wert von `y` zugewiesen bekommen und
-  * `z` den ursprÃ¼ngliche Wert von `x` zugewiesen bekommen.
+  * `z` den ursprüngliche Wert von `x` zugewiesen bekommen.
 
 
 ---
@@ -929,14 +893,14 @@ Einige Richtlinien zum Schreiben sauberer Funktionen:
 
   * Halten Sie Funktionen kurz, normalerweise unter 50 Zeilen Code.
   * Geben Sie Funktionen beschreibende Namen, die klar vermitteln, was sie tun.
-  * Vermeiden Sie Nebeneffekte &ndash; eine Funktion sollte entweder einen Wert berechnen oder eine Aktion ausfÃ¼hren, nicht beides.
+  * Vermeiden Sie Nebeneffekte &ndash; eine Funktion sollte entweder einen Wert berechnen oder eine Aktion ausführen, nicht beides.
   * Bevorzugen Sie &bdquo;reine&rdquo; (*pure*) Funktionen, die bei denselben Eingaben immer das gleiche Ergebnis liefern.
-  * Verwenden Sie Parameter fÃ¼r die Eingabe und RÃ¼ckgabewerte fÃ¼r die Ausgabe zurÃ¼ck, anstatt sich auf den globalen Status zu verlassen.
+  * Verwenden Sie Parameter für die Eingabe und Rückgabewerte für die Ausgabe zurück, anstatt sich auf den globalen Status zu verlassen.
   * Halten Sie die Anzahl der Parameter niedrig, normalerweise unter 5.
 
 
 Stellen Sie sich beispielsweise eine Funktion `isValidUsername` vor,
-die einen Benutzernamen validiert. Eine saubere Version kÃ¶nnte so aussehen:
+die einen Benutzernamen validiert. Eine saubere Version könnte so aussehen:
 
 ```cpp
 01: bool isValidUsername(const std::string& username) {
@@ -963,23 +927,23 @@ die einen Benutzernamen validiert. Eine saubere Version kÃ¶nnte so aussehen:
 ```
 
 Diese Funktion ist kurz (weniger als 20 Zeilen), hat einen eindeutigen Namen, nimmt einen einzigen Eingabeparameter an,
-gibt ein boolesches Ergebnis zurÃ¼ck und hat keine Nebenwirkungen. Sie ist leicht zu verstehen und kann ausfÃ¼hrlichen Unit-Tests unterzogen werden.
+gibt ein boolesches Ergebnis zurück und hat keine Nebenwirkungen. Sie ist leicht zu verstehen und kann ausführlichen Unit-Tests unterzogen werden.
 
 ---
 
-### Verwenden Sie `const` groÃŸzÃ¼gig <a name="link18"></a>
+### Verwenden Sie `const` großzügig <a name="link18"></a>
 
-`const` ist ein leistungsstarkes Sprachfeature in C++, um Absichten auszudrÃ¼cken und potenzielle Fehler zur Kompilierzeit abzufangen:
+`const` ist ein leistungsstarkes Sprachfeature in C++, um Absichten auszudrücken und potenzielle Fehler zur Kompilierzeit abzufangen:
 
-  * Wird es auf eine Variable angewendet, zeigt es an, dass der Wert nicht geÃ¤ndert wird.
-  * Wird es auf eine Methode angewendet, zeigt es an, dass die Methode das aufgerufene Objekt nicht Ã¤ndert.
+  * Wird es auf eine Variable angewendet, zeigt es an, dass der Wert nicht geändert wird.
+  * Wird es auf eine Methode angewendet, zeigt es an, dass die Methode das aufgerufene Objekt nicht ändert.
 
 Einige Richtlinien zur Verwendung von `const`:
 
-  * Deklarieren Sie Funktionsparameter mit `const`, wenn diese von der Funktion nicht geÃ¤ndert werden.
-  * Deklarieren Sie Methoden mit `const`, wenn sie den Zustand des gerufenen Objekts nicht Ã¤ndern.
-  * Deklarieren Sie Variablen mit `const`, wenn sich ihre Werte nach der Initialisierung nicht Ã¤ndern sollen.
-  * Verwenden Sie `const`-Referenzen, um unnÃ¶tiges Kopieren groÃŸer Objekte zu vermeiden.
+  * Deklarieren Sie Funktionsparameter mit `const`, wenn diese von der Funktion nicht geändert werden.
+  * Deklarieren Sie Methoden mit `const`, wenn sie den Zustand des gerufenen Objekts nicht ändern.
+  * Deklarieren Sie Variablen mit `const`, wenn sich ihre Werte nach der Initialisierung nicht ändern sollen.
+  * Verwenden Sie `const`-Referenzen, um unnötiges Kopieren großer Objekte zu vermeiden.
 
 *Beispiel*:
 
@@ -1010,13 +974,13 @@ Einige Richtlinien zur Verwendung von `const`:
 24: }
 ```
 
-In diesem Beispiel wird die Methode `area()` als `const` deklariert, da sie den Zustand des Rechtecks â€‹â€‹nicht Ã¤ndert.
+In diesem Beispiel wird die Methode `area()` als `const` deklariert, da sie den Zustand des Rechtecks ??nicht ändert.
 
 Die Funktion `printArea` nimmt ihren Parameter per `const`-Referenz, was bedeutet,
-dass sie das Rechteck nicht Ã¤ndert und ein unnÃ¶tiges Kopieren vermeidet.
+dass sie das Rechteck nicht ändert und ein unnötiges Kopieren vermeidet.
 
 Die konsequente Verwendung von `const` macht Ihren Code selbstdokumentierender und hilft,
-potenzielle Fehler zu erkennen, wie z. B. versehentliche Ã„nderungen an Werten, die konstant sein sollten.
+potenzielle Fehler zu erkennen, wie z. B. versehentliche Änderungen an Werten, die konstant sein sollten.
 
 ---
 
@@ -1024,7 +988,7 @@ potenzielle Fehler zu erkennen, wie z. B. versehentliche Ã„nderungen an Werten, 
 ### Ausnahmesicherheit (*Exception Safety*) <a name="link19"></a>
 
 Die Idee hinter der Thematik *Exception Safety* besteht darin, dass Funktionen bzw. eine Klasse und ihre Methoden
-ihren Clients eine Art Versprechen bzw. eine Garantie hinsichtlich mÃ¶glicherweise ausgelÃ¶ster oder nicht ausgelÃ¶ster Ausnahmen geben.
+ihren Clients eine Art Versprechen bzw. eine Garantie hinsichtlich möglicherweise ausgelöster oder nicht ausgelöster Ausnahmen geben.
 
 Es gibt vier Stufen der *Exception Safety*:
 
@@ -1037,8 +1001,8 @@ Mit dieser niedrigsten Stufe der Ausnahmesicherheit wird im wahrsten Sinne des W
 
 Diese Ebene der Ausnahmesicherheit kann mit mit relativ geringem Implementierungsaufwand erreicht werden:
 
-  * Wenn wÃ¤hrend eines Funktions- oder Methodenaufrufs eine Ausnahme ausgelÃ¶st wird, ist sichergestellt, dass keine Ressourcen verloren gehen!
-  * Wenn wÃ¤hrend eines Funktions- oder Methodenaufrufs eine Ausnahme ausgelÃ¶st wird, kommt es anschlieÃŸend zu keiner BeschÃ¤digung der Daten oder allokierten Speichers,
+  * Wenn während eines Funktions- oder Methodenaufrufs eine Ausnahme ausgelöst wird, ist sichergestellt, dass keine Ressourcen verloren gehen!
+  * Wenn während eines Funktions- oder Methodenaufrufs eine Ausnahme ausgelöst wird, kommt es anschließend zu keiner Beschädigung der Daten oder allokierten Speichers,
   und alle Objekte befinden sich in einem fehlerfreien und konsistenten Zustand.
   * Aber: Es kann nicht garantiert werden, dass die Daten dieselben sind wie vor dem Aufruf der Funktion oder Methode.
 
@@ -1050,85 +1014,85 @@ dass sie zumindest die *Basic Exception Safety* einhalten.
 
 #### 3. Starke Ausnahmesicherheit (*Strong Exception Safety*)
 
-Die starke Ausnahmesicherheit garantiert alles, was auch die elementare Ausnahmesicherheit gewÃ¤hrleistet.
-DarÃ¼ber hinaus stellt sie sicher, dass im Ausnahmefall die Daten genauso wiederhergestellt werden, wie sie vor dem Aufruf der Funktion oder Methode waren.
+Die starke Ausnahmesicherheit garantiert alles, was auch die elementare Ausnahmesicherheit gewährleistet.
+Darüber hinaus stellt sie sicher, dass im Ausnahmefall die Daten genauso wiederhergestellt werden, wie sie vor dem Aufruf der Funktion oder Methode waren.
 
 Mit anderen Worten: Mit dieser Ausnahmesicherheitsstufe erhalten wir eine Art *Commit*- oder *Rollback*-Semantik
 wie bei der Transaktionsverarbeitung eines Datenbanksystems.
 
 
-Es ist leicht nachvollziehbar, dass diese Ausnahmesicherheit einen hÃ¶heren Implementierungsaufwand bedeutet und zur Laufzeit kostspielig sein kann.
+Es ist leicht nachvollziehbar, dass diese Ausnahmesicherheit einen höheren Implementierungsaufwand bedeutet und zur Laufzeit kostspielig sein kann.
 
-Ein Beispiel fÃ¼r diesen zusÃ¤tzlichen Aufwand ist das sogenannte *Copy-and-Swap-Idiom*,
+Ein Beispiel für diesen zusätzlichen Aufwand ist das sogenannte *Copy-and-Swap-Idiom*,
 das verwendet werden muss, um diese Ebene der Ausnahmesicherheit bei kopierenden
-Zuweisungen zu gewÃ¤hrleisten.
+Zuweisungen zu gewährleisten.
 
 #### 4. Die No-Throw-Garantie (*No-Throw Guarantee*)
 
-Die vierte und letzte Ebene der Ausnahmesicherheit behandeln wir im nÃ¤chsten Abschnitt.
+Die vierte und letzte Ebene der Ausnahmesicherheit behandeln wir im nächsten Abschnitt.
 
 ---
 
 ### Die No-Throw-Garantie (*No-Throw Guarantee*) <a name="link20"></a>
 
 
-Diese Ebene der Ausnahmesicherheit ist die hÃ¶chste Ausnahmesicherheitsstufe:
+Diese Ebene der Ausnahmesicherheit ist die höchste Ausnahmesicherheitsstufe:
 
-  * Vereinfacht ausgedrÃ¼ckt bedeutet diese Stufe, dass Sie sich als Aufrufer einer Funktion oder Methode keine Gedanken Ã¼ber Ausnahmen machen mÃ¼ssen.
+  * Vereinfacht ausgedrückt bedeutet diese Stufe, dass Sie sich als Aufrufer einer Funktion oder Methode keine Gedanken über Ausnahmen machen müssen.
   * Der Funktions- oder Methodenaufruf ist erfolgreich. Immer!
-  * Es wird niemals eine Ausnahme ausgelÃ¶st, da alles intern ordnungsgemÃ¤ÃŸ behandelt wird.
+  * Es wird niemals eine Ausnahme ausgelöst, da alles intern ordnungsgemäß behandelt wird.
 
-NatÃ¼rlich ist diese Stufe nicht immer ganz einfach zu erreichen, zum Beispiel dann,
+Natürlich ist diese Stufe nicht immer ganz einfach zu erreichen, zum Beispiel dann,
 wenn mit dem `new`-Operator dynamische Daten ins Spiel kommen.
 
-In den folgenden FÃ¤llen ist die No-Throw-Garantie zwingend:
+In den folgenden Fällen ist die No-Throw-Garantie zwingend:
 
 #### 1. Destruktoren
 
-Destruktoren von Klassen mÃ¼ssen unter allen UmstÃ¤nden die No-Throw-Garantie gewÃ¤hren!
-Der Grund dafÃ¼r ist, dass Destruktoren unter anderem auch wÃ¤hrend des so genannten &bdquo;Stack Unwinding&rdquo;-Prozesses aufgerufen werden, wenn eine Ausnahme aufgetreten ist.
+Destruktoren von Klassen müssen unter allen Umständen die No-Throw-Garantie gewähren!
+Der Grund dafür ist, dass Destruktoren unter anderem auch während des so genannten &bdquo;Stack Unwinding&rdquo;-Prozesses aufgerufen werden, wenn eine Ausnahme aufgetreten ist.
 Zu diesem Zeitpunkt kann eine geschachtelt auftretende Ausnahme nicht bearbeitet werden,
-das laufende Programm reagiert in solchen FÃ¤llen mit einer unmittelbaren Terminierung (Aufruf von `terminate()`).
+das laufende Programm reagiert in solchen Fällen mit einer unmittelbaren Terminierung (Aufruf von `terminate()`).
 
 #### 2. Verschiebeoperationen (Move Operations)
 
 Verschiebe-Konstruktoren und Verschiebe-Zuweisungsoperatoren sollten garantiert keine Fehler enthalten.
 
-Wenn eine Verschiebeoperation eine Ausnahme auslÃ¶st, ist die Wahrscheinlichkeit groÃŸ,
+Wenn eine Verschiebeoperation eine Ausnahme auslöst, ist die Wahrscheinlichkeit groß,
 dass die Verschiebung nicht stattgefunden hat.
 
-DarÃ¼ber hinaus ist es wichtig, die No-Throw-Garantie fÃ¼r benutzerdefinierte Datentypen zu gewÃ¤hrleisten,
-die fÃ¼r die Verwendung mit STL-Containern vorgesehen sind.
+Darüber hinaus ist es wichtig, die No-Throw-Garantie für benutzerdefinierte Datentypen zu gewährleisten,
+die für die Verwendung mit STL-Containern vorgesehen sind.
 
-Wenn der Verschiebekonstruktor fÃ¼r einen Elementtyp in einem Container keine No-Throw-Garantie bietet &ndash;
+Wenn der Verschiebekonstruktor für einen Elementtyp in einem Container keine No-Throw-Garantie bietet &ndash;
 d.h., der Verschiebekonstruktor ist nicht mit dem Spezifizierer `noexcept` deklariert &ndash;,
-verwendet der Container bevorzugt die kopierenden (und damit zeitaufwÃ¤ndigeren) Operationen
-gegenÃ¼ber den verschiebenden Operationen.
+verwendet der Container bevorzugt die kopierenden (und damit zeitaufwändigeren) Operationen
+gegenüber den verschiebenden Operationen.
 
 #### 3. Konstruktoren
 
-Das AuslÃ¶sen einer Ausnahme in einem Konstruktor ist weder wÃ¼nschenswert, und vor allem: Es kann auch vermieden werden!
+Das Auslösen einer Ausnahme in einem Konstruktor ist weder wünschenswert, und vor allem: Es kann auch vermieden werden!
 
 Ein &bdquo;halbkonstruiertes Objekt&rdquo; wird kaum im weiteren Gebrauch seinen Client zufriedenstellen.
 
 #### 4. `swap`-Funktionen
 
-Eine `swap`-Funktion muss unter allen UmstÃ¤nden die No-Throw-Garantie gewÃ¤hrleiten.
+Eine `swap`-Funktion muss unter allen Umständen die No-Throw-Garantie gewährleiten.
 
 
 ---
 
-### Das `noexcept` SchlÃ¼sselwort <a name="link21"></a>
+### Das `noexcept` Schlüsselwort <a name="link21"></a>
 
 Der Spezifizierer `noexcept` in der Signatur einer Funktion gibt an,
-dass diese Funktion **keine** Ausnahme auslÃ¶sen darf.
+dass diese Funktion **keine** Ausnahme auslösen darf.
 
-Dasselbe gilt fÃ¼r `noexcept(true)`, das lediglich ein Synonym fÃ¼r `noexcept` ist.
+Dasselbe gilt für `noexcept(true)`, das lediglich ein Synonym für `noexcept` ist.
 
 Stattdessen kann eine mit `noexcept(false)` deklarierte Funktion Ausnahme werfen.
 
 
-Wenn eine als `noexcept` markierte Funktion trotzdem eine Ausnahme auslÃ¶st,
+Wenn eine als `noexcept` markierte Funktion trotzdem eine Ausnahme auslöst,
 setzt der C++&ndash;Compiler einen `terminate()`-Aufruf ab, um die Anwendung zu beenden.
 
 Hier einige Beispiele:
@@ -1139,16 +1103,16 @@ void anotherNonThrowingFunction() noexcept(true);
 void aPotentiallyThrowingFunction() noexcept(false);
 ```
 
-Es gibt zwei gute GrÃ¼nde fÃ¼r die Verwendung von `noexcept`:
+Es gibt zwei gute Gründe für die Verwendung von `noexcept`:
 
-  * Ausnahmen, die eine Funktion oder Methode auslÃ¶sen kann (oder nicht),
+  * Ausnahmen, die eine Funktion oder Methode auslösen kann (oder nicht),
   sollten Teil der Funktionsschnittstelle sein.<br />
   Es hilft Entwicklern beim Lesen des Quellcodes zu erkennen, was passieren kann und was nicht.<br />
-  `noexcept` signalisiert Entwicklern, dass sie diese Funktion sicher in ihren eigenen *non-throwing* Funktionen verwenden kÃ¶nnen.
+  `noexcept` signalisiert Entwicklern, dass sie diese Funktion sicher in ihren eigenen *non-throwing* Funktionen verwenden können.
 
-  * Zweitens kann diese Information vom Compiler fÃ¼r Optimierungen genutzt werden.<br />
-  `noexcept` ermÃ¶glicht es einem Compiler, die Funktion mÃ¶glicherweise ohne den Laufzeit-Overhead zu kompilieren,
-  der sonst im Falle des Eintretens von Ausnahme erforderlich wÃ¤re.
+  * Zweitens kann diese Information vom Compiler für Optimierungen genutzt werden.<br />
+  `noexcept` ermöglicht es einem Compiler, die Funktion möglicherweise ohne den Laufzeit-Overhead zu kompilieren,
+  der sonst im Falle des Eintretens von Ausnahme erforderlich wäre.
 
 
 *Bemerkung*:<br />
@@ -1160,22 +1124,22 @@ Destruktoren einer Klasse sind implizit als `noexcept` definiert.
 ### Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen <a name="link22"></a>
 
 Ausnahmen (*Exceptions*) sind die bevorzugte Methode zum Melden und Behandeln von Fehlern in Modern C++.
-Sie haben mehrere Vorteile gegenÃ¼ber herkÃ¶mmlichen Fehlercodes:
+Sie haben mehrere Vorteile gegenüber herkömmlichen Fehlercodes:
 
-  * Ausnahmen kÃ¶nnen nicht ignoriert werden, Fehlercodes hingegen schon.
-  * Ausnahmen werden automatisch an rufende Methoden weitergegeben, wÃ¤hrend Fehlercodes an jeder Aufrufstelle manuell Ã¼berprÃ¼ft und manuell weitergegeben werden mÃ¼ssen.
-  * Ausnahmen trennen den Fehlerbehandlungscode vom normalen Kontrollfluss und machen den Code Ã¼bersichtlicher
+  * Ausnahmen können nicht ignoriert werden, Fehlercodes hingegen schon.
+  * Ausnahmen werden automatisch an rufende Methoden weitergegeben, während Fehlercodes an jeder Aufrufstelle manuell überprüft und manuell weitergegeben werden müssen.
+  * Ausnahmen trennen den Fehlerbehandlungscode vom normalen Kontrollfluss und machen den Code übersichtlicher
 
 Einige Richtlinien zur Verwendung von Ausnahmen:
 
-  * Verwenden Sie Ausnahmen fÃ¼r auÃŸergewÃ¶hnliche Bedingungen, nicht fÃ¼r den normalen Kontrollfluss.
+  * Verwenden Sie Ausnahmen für außergewöhnliche Bedingungen, nicht für den normalen Kontrollfluss.
   * Werfen Sie Ausnahmen *by value* und fangen Sie sie *by reference*.
-  * Verwenden Sie nach MÃ¶glichkeit Standardausnahmetypen wie `std::runtime_error`, `std::out_of_range` usw.
-  * Definieren Sie Ihre eigenen Ausnahmetypen fÃ¼r domÃ¤nenspezifische Fehler.
-  * Vermeiden Sie das AuslÃ¶sen von Ausnahmen in Destruktoren.
-  * Verwenden Sie RAII, um sicherzustellen, dass Ressourcen bei Ausnahmen aufgerÃ¤umt werden.
+  * Verwenden Sie nach Möglichkeit Standardausnahmetypen wie `std::runtime_error`, `std::out_of_range` usw.
+  * Definieren Sie Ihre eigenen Ausnahmetypen für domänenspezifische Fehler.
+  * Vermeiden Sie das Auslösen von Ausnahmen in Destruktoren.
+  * Verwenden Sie RAII, um sicherzustellen, dass Ressourcen bei Ausnahmen aufgeräumt werden.
 
-So kÃ¶nnten Sie beispielsweise einen Dateifehler mit Ausnahmen behandeln:
+So könnten Sie beispielsweise einen Dateifehler mit Ausnahmen behandeln:
 
 ```cpp
 01: try {
@@ -1209,7 +1173,7 @@ und der Fehler kann nicht ignoriert werden.
 
 ---
 
-### RÃ¼ckgabetyp einer Methode <a name="link23"></a>
+### Rückgabetyp einer Methode <a name="link23"></a>
 
 Wir betrachten folgendes Beispiel:
 
@@ -1233,7 +1197,7 @@ Wir betrachten folgendes Beispiel:
 
 *Vorgehensweise*: &bdquo;*Copied to Caller*&rdquo;
 
-Es gibt auch eine zweite MÃ¶glichkeit:
+Es gibt auch eine zweite Möglichkeit:
 
 ```cpp
 01: class Person
@@ -1257,30 +1221,30 @@ Es gibt auch eine zweite MÃ¶glichkeit:
 
 ---
 
-### Bevorzuge Komposition der Vererbung gegenÃ¼ber <a name="link24"></a>
+### Bevorzuge Komposition der Vererbung gegenüber <a name="link24"></a>
 
   * Vererbung ist ein leistungsstarkes Feature der objektorientierten Programmierung,
-  wird aber oft Ã¼berstrapaziert.
+  wird aber oft überstrapaziert.
 
   * Vererbung koppelt die abgeleitete Klasse eng an die Basisklasse
   (Stichwort &bdquo;*Strong Coupling*&rdquo; versus &bdquo;*Lose Coupling*&rdquo;),
-  wodurch der Code starrer und schwerer zu Ã¤ndern wird.
+  wodurch der Code starrer und schwerer zu ändern wird.
 
-  * Sie fÃ¼hrt auÃŸerdem tendenziell zu tiefen und komplexen Vererbungshierarchien,
+  * Sie führt außerdem tendenziell zu tiefen und komplexen Vererbungshierarchien,
   die schwer zu verstehen sind.
 
-  * Komposition hingegen ist eine Technik, bei der eine Klasse Instanzen anderer Klassen enthÃ¤lt,
+  * Komposition hingegen ist eine Technik, bei der eine Klasse Instanzen anderer Klassen enthält,
   anstatt von ihnen zu erben.
 
-  * Dies fÃ¼hrt zu einem flexibleren und modulareren Design.
+  * Dies führt zu einem flexibleren und modulareren Design.
 
 *Beispiel*:
 
 Wenn beispielsweise viele unterschiedliche Klassen in einem 3D-Szenario
-ein *Transformations*-Eigenschaft (also eine Position, eine Rotation und eine Skalierung) benÃ¶tigen,
-kÃ¶nnten Sie alle Ihre Klassen von einer Klasse `Transform` ableiten.
+ein *Transformations*-Eigenschaft (also eine Position, eine Rotation und eine Skalierung) benötigen,
+könnten Sie alle Ihre Klassen von einer Klasse `Transform` ableiten.
 
-Sie kÃ¶nnten eine *Transform*-Eigenschaft aber auch als Attribut den Klassen hinzufÃ¼gen:
+Sie könnten eine *Transform*-Eigenschaft aber auch als Attribut den Klassen hinzufügen:
 
 ```cpp
 01: class Vector3D{};
@@ -1310,15 +1274,15 @@ Sie kÃ¶nnten eine *Transform*-Eigenschaft aber auch als Attribut den Klassen hin
 25: };
 ```
 
-  * Dadurch haben Sie mehr Kontrolle Ã¼ber die Schnittstelle der &bdquo;untergeordneten&rdquo; Klassen.
+  * Dadurch haben Sie mehr Kontrolle über die Schnittstelle der &bdquo;untergeordneten&rdquo; Klassen.
 
-  * Denn wenn Sie eine Ã¼bergeordnete Klasse Ã¤ndern, wird die Ã„nderung zwangslÃ¤ufig in allen untergeordneten Klassen widergespiegelt, was oft nicht erwÃ¼nscht ist.
+  * Denn wenn Sie eine übergeordnete Klasse ändern, wird die Änderung zwangsläufig in allen untergeordneten Klassen widergespiegelt, was oft nicht erwünscht ist.
 
-  * Oft mÃ¼ssen Sie der Ã¼bergeordneten Klasse etwas hinzufÃ¼gen, weil eine bestimmte untergeordnete Klasse es braucht. Indem Sie dies tun, zwingen Sie es allen anderen untergeordneten Klassen auf, die es nicht unbedingt brauchen oder wollen.
+  * Oft müssen Sie der übergeordneten Klasse etwas hinzufügen, weil eine bestimmte untergeordnete Klasse es braucht. Indem Sie dies tun, zwingen Sie es allen anderen untergeordneten Klassen auf, die es nicht unbedingt brauchen oder wollen.
 
-  * Mit Komposition haben Sie mehr Kontrolle darÃ¼ber.
+  * Mit Komposition haben Sie mehr Kontrolle darüber.
 
-  * Komposition ermÃ¶glicht es auch, kleinere Klassen zu schreiben, anstatt von einer groÃŸen Ã¼bergeordneten Klasse zu erben.
+  * Komposition ermöglicht es auch, kleinere Klassen zu schreiben, anstatt von einer großen übergeordneten Klasse zu erben.
 
 ---
 
@@ -1326,14 +1290,14 @@ Sie kÃ¶nnten eine *Transform*-Eigenschaft aber auch als Attribut den Klassen hin
 
 In der Sprache C++ gibt es des Feature so genannter &bdquo;impliziter Typkonvertierungen&rdquo;.
 
-Hierunter versteht man Konvertierungen, die der Ãœbersetzer automatisch durchfÃ¼hrt:
+Hierunter versteht man Konvertierungen, die der Übersetzer automatisch durchführt:
 
-  * Sie werden immer dann durchgefÃ¼hrt, wenn ein Ausdruck eines Typs `T1` in einem Kontext verwendet wird,
+  * Sie werden immer dann durchgeführt, wenn ein Ausdruck eines Typs `T1` in einem Kontext verwendet wird,
   der diesen Typ nicht akzeptiert, aber einen anderen Typ `T2`.
 
-  * Obwohl diese nÃ¼tzlich sein kÃ¶nnen, kÃ¶nnen sie auch zu unerwarteten Ergebnissen und Fehlern fÃ¼hren.
+  * Obwohl diese nützlich sein können, können sie auch zu unerwarteten Ergebnissen und Fehlern führen.
 
-Daher ist es manchmal wÃ¼nschenswert, implizite Konvertierungen zu vermeiden.
+Daher ist es manchmal wünschenswert, implizite Konvertierungen zu vermeiden.
 
 *Beispiel*:
 
@@ -1364,35 +1328,35 @@ Daher ist es manchmal wÃ¼nschenswert, implizite Konvertierungen zu vermeiden.
 In diesem Beispiel gibt es neben der Klasse `Distance` eine Funktion `printDistance`,
 die ein Objekt vom Typ `Distance` als Argument annimmt.
 
-In der rufenden Funktion haben wir jedoch eine `int`-Variable an die Funktion Ã¼bergeben
-und dennoch wird der Quellcode fehlerfrei Ã¼bersetzt und korrekt ausgefÃ¼hrt:
+In der rufenden Funktion haben wir jedoch eine `int`-Variable an die Funktion übergeben
+und dennoch wird der Quellcode fehlerfrei übersetzt und korrekt ausgeführt:
 
-Der Compiler hat eine implizite Konvertierung von `int` nach `Distance` durchgefÃ¼hrt!
+Der Compiler hat eine implizite Konvertierung von `int` nach `Distance` durchgeführt!
 
-Um implizite Konvertierungen in C++ zu vermeiden, kÃ¶nnen wir das SchlÃ¼sselwort `explicit` verwenden.
+Um implizite Konvertierungen in C++ zu vermeiden, können wir das Schlüsselwort `explicit` verwenden.
 
-Wenn das SchlÃ¼sselwort `explicit` mit einem Konstruktor oder einer Konvertierungsfunktion verwendet wird,
-verhindert es implizite Konvertierungen, die automatisch vom Compiler durchgefÃ¼hrt werden.
+Wenn das Schlüsselwort `explicit` mit einem Konstruktor oder einer Konvertierungsfunktion verwendet wird,
+verhindert es implizite Konvertierungen, die automatisch vom Compiler durchgeführt werden.
 
 *Hinweis*:
-Mit einer expliziten Typwandlung kÃ¶nnte man die Konvertierung wieder aktivieren,
-aber dieses Mal eben nicht versteckt, sondern sichtbar fÃ¼r den Entwickler!
+Mit einer expliziten Typwandlung könnte man die Konvertierung wieder aktivieren,
+aber dieses Mal eben nicht versteckt, sondern sichtbar für den Entwickler!
 
 *Frage*:
 
 
 ---
 
-### SchlÃ¼sselwort `auto` verwenden oder nicht? <a name="link26"></a>
+### Schlüsselwort `auto` verwenden oder nicht? <a name="link26"></a>
 
-Empfielt sich der Einsatz des SchlÃ¼sselworts `auto` oder nicht?
+Empfielt sich der Einsatz des Schlüsselworts `auto` oder nicht?
 
-`auto`: **You totally know what youâ€™re doing, or you totally donâ€™t**
+`auto`: **You totally know what you’re doing, or you totally don’t**
 
 #### Erstes Beispiel
 
 *Frage*:<br />
-Warum ist dieses Code-Fragment nicht Ã¼bersetzungsfÃ¤hig?
+Warum ist dieses Code-Fragment nicht übersetzungsfähig?
 
 ```cpp
 01: void test()
@@ -1409,33 +1373,33 @@ Warum ist dieses Code-Fragment nicht Ã¼bersetzungsfÃ¤hig?
 
 *Zwei Empfehlungen*:
 
-  * Verwenden Sie `auto` prinzipiell groÃŸzÃ¼gig. Es kann die Lesbarkeit verbessern.
-    Der Compiler kann Typen fÃ¼r uns besser ableiten als wir selbst (*Type Deduction*).
+  * Verwenden Sie `auto` prinzipiell großzügig. Es kann die Lesbarkeit verbessern.
+    Der Compiler kann Typen für uns besser ableiten als wir selbst (*Type Deduction*).
 
   * Ist der Typ einer Variablen von entscheidender Natur, dann sollte man diesen auch explizit hinschreiben.
 
 
 #### Zweites Beispiel
 
-Lambda-Funktionen (prÃ¤ziser: Lambda-*Objekte*) sind zu einem integralen Bestandteil der C++&ndash;Programmierung geworden.
-Es gibt im Wesentlichen drei MÃ¶glichkeiten, diese zu vereinbaren:
+Lambda-Funktionen (präziser: Lambda-*Objekte*) sind zu einem integralen Bestandteil der C++&ndash;Programmierung geworden.
+Es gibt im Wesentlichen drei Möglichkeiten, diese zu vereinbaren:
 
   * <i>Inplace</i> &ndash; also als anonyme Objekte.
-  * Mit dem SchlÃ¼sselwort `auto`.
+  * Mit dem Schlüsselwort `auto`.
   * Mit dem Klassentemplate `std::function`.
 
 Bei Lambda-Funktionen sollten wir den Weg mit `auto` einschlagen. Warum?
 
-Der Typ einer Lambda-Funktion kann von uns als Entwickler nicht hingeschrieben werden (der Bezeichner des Typs ist fÃ¼r uns nicht bekannt),
-aber `auto` leitet den Typ fÃ¼r uns prÃ¤size ab!
+Der Typ einer Lambda-Funktion kann von uns als Entwickler nicht hingeschrieben werden (der Bezeichner des Typs ist für uns nicht bekannt),
+aber `auto` leitet den Typ für uns präsize ab!
 
-Dies bedeutet unter anderem: Zwei Lambda-Funktionen mit denselben Parametern und demselben RÃ¼ckgabetyp sind von unterschiedlichem Typ!
+Dies bedeutet unter anderem: Zwei Lambda-Funktionen mit denselben Parametern und demselben Rückgabetyp sind von unterschiedlichem Typ!
 
-Allerdings kÃ¶nnten beide Lambda-Funktionen derselben `std::function<>`-Variablen zugewiesen werden.
+Allerdings könnten beide Lambda-Funktionen derselben `std::function<>`-Variablen zugewiesen werden.
 
 Das hat aber Nachteile:
 Wenn wir eine Lambda-Funktion in eine `std::function<>`-Variable kopieren, kann diese nicht mehr *inline* verwendet werden,
-sodass der Aufruf mÃ¶glicherweise langsamer ist.
+sodass der Aufruf möglicherweise langsamer ist.
 Ferner kann das Kopieren der Lambda-Funktion in eine `std::function<>`-Variable auch Anforderungen an die dynamische Speicherverwaltung nach sich ziehen.
 
 Wenn wir eine Lambda-Funktion mit `auto` deklarieren, vermeiden wir Overhead!
@@ -1509,10 +1473,10 @@ Es gibt  hier nur eine Warnung zu Zeile 16:<br />
 
 ---
 
-### SchlÃ¼sselwort `auto`: *Left-to-Right* Initialisierungsstil <a name="link27"></a>
+### Schlüsselwort `auto`: *Left-to-Right* Initialisierungsstil <a name="link27"></a>
 
-Verwenden Sie das SchlÃ¼sselwort `auto`, um damit einen einheitlichen, besser lesbaren Initialisierungsstil
-fÃ¼r Variablen zu haben:
+Verwenden Sie das Schlüsselwort `auto`, um damit einen einheitlichen, besser lesbaren Initialisierungsstil
+für Variablen zu haben:
 
 ```cpp
 01: auto var1 = 0;
@@ -1533,8 +1497,8 @@ in Richtung einer &bdquo;von links nach rechts&rdquo;-Syntax bewegt.
 
 ##### 2. Das Initialisierungsargument
 
-Eines der stÃ¤rksten Argumente fÃ¼r den *Left-to-Right* Initialisierungsstil ist,
-dass er das Fehlen eines Initialisierungswerts fÃ¼r Variablen/Objekte unmÃ¶glich macht.
+Eines der stärksten Argumente für den *Left-to-Right* Initialisierungsstil ist,
+dass er das Fehlen eines Initialisierungswerts für Variablen/Objekte unmöglich macht.
 
 ```cpp
 int i;         // bad
@@ -1552,24 +1516,24 @@ auto i;        // impossible, doesn't compile
 auto i = 0;    // good, i is now initialized (to 0) and can be read from
 ```
 
-##### 3. Das Argument, dass bei der Initialisierung die Konvertierung nicht eingeschrÃ¤nkt wird
+##### 3. Das Argument, dass bei der Initialisierung die Konvertierung nicht eingeschränkt wird
 
 ```cpp
 float x = 123.45;        // Hmmm, 123.45 is of type double ?!?
 ```
 
 Es findet eine &bdquo;*Narrowing Conversion*&rdquo; statt:
-`123.45` ist vom Typ `double` und wird in den weniger prÃ¤zisen Typ `float` konvertiert.
+`123.45` ist vom Typ `double` und wird in den weniger präzisen Typ `float` konvertiert.
 
 ```cpp
 auto x = 123.45f;
 ```
 
-Mit dem *Left-to-Right* Initialisierungsstil wurde Ã¼berhaupt kein `double`-Wert erzeugt.
+Mit dem *Left-to-Right* Initialisierungsstil wurde überhaupt kein `double`-Wert erzeugt.
 Und es findet keine &bdquo;*Narrowing Conversion*&rdquo; statt.
 
 
-##### 4. Das Argument, dass es die Leistung (fast) nie beeintrÃ¤chtigt
+##### 4. Das Argument, dass es die Leistung (fast) nie beeinträchtigt
 
 Betrachten Sie diesen Ausdruck mit dem *Left-to-Right* Initialisierungsstil:
 
@@ -1580,9 +1544,9 @@ auto name = std::string{ "Hans" };
 
 Was verbirgt sich hinter dem Gleichheitszeichen? Wird da nicht eine Kopie von `std::string{ "Hans" }` erstellt?
 
-Theoretisch erzeugt der Ausdruck `std::string{ "Hans" }` ein temporÃ¤res `std::string`-Objekt,
+Theoretisch erzeugt der Ausdruck `std::string{ "Hans" }` ein temporäres `std::string`-Objekt,
 das dann nach `name` verschoben wird.
-Diese Syntax kÃ¶nnte also die Kosten einer Verschiebung verursachen.
+Diese Syntax könnte also die Kosten einer Verschiebung verursachen.
 
 Ab C++ ist das Feature [Copy Elision](https://en.cppreference.com/w/cpp/language/copy_elision) 
 in der Sprache per Definition vorhanden.
@@ -1599,7 +1563,7 @@ X x();
 ```
 
 Diese Deklaration wird vom Compiler als eine Funktionsaufrufdeklaration interpretiert,
-die eine Funktion des Namens `x` ohne Parameter deklariert, die ein Objekt vom Typ `X` zurÃ¼ckliefert.
+die eine Funktion des Namens `x` ohne Parameter deklariert, die ein Objekt vom Typ `X` zurückliefert.
 
 
 ```cpp
@@ -1615,13 +1579,13 @@ In der letzten Deklaration ist `x` ein Objekts des Typs `X`.
 
 Eine `const auto&`-Referenz kann an alles gebunden werden.
 
-Das ursprÃ¼ngliche Objekt kann durch eine solche Referenz niemals verÃ¤ndert werden.
+Das ursprüngliche Objekt kann durch eine solche Referenz niemals verändert werden.
 
-Der Gebrauch von `const auto&`-Referenzen fÃ¼r Objekte sollte die Vorzugswahl sein,
+Der Gebrauch von `const auto&`-Referenzen für Objekte sollte die Vorzugswahl sein,
 vor allem dann, wenn das Kopieren des Originalobjekts teuer ist.
 
-Wenn die `const auto&`-Referenz an ein temporÃ¤res Objekt gebunden ist,
-verlÃ¤ngert sich die Lebensdauer des temporÃ¤ren Objekts angepasst an die Lebensdauer der beteiligten Referenz.
+Wenn die `const auto&`-Referenz an ein temporäres Objekt gebunden ist,
+verlängert sich die Lebensdauer des temporären Objekts angepasst an die Lebensdauer der beteiligten Referenz.
 
 *Beispiel*:
 
@@ -1650,7 +1614,7 @@ verlÃ¤ngert sich die Lebensdauer des temporÃ¤ren Objekts angepasst an die Lebens
 
 *Hinweis*:
 
-Es ist mÃ¶glich, bei Verwendung von `auto&` eine `const auto&`-Referenz zu erhalten.
+Es ist möglich, bei Verwendung von `auto&` eine `const auto&`-Referenz zu erhalten.
 
 Dies ist im folgenden Beispiel zu sehen:
 
@@ -1683,17 +1647,17 @@ void test()
 ```
 
 *Fazit*:<br />
-  * Stilistisch sollte man immer `const auto&` verwenden, um explizit auszudrÃ¼cken, dass man es mit einer konstanten Referenz zu tun hat!
-  * `auto&` wiederum sollte man nur dann verwenden, wenn wir eine verÃ¤nderliche (mutable) Referenz kennzeichnen wollen.
+  * Stilistisch sollte man immer `const auto&` verwenden, um explizit auszudrücken, dass man es mit einer konstanten Referenz zu tun hat!
+  * `auto&` wiederum sollte man nur dann verwenden, wenn wir eine veränderliche (mutable) Referenz kennzeichnen wollen.
 
 
 ---
 
-### VerÃ¤nderbare Referenzen (`auto&`) <a name="link29"></a>
+### Veränderbare Referenzen (`auto&`) <a name="link29"></a>
 
-Im Gegensatz zu einer konstanten Referenz kann eine verÃ¤nderbare Referenz (`auto&`) nicht an eine temporÃ¤re Variable / ein temporÃ¤res Objekt gebunden werden.
+Im Gegensatz zu einer konstanten Referenz kann eine veränderbare Referenz (`auto&`) nicht an eine temporäre Variable / ein temporäres Objekt gebunden werden.
 
-Wir verwenden `auto&` immer dann, wenn wir das referenzierte Objekt Ã¤ndern mÃ¶chten.
+Wir verwenden `auto&` immer dann, wenn wir das referenzierte Objekt ändern möchten.
 
 ---
 
@@ -1701,16 +1665,16 @@ Wir verwenden `auto&` immer dann, wenn wir das referenzierte Objekt Ã¤ndern mÃ¶c
 
 `auto&&` wird als *Forwarding* Referenz (auch universelle Referenz) bezeichnet.
 
-Sie kann an alles gebunden werden, was sie in bestimmten FÃ¤llen nÃ¼tzlich macht.
+Sie kann an alles gebunden werden, was sie in bestimmten Fällen nützlich macht.
 
-*Forwarding* Referenzen verlÃ¤ngern, genau wie konstante Referenzen, die Lebensdauer einer temporÃ¤ren Variablen / eines temporÃ¤ren Objekts.
+*Forwarding* Referenzen verlängern, genau wie konstante Referenzen, die Lebensdauer einer temporären Variablen / eines temporären Objekts.
 
-Im Gegensatz zur konstanten Referenz ermÃ¶glicht `auto&&` jedoch das Ã„ndern referenzierter Objekte, auch temporÃ¤rer Variablen / temporÃ¤rer Objekte.
+Im Gegensatz zur konstanten Referenz ermöglicht `auto&&` jedoch das Ändern referenzierter Objekte, auch temporärer Variablen / temporärer Objekte.
 
 Wir verwenden nur dann, wenn wir Variablen/Objekte an anderen, unterlagerten Code weiterleiten.
 
-In diesen Weiterleitungsszenarien spielt es keine Rolle, ob die Variable eine konstante oder verÃ¤nderliche Variable ist;
-man mÃ¶chte sie lediglich an Code weitergeben, der die Variable tatsÃ¤chlich verwendet.
+In diesen Weiterleitungsszenarien spielt es keine Rolle, ob die Variable eine konstante oder veränderliche Variable ist;
+man möchte sie lediglich an Code weitergeben, der die Variable tatsächlich verwendet.
 
 *Hinweis*:<br />
   * Wichtig zu beachten: `auto&&` und `T&&` sind nur dann Weiterleitungsreferenzen, wenn sie in einem Funktionstemplate verwendet werden,
@@ -1722,15 +1686,15 @@ man mÃ¶chte sie lediglich an Code weitergeben, der die Variable tatsÃ¤chlich ver
 
 ---
 
-### `const` Propagation fÃ¼r Zeiger <a name="link31"></a>
+### `const` Propagation für Zeiger <a name="link31"></a>
 
-Mit dem SchlÃ¼sselwort `const` kÃ¶nnen wir dem Compiler mitteilen,
-welche Objekte unverÃ¤nderlich sind.
-Der Compiler kann dann Ã¼berprÃ¼fen, ob wir versuchen, Objekte zu verÃ¤ndern, die nicht verÃ¤ndert werden sollen.
+Mit dem Schlüsselwort `const` können wir dem Compiler mitteilen,
+welche Objekte unveränderlich sind.
+Der Compiler kann dann überprüfen, ob wir versuchen, Objekte zu verändern, die nicht verändert werden sollen.
 
-Anders ausgedrÃ¼ckt: Der Compiler prÃ¼ft unseren Code auf `const`-Korrektheit.
+Anders ausgedrückt: Der Compiler prüft unseren Code auf `const`-Korrektheit.
 
-Ein hÃ¤ufiger Fehler beim Schreiben von `const`-korrektem Code in C++ ist,
+Ein häufiger Fehler beim Schreiben von `const`-korrektem Code in C++ ist,
 dass ein `const`-initialisiertes Objekt die Werte, auf die Member-Zeiger zeigen,
 weiterhin manipulieren kann.
 
@@ -1767,19 +1731,19 @@ Das folgende Beispiel veranschaulicht dieses Problem.
 28: }
 ```
 
-Die Funktion `set_value_behind_pointer()` verÃ¤ndert den `int`-Wert,
+Die Funktion `set_value_behind_pointer()` verändert den `int`-Wert,
 obwohl sie als `const` deklariert ist.
 
-Es wird eben nicht der Zeiger `m_ptr` selbst verÃ¤ndert,
+Es wird eben nicht der Zeiger `m_ptr` selbst verändert,
 sondern nur der `int`-Wert, auf den der Zeiger zeigt.
 
 Um dies lesbar zu verhindern, wurde der Standardbibliothek ein Wrapper namens
-`propagate_const` hinzugefÃ¼gt.
+`propagate_const` hinzugefügt.
 
 *Bemerkung*:<br />
-Aktuell ist dieser Wrapper nur im Namensraum `std::experimental` verfÃ¼gbar,
-und Visual C++ unterstÃ¼tzt dieses Feature aktuell Ã¼berhaupt nicht,
-dafÃ¼r aber der GCC:
+Aktuell ist dieser Wrapper nur im Namensraum `std::experimental` verfügbar,
+und Visual C++ unterstützt dieses Feature aktuell überhaupt nicht,
+dafür aber der GCC:
 
 
 ```cpp
@@ -1804,7 +1768,7 @@ dafÃ¼r aber der GCC:
 ```
 
 Siehe in Zeile 16 die Verwendung des `const`-propagierenden Wrappers `std::experimental::propagate_const`
-fÃ¼r Zeiger.
+für Zeiger.
 
 ---
 
@@ -1817,11 +1781,11 @@ und durch seinen Namen eine bestimmte Bedeutung vermittelt.
 
 Im Gegensatz zu starken Typen stehen meistens elementare Datentypen wie beispielsweise `int` oder `double`.
 
-Oftmals sagen elementare Typen nicht viel Ã¼ber die Bedeutung ihrer Variablen aus,
-und es ist auch nicht mÃ¶glich, EinschrÃ¤nkungen bzgl. des Wertebereichs ohne Weiteres vornehmen zu kÃ¶nnen.
+Oftmals sagen elementare Typen nicht viel über die Bedeutung ihrer Variablen aus,
+und es ist auch nicht möglich, Einschränkungen bzgl. des Wertebereichs ohne Weiteres vornehmen zu können.
 
-*Strong Types* sind meist Wrapper-Klassen fÃ¼r eine Variable elementaren Datentyps,
-um diese bzgl. ihres Wertebereichs und ihres Verhaltens besser kontrollieren zu kÃ¶nnen.
+*Strong Types* sind meist Wrapper-Klassen für eine Variable elementaren Datentyps,
+um diese bzgl. ihres Wertebereichs und ihres Verhaltens besser kontrollieren zu können.
 
 *Erstes Beispiel*:
 
@@ -1903,11 +1867,11 @@ Im zweiten Beispiel wurde der Kartenwert der Karte
   * 7, 8, 9, 10: Ebenfalls 7, 8, 9 oder 10
   * Bube: Jack
   * Dame: Queen
-  * KÃ¶nig: King
+  * König: King
   * Ass: Ace
 
 durch eine Klasse `FaceValue` umgesetzt.
-Dies ermÃ¶glicht gegenÃ¼ber dem Datentyp `int` eine doch schÃ¤rfere 
+Dies ermöglicht gegenüber dem Datentyp `int` eine doch schärfere 
 Hantierung aller Regeln, die mit einer bestimmten Instanzvariablen verbunden sind.
 
 
@@ -1919,7 +1883,7 @@ Ab C++ 17 kann eine `if`-Anweisung einen *Initialisierer* enthalten,
 der eine benannte Variable deklariert und initialisiert.
 
 Diese Form der `if`-Anweisung bietet sich an,
-wenn die Variable ausschlieÃŸlich innerhalb des Blocks der `if`-Anweisung benÃ¶tigt wird:.
+wenn die Variable ausschließlich innerhalb des Blocks der `if`-Anweisung benötigt wird:.
 
 1. *Beispiel*:
 
@@ -1947,28 +1911,12 @@ wenn die Variable ausschlieÃŸlich innerhalb des Blocks der `if`-Anweisung benÃ¶t
 09: }
 ```
 
-
-
 ---
-
-
-
-
 
 # Literatur
 
-Zum Schlagwort &bdquo;*Temporary Lifetime Extension*&rdquo;
-gibt es im Netz zwei interessante AufsÃ¤tze:
-
-[Temporary Lifetime Extension: Mistakes and Solutions](https://hackernoon.com/temporary-lifetime-extension-mistakes-and-solutions)
-
-und
-
-[Lifetime extension of temporary objects in C++](https://pvs-studio.com/en/blog/posts/cpp/1006).
-
-
 ---
 
-[ZurÃ¼ck](./Readme_Guidelines.md)
+[Zurück](./Readme_Guidelines.md)
 
 ---

@@ -32,22 +32,25 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Readme_Guidelines.md">
+    <None Include="Clean_Code_Readme_Guidelines.md">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Guidelines_Generic_Programming.md">
+    <None Include="Clean_Code_Guidelines_Generic_Programming.md">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Guidelines_Inheritance.md">
+    <None Include="Clean_Code_Guidelines_Inheritance.md">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Guidelines_Core_Cpp.md">
+    <None Include="Clean_Code_Guidelines_Classic_Cpp.md">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="cpp_special_member_functions.svg">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Guidelines_STL.md">
+    <None Include="Clean_Code_Guidelines_STL.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Clean_Code_Guidelines_Modern_Cpp.md">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
