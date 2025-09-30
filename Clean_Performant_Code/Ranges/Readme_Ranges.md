@@ -39,7 +39,7 @@
 ## Allgemeines <a name="link1"></a>
 
 Wir geben in diesem Tutorial keinen vollständigen Überblick über die `std::ranges` Bibliothek:
-Es sollen vielmehr einige erste Beispiele für einen Neueinsteiger in *Modern C++ 20* gegeben werden.
+Es sollen vielmehr einige erste Beispiele für einen Neueinsteiger in *Modern C++* gegeben werden.
 
 Erfahren Sie, wie Sie `std::ranges` für besser lesbaren und effizienteren Code nutzen können,
 also für *Clean Code*.
@@ -175,7 +175,7 @@ std::ranges::operation_view { range, arguments... }
 ```cpp
 01: std::vector<int> numbers = { 1, 2, 3, 4, 5, 6 };
 02: 
-03: auto view{ std::ranges::take_view{ numbers, 3 } };
+03: auto view = std::ranges::take_view{ numbers, 3 };
 04: 
 05: std::ranges::for_each(
 06:     view,
@@ -190,7 +190,7 @@ std::ranges::operation_view { range, arguments... }
 ```
 
 Normalerweise werden Ansichten nicht mit ihren Konstruktoren,
-sondern mit *Range Adaptors* (Bereichsadapter) erstellt.
+sondern durch *Range Adaptor* (Bereichsadapter) erstellt.
 
 ---
 
@@ -201,9 +201,16 @@ sondern mit *Range Adaptors* (Bereichsadapter) erstellt.
   und `views::take`.
 
   * Es ist vorzuziehen, Adapter zum Erstellen von Ansichten zu verwenden, da sie Optimierungen ermöglichen:
-```
+```cpp
 range | std::ranges::views::operation(arguments...)
 ```
+
+  oder auch kürzer
+
+```cpp
+range | std::views::operation(arguments...)
+```
+
 
   * Bereichsadapter können zusammengesetzt werden (*Composition*),
   um komplexe *Data Processing Pipelines* (Datenverarbeitungspipelines) effizient aufzubauen.
@@ -704,7 +711,7 @@ Value 3 found!
   Assoziativ-Containern wie `std::map`, `unordered_map`, etc. zugreifen zu können. 
 
   * Es gibt sogar gleich mehrere Möglichkeiten bzw. Schreibweisen,
-  wir werden einen Blick auf die Ermittlung der Schlüssel.
+  wir werfen einen Blick auf die Ermittlung der Schlüssel.
 
   * Klassische Vorgehensweise &ndash; auschließlich Verwendung der STL:
 
@@ -872,7 +879,7 @@ three five six
 #### Beispiel mit der Klasse `std::unordered_map`
 
   * Das Transformieren von Elementen eines Bereichs erfordert nicht unbedingt, dass der resultierende Bereich Elemente desselben Typs enthält.
-  * Man kann Elemente Elementen eines anderen Typs zuordnen.
+  * Man kann Elementen Elemente eines anderen Typs zuordnen.
 
 *Beispiel*:
 

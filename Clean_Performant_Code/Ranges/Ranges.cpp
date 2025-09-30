@@ -80,7 +80,7 @@ namespace Ranges {
     {
         std::vector<int> numbers = { 1, 2, 3, 4, 5, 6 };
 
-        auto view{ std::ranges::take_view{ numbers, 3 } };
+        auto view = std::ranges::take_view{ numbers, 3 };
 
         std::ranges::for_each(
             view,

@@ -52,5 +52,8 @@
     <Image Include="Buch_Kurt_Guntheroth_Optimized_Cpp.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Embedded_Cpp.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

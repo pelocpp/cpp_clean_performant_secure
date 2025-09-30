@@ -4,6 +4,10 @@
 
 ---
 
+<img src="Embedded_Cpp.jpg" width="600"><br />
+   
+---
+
 ## [Agenda](./Agenda.md)
 
 ## [Fahrplan](./Roadmap.md)
