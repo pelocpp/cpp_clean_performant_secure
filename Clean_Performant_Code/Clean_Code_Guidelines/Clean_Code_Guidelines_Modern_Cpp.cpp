@@ -201,177 +201,177 @@ namespace CleanCodeGuidelines_ModernCpp {
         }
     }
 
-    namespace CopySwapIdiom {
+    //namespace CopySwapIdiom {
 
-        namespace Variant_01 {
+    //    namespace Variant_01 {
 
-            class SimpleString
-            {
-            private:
-                char* m_data{};         // pointer to the characters of the string (nullptr)
-                std::size_t m_elems{};  // number of elements (zero)
+    //        class SimpleString
+    //        {
+    //        private:
+    //            char* m_data{};         // pointer to the characters of the string (nullptr)
+    //            std::size_t m_elems{};  // number of elements (zero)
 
-            public:
-                // c'tors / d'tor
-                SimpleString() = default; // empty string
+    //        public:
+    //            // c'tors / d'tor
+    //            SimpleString() = default; // empty string
 
-                SimpleString(const char* s)
-                    : m_elems{ std::strlen(s) }
-                {
-                    m_data = new char[size() + 1];      // need space for terminating '\0'
-                    std::copy(s, s + size(), m_data);
-                    m_data[size()] = '\0';
-                }
+    //            SimpleString(const char* s)
+    //                : m_elems{ std::strlen(s) }
+    //            {
+    //                m_data = new char[size() + 1];      // need space for terminating '\0'
+    //                std::copy(s, s + size(), m_data);
+    //                m_data[size()] = '\0';
+    //            }
 
-                // copy-constructor
-                SimpleString(const SimpleString& other)
-                    : m_data{ new char[other.size() + 1] }, m_elems{ other.size() }
-                {
-                    std::copy(other.m_data, other.m_data + other.size(), m_data);
-                    m_data[size()] = '\0';
-                }
+    //            // copy-constructor
+    //            SimpleString(const SimpleString& other)
+    //                : m_data{ new char[other.size() + 1] }, m_elems{ other.size() }
+    //            {
+    //                std::copy(other.m_data, other.m_data + other.size(), m_data);
+    //                m_data[size()] = '\0';
+    //            }
 
-                ~SimpleString() {
-                    delete[] m_data;
-                }
+    //            ~SimpleString() {
+    //                delete[] m_data;
+    //            }
 
-                // swap-idiom
-                void swap(SimpleString& other) noexcept
-                {
-                    std::swap(m_data, other.m_data);      // swap data member
-                    std::swap(m_elems, other.m_elems);    // swap data member
-                }
+    //            // swap-idiom
+    //            void swap(SimpleString& other) noexcept
+    //            {
+    //                std::swap(m_data, other.m_data);      // swap data member
+    //                std::swap(m_elems, other.m_elems);    // swap data member
+    //            }
 
-                // refined copy assignment operator
-                SimpleString& operator=(SimpleString other) {
+    //            // refined copy assignment operator
+    //            SimpleString& operator=(SimpleString other) {
 
-                    this->swap(other);
-                    return *this;
-                }
+    //                this->swap(other);
+    //                return *this;
+    //            }
 
-                // getter
-                std::size_t size() const { return m_elems; }
-                bool empty() const { return size() == 0; }
-                const char* data() const { return m_data; }
+    //            // getter
+    //            std::size_t size() const { return m_elems; }
+    //            bool empty() const { return size() == 0; }
+    //            const char* data() const { return m_data; }
 
-                // operators (no index-checking intentionally)
-                char operator[](std::size_t n) const { return m_data[n]; }
-                char& operator[](std::size_t n) { return m_data[n]; }
-            };
+    //            // operators (no index-checking intentionally)
+    //            char operator[](std::size_t n) const { return m_data[n]; }
+    //            char& operator[](std::size_t n) { return m_data[n]; }
+    //        };
 
-            static void test_variant_01() {
+    //        static void test_variant_01() {
 
-                SimpleString s1{ "Hello World" };
-                SimpleString s2{ "More Hello World" };
-                s1 = s2;
-                std::println("s1: {}", s1.data());
-                std::println("s2: {}", s2.data());
-            }
-        }
+    //            SimpleString s1{ "Hello World" };
+    //            SimpleString s2{ "More Hello World" };
+    //            s1 = s2;
+    //            std::println("s1: {}", s1.data());
+    //            std::println("s2: {}", s2.data());
+    //        }
+    //    }
 
-        static void guidelines_copy_swap_idiom()
-        {
-            Variant_01::test_variant_01();
-        }
-    }
+    //    static void guidelines_copy_swap_idiom()
+    //    {
+    //        Variant_01::test_variant_01();
+    //    }
+    //}
 
-    namespace MoveOperations {
+    //namespace MoveOperations {
 
-        namespace Variant_01 {
+    //    namespace Variant_01 {
 
-            class SimpleString
-            {
-            private:
-                char* m_data{};   // pointer to the characters of the string (nullptr)
-                std::size_t m_elems{};  // number of elements (zero)
+    //        class SimpleString
+    //        {
+    //        private:
+    //            char* m_data{};   // pointer to the characters of the string (nullptr)
+    //            std::size_t m_elems{};  // number of elements (zero)
 
-            public:
-                // c'tors / d'tor
-                SimpleString() = default; // empty string
+    //        public:
+    //            // c'tors / d'tor
+    //            SimpleString() = default; // empty string
 
-                SimpleString(const char* s)
-                    : m_elems{ std::strlen(s) }
-                {
-                    m_data = new char[size() + 1];      // need space for terminating '\0'
-                    std::copy(s, s + size(), m_data);
-                    m_data[size()] = '\0';
-                }
+    //            SimpleString(const char* s)
+    //                : m_elems{ std::strlen(s) }
+    //            {
+    //                m_data = new char[size() + 1];      // need space for terminating '\0'
+    //                std::copy(s, s + size(), m_data);
+    //                m_data[size()] = '\0';
+    //            }
 
-                // copy-constructor
-                SimpleString(const SimpleString& other)
-                    : m_data{ new char[other.size() + 1] }, m_elems{ other.size() }
-                {
-                    std::copy(other.m_data, other.m_data + other.size(), m_data);
-                    m_data[size()] = '\0';
-                }
+    //            // copy-constructor
+    //            SimpleString(const SimpleString& other)
+    //                : m_data{ new char[other.size() + 1] }, m_elems{ other.size() }
+    //            {
+    //                std::copy(other.m_data, other.m_data + other.size(), m_data);
+    //                m_data[size()] = '\0';
+    //            }
 
-                ~SimpleString() {
-                    delete[] m_data;
-                }
+    //            ~SimpleString() {
+    //                delete[] m_data;
+    //            }
 
-                // swap-idiom
-                void swap(SimpleString& other) noexcept
-                {
-                    std::swap(m_data, other.m_data);      // swap data member
-                    std::swap(m_elems, other.m_elems);    // swap data member
-                }
+    //            // swap-idiom
+    //            void swap(SimpleString& other) noexcept
+    //            {
+    //                std::swap(m_data, other.m_data);      // swap data member
+    //                std::swap(m_elems, other.m_elems);    // swap data member
+    //            }
 
-                // refined copy assignment operator
-                SimpleString& operator=(SimpleString other) {
+    //            // refined copy assignment operator
+    //            SimpleString& operator=(SimpleString other) {
 
-                    this->swap(other);
-                    return *this;
-                }
+    //                this->swap(other);
+    //                return *this;
+    //            }
 
-                // move operations
-                //SimpleString(SimpleString&& other) noexcept
-                //{
-                //    m_data = std::move(other.m_data);
-                //    m_elems = std::move(other.m_elems);
-                //    other.m_data = nullptr;
-                //    other.m_elems = 0;
-                //}
+    //            // move operations
+    //            //SimpleString(SimpleString&& other) noexcept
+    //            //{
+    //            //    m_data = std::move(other.m_data);
+    //            //    m_elems = std::move(other.m_elems);
+    //            //    other.m_data = nullptr;
+    //            //    other.m_elems = 0;
+    //            //}
 
-                // Alternative:
-                SimpleString(SimpleString&& other) noexcept
-                {
-                    m_data = std::exchange(other.m_data, nullptr);
-                    m_elems = std::exchange(other.m_elems, 0);
-                }
+    //            // Alternative:
+    //            SimpleString(SimpleString&& other) noexcept
+    //            {
+    //                m_data = std::exchange(other.m_data, nullptr);
+    //                m_elems = std::exchange(other.m_elems, 0);
+    //            }
 
-                SimpleString& operator=(SimpleString&& other) noexcept {
+    //            SimpleString& operator=(SimpleString&& other) noexcept {
 
-                    SimpleString tmp{ std::move(other) };
-                    tmp.swap(*this);
-                    return *this;
-                }
+    //                SimpleString tmp{ std::move(other) };
+    //                tmp.swap(*this);
+    //                return *this;
+    //            }
 
 
-                // getter
-                std::size_t size() const { return m_elems; }
-                bool empty() const { return size() == 0; }
-                const char* data() const { return m_data; }
+    //            // getter
+    //            std::size_t size() const { return m_elems; }
+    //            bool empty() const { return size() == 0; }
+    //            const char* data() const { return m_data; }
 
-                // operators (no index-checking intentionally)
-                char operator[](std::size_t n) const { return m_data[n]; }
-                char& operator[](std::size_t n) { return m_data[n]; }
-            };
+    //            // operators (no index-checking intentionally)
+    //            char operator[](std::size_t n) const { return m_data[n]; }
+    //            char& operator[](std::size_t n) { return m_data[n]; }
+    //        };
 
-            static void test_variant_01() {
+    //        static void test_variant_01() {
 
-                SimpleString s1{ "Hello World" };
-                SimpleString s2{ "More Hello World" };
-                s1 = s2;
-                std::println("s1: {}", s1.data());
-                std::println("s2: {}", s2.data());
-            }
-        }
+    //            SimpleString s1{ "Hello World" };
+    //            SimpleString s2{ "More Hello World" };
+    //            s1 = s2;
+    //            std::println("s1: {}", s1.data());
+    //            std::println("s2: {}", s2.data());
+    //        }
+    //    }
 
-        static void guidelines_move_operations()
-        {
-            Variant_01::test_variant_01();
-        }
-    }
+    //    static void guidelines_move_operations()
+    //    {
+    //        Variant_01::test_variant_01();
+    //    }
+    //}
 
 
     namespace Const_Propagation_for_Pointer {
@@ -601,7 +601,6 @@ namespace CleanCodeGuidelines_ModernCpp {
 
 void clean_code_guidelines_modern_cpp()
 {
-    CleanCodeGuidelines_ModernCpp::CopySwapIdiom::guidelines_copy_swap_idiom();
     CleanCodeGuidelines_ModernCpp::Keyword_Auto::guidelines_keyword_auto();
     CleanCodeGuidelines_ModernCpp::Keyword_Auto_Left_to_Right_Initialization_Syntax::guidelines_keyword_auto_left_to_right_initialization_syntax();
     CleanCodeGuidelines_ModernCpp::Keyword_Const_Auto_References::guidelines_keyword_const_auto_references();

@@ -17,19 +17,17 @@
   * [C-Style Arrays oder `std::array` zusammen mit `std::span`?](#link9)
   * [Wozu gibt es den &bdquo;*lightweight*&rdquo; Container `std::initializer_list`?](#link10)
   * [Welche Vorteile bietet die Klasse `std::string_view` gegenüber `std::string`?](#link11)
-  * [Das *Copy-Swap* Idiom](#link12)
-  * [Verschieben ist besser als Kopieren (`std::move`)](#link13)
-  * [Perfektes Weiterleiten (*Perfect Forwarding*, `std::forward`)](#link14)
-  * [Bessere Lesbarkeit durch *Structured Binding*](#link15)
-  * [Vorteile von Lambda-Objekten](#link16)
-  * [Typreiche Programmierung (*Type-Rich Programming*, *Type Traits*)](#link17)
-  * [Verwendung von Konzepten (`concept`) und Anforderungen (`requires`)](#link18)
-  * [Ausnahmesicherheit (*Exception Safety*)](#link19)
-  * [Die No-Throw-Garantie (*No-Throw Guarantee*)](#link20)
-  * [Das `noexcept` Schlüsselwort](#link21)
-  * [*Strong Types*](#link22)
-  * [`const` Propagation für Zeiger](#link23)
-  * [Literatur](#link24)
+  * [Perfektes Weiterleiten (*Perfect Forwarding*, `std::forward`)](#link12)
+  * [Bessere Lesbarkeit durch *Structured Binding*](#link13)
+  * [Vorteile von Lambda-Objekten](#link14)
+  * [Typreiche Programmierung (*Type-Rich Programming*, *Type Traits*)](#link15)
+  * [Verwendung von Konzepten (`concept`) und Anforderungen (`requires`)](#link16)
+  * [Ausnahmesicherheit (*Exception Safety*)](#link17)
+  * [Die No-Throw-Garantie (*No-Throw Guarantee*)](#link18)
+  * [Das `noexcept` Schlüsselwort](#link19)
+  * [*Strong Types*](#link20)
+  * [`const` Propagation für Zeiger](#link21)
+  * [Literatur](#link22)
 
 ---
 
@@ -413,154 +411,37 @@ Siehe Repository [*Modern C++*](https://github.com/pelocpp/cpp_modern).
 
 ---
 
-### Das *Copy-Swap* Idiom <a name="link12"></a>
-
-Das *Copy-and-Swap-Idiom* wurde eingeführt, um zwei Ziele zu erreichen:
-
-  * Realisierung der Kopier-Konstruktoren und Zuweisungsoperatoren (sowohl &bdquo;kopierende&rdquo; als auch &bdquo;verschiebende&rdquo; Semantik) auf eine einfache Weise (Vermeidung von Code-Duplikationen).
-  * Bereitstellung der so genannten *Strong Exception Guarantee*.
-
-Auf die *Strong Exception Guarantee* gehen wir später ein, wir verweilen beim *Copy-and-Swap-Idiom*:
-Dieses besteht im Wesentlichen aus zwei Teilen:
-
-
-  * Einem destruktiven Teil, der den bestehenden Zustand des Zielobjekts aufräumt (die linke Seite der Zuweisung).
-  * Einem konstruktiven Teil, der den Zustand vom Quellobjekt (rechte Seite der Zuweisung) zum Zielobjekt kopiert.
-
-Der destruktive Teil entspricht im Allgemeinen dem Code im Destruktor des Typs, der konstruktive Teil im Allgemeinen dem Code im Kopierkonstruktor des Typs.
-
-Der Name *Copy-and-Swap* für diese Technik rührt daher,
-dass sie üblicherweise durch eine Kombination aus dem Kopierkonstruktor des Typs,
-seinem Destruktor und einer `swap`()-Memberfunktion implementiert wird,
-die die Membervariablen einzeln austauscht.
-
-Mit dem *Copy-and-Swap*-Idiom können wir nun folgende Realisierung des 
-Zuweisungsoperators betrachten:
-
-```cpp
-01: void swap(SimpleString& other) noexcept
-02: {
-03:     std::swap(m_data, other.m_data);      // swap data member
-04:     std::swap(m_elems, other.m_elems);    // swap data member
-05: }
-06: 
-07: // refined copy assignment operator
-08: SimpleString& operator=(SimpleString other) {
-09: 
-10:     this->swap(other);
-11:     return *this;
-12: }
-```
-
-*Hinweise*:
-
-  * Am Beispiel des Parameters `other` wenden wir eine äußerst nützliche Richtlinie an:
-  Wenn Sie in einer Funktion eine Kopie erstellen, lassen Sie den Compiler dies in der Parameterliste tun.
-
-  * Nachdem (durch den Aufruf) die Kopie erstellt ist, können wir mit dem Tauschen der Membervariableninhalte beginnen.
-
-  * Beachten Sie, dass beim Aufrufen der Funktion alle neuen Daten bereits allokiert, kopiert und einsatzbereit sind.
-  Dadurch erhalten wir kostenlos eine *Strong Exception Guarantee* &ndash; dazu später noch mehr.
-
-  * An diesem Punkt sind wir quasi schon fertig, da `swap` keine Fehler auslöst.
-  Wir tauschen unsere aktuellen Daten mit den kopierten aus, ändern unseren Zustand sicher und legen die alten Daten in einem temporären Objekt ab.
-  
-  * Die alten Daten werden dann freigegeben, wenn die Funktion verlassen wird:
-  Es endet der Gültigkeitsbereich des Parameterobjekts und sein Destruktor wird aufgerufen!
-
-  * Beachten Sie, dass die Notwendigkeit einer Selbstzuweisungsprüfung beseitigt wurde
-  und eine einheitliche Implementierung des `operator=` ermöglicht wurde.
-  Darüberhinaus gibt es keine Leistungseinbußen mehr bei Nicht-Selbstzuweisungen.
-
----
-
-### Verschieben ist besser als Kopieren (`std::move`) <a name="link13"></a>
-
-Wir haben bislang in der Klasse `SimpleString` die
-traditionellen Regel der drei speziellen Methoden
-Kopier-Konstruktor, Zuweisungsoperator und Destruktor betrachtet.
-
-Seit C++ 11 können wir solchen Code durch die so genannte *Move-Semantik* effizienter (performanter) gestalten.
-Es gesellen sich zwei weitere spezielle Methoden (Verschiebe-Konstruktor, Verschiebe-Zuweisungsoperator) zur Klasse hinzu.
-
-Ihr Aufruf wird vom Compiler implizit aktiviert, wenn der Compiler Objekte bearbeitet,
-von denen er weiß, dass sie nicht mehr verwendet werden. Das sind beispielsweise Objekte im Programm,
-die keinen Namen haben (temporäre Objekte, Objekte, die als Zwischenergebnis fungieren).
-
-Am Beispiel der Klasse `SimpleString` könnten diese beiden Methoden so aussehen:
-
-```cpp
-01: SimpleString(SimpleString&& other) noexcept
-02: {
-03:     m_data = std::move(other.m_data);
-04:     m_elems = std::move(other.m_elems);
-05:     other.m_data = nullptr;
-06:     other.m_elems = 0;
-07: }
-08: 
-09: SimpleString& operator=(SimpleString&& other) noexcept {
-10: 
-11:     SimpleString tmp{ std::move(other) };
-12:     tmp.swap(*this);
-13:     return *this;
-14: }
-```
-
-Mit Hilfe von `std::exchange` kann man den verschiebenden Konstruktor noch
-etwas kompakter realisieren:
-
-```cpp
-SimpleString(SimpleString&& other) noexcept
-{
-    m_data = std::exchange(other.m_data,  nullptr);
-    m_elems = std::exchange(other.m_elems, 0);
-}
-```
-
-Die freie Funktion `std::exchange` funktioniert dabei wie folgt:
-
-```cpp
-int z = std::exchange(x, y);
-```
-
-Nach der Ausführung dieser Anweisung hat
-
-  * `x` den Wert von `y` zugewiesen bekommen und
-  * `z` den ursprüngliche Wert von `x` zugewiesen bekommen.
-
----
-
-### Perfektes Weiterleiten (*Perfect Forwarding*, `std::forward`) <a name="link14"></a>
+### Perfektes Weiterleiten (*Perfect Forwarding*, `std::forward`) <a name="link12"></a>
 
 Siehe Repository [*Modern C++*](https://github.com/pelocpp/cpp_modern).
 
 ---
 
-### Bessere Lesbarkeit durch *Structured Binding* <a name="link15"></a>
+### Bessere Lesbarkeit durch *Structured Binding* <a name="link13"></a>
 
 Siehe Repository [*Modern C++*](https://github.com/pelocpp/cpp_modern).
 
 ---
 
-### Vorteile von Lambda-Objekten <a name="link16"></a>
+### Vorteile von Lambda-Objekten <a name="link14"></a>
 
 Siehe Repository [*Modern C++*](https://github.com/pelocpp/cpp_modern).
 
 ---
 
-### Typreiche Programmierung (*Type-Rich Programming*, *Type Traits*) <a name="link17"></a>
+### Typreiche Programmierung (*Type-Rich Programming*, *Type Traits*) <a name="link15"></a>
 
 Siehe Repository [*Modern C++*](https://github.com/pelocpp/cpp_modern).
 
 ---
 
-### Verwendung von Konzepten (`concept`) und Anforderungen (`requires`) <a name="link18"></a>
+### Verwendung von Konzepten (`concept`) und Anforderungen (`requires`) <a name="link16"></a>
 
 Siehe Repository [*Modern C++*](https://github.com/pelocpp/cpp_modern).
 
 ---
 
-### Ausnahmesicherheit (*Exception Safety*) <a name="link19"></a>
+### Ausnahmesicherheit (*Exception Safety*) <a name="link17"></a>
 
 Die Idee hinter der Thematik *Exception Safety* besteht darin, dass Funktionen bzw. eine Klasse und ihre Methoden
 ihren Clients eine Art Versprechen bzw. eine Garantie hinsichtlich möglicherweise ausgelöster oder nicht ausgelöster Ausnahmen geben.
@@ -608,7 +489,7 @@ Die vierte und letzte Ebene der Ausnahmesicherheit behandeln wir im nächsten Abs
 
 ---
 
-### Die No-Throw-Garantie (*No-Throw Guarantee*) <a name="link20"></a>
+### Die No-Throw-Garantie (*No-Throw Guarantee*) <a name="link18"></a>
 
 
 Diese Ebene der Ausnahmesicherheit ist die höchste Ausnahmesicherheitsstufe:
@@ -656,7 +537,7 @@ Eine `swap`-Funktion muss unter allen Umständen die No-Throw-Garantie gewährleit
 
 ---
 
-### Das `noexcept` Schlüsselwort <a name="link21"></a>
+### Das `noexcept` Schlüsselwort <a name="link19"></a>
 
 Der Spezifizierer `noexcept` in der Signatur einer Funktion gibt an,
 dass diese Funktion **keine** Ausnahme auslösen darf.
@@ -694,7 +575,7 @@ Destruktoren einer Klasse sind implizit als `noexcept` definiert.
 
 ---
 
-### *Strong Types* <a name="link22"></a>
+### *Strong Types* <a name="link20"></a>
 
 Was versteht man unter dem Begriff &bdquo;*Strong Typing*&rdquo;?
 
@@ -798,7 +679,7 @@ Hantierung aller Regeln, die mit einer bestimmten Instanzvariablen verbunden sin
 
 ---
 
-### `const` Propagation für Zeiger <a name="link23"></a>
+### `const` Propagation für Zeiger <a name="link21"></a>
 
 Mit dem Schlüsselwort `const` können wir dem Compiler mitteilen,
 welche Objekte unveränderlich sind.
@@ -884,7 +765,7 @@ für Zeiger.
 
 ---
 
-# Literatur <a name="link24"></a>
+# Literatur <a name="link22"></a>
 
 Zum Schlagwort &bdquo;*Temporary Lifetime Extension*&rdquo;
 gibt es im Netz zwei interessante Aufsätze:

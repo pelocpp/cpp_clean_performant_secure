@@ -23,14 +23,15 @@
   * [Automatische Erzeugung spezieller Member-Funktionen: *Rule-of-Zero*](#link15)
   * [Initialisierung von Strukturen](#link16)
   * [Initialisierung von Objekten](#link17)
-  * [Schreiben Sie kleine, fokussierte Funktionen (Methoden)](#link18)
-  * [Verwenden Sie `const` großzügig](#link19)
-  * [Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen](#link20)
-  * [Rückgabetyp einer Methode](#link21)
-  * [Bevorzuge Komposition der Vererbung gegenüber](#link22)
-  * [Implizite Konvertierungen vermeiden](#link23)
-  * [`if`- und *Range-based* `for`-Anweisungen mit Initialisierer](#link24)
-
+  * [Das *Copy-Swap* Idiom](#link18)
+  * [Verschieben ist besser als Kopieren (`std::move`)](#link19)
+  * [Schreiben Sie kleine, fokussierte Funktionen (Methoden)](#link20)
+  * [Verwenden Sie `const` großzügig](#link21)
+  * [Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen](#link22)
+  * [Rückgabetyp einer Methode](#link23)
+  * [Bevorzuge Komposition der Vererbung gegenüber](#link24)
+  * [Implizite Konvertierungen vermeiden](#link25)
+  * [`if`- und *Range-based* `for`-Anweisungen mit Initialisierer](#link26)
 
 ---
 
@@ -43,12 +44,12 @@
 ### Namensgebung für Bezeichner <a name="link1"></a>
 
 Auch wenn es überraschend klingen mag: Die Namensgebung für Bezeichner ist keine einfache Angelegenheit.
-Ein sprechender Variablenname &ndash; genauer auch selbsterklärender Variablenname &ndash; ist ein Bezeichner für eine Variable,
-aus dem die Bedeutung der Variablen sichtbar wird.
+Ein sprechender Variablenname &ndash; oder auch selbsterklärender Variablenname &ndash; ist ein Bezeichner für eine Variable,
+aus dem die Bedeutung der Variablen erkennbar wird.
 
-Dies gilt nicht nur für Variablen, sondern auch für Klassen, Methoden, Funktionen und Ähnliches.
+Dies gilt nicht nur für Variablen, sondern auch für Klassen, Methoden, Funktionen und andere benennbare Elemente einer Programmiersprache.
 
-Gerade wenn man als Team an einem Projekt arbeitet, ist ein gut kommentierter, also menschenlesbarer Code wichtig.
+Gerade wenn man als Team an einem Projekt arbeitet, ist ein gut kommentierter, also menschenlesbarer Sourcecode wichtig.
 
 Bei Vermeidung sprechender Variablennamen werden Quelltexte unleserlich und damit fehleranfälliger sowie schwerer wartbar.
 
@@ -67,13 +68,13 @@ double u, v, w;
 ```
 
 *Bemerkung*:<br />
-*There are only two hard things in Computer Science: cache invalidation and naming things.* (Phil Karlton)
+&bdquo;*There are only two hard things in Computer Science: cache invalidation and naming things*&rdquo; (Phil Karlton).
 
 ---
 
 ### Lesbarkeit von Quelltext <a name="link2"></a>
 
-Hierzu ein Beispiel:
+*Beispiel*:
 
 ```c
 #include "stdio.h"
@@ -129,32 +130,28 @@ Die Wartungsfreundlichkeit von Code resultiert aus einer Vielzahl von Faktoren, 
 
 Schwer lesbarer Code ist gleichzeitig schwer verständlicher Code.
 
-
 ---
 
 ### Kommentare <a name="link3"></a>
 
-*Uncle Bob*<br />
+*Uncle Bob*:<br />
 &bdquo;*Nothing can be quite so helpful as a well-placed comment.*&rdquo;
 
 #### Pro und Contra
 
-  * Pro: Code sollte klar genug geschrieben sein, um ohne Kommentare verstanden zu werden.
-  * Contra: Das Kommentieren von Code ist eine absolut notwendige Anforderung und Sie sollten Ihren Code so oft wie möglich kommentieren.
+  * *Pro*: Code sollte klar genug geschrieben sein, um ohne Kommentare verstanden zu werden.
+  * *Contra*: Das Kommentieren von Code ist eine absolut notwendige Anforderung und Sie sollten Ihren Code so oft wie möglich kommentieren.
 
 
-#### Versuch einer neutralen Einschätzung
+#### Neutrale Einschätzung
 
-  * Quellcode sollte so geschrieben sein, dass er klar genug ist, um ohne Kommentare verstehen zu können, was er tut.
-
-  * Kommentare, die erklären, was der Code tut, sind im besten Fall eine Krücke und im schlimmsten Fall veraltet, wenn der Code aktualisiert wurde, ohne die Kommentare zu aktualisieren.
+  * Quellcode sollte so geschrieben sein, dass er verständlich genug ist, um ohne Kommentare verstehen zu können, was er tut.
 
   * Es sollten Kommentare hinzugefügt werden, um in nicht zwingend einleuchtenden Situationen zu erklären, warum der Code tut, was er tut.
 
   * Machen Sie Ihren Code selbstdokumentierend, indem Sie gute Namen für Variablen und Methoden wählen.
 
   * Fügen Sie Kommentare hinzu, um zu erklären, warum der Code auf eine bestimmte Weise funktioniert. Geben Sie sich besonders viel Mühe, dies zu tun, wenn die Funktionsweise des Codes seltsam erscheint, die offensichtlichen Lösungen jedoch bereits ausprobiert wurden und besondere Probleme aufwerfen.
-
 
 ---
 
@@ -189,7 +186,7 @@ Eine Richtlinie stammt von Bjarne Stroustrup *himself*:
   * Verwenden Sie Klasse (`class`), wenn es *Invarianten* gibt.
   * Verwenden Sie Strukturen (`struct`), wenn alle Datenelemente sich unabhängig voneinander verändern können.
 
-Es bleibt nur noch zu klären, was man unter einer *Invarianten* versteht?
+Es bleibt nur noch zu klären, was man unter einer *Invariante* versteht?
 Dazu ein Beispiel einer Klasse `Game`,
 das eine Instanzvariable `m_position` hat, die sich bestimmten Grenzwerten
 (hier: `m_width` und `m_height`) unterwerfen muss.
@@ -258,11 +255,11 @@ Wenn ein Modul `main.c` ein Untermodul `submodule.c` verwendet,
 sollte alles, was zum Kompilieren von `submodule.c` benötigt wird,
 in `submodule.h` definiert sein.
 
-Die empfohlene Regel lautet:
+Die empfohlene Regel bzgl. der Reihenfolge der `#include`-Anweisungen lautet:
 
-  1. Lokale #include-Dateien
-  2. Drittanbieter #include-Dateien
-  3. STL #include-Dateien
+  1. Lokale `#include`-Dateien
+  2. Drittanbieter `#include`-Dateien
+  3. STL `#include`-Dateien
 
 ---
 
@@ -288,7 +285,15 @@ auch eine *Hervorhebung*:
 
 ### Minimieren Sie die Sichtbarkeit von Mitgliedern einer Klasse <a name="link9"></a>
 
-Ohne Worte :)
+Man sollte Variablen in einer Klasse möglichst mit `private` kennzeichnen,
+um das Prinzip der `*Datenkapselung*` (*Data Hiding*) zu nutzen.
+
+Dies verbirgt die interne Implementierung und schützt die Daten vor unerwünschtem Zugriff
+und Manipulation von außen.
+
+Dadurch wird der Code sicherer, robuster und leichter wartbar,
+da man die interne Arbeitsweise ändern kann, ohne dass die externe Nutzung der Klasse dadurch gestört wird. 
+
 
 ---
 
@@ -301,12 +306,12 @@ Die Schnittstellen dieser Operationen sehen so aus:
 
 | Beschreibung | Schnittstelle |
 | :-------- | :------- |
-| Standardkonstruktor (Default Constructor) | `X()` |
-| Kopierkonstruktor (Copy Constructor) | `X(const X&)` |
-| Kopierende Zuweisung (Assignment Operator) | `X& operator=(const X&)` |
-| Verschiebekonstruktor (Move Constructor) | `X(X&&) noexcept` |
-| Verschiebende Zuweisung (Move Assignment) | `X& operator=(X&&) noexcept` |
-| Destruktor (Destructor) | `~X()` |
+| Standardkonstruktor (*Default Constructor*) | `X()` |
+| Kopierkonstruktor (*Copy Constructor*) | `X(const X&)` |
+| Kopierende Zuweisung (*Assignment Operator*) | `X& operator=(const X&)` |
+| Verschiebekonstruktor (*Move Constructor*) | `X(X&&) noexcept` |
+| Verschiebende Zuweisung (*Move Assignment*) | `X& operator=(X&&) noexcept` |
+| Destruktor (*Destructor*) | `~X()` |
 
 *Tabelle* 1: Spezielle Member-Funktionen eines C++ Objekts.
 
@@ -374,7 +379,7 @@ Das ist keine triviale Frage, dennoch kann man ein paar Richtlinien erkennen:
 ### *Explicitly defaulted* Standardkonstruktor <a name="link13"></a>
 
 Um das manuelle Schreiben leerer Standardkonstruktoren zu vermeiden,
-unterstützt C++ das Konzept von *explicitly defaulted* Standardkonstruktoren (*Explicitly defaulted Default Constructors*).
+unterstützt C++ das Konzept von *explicitly defaulted* Standardkonstruktoren (*Explicitly defaulted Default Constructor*).
 
 Dadurch können Sie die Klassendefinition wie folgt schreiben,
 ohne eine leere Implementierung für den Standardkonstruktor bereitstellen zu müssen:
@@ -397,11 +402,6 @@ da dieses mithilfe des Schlüsselworts `default` explizit festgelegt wird.
 
 Sie können das `= default` direkt in die Klassendefinition einfügen,
 damit kann man sich in der Klassenimplementierung eine leere Implementierung für den Standardkonstruktor sparen.
-
-Zur Vermeidung von Missverständnissen:<br />
-Die Implementierung des automatisch erzeugten Standardkonstruktors ist so,
-als hätte man `= default` in der Klassendefinition geschrieben.
-Diese Aussage gilt für alle speziellen Member-Funktionen.
 
 ---
 
@@ -506,7 +506,7 @@ Eine Variable ` Point2D point;` repräsentiert damit den Punkt (0,0) und alle se
 Membermethoden funktionieren wie erwartet.
 
 *1. Bemerkung*:<br />
-Ein Destruktor tut hier nichts, da es nichts zu tun gibt.
+Ein Destruktor wird hier nicht benötigt, da es nichts zu tun gibt.
 
 *2. Bemerkung*:<br />
 Die zwei verschiebenden Methoden (Verschiebe-Konstruktor, verschiebende Wertzuweisung)
@@ -635,7 +635,7 @@ Dafür kommt bei Verwendung der Struktur die Aggregat-Initialisierung zum Einsat
 12: }
 ```
 
-Dazu muss der beteiligte Strukturtyp allerdings die Vorrausetzungen eines
+Dazu muss der beteiligte Strukturtyp allerdings die Vorausetzungen eines
 &bdquo;Aggregat-Typs&rdquo; aufweisen.
 
 Kompakt formuliert lauten diese:
@@ -792,7 +792,7 @@ Dennoch weist auch diese Realisierung einen &ndash; subtilen &ndash; Fehler auf!
 
 #### Variante 4
 
-Betrachten Sie hierzu folgendes Beispiel, dass Sie mit der Realisierung aus Variante 3 aufrufen:
+Betrachten Sie hierzu folgendes Beispiel, das Sie mit der Realisierung aus Variante 3 aufrufen:
 
 
 ```cpp
@@ -854,7 +854,124 @@ Und damit sind wir beim nächsten Thema angekommen: Das *Copy-and-Swap-Idiom*.
 
 ---
 
-### Schreiben Sie kleine, fokussierte Funktionen (Methoden) <a name="link18"></a>
+### Das *Copy-Swap* Idiom <a name="link18"></a>
+
+Das *Copy-and-Swap-Idiom* wurde eingeführt, um zwei Ziele zu erreichen:
+
+  * Realisierung der Kopier-Konstruktoren und Zuweisungsoperatoren (sowohl &bdquo;kopierende&rdquo; als auch &bdquo;verschiebende&rdquo; Semantik) auf eine einfache Weise (Vermeidung von Code-Duplikationen).
+  * Bereitstellung der so genannten *Strong Exception Guarantee*.
+
+Auf die *Strong Exception Guarantee* gehen wir später ein, wir verweilen beim *Copy-and-Swap-Idiom*:
+Dieses besteht im Wesentlichen aus zwei Teilen:
+
+
+  * Einem destruktiven Teil, der den bestehenden Zustand des Zielobjekts aufräumt (die linke Seite der Zuweisung).
+  * Einem konstruktiven Teil, der den Zustand vom Quellobjekt (rechte Seite der Zuweisung) zum Zielobjekt kopiert.
+
+Der destruktive Teil entspricht im Allgemeinen dem Code im Destruktor des Typs, der konstruktive Teil im Allgemeinen dem Code im Kopierkonstruktor des Typs.
+
+Der Name *Copy-and-Swap* für diese Technik rührt daher,
+dass sie üblicherweise durch eine Kombination aus dem Kopierkonstruktor des Typs,
+seinem Destruktor und einer `swap`()-Memberfunktion implementiert wird,
+die die Membervariablen einzeln austauscht.
+
+Mit dem *Copy-and-Swap*-Idiom können wir nun folgende Realisierung des 
+Zuweisungsoperators betrachten:
+
+```cpp
+01: void swap(SimpleString& other) noexcept
+02: {
+03:     std::swap(m_data, other.m_data);      // swap data member
+04:     std::swap(m_elems, other.m_elems);    // swap data member
+05: }
+06: 
+07: // refined copy assignment operator
+08: SimpleString& operator=(SimpleString other) {
+09: 
+10:     this->swap(other);
+11:     return *this;
+12: }
+```
+
+*Hinweise*:
+
+  * Am Beispiel des Parameters `other` wenden wir eine äußerst nützliche Richtlinie an:
+  Wenn Sie in einer Funktion eine Kopie erstellen, lassen Sie den Compiler dies in der Parameterliste tun.
+
+  * Nachdem (durch den Aufruf) die Kopie erstellt ist, können wir mit dem Tauschen der Membervariableninhalte beginnen.
+
+  * Beachten Sie, dass beim Aufrufen der Funktion alle neuen Daten bereits allokiert, kopiert und einsatzbereit sind.
+  Dadurch erhalten wir kostenlos eine *Strong Exception Guarantee* &ndash; dazu später noch mehr.
+
+  * An diesem Punkt sind wir quasi schon fertig, da `swap` keine Fehler auslöst.
+  Wir tauschen unsere aktuellen Daten mit den kopierten aus, ändern unseren Zustand sicher und legen die alten Daten in einem temporären Objekt ab.
+  
+  * Die alten Daten werden dann freigegeben, wenn die Funktion verlassen wird:
+  Es endet der Gültigkeitsbereich des Parameterobjekts und sein Destruktor wird aufgerufen!
+
+  * Beachten Sie, dass die Notwendigkeit einer Selbstzuweisungsprüfung beseitigt wurde
+  und eine einheitliche Implementierung des `operator=` ermöglicht wurde.
+  Darüberhinaus gibt es keine Leistungseinbußen mehr bei Nicht-Selbstzuweisungen.
+
+---
+
+### Verschieben ist besser als Kopieren (`std::move`) <a name="link19"></a>
+
+Wir haben bislang in der Klasse `SimpleString` die
+traditionellen Regel der drei speziellen Methoden
+Kopier-Konstruktor, Zuweisungsoperator und Destruktor betrachtet.
+
+Seit C++ 11 können wir solchen Code durch die so genannte *Move-Semantik* effizienter (performanter) gestalten.
+Es gesellen sich zwei weitere spezielle Methoden (Verschiebe-Konstruktor, Verschiebe-Zuweisungsoperator) zur Klasse hinzu.
+
+Ihr Aufruf wird vom Compiler implizit aktiviert, wenn der Compiler Objekte bearbeitet,
+von denen er weiß, dass sie nicht mehr verwendet werden. Das sind beispielsweise Objekte im Programm,
+die keinen Namen haben (temporäre Objekte, Objekte, die als Zwischenergebnis fungieren).
+
+Am Beispiel der Klasse `SimpleString` könnten diese beiden Methoden so aussehen:
+
+```cpp
+01: SimpleString(SimpleString&& other) noexcept
+02: {
+03:     m_data = std::move(other.m_data);
+04:     m_elems = std::move(other.m_elems);
+05:     other.m_data = nullptr;
+06:     other.m_elems = 0;
+07: }
+08: 
+09: SimpleString& operator=(SimpleString&& other) noexcept {
+10: 
+11:     SimpleString tmp{ std::move(other) };
+12:     tmp.swap(*this);
+13:     return *this;
+14: }
+```
+
+Mit Hilfe von `std::exchange` kann man den verschiebenden Konstruktor noch
+etwas kompakter realisieren:
+
+```cpp
+SimpleString(SimpleString&& other) noexcept
+{
+    m_data = std::exchange(other.m_data,  nullptr);
+    m_elems = std::exchange(other.m_elems, 0);
+}
+```
+
+Die freie Funktion `std::exchange` funktioniert dabei wie folgt:
+
+```cpp
+int z = std::exchange(x, y);
+```
+
+Nach der Ausführung dieser Anweisung hat
+
+  * `x` den Wert von `y` zugewiesen bekommen und
+  * `z` den ursprüngliche Wert von `x` zugewiesen bekommen.
+
+---
+
+### Schreiben Sie kleine, fokussierte Funktionen (Methoden) <a name="link20"></a>
 
 Funktionen (Methoden) sind die Bausteine der *Clean Code* Programmierung.
 Eine gute Funktion sollte klein und fokussiert sein und genau eine Sache tun.
@@ -866,7 +983,7 @@ Einige Richtlinien zum Schreiben sauberer Funktionen:
   * Geben Sie Funktionen beschreibende Namen, die klar vermitteln, was sie tun.
   * Vermeiden Sie Nebeneffekte &ndash; eine Funktion sollte entweder einen Wert berechnen oder eine Aktion ausführen, nicht beides.
   * Bevorzugen Sie &bdquo;reine&rdquo; (*pure*) Funktionen, die bei denselben Eingaben immer das gleiche Ergebnis liefern.
-  * Verwenden Sie Parameter für die Eingabe und Rückgabewerte für die Ausgabe zurück, anstatt sich auf den globalen Status zu verlassen.
+  * Verwenden Sie Parameter für die Eingabe und Rückgabewerte für die Ausgabe, anstatt sich auf den globalen Status zu verlassen.
   * Halten Sie die Anzahl der Parameter niedrig, normalerweise unter 5.
 
 
@@ -902,9 +1019,9 @@ gibt ein boolesches Ergebnis zurück und hat keine Nebenwirkungen. Sie ist leich
 
 ---
 
-### Verwenden Sie `const` großzügig <a name="link19"></a>
+### Verwenden Sie `const` großzügig <a name="link21"></a>
 
-`const` ist ein leistungsstarkes Sprachfeature in C++, um Absichten auszudrücken und potenzielle Fehler zur Kompilierzeit abzufangen:
+`const` ist ein leistungsstarkes Sprachfeature in C++, um Absichten auszudrücken und um potenzielle Fehler zur Kompilierzeit abzufangen:
 
   * Wird es auf eine Variable angewendet, zeigt es an, dass der Wert nicht geändert wird.
   * Wird es auf eine Methode angewendet, zeigt es an, dass die Methode das aufgerufene Objekt nicht ändert.
@@ -945,25 +1062,27 @@ Einige Richtlinien zur Verwendung von `const`:
 24: }
 ```
 
-In diesem Beispiel wird die Methode `area()` als `const` deklariert, da sie den Zustand des Rechtecks ​​nicht ändert.
+  * In diesem Beispiel wird die Methode `area()` als `const` deklariert, da sie den Zustand des Rechtecks ​​nicht ändert.
 
-Die Funktion `printArea` nimmt ihren Parameter per `const`-Referenz, was bedeutet,
-dass sie das Rechteck nicht ändert und ein unnötiges Kopieren vermeidet.
+  * Methode `scale()` kann nicht mit `const` deklariert werden,
+    da sie den Zustand des Rechtecks ​​ändert.
+
+  * Die Funktion `printArea` nimmt ihren Parameter per `const`-Referenz, was bedeutet,
+    dass sie das Rechteck nicht ändert und ein unnötiges Kopieren vermeidet.
 
 Die konsequente Verwendung von `const` macht Ihren Code selbstdokumentierender und hilft,
 potenzielle Fehler zu erkennen, wie z. B. versehentliche Änderungen an Werten, die konstant sein sollten.
 
-
 ---
 
-### Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen <a name="link20"></a>
+### Ausnahmen (*Exceptions*) sind Fehlercodes (*Error Codes*) vorzuziehen <a name="link22"></a>
 
 Ausnahmen (*Exceptions*) sind die bevorzugte Methode zum Melden und Behandeln von Fehlern in Modern C++.
 Sie haben mehrere Vorteile gegenüber herkömmlichen Fehlercodes:
 
   * Ausnahmen können nicht ignoriert werden, Fehlercodes hingegen schon.
   * Ausnahmen werden automatisch an rufende Methoden weitergegeben, während Fehlercodes an jeder Aufrufstelle manuell überprüft und manuell weitergegeben werden müssen.
-  * Ausnahmen trennen den Fehlerbehandlungscode vom normalen Kontrollfluss und machen den Code übersichtlicher
+  * Ausnahmen trennen den Fehlerbehandlungscode vom normalen Kontrollfluss und machen den Code übersichtlicher.
 
 Einige Richtlinien zur Verwendung von Ausnahmen:
 
@@ -1008,9 +1127,12 @@ und der Fehler kann nicht ignoriert werden.
 
 ---
 
-### Rückgabetyp einer Methode <a name="link21"></a>
+### Rückgabetyp einer Methode <a name="link23"></a>
 
-Wir betrachten folgendes Beispiel:
+Wir betrachten an einem Beispiel einer Methode, wir der Rückgabetyp
+definiert werden kann.
+
+Im Detail geht es um die Fragestellung, ob als Referenztyp oder ohne Referenz:
 
 ```cpp
 01: class Person
@@ -1056,7 +1178,7 @@ Es gibt auch eine zweite Möglichkeit:
 
 ---
 
-### Bevorzuge Komposition der Vererbung gegenüber <a name="link22"></a>
+### Bevorzuge Komposition der Vererbung gegenüber <a name="link24"></a>
 
   * Vererbung ist ein leistungsstarkes Feature der objektorientierten Programmierung,
   wird aber oft überstrapaziert.
@@ -1111,17 +1233,18 @@ Sie könnten eine *Transform*-Eigenschaft aber auch als Attribut den Klassen hin
 
   * Dadurch haben Sie mehr Kontrolle über die Schnittstelle der &bdquo;untergeordneten&rdquo; Klassen.
 
-  * Denn wenn Sie eine übergeordnete Klasse ändern, wird die Änderung zwangsläufig in allen untergeordneten Klassen widergespiegelt, was oft nicht erwünscht ist.
+  * Denn wenn Sie eine übergeordnete Klasse ändern, wird die Änderung zwangsläufig in allen untergeordneten Klassen widergespiegelt, was möglicherweise so nicht erwünscht ist.
 
-  * Oft müssen Sie der übergeordneten Klasse etwas hinzufügen, weil eine bestimmte untergeordnete Klasse es braucht. Indem Sie dies tun, zwingen Sie es allen anderen untergeordneten Klassen auf, die es nicht unbedingt brauchen oder wollen.
+  * Oft müssen Sie der übergeordneten Klasse etwas hinzufügen, weil eine bestimmte untergeordnete Klasse es braucht.
+    Indem Sie dies tun, zwingen Sie dieses Feature allen anderen untergeordneten Klassen ebenfalls auf, die dieses Feature nicht unbedingt brauchen oder wollen.
 
-  * Mit Komposition haben Sie mehr Kontrolle darüber.
+  * Mit Komposition haben Sie darüber mehr Kontrolle.
 
   * Komposition ermöglicht es auch, kleinere Klassen zu schreiben, anstatt von einer großen übergeordneten Klasse zu erben.
 
 ---
 
-### Implizite Konvertierungen vermeiden <a name="link23"></a>
+### Implizite Konvertierungen vermeiden <a name="link25"></a>
 
 In der Sprache C++ gibt es des Feature so genannter &bdquo;impliziter Typkonvertierungen&rdquo;.
 
@@ -1179,7 +1302,7 @@ aber dieses Mal eben nicht versteckt, sondern sichtbar für den Entwickler!
 
 ---
 
-###  `if`- und *Range-based* `for`-Anweisungen mit Initialisierer <a name="link24"></a>
+###  `if`- und *Range-based* `for`-Anweisungen mit Initialisierer <a name="link26"></a>
 
 Ab C++ 17 kann eine `if`-Anweisung einen *Initialisierer* enthalten,
 der eine benannte Variable deklariert und initialisiert.
