@@ -1,15 +1,3 @@
-// =============================================================
-
-// https://github.com/PacktPublishing/Cpp-High-Performance-Second-Edition
-
-Das gehört zu dem Buch von Andrist / Sehr:
-
-// =============================================================
-
-Einleitung zu Clean Code:
-
-https://github.com/wongjiahau/Clean-Code
-    
 
 // =============================================================
 
