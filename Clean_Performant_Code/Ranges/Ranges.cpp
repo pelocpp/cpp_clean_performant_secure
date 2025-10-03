@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <cstddef>
 #include <cstdlib>
-#include <iostream>
+//#include <iostream>
 #include <list>
 #include <map>
 #include <numeric>
@@ -15,6 +15,17 @@
 #include <unordered_map>
 #include <variant>
 #include <vector>
+//
+//#include <iomanip>
+//#include <iostream>
+//#include <iterator>
+//#include <list>
+//#include <print>
+//#include <ranges>
+//#include <sstream>
+//#include <string>
+//#include <vector>
+#include <cctype>
 
 namespace Ranges {
 
@@ -721,7 +732,7 @@ namespace Ranges {
         );
         
         for (const auto& str : stringValues) {
-            std::cout << std::get<std::string>(str) << " ";
+            std::print("{} ", std::get<std::string>(str));
         }
     }
 
@@ -732,21 +743,57 @@ namespace Ranges {
     {
         std::vector<int> numbers{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
-        std::unordered_map<int, std::string> map {
+        std::unordered_map<int, std::string> map{
             { 1, "one"   },
             { 2, "two"   },
             { 3, "three" },
             { 4, "four"  },
             { 5, "five"  }
         };
-        
+
         auto result = numbers
             | std::views::filter([](auto n) { return n <= 5; })
             | std::views::transform([&](auto n) { return map[n]; });
-        
+
         for (const auto& str : result) {
-            std::cout << str << " ";
+            std::print("{} ", str);
         }
+    }
+    
+    // =======================================================================
+    // example: trimming a string to alpha characters and converting
+    //          the remainder to lower case letters
+
+    static void ranges_example_trim_alpha_tolower()
+    {
+        auto trimToWord = [](const auto& word) {
+
+            auto not_is_alpha = [](char ch) {
+                return !std::isalpha(ch);
+                };
+
+            auto to_lower = [](char ch) {
+                return std::tolower(ch);
+                };
+
+            auto view = std::views::all(word)
+                | std::views::drop_while(not_is_alpha)
+                | std::views::reverse
+                | std::views::drop_while(not_is_alpha)
+                | std::views::reverse
+                | std::views::transform(to_lower)
+                | std::ranges::to<std::string>();
+
+            std::string result{ view.begin(), view.end() };
+
+            return result;
+        };
+
+        std::string word{ "123HELLO456" };
+        std::println("Word: {}", word);
+
+        word = trimToWord(word);
+        std::println("Word: {}", word);
     }
 }
 
@@ -756,24 +803,25 @@ void ranges_clean_code_examples()
 {
     using namespace Ranges;
 
-    comparison_iterators_vs_ranges();
-    ranges_example_concepts();
-    ranges_views();
-    ranges_range_adaptors();
-    ranges_range_adaptors_classic();
-    ranges_composition_of_views();
-    ranges_lazy_evaluation();
-    ranges_eager_evaluation();
-    ranges_bounded_vs_unbounded_range();
-    ranges_lazy_primes();
-    ranges_projections();
-    ranges_sentinels();
-    ranges_dangling_iterators();
-    ranges_keys_view_and_values_view();
-    ranges_common_view();
-    ranges_all_of_any_of_none_of();
-    ranges_example_variant();
-    ranges_example_unordered_map();
+    //comparison_iterators_vs_ranges();
+    //ranges_example_concepts();
+    //ranges_views();
+    //ranges_range_adaptors();
+    //ranges_range_adaptors_classic();
+    //ranges_composition_of_views();
+    //ranges_lazy_evaluation();
+    //ranges_eager_evaluation();
+    //ranges_bounded_vs_unbounded_range();
+    //ranges_lazy_primes();
+    //ranges_projections();
+    //ranges_sentinels();
+    //ranges_dangling_iterators();
+    //ranges_keys_view_and_values_view();
+    //ranges_common_view();
+    //ranges_all_of_any_of_none_of();
+    //ranges_example_variant();
+    //ranges_example_unordered_map();
+    ranges_example_trim_alpha_tolower();
 }
 
 // ===========================================================================

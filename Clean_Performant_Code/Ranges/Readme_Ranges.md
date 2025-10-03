@@ -25,8 +25,10 @@
   * [`std::map`: Views für Schlüssel und Werte von Assoziativ-Containern](#link15)
   * [`std::views::common`](#link16)
   * [Das Trio `std::all_of`, `std::any_of` und `std::none_of`](#link17)
-  * [Zwei Beispiele zum Abschluss: `std::variant` und `std::unordered_map`](#link18)
-  * [Literatur](#link19)
+  * [Erstes Beispiel: `std::variant`](#link18)
+  * [Zweites Beispiel: `std::unordered_map`](#link19)
+  * [Drittes Beispiel: *Trimming* von Zeichenketten](#link20)
+  * [Literatur](#link21)
 
 ---
 
@@ -428,7 +430,7 @@ Wir betrachten ein Beispiel zur Berechnung von Primzahlen:
 22: 
 23:     // print the first 20 prime numbers
 24:     for (int prime : primeNumbers) {
-25:         std::cout << prime << " ";
+25:         std::print("{} ", prime);
 26:     }
 27: }
 ```
@@ -843,18 +845,14 @@ none_of: true
 all_of:  true
 ```
 
-
 ---
 
-## Zwei Beispiele zum Abschluss: `std::variant` und `std::unordered_map` <a name="link18"></a>
+## Erstes Beispiel: `std::variant` <a name="link18"></a>
 
-Wir beenden unsere *Ranges*-Betrachtungen mit zwei Beispielen:
-
-#### Beispiel mit der Klasse `std::variant`
-
-  * Erstellung eines Vektors mit Zahlen und Zeichenfolgen.
-  * Die Zeichenfolgen werden mit `std::views::filter` herausgefiltert.
-
+Wir beenden unsere *Ranges*-Betrachtungen mit einigen Beispielen.
+Wir starten mit einem Beispiel zur Klasse `std::variant`:
+Diese benutzen wir, um einen Vektors mit Zahlen und Zeichenfolgen zu erzeugen (`std::variant<int, std::string>`).
+Nun wollen wir die Zeichenfolgen mit `std::views::filter` herausgefiltern:
 
 *Beispiel*:
 
@@ -866,7 +864,7 @@ Wir beenden unsere *Ranges*-Betrachtungen mit zwei Beispielen:
 05: );
 06: 
 07: for (const auto& str : stringValues) {
-08:     std::cout << std::get<std::string>(str) << " ";
+08:     std::print("{} ", std::get<std::string>(str));
 09: }
 ```
 
@@ -876,10 +874,13 @@ Wir beenden unsere *Ranges*-Betrachtungen mit zwei Beispielen:
 three five six
 ```
 
-#### Beispiel mit der Klasse `std::unordered_map`
+---
 
-  * Das Transformieren von Elementen eines Bereichs erfordert nicht unbedingt, dass der resultierende Bereich Elemente desselben Typs enthält.
-  * Man kann Elementen Elemente eines anderen Typs zuordnen.
+## Zweites Beispiel: `std::unordered_map` <a name="link19"></a>
+
+Das Transformieren von Elementen eines Bereichs erfordert nicht unbedingt,
+dass der resultierende Bereich Elemente desselben Typs enthält.
+Man kann Elementen Elemente eines anderen Typs zuordnen.
 
 *Beispiel*:
 
@@ -899,7 +900,7 @@ three five six
 13:     | std::views::transform([&](auto n) { return map[n]; });
 14:         
 15: for (const auto& str : result) {
-16:     std::cout << str << " ";
+16:     std::print("{} ", str);
 17: }
 ```
 
@@ -911,11 +912,69 @@ one two three four five
 
 ---
 
-## Literatur <a name="link19"></a>
+## Drittes Beispiel: *Trimming* von Zeichenketten <a name="link19"></a>
+
+In diesem Beispiel betrachen wir Zeichenketten.
+Mit einer Funktion `trimAlphaToLower` wollen wir nicht-alphabetische Zeichen am Anfang und Ende entfernen.
+Also eine Zeichenkette `123Hello456` ist in die Zeichenkette `hello` umzuwandeln.
+
+
+*Beispiel*:
+
+```cpp
+01: auto trimToWord = [](const auto& word) {
+02: 
+03:     auto not_is_alpha = [](char ch) {
+04:         return !std::isalpha(ch);
+05:         };
+06: 
+07:     auto to_lower = [](char ch) {
+08:         return std::tolower(ch);
+09:         };
+10: 
+11:     auto view = std::views::all(word)
+12:         | std::views::drop_while(not_is_alpha)
+13:         | std::views::reverse
+14:         | std::views::drop_while(not_is_alpha)
+15:         | std::views::reverse
+16:         | std::views::transform(to_lower)
+17:         | std::ranges::to<std::string>();
+18: 
+19:     std::string result{ view.begin(), view.end() };
+20: 
+21:     return result;
+22: };
+23: 
+24: std::string word{ "123HELLO456" };
+25: std::println("Word: {}", word);
+26: 
+27: word = trimToWord(word);
+28: std::println("Word: {}", word);
+```
+
+*Ausgabe*:
+
+```
+Word: 123HELLO456
+Word: hello
+```
+
+---
+
+## Literatur <a name="link21"></a>
 
 Die Beispiele und Anregungen dieses Abschnitts wurden sehr stark inspiriert von dem Aufsatz
 [&bdquo;C++ 20 Ranges. Practical examples&rdquo;](https://indico.gsi.de/event/19561/contributions/78837/attachments/46921/67160/cpp_ranges.pdf)
 von *Semen Lebedev*.
+
+Weitere interessante Beispiele zu Ranges und Views findet man unter
+
+&ldquo;[Range-v3 practical examples](https://www.walletfox.com/course/examples_range_v3.php/)&rdquo;
+
+und unter
+
+&ldquo;[A little bit of code &ndash; C++20 Ranges](https://itnext.io/a-little-bit-of-code-c-20-ranges-c6a6f7eae401/)&rdquo; von Vanand Gasparyan.
+
 
 ---
 
