@@ -969,11 +969,15 @@ von *Semen Lebedev*.
 
 Weitere interessante Beispiele zu Ranges und Views findet man unter
 
-&ldquo;[Range-v3 practical examples](https://www.walletfox.com/course/examples_range_v3.php/)&rdquo;
+&ldquo;[Range-v3 practical examples](https://www.walletfox.com/course/examples_range_v3.php)&rdquo; von *Walletfox.com*
 
 und unter
 
 &ldquo;[A little bit of code &ndash; C++20 Ranges](https://itnext.io/a-little-bit-of-code-c-20-ranges-c6a6f7eae401/)&rdquo; von Vanand Gasparyan.
+
+Ebenfalls lesenswert ist der Artikel
+
+[C++20 Ranges: The Key Advantage - Algorithm Composition](https://www.cppstories.com/2022/ranges-composition) von Marius Bancila.
 
 
 ---
