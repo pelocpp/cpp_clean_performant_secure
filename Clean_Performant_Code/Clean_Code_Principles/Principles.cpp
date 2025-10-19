@@ -33,7 +33,8 @@ namespace Clean_Code_Principles {
             bool  m_state;
 
         public:
-            Switch(Lamp& lamp) : m_lamp(lamp), m_state{ false } {}
+            Switch(Lamp& lamp) : m_lamp{ lamp }, m_state{ false } {}
+
             void toggle() {
                 if (m_state) {
                     m_state = false;

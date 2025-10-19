@@ -146,11 +146,11 @@ Die Methode besitzt keine Nebenwirkungen.
 Wir wenden uns zunächst einer Erklärung der beiden Begrifflichkeiten zu:
 
 Während *Kopplung* ein ziemlich intuitives Konzept ist, das heißt, dass fast niemand Schwierigkeiten hat, es zu verstehen,
-ist der Begriff der *Kohäsion* schwieriger zu begreifen.
+ist der Begriff der *Kohäsion* schwieriger zu erklären.
 
 Darüber hinaus scheinen die Unterschiede zwischen den beiden Begriffen oft unklar zu sein.
-Das ist nicht überraschend: Die Ideen hinter diesen Begriffen sind tatsächlich ähnlich.
-Dennoch unterscheiden sie sich:
+Das ist nicht überraschend: Die Ideen hinter diesen Begriffen sind tatsächlich ähnlich und
+dennoch unterscheiden sie sich:
 
 #### *Kohäsion*
 
@@ -162,7 +162,7 @@ Dennoch unterscheiden sie sich:
   der Code innerhalb der Einheit ist nicht logisch verbunden.
 
   * Eine Einheit ist hier nicht unbedingt eine Klasse.
-  Es könnte eine Methode, eine Klasse, eine Gruppe von Klassen oder sogar ein Modul oder eine Baugruppe sein:
+  Es könnte eine Methode, eine Klasse, eine Gruppe von Klassen oder ein Modul (Namensraum) sein:
 
 
 Der Begriff der Kohäsion (sowie der Kopplung) ist auf verschiedenen Ebenen anwendbar,
@@ -200,14 +200,14 @@ mit Klassen fort:
 *Abbildung* 1: Richtlinien für starke Kohäsion und geringe Kopplung.
 
 Betrachten Sie in *Abbildung* 1:<br />
-Eine Komponente (Subsystem) im allgemeinen Sinne ist eine Wiederverwendungseinheit:
+Eine Komponente (Subsystem) im allgemeinen Sinne ist eine wiederverwendbare Einheit
 
-  * die Funktionalität mit hoher Kohäsion gruppiert
-  * die ein oder mehrere Schnittstellen anbietet, um lose Kopplung zu unterstützen
+  * die Funktionalität mit hoher Kohäsion gruppiert,
+  * die ein oder mehrere Schnittstellen anbietet, um lose Kopplung zu unterstützen.
 
 ---
 
-## Ein Beispiel zu *Lose Coupling* <a name="link5"></a>
+#### Ein Beispiel zu *Lose Coupling* <a name="link6"></a>
 
 
 Betrachten Sie das Beispiel aus *Abbildung* 2:
@@ -229,27 +229,28 @@ Betrachten Sie das Beispiel aus *Abbildung* 2:
 10:     bool  m_state;
 11: 
 12: public:
-13:     Switch(Lamp& lamp) : m_lamp(lamp), m_state{ false } {}
-14:     void toggle() {
-15:         if (m_state) {
-16:             m_state = false;
-17:             m_lamp.off();
-18:         }
-19:         else {
-20:             m_state = true;
-21:             m_lamp.on();
-22:         }
-23:     }
-24: };
-25: 
-26: static void principles_lose_coupling_violating()
-27: {
-28:     Lamp lamp;
-29:     Switch switcher{ lamp };
-30:     switcher.toggle();
+13:     Switch(Lamp& lamp) : m_lamp{ lamp }, m_state{ false } {}
+14: 
+15:     void toggle() {
+16:         if (m_state) {
+17:             m_state = false;
+18:             m_lamp.off();
+19:         }
+20:         else {
+21:             m_state = true;
+22:             m_lamp.on();
+23:         }
+24:     }
+25: };
+26: 
+27: void principles_lose_coupling_violating()
+28: {
+29:     Lamp lamp;
+30:     Switch switcher{ lamp };
 31:     switcher.toggle();
 32:     switcher.toggle();
-33: }
+33:     switcher.toggle();
+34: }
 ```
 
 

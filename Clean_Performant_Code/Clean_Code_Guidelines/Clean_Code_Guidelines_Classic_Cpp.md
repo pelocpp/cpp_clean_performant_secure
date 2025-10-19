@@ -367,7 +367,7 @@ Das ist keine triviale Frage, dennoch kann man ein paar Richtlinien erkennen:
     * Falls Konstanten oder Referenzen vorhanden sind, geschieht dies jedoch nicht, weil sie
     nur initialisiert, aber nicht durch Zuweisung verändert werden können.
     Der Zuweisungsoperator wird vom System in diesem Fall *nicht* erzeugt.
-    * *Hinweis*:<br/>Im Falle  von (klassischen) Zeigervariablen entstehen in diesem Fall Probleme (Stichwort: flache versus tiefe Kopie).
+    * *Hinweis*:<br/>Im Falle  von (klassischen) Zeigervariablen entstehen in diesem Fall Probleme (Stichwort: &bdquo;flache&rdquo; versus &bdquo;tiefe&rdquo; Kopie).
 
   * Verschiebende Operationen:<br/>
     * Für alle Instanzvariablen, die Objekte sind, wird deren entsprechende Verschiebeoperation aufgerufen, falls vorhanden. Anderenfalls erfolgt eine Kopie.
@@ -397,7 +397,7 @@ public:
 
 Klasse `X` definiert zwei benutzerdefinierte Konstruktoren.
 
-Der Compiler generiert jedoch weiterhin einen vom Standardcompiler generierten Standardkonstruktor,
+Der Compiler generiert jedoch weiterhin einen Standardkonstruktor,
 da dieses mithilfe des Schlüsselworts `default` explizit festgelegt wird.
 
 Sie können das `= default` direkt in die Klassendefinition einfügen,
@@ -861,9 +861,8 @@ Das *Copy-and-Swap-Idiom* wurde eingeführt, um zwei Ziele zu erreichen:
   * Realisierung der Kopier-Konstruktoren und Zuweisungsoperatoren (sowohl &bdquo;kopierende&rdquo; als auch &bdquo;verschiebende&rdquo; Semantik) auf eine einfache Weise (Vermeidung von Code-Duplikationen).
   * Bereitstellung der so genannten *Strong Exception Guarantee*.
 
-Auf die *Strong Exception Guarantee* gehen wir später ein, wir verweilen beim *Copy-and-Swap-Idiom*:
-Dieses besteht im Wesentlichen aus zwei Teilen:
-
+Auf die *Strong Exception Guarantee* gehen wir im Abschnitt &bdquo;Richtlinien Clean Code Modernes C++&rdquo; ein,
+wir verweilen beim *Copy-and-Swap-Idiom*: Dieses besteht im Wesentlichen aus zwei Teilen:
 
   * Einem destruktiven Teil, der den bestehenden Zustand des Zielobjekts aufräumt (die linke Seite der Zuweisung).
   * Einem konstruktiven Teil, der den Zustand vom Quellobjekt (rechte Seite der Zuweisung) zum Zielobjekt kopiert.
