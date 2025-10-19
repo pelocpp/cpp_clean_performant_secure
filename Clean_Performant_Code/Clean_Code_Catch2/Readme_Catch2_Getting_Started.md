@@ -72,8 +72,24 @@ außer dass dem Testfallnamen das Präfix SCENARIO vorangestellt wird.
   * **THEN** ( *something* )
 
 
-## Typparametrisierte Testfälle <a name="link6"></a>
+## Data Generators
 
+Datengeneratoren ermöglichen die Wiederverwendung desselben Testfalls
+für verschiedene Eingabewerte.
+In Catch2 bedeutet dies, dass sie die Reihenfolge und Verschachtelung der Makros `TEST_CASE` und `SECTION` berücksichtigen
+und ihre verschachtelten Abschnitte einmal pro Wert in einem Generator ausgeführt werden.
+
+*Beispiel*:
+
+```cpp
+auto [a, b, expected] = GENERATE(
+    std::tuple{ 1, 4, 5 },
+    std::tuple{ 2, 5, 7 },
+    std::tuple{ 3, 6, 9 }
+);
+```
+
+## Typparametrisierte Testfälle <a name="link6"></a>
 
 Zusätzlich zu `TEST_CASE` unterstützt Catch2 auch nach Typen parametrisierte Testfälle
 in Form von `TEMPLATE_TEST_CASE`:

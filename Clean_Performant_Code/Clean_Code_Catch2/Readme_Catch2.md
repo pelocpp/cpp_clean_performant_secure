@@ -9,7 +9,7 @@
 In diesem Repository findet man einfache, einführende Beispiele
 zum &bdquo;*Catch2 Unit Testing Framework*&rdquo; vor.
 
-Außerdem werden wir einen Blicks auf *Best Practices* im Umfeld von Unit Testing.
+Außerdem werden wir einen Blick auf *Best Practices* im Umfeld von Unit Testing.
 
 ---
  

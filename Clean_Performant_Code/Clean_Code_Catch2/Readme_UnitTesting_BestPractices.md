@@ -125,7 +125,7 @@ und nach dem Test zurücksetzen. Dafür kann man einen RAII Guard schreiben:
 01: struct GlobalGuard
 02: {
 03:     int oldValue;
-04:     GlobalGuard() : oldValue(g_counter) {}
+04:     GlobalGuard() : oldValue{ g_counter } {}
 05:     ~GlobalGuard() { g_counter = oldValue; }
 06: };
 ```
@@ -235,14 +235,14 @@ Wir wollen die Begrifflichkeiten Mock und Stub an einem Beispiel erläutern:
 
 *Stub*:<br />
 Ein Stub ist ein einfaches Fake-Objekt. Es stellt sicher, dass ein Test reibungslos abläuft.
-Stub-Objekt implementieren Methoden mit Anweisungen, die ein bestimmtes Ergebnis zurückgeben.
+Stub-Objekte implementieren Methoden mit Anweisungen, die ein bestimmtes Ergebnis zurückgeben.
 
 Beobachtung:
 Stubs geben immer dieselbe Antwort zurück.
 
 *Mock*:<br />
 Ein Mock-Objekt überprüft, ob ein bestimmtes Verhalten auftritt &ndash; also ob z. B. eine Methode aufgerufen wurde.
-Mock-Objekte setzen Erwartungen (d.h. sie treffen Aussagen (Assertions) darüber, ob oder wie sie aufgerufen wurden.
+Mock-Objekte setzen Erwartungen, d.h. sie treffen Aussagen (*Assertions*) darüber, ob oder wie sie aufgerufen wurden.
 
 *Beispiel*:
 
@@ -255,7 +255,7 @@ Wir haben eine `UserService`-Klasse, die einen `UserRepository` benutzt:
 04:     std::string m_name;
 05: 
 06: public:
-07:     explicit User(const std::string& name) : m_name(name) {}
+07:     explicit User(const std::string& name) : m_name{ name } {}
 08: 
 09:     const std::string& getName() const { return m_name; }
 10: };
