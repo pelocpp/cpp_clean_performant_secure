@@ -26,13 +26,13 @@ But only good programmer can write a code that human can understand.&rdquo;
 
 ## [Richtlinien Clean Code &bdquo;Klassisches C++&rdquo;](../Clean_Code_Guidelines/Clean_Code_Guidelines_Classic_Cpp.md)
 
-## [Richtlinien Clean Code &bdquo;Modernes C++&rdquo;](../Clean_Code_Guidelines/Clean_Code_Guidelines_Modern_Cpp.md)
-
-## [Richtlinien zur STL (Standard Template Library)](../Clean_Code_Guidelines/Clean_Code_Guidelines_STL.md)
-
 ## [Richtlinien zur Vererbung](../Clean_Code_Guidelines/Clean_Code_Guidelines_Inheritance.md)
 
 ## [Richtlinien zur generischen Programmierung](../Clean_Code_Guidelines/Clean_Code_Guidelines_Generic_Programming.md)
+
+## [Richtlinien zur STL (Standard Template Library)](../Clean_Code_Guidelines/Clean_Code_Guidelines_STL.md)
+
+## [Richtlinien Clean Code &bdquo;Modernes C++&rdquo;](../Clean_Code_Guidelines/Clean_Code_Guidelines_Modern_Cpp.md)
 
 ## [Einige Design Patterns (Entwurfsmuster) und Idiome](https://github.com/pelocpp/cpp_design_patterns)
 

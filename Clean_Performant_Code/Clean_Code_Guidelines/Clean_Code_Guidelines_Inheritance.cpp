@@ -82,7 +82,7 @@ namespace GuidelinesInheritance {
         class Derived : public Base
         {
         public:
-            virtual void func() override {};
+            void func() override {};
         };
 
         class X

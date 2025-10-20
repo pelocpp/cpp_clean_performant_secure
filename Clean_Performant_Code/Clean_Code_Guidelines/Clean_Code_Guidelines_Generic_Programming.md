@@ -45,26 +45,24 @@ Man kann den Abstraktionslevel des Quellcodes steigern.
 15: }
 ```
 
----
+*Beispiel*:
 
-## Templates und Algorithmen
-
-Nutzen Sie Templates zur Beschreibung von Algorithmen,
-die sich auf viele Argumente anwenden lassen.
-
----
-
-## Templates und Container (*Ranges*)
-
-Nutzen Sie Templates zur Beschreibung von Containern und Bereichen.
-
----
-
-## Literatur <a name="link19"></a>
-
-Die Beispiele und Anregungen dieses Abschnitts wurden sehr stark inspiriert von dem Aufsatz
-[&bdquo;C++ 20 Ranges. Practical examples&rdquo;](https://indico.gsi.de/event/19561/contributions/78837/attachments/46921/67160/cpp_ranges.pdf)
-von *Semen Lebedev*.
+```cpp
+01: template <typename T>
+02: class Point2D
+03: {
+04: public:
+05:     Point2D(T x, T y) : m_x{ x }, m_y{ y } {}
+06: 
+07:     auto x() { return m_x; }
+08:     auto y() { return m_y; }
+09:     // ...
+10: 
+11: private:
+12:     T m_x{};
+13:     T m_y{};
+14: };
+```
 
 ---
 

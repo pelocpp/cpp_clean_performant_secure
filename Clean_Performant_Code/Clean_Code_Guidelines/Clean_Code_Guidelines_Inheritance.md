@@ -183,7 +183,7 @@ Wir betrachten diese Aussagen an zwei Beispielen:
 13: class Derived : public Base
 14: {
 15: public:
-16:     virtual void func() override {};
+16:     void func() override {};
 17: };
 18: 
 19: void test()
@@ -558,10 +558,10 @@ Keinen!
 Wenn Sie eine Methode als `final` deklarieren, dann bringen Sie zum Ausdruck,
 dass sich das Verhalten des Objekts nicht mehr ändert! Aber halten Sie sich auch daran?
 Wir stellen uns den Aufruf einer virtuellen Methode in einer als `final` deklarierten Methode vor.
-Kann man dann noch sagen, dass die Methode dann noch das tut, was wir mit ihrer Realisierung verbinden.
+Kann man dann noch sagen, dass die Methode das tut, was wir mit ihrer Realisierung verbinden.
 Wir haben doch mit `final` zum Ausdruck bringen wollen, das wir ein Versprechen
 &bdquo;*diese Methode tut das, was ich sage*&rdquo;
-geben wollten.
+gegeben haben.
 
 *Fazit*:<br />
 Als `final` deklarierte Methoden sollten keine virtuellen Methoden aufrufen!
