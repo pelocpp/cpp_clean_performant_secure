@@ -291,8 +291,8 @@ Das heißt, diese Klassen müssen Implementierungen für die Methodensignaturen der
 10:     bool         m_state;
 11: 
 12: public:
-13:     Switch(ISwitchable& switchable) 
-14:         : m_switcherable(switchable), m_state{ false } 
+13:     Switch(ISwitchable& switchable)
+14:         : m_switcherable(switchable), m_state{ false }
 15:     {}
 16:     void toggle() {
 17:         if (m_state) {
@@ -315,11 +315,12 @@ Das heißt, diese Klassen müssen Implementierungen für die Methodensignaturen der
 34: static void principles_lose_coupling_respecting()
 35: {
 36:     Lamp lamp;
-37:     Switch switcher{ lamp };
-38:     switcher.toggle();
+37:     ISwitchable& switchable{ lamp };
+38:     Switch switcher{ switchable };
 39:     switcher.toggle();
 40:     switcher.toggle();
-41: }
+41:     switcher.toggle();
+42: }
 ```
 
 Die Vorteile eines solchen Designs liegen auf der Hand. Der Schalter (Klasse `Switch`) ist völlig unabhängig

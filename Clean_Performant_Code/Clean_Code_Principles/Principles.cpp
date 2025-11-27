@@ -95,7 +95,8 @@ namespace Clean_Code_Principles {
         static void principles_lose_coupling_respecting()
         {
             Lamp lamp;
-            Switch switcher{ lamp };
+            ISwitchable& switchable{ lamp };
+            Switch switcher{ switchable };
             switcher.toggle();
             switcher.toggle();
             switcher.toggle();
