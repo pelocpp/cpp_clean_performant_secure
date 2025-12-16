@@ -9,10 +9,11 @@
   * [Allgemeines](#link1)
   * [Weitere Charakteristika des Stack-Speichers](#link2)
   * [Stack versus Heap Speicher im Vergleich](#link3)
-  * [Unterschiede des Stapels im Debug- und Relase-Modus](#link4)
-  * [Ausdehnung des Stapels](#link5)
-  * [Größe des Stapels bestimmen](#link6)
-  * [Literatur](#link7)
+  * [Ein einfaches Beispiel](#link4)
+  * [Unterschiede des Stapels im Debug- und Relase-Modus](#link5)
+  * [Ausdehnung des Stapels](#link6)
+  * [Größe des Stapels bestimmen](#link7)
+  * [Literatur](#link8)
 
 ---
 
@@ -26,9 +27,6 @@
 
 Zwei wichtige Begriffe bei der statischen und dynamischen Speicherverwaltung sind *Stack* (*Stapel*) und *Heap* (*Halde*).
 
-Bemerkung:<br />
-Hiermit sind **nicht** die so benannten Datenstrukturen wie etwa der Container `std::stack` und die Funktion `std::make_heap` aus der STL gemeint.
-
   * Stack und Heap sind zwei getrennte Speicherbereiche eines Programms während der Ausführung.
 
   * Die Zuweisung / Freigabe von Stack-Speicher erfolgt durch beim Laden eines Programms (*Loader*)
@@ -38,7 +36,8 @@ Im Vergleich dazu:
 
   * Die Zuweisung und Freigabe von Heap-Speicher durch den Programmierer / das Programm zur Laufzeit des Programms.
 
-
+Bemerkung:<br />
+Hiermit sind **nicht** die so benannten Datenstrukturen wie etwa der Container `std::stack` und die Funktion `std::make_heap` aus der STL gemeint.
 
 <img src="cpp_stack_heap.svg" width="400">
 
@@ -74,7 +73,34 @@ Die statische Speicherverwaltung verwaltet den Stack.
 
 ---
 
-### Unterschiede des Stapels im Debug- und Relase-Modus <a name="link4"></a>
+### Ein einfaches Beispiel <a name="link4"></a>
+
+Ein einfaches Beispiel soll veranschaulichen, wie im Regelfall Variablen auf dem Stack
+eines C++&ndash;Programms angelegt werden:
+
+```cpp
+01: static int function(int a, int b)
+02: {
+03:     // a, b and tmp are on the stack
+04:     int tmp = 2 * a + b;
+05:     return tmp;
+06: }
+07: 
+08: static void test_simple_stack_demo()
+09: {
+10:     // a, b and result are stack variables
+11:     int a = 1;
+12:     int b = 2;
+13:     int result = 0;
+14: 
+15:     result = function(a, b); // two parameter variables on the stack
+16:     std::println("Result: {}", result);
+17: }
+```
+
+---
+
+### Unterschiede des Stapels im Debug- und Relase-Modus <a name="link5"></a>
 
 Bei der Suche nach Fehlern versorgt uns die Visual Stdio IDE mit einer Reihe von unterstützenden Tools.
 Ein simples Tool sind *Memory Windows*:
@@ -161,7 +187,7 @@ ob Beschädigungen in den flankierenden Speicherbereichen vorhanden sind und, wen
 Laufzeitfehlermeldungen generieren.
 
 
-### Ausdehnung des Stapels <a name="link5"></a>
+### Ausdehnung des Stapels <a name="link6"></a>
 
 Wir analysieren den Stack an einem kleinen Beispiel, um herausfinden,
 in welche Richtung er wächst. Dazu vergleichen wir die Adressen von Variablen, die sich auf dem Stapel befinden.
@@ -217,7 +243,7 @@ Die verbleibenden 28 Bytes enthalten Daten, die benötigt werden, wenn die Funkti
 
 ---
 
-### Die Größe des Stapels bestimmen <a name="link6"></a>
+### Die Größe des Stapels bestimmen <a name="link7"></a>
 
 Wir versuchen, ein Programm zu schreiben, das die Größe des Stacks auf einem Rechner bestimmt.
 Dies lässt sich allerdings nur im Rahmen einer Schätzung durchführen.
@@ -290,7 +316,7 @@ nicht weit von 1.048.576 (1.024 * 1.024) entfernt.
 
 ---
 
-## Literatur <a name="link7"></a>
+## Literatur <a name="link8"></a>
 
 Hinweise auf das Vorhandensein von Extra-Speicher im Debug-Modus zu Kontrollzwecken kann man hier nachlesen:
 

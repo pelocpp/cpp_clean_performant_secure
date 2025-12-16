@@ -10,6 +10,27 @@
 
 namespace MemoryManagement {
 
+    namespace Stack_Simple_Demo {
+    
+        static int function(int a, int b)
+        {
+            // a, b and tmp are on the stack
+            int tmp = 2 * a + b;
+            return tmp;
+        }
+
+        static void test_simple_stack_demo()
+        {
+            // a, b and result are stack variables
+            int a = 1;
+            int b = 2;
+            int result = 0;
+
+            result = function(a, b); // two parameter variables on the stack
+            std::println("Result: {}", result);
+        }
+    }
+
     namespace Stack_Debug_Versus_Release_Mode {
 
         // =============================================================== 
@@ -93,10 +114,10 @@ void memory_management_stack()
 {
     using namespace MemoryManagement;
 
+    Stack_Simple_Demo::test_simple_stack_demo();
     Stack_Debug_Versus_Release_Mode::test_stack_debug_versus_release_mode();
-
     Stack_Behaviour::test_examine_stack_behaviour();
-    //Stack_Size::test_examine_stack_size();               // crashes (intentionally)
+    // Stack_Size::test_examine_stack_size();               // crashes (intentionally)
 }
 
 // ===========================================================================

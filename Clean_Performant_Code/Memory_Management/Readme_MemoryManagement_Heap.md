@@ -59,6 +59,46 @@ Welche Vorteile bietet die dynamischen Speicherverwaltung?
 
 ---
 
+## Unterschiedliche Vorteile der dynamischen Speicherverwaltung <a name="link3"></a>
+
+In C++ gibt es `new` und `delete` in verschiedenen Formen, die jeweils einem anderen Zweck dienen.
+
+Im Folgenden finden Sie eine kategorisierte Übersicht der gebräuchlichsten (und einiger fortgeschrittener) Speicherbelegungs- und -freigabeformen
+mit anschaulichen Beispielen vor:
+
+### Zuweisung und Freigabe einer einzelnen Variable oder eines einzelnen Objekts
+
+```cpp
+01: class Foo
+02: {
+03: public:
+04:     Foo(int x) {}
+05: };
+06: 
+07: void test() {
+08: 
+09:     // allocating and deallocating a single variable or object
+10: 
+11:     int* p = new int(123);   // dynamically allocate one int
+12:     delete p;                // deallocate it
+13: 
+14:     Foo* f = new Foo(123);
+15:     delete f;
+16: }
+```
+
+### Zuweisung und Freigabe von Arrays
+
+
+
+
+
+
+
+
+
+---
+
 [Zurück](Readme_MemoryManagement.md)
 
 ---
