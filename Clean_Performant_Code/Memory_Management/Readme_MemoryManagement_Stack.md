@@ -7,10 +7,12 @@
 ## Inhalt
   
   * [Allgemeines](#link1)
-  * [Unterschiede des Stapels im Debug- und Relase-Modus](#link2)
-  * [Ausdehnung des Stapels](#link3)
-  * [Größe des Stapels bestimmen](#link4)
-  * [Literatur](#link5)
+  * [Weitere Charakteristika des Stack-Speichers](#link2)
+  * [Stack versus Heap Speicher im Vergleich](#link3)
+  * [Unterschiede des Stapels im Debug- und Relase-Modus](#link4)
+  * [Ausdehnung des Stapels](#link5)
+  * [Größe des Stapels bestimmen](#link6)
+  * [Literatur](#link7)
 
 ---
 
@@ -22,9 +24,57 @@
 
 ## Allgemeines <a name="link1"></a>
 
+Zwei wichtige Begriffe bei der statischen und dynamischen Speicherverwaltung sind *Stack* (*Stapel*) und *Heap* (*Halde*).
+
+Bemerkung:<br />
+Hiermit sind **nicht** die so benannten Datenstrukturen wie etwa der Container `std::stack` und die Funktion `std::make_heap` aus der STL gemeint.
+
+  * Stack und Heap sind zwei getrennte Speicherbereiche eines Programms während der Ausführung.
+
+  * Die Zuweisung / Freigabe von Stack-Speicher erfolgt durch beim Laden eines Programms (*Loader*)
+auf der Basis von Informationen, die der *Linker* in den Metadaten des Programms abgelegt hat.
+
+Im Vergleich dazu:
+
+  * Die Zuweisung und Freigabe von Heap-Speicher durch den Programmierer / das Programm zur Laufzeit des Programms.
+
+
+
+<img src="cpp_stack_heap.svg" width="400">
+
+*Abbildung* 1: Speicherlayout eines C++-Programms einschließlich Stack, Heap und globalen Variablen.
+
 ---
 
-### Unterschiede des Stapels im Debug- und Relase-Modus <a name="link2"></a>
+## Weitere Charakteristika des Stack-Speichers <a name="link2"></a>
+
+Die statische Speicherverwaltung verwaltet den Stack.
+
+  * Der Speicherbereick des Stacks kann als lineare Datenstruktur gesehen werden.
+  * Er wird niemals fragmentiert.
+  * Es ermöglicht nur den Zugriff auf lokale Variablen zu (im Gegensatz dazu ermöglicht der Heap den globalen Zugriff auf Variablen).
+  * Stack-Variablen können nicht in der Größe verändert werden.
+  * Pro Aufruf einer Funktion / Methode wird dieses ein zusammenhängender Block des Stapels zugewiesen (auch als &bdquo;*Stack Frame*&rdquo; bezeichnet).
+  * Erfordert keine explizite Deallokation von Variablen (sowie das bei Variablen des Heaps der Fall ist).
+
+---
+
+## Stack versus Heap Speicher im Vergleich <a name="link3"></a>
+
+| Basis des Vergleichs | Stack | Heap |
+|:-|:-|:-|
+| Allokation | Der Speicher wird nach dem LIFO-(Last-in-First-out-)Prinzip vergeben | Der Speicher wird in zufälliger Reihenfolge zugewiesen (Random Order) |
+| Allokation und Deallokation | Automatisch | Manuell |
+| Aufwand bzgl. des Zugriffs | Geringer | Größer |
+| Mögliche Probleme | Speicherknappheit im Stack | Fragmentierung des Speichers |
+| Flexibilität | Gering (Fixed-Size Speicherabschnitte) | Größer (dynamische Größenanpassungen möglich) |
+| Zugriffszeit | Schneller | Langsamer |
+
+*Tabelle* 1: Stack versus Heap Speicher im Vergleich.
+
+---
+
+### Unterschiede des Stapels im Debug- und Relase-Modus <a name="link4"></a>
 
 Bei der Suche nach Fehlern versorgt uns die Visual Stdio IDE mit einer Reihe von unterstützenden Tools.
 Ein simples Tool sind *Memory Windows*:
@@ -111,7 +161,7 @@ ob Beschädigungen in den flankierenden Speicherbereichen vorhanden sind und, wen
 Laufzeitfehlermeldungen generieren.
 
 
-### Ausdehnung des Stapels <a name="link3"></a>
+### Ausdehnung des Stapels <a name="link5"></a>
 
 Wir analysieren den Stack an einem kleinen Beispiel, um herausfinden,
 in welche Richtung er wächst. Dazu vergleichen wir die Adressen von Variablen, die sich auf dem Stapel befinden.
@@ -167,7 +217,7 @@ Die verbleibenden 28 Bytes enthalten Daten, die benötigt werden, wenn die Funkti
 
 ---
 
-### Die Größe des Stapels bestimmen <a name="link4"></a>
+### Die Größe des Stapels bestimmen <a name="link6"></a>
 
 Wir versuchen, ein Programm zu schreiben, das die Größe des Stacks auf einem Rechner bestimmt.
 Dies lässt sich allerdings nur im Rahmen einer Schätzung durchführen.
@@ -240,11 +290,16 @@ nicht weit von 1.048.576 (1.024 * 1.024) entfernt.
 
 ---
 
-## Literatur <a name="link5"></a>
+## Literatur <a name="link7"></a>
 
 Hinweise auf das Vorhandensein von Extra-Speicher im Debug-Modus zu Kontrollzwecken kann man hier nachlesen:
 
 [Why does VS Debug build allocates variables so far apart?](https://stackoverflow.com/questions/60419126/why-does-vs-debug-build-allocates-variables-so-far-apart)
+
+
+Eine gute Einführung in die dynamische Speicherverwaltung findet man [online](https://www.uni-muenster.de/AISystems/courses/CPP/slides/03_Classes/03-classes-deck.html)
+in einem Skript von Prof. Dr. Malte Schilling mit dem Thema
+&bdquo;*Einführung in C ++ / Dynamische Speicherverwaltung, Templates, Container und Klassen*&rdquo;.
 
 ---
 

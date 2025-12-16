@@ -86,6 +86,9 @@
     <None Include="Readme_MemoryManagement_False_Sharing.md">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="cpp_stack_heap.svg">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Debug_vs_Release_Mode.png">
