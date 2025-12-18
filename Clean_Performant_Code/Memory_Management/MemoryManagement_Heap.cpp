@@ -8,10 +8,10 @@
 
 namespace MemoryManagement {
 
-
     namespace Using_New_delete {
 
-        // =======================================================================
+        // ===================================================================
+        // Allocating and deallocating a single variable or object
 
         class Foo
         {
@@ -22,8 +22,6 @@ namespace MemoryManagement {
 
         static void test_01_single_object() {
 
-            // allocating and deallocating a single variable or object
-
             int* p = new int(123);   // dynamically allocate one int
             delete p;                // deallocate it
 
@@ -31,11 +29,10 @@ namespace MemoryManagement {
             delete f;
         }
 
-        // =======================================================================
+        // ===================================================================
+        // Allocating and deallocating arrays of variables or objects
 
         static void test_02_arrays() {
-
-            // allocating and deallocating arrays of variables or objects
 
             int* arr = new int[5];     // allocate array of 5 ints
             delete[] arr;              // must use delete[]
@@ -52,9 +49,9 @@ namespace MemoryManagement {
             delete[] foos2;
         }
 
+        // ===================================================================
+        // nothrow new (Non-Throwing Allocation)
         // https://en.cppreference.com/w/cpp/memory/new/nothrow.html
-
-        // =======================================================================
 
         static void test_03_nothrow_new_01() {
 
@@ -104,41 +101,44 @@ namespace MemoryManagement {
             test_03_nothrow_new_02();
         }
 
-        // =======================================================================
+        // ===================================================================
+        // Value-Initialization vs Default-Initialization
 
         static void test_04_value_initialization_vs_default_initialization() {
 
-            // Default-Initialization
+            // default-Initialization
             int* p1 = new int;         // uninitialized value
             delete p1;
 
-            // Value-initialization
+            // value-initialization
             int* p2 = new int{};       // initialized to 0
             delete p2;
 
-            // Default-Initialization
+            // default-Initialization
             Foo* f1 = new Foo;         // default constructor
             delete f1;
 
-            // Value-initialization
+            // value-initialization
             Foo* f2 = new Foo{};       // also default constructor
             delete f2;
         }
 
-        // =======================================================================
-
-        // class-specific allocation
+        // ===================================================================
+        // Class-specific allocation
 
         class AnotherFoo
         {
         public:
-            static void* operator new(std::size_t size) {
-                std::println("operator new: >>> {} bytes");
-                return std::malloc(size);
+            static void* operator new(std::size_t size)
+            {
+                void* ptr = std::malloc(size);
+                std::println("operator new:    >>> {:#X} - {} bytes", reinterpret_cast<intptr_t>(ptr), size);
+                return ptr;
             }
 
-            static void operator delete(void* ptr) {
-                std::println("operator delete: >>> {} ptr");
+            static void operator delete(void* ptr)
+            {
+                std::println("operator delete: >>> {:#X}", reinterpret_cast<intptr_t>(ptr));
                 std::free(ptr);
             }
         };
@@ -147,9 +147,37 @@ namespace MemoryManagement {
 
             AnotherFoo* f = new AnotherFoo;
             delete f;
-
         }
 
+
+        // ===================================================================
+        // Aligned Allocation (C++17)
+
+        //static void test_09()
+        //{
+        //    int n = 123;
+        //    int* ip = &n;
+
+        //    std::println("&n: {:#X}", reinterpret_cast<intptr_t>(ip));
+        //    std::println("&n: {:#x}", reinterpret_cast<intptr_t>(&n));
+        //}
+
+        struct alignas(64) Big {
+            int x;
+        };
+
+        // https://stackoverflow.com/questions/56753138/how-to-know-if-the-address-is-64-bit-aligned
+
+        // Wie kann man überprüfen, ob eine Adresse 64 Bit ausgerichtet ist !!!
+
+        static void test_06_aligned_allocation() {
+
+            Big* ptr = new Big;
+
+            std::println("ptr: {:#X}", reinterpret_cast<intptr_t>(ptr));
+
+            delete ptr;
+        }
     }
 }
 
@@ -157,10 +185,12 @@ void memory_management_heap()
 {
     using namespace MemoryManagement;
 
-    Using_New_delete::test_01_single_object();
-    Using_New_delete::test_02_arrays();
-    // Using_New_delete::test_03_nothrow_new();
-    Using_New_delete::test_04_value_initialization_vs_default_initialization();
+    //Using_New_delete::test_01_single_object();
+    //Using_New_delete::test_02_arrays();
+    //// Using_New_delete::test_03_nothrow_new();    // runs very long
+    //Using_New_delete::test_04_value_initialization_vs_default_initialization();
+    //Using_New_delete::test_05_custom_new_custom_delete();
+    Using_New_delete::test_06_aligned_allocation();
 }
 
 // ===========================================================================
