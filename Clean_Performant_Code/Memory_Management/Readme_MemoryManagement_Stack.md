@@ -7,7 +7,7 @@
 ## Inhalt
   
   * [Allgemeines](#link1)
-  * [Weitere Charakteristika des Stack-Speichers](#link2)
+  * [Weitere Charakteristika des Stapel-Speichers](#link2)
   * [Stack versus Heap Speicher im Vergleich](#link3)
   * [Ein einfaches Beispiel](#link4)
   * [Unterschiede des Stapels im Debug- und Relase-Modus](#link5)
@@ -34,9 +34,9 @@ auf der Basis von Informationen, die der *Linker* in den Metadaten des Programms
 
 Im Vergleich dazu:
 
-  * Die Zuweisung und Freigabe von Heap-Speicher durch den Programmierer / das Programm zur Laufzeit des Programms.
+  * Die Zuweisung und Freigabe von Heap-Speicher erfolgt durch den Programmierer / das Programm zur Laufzeit des Programms.
 
-Bemerkung:<br />
+*Bemerkung*:<br />
 Hiermit sind **nicht** die so benannten Datenstrukturen wie etwa der Container `std::stack` und die Funktion `std::make_heap` aus der STL gemeint.
 
 <img src="cpp_stack_heap.svg" width="400">
@@ -45,16 +45,17 @@ Hiermit sind **nicht** die so benannten Datenstrukturen wie etwa der Container `
 
 ---
 
-## Weitere Charakteristika des Stack-Speichers <a name="link2"></a>
+## Weitere Charakteristika des Stapel-Speichers <a name="link2"></a>
 
 Die statische Speicherverwaltung verwaltet den Stack.
 
   * Der Speicherbereick des Stacks kann als lineare Datenstruktur gesehen werden.
   * Er wird niemals fragmentiert.
-  * Es ermöglicht nur den Zugriff auf lokale Variablen zu (im Gegensatz dazu ermöglicht der Heap den globalen Zugriff auf Variablen).
+  * Er ermöglicht nur den Zugriff auf lokale Variablen
+    (im Gegensatz dazu ermöglicht der Heap den Zugriff auf Variablen von jeder Stelle im laufenden Programm).
   * Stack-Variablen können nicht in der Größe verändert werden.
-  * Pro Aufruf einer Funktion / Methode wird dieses ein zusammenhängender Block des Stapels zugewiesen (auch als &bdquo;*Stack Frame*&rdquo; bezeichnet).
-  * Erfordert keine explizite Deallokation von Variablen (sowie das bei Variablen des Heaps der Fall ist).
+  * Pro Aufruf einer Funktion / Methode wird dieser ein zusammenhängender Block des Stapels zugewiesen (auch als &bdquo;*Stack Frame*&rdquo; bezeichnet).
+  * Erfordert keine explizite Deallokation von Variablen (wie das bei Variablen des Heaps der Fall ist).
 
 ---
 
@@ -62,7 +63,7 @@ Die statische Speicherverwaltung verwaltet den Stack.
 
 | Basis des Vergleichs | Stack | Heap |
 |:-|:-|:-|
-| Allokation | Der Speicher wird nach dem LIFO-(Last-in-First-out-)Prinzip vergeben | Der Speicher wird in zufälliger Reihenfolge zugewiesen (Random Order) |
+| Allokation | Der Speicher wird nach dem LIFO-Prinzip vergeben (Last-in-First-out) | Der Speicher wird in zufälliger Reihenfolge zugewiesen (Random Order) |
 | Allokation und Deallokation | Automatisch | Manuell |
 | Aufwand bzgl. des Zugriffs | Geringer | Größer |
 | Mögliche Probleme | Speicherknappheit im Stack | Fragmentierung des Speichers |

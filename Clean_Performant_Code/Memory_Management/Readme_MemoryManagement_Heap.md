@@ -22,9 +22,6 @@
 
 Zwei wichtige Begriffe bei der statischen und dynamischen Speicherverwaltung sind *Stack* (*Stapel*) und *Heap* (*Halde*).
 
-Bemerkung:<br />
-Hiermit sind **nicht** die so benannten Datenstrukturen wie etwa der Container `std::stack` und die Funktion `std::make_heap` aus der STL gemeint.
-
   * Stack und Heap sind zwei getrennte Speicherbereiche eines Programms während der Ausführung.
 
   * Die Zuweisung und Freigabe von Heap-Speicher durch den Programmierer / das Programm zur Laufzeit des Programms.
@@ -42,12 +39,12 @@ auf der Basis von Informationen, die der *Linker* in den Metadaten des Programms
 Mit der dynamischen Speicherverwaltung verwaltet der Programmierer den Heap.
 
   * Im Gegensatz zum linearen Stack kann der Heap als eine nicht-lineare, baumbasierte Datenstruktur angesehen werden.
-  * Der Heap ist fragmentierbar (explizite Zuweisungen und Freigabe von Speicherbereichen).
+  * Der Heap ist fragmentierbar (als Folge expliziter Zuweisungen und Freigabe von Speicherbereichen).
   * Heap-Variablen können in der Größe verändert werden (dies erfordert in der Regel eine Kombination von Freigabe und erneuter Allokation).
     Ein intuitives Verlängern am Ende eines bereits zugewiesenen Speicherbereichs ist in der Regel nicht möglich, da dieser Speicher anderweitig vergeben sein kann.
   * Speicherbereiche auf dem Heap obliegen keiner Reihenfolge, ihre Zuweisung kann in beliebiger Reihenfolge erfolgen.
   * Für jeden allokierten Speicherbereich ist eine Deallokation notwendig.
-    Andernfalls entstehen auf dem Heap so genannte &bdquo;*Memory Leaks*&rdquo;.
+    Andernfalls würden auf dem Heap so genannte &bdquo;*Memory Leaks*&rdquo; entstehen.
 
 ---
 
@@ -63,7 +60,8 @@ Welche Vorteile bietet die dynamischen Speicherverwaltung?
 
 In C++ gibt es `new` und `delete` in verschiedenen Formen, die jeweils einem anderen Zweck dienen.
 
-Im Folgenden finden Sie eine kategorisierte Übersicht der gebräuchlichsten (und einiger fortgeschrittener) Speicherbelegungs- und -freigabeformen vor:
+Im Folgenden finden Sie eine kategorisierte Übersicht der gebräuchlichsten
+(und einiger fortgeschrittener) Speicherbelegungs- und -freigabeformen vor:
 
 
 ## Stack versus Heap Speicher im Vergleich <a name="link3"></a>
@@ -82,10 +80,11 @@ Im Folgenden finden Sie eine kategorisierte Übersicht der gebräuchlichsten (und 
 *Tabelle* 1: Unterschiedliche Anwendungsmöglichkeiten des `new`-Operators.
 
 *Bemerkung*:<br />
-Zum Thema &bdquo;*Placement New*: Trennung von Speicherallokation und Objektkonstruktion&rdquo; finden Sie
-[hier](Readme_MemoryManagement_Placement_New.md) einen eigenen Abschnitt.
+Zum Thema &bdquo;*Placement New*: Trennung von Speicherallokation und Objektkonstruktion&rdquo;
+gibt es [hier](Readme_MemoryManagement_Placement_New.md) einen eigenen Abschnitt.
 
-Es folgen einige anschauliche Beispielen:
+Es folgen einige Beispiele zur Veranschaulichung der einzelnen Anwendungsmöglichkeiten des `new`-Operators
+aus *Tabelle* 1:
 
 ### Allokation und Freigabe einer einzelnen Variable oder eines einzelnen Objekts
 
