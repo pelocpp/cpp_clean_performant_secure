@@ -63,10 +63,29 @@ Welche Vorteile bietet die dynamischen Speicherverwaltung?
 
 In C++ gibt es `new` und `delete` in verschiedenen Formen, die jeweils einem anderen Zweck dienen.
 
-Im Folgenden finden Sie eine kategorisierte Übersicht der gebräuchlichsten (und einiger fortgeschrittener) Speicherbelegungs- und -freigabeformen
-mit anschaulichen Beispielen vor:
+Im Folgenden finden Sie eine kategorisierte Übersicht der gebräuchlichsten (und einiger fortgeschrittener) Speicherbelegungs- und -freigabeformen vor:
 
-### Zuweisung und Freigabe einer einzelnen Variable oder eines einzelnen Objekts
+
+## Stack versus Heap Speicher im Vergleich <a name="link3"></a>
+
+| Beschreibung | Syntax |
+|:-|:-|
+| XXX | `` |
+| XXX | `` |
+| XXX | `` |
+| XXX | `` |
+| XXX | `` |
+| XXX | `` |
+| XXX | `` |
+| XXX | `` |
+
+
+*Tabelle* 1: Anwendungen des `new`-Operators.
+
+
+Es folgen einige anschauliche Beispielen:
+
+### Allokation und Freigabe einer einzelnen Variable oder eines einzelnen Objekts
 
 ```cpp
 01: class Foo
@@ -87,15 +106,158 @@ mit anschaulichen Beispielen vor:
 16: }
 ```
 
-### Zuweisung und Freigabe von Arrays
+### Allokation und Freigabe von Arrays
+
+
+```cpp
+01: void test () {
+02: 
+03:     int* arr = new int[5];     // allocate array of 5 ints
+04:     delete[] arr;              // must use delete[]
+05: 
+06:     // delete arr;             // WRONG — must use delete[] - UB (undefined behaviour)
+07: 
+08:     int* arr2 = new int[5] {}; // with initialization
+09:     delete[] arr2;
+10: 
+11:     Foo* foos1 = new Foo[3];   // allocate an array of objects
+12:     delete[] foos1;
+13: 
+14:     Foo* foos2 = new Foo[3]{ {1}, {2}, {3} };  // with initialization
+15:     delete[] foos2;
+16: }
+```
 
 
 
+### *nothrow* `new` (Allokation, die keine Ausnahme wirft)
 
 
+```cpp
+01: void test_03_nothrow_new_01() {
+02: 
+03:     int* p = new (std::nothrow) int;
+04: 
+05:     if (!p) {
+06:         // allocation failed
+07:     }
+08: 
+09:     delete p;
+10: }
+```
+
+### Wert-Initialisierung vs. Default-Initialisierung (*Value-Initialization* vs. *Default-Initialization*)
 
 
+```cpp
+01: void test() {
+02: 
+03:     // default-Initialization
+04:     int* p1 = new int;         // uninitialized value
+05:     delete p1;
+06: 
+07:     // value-initialization
+08:     int* p2 = new int{};       // initialized to 0
+09:     delete p2;
+10: 
+11:     // default-Initialization
+12:     Foo* f1 = new Foo;         // default constructor
+13:     delete f1;
+14: 
+15:     // value-initialization
+16:     Foo* f2 = new Foo{};       // also default constructor
+17:     delete f2;
+18: }
+```
 
+### *Aligned* Alloation
+
+
+```cpp
+01: struct alignas(64) Big {
+02:     int x;
+03: };
+04: 
+05: void test() {
+06: 
+07:     Big* ptr = new Big;
+08:     std::println("ptr: {:#X}", reinterpret_cast<intptr_t>(ptr));
+09: 
+10:     // is the address really 64 bit aligned?
+11:     // 64 bits == 8 bytes ==> last three bits of the address must be null
+12:     if ((reinterpret_cast<uintptr_t>(ptr) & 0x7) != 0x0) {
+13:         std::println("Address not 64 bit aligned !");
+14:     }
+15:     delete ptr;
+16: }
+```
+
+### Klassenspezifische Allokation
+
+
+```cpp
+01: class AnotherFoo
+02: {
+03: public:
+04:     static void* operator new(std::size_t size)
+05:     {
+06:         return std::malloc(size);
+07:     }
+08: 
+09:     static void operator delete(void* ptr)
+10:     {
+11:         std::free(ptr);
+12:     }
+13: 
+14:     static void* operator new[](std::size_t size)
+15:     {
+16:         return std::malloc(size);
+17:     }
+18: 
+19:     static void operator delete[](void* ptr)
+20:     {
+21:         std::free(ptr);
+22:     }
+23: };
+24: 
+25: void test() {
+26: 
+27:     AnotherFoo* f = new AnotherFoo;
+28:     delete f;
+29: 
+30:     AnotherFoo* foos = new AnotherFoo[3];
+31:     delete[] foos;
+32: }
+```
+
+### Globaler `operator new` / `operator delete`
+
+
+```cpp
+01: // ===================================================================
+02: // Global operator new / operator delete
+03: // Note: May onyl be declared within the global namespace
+04: 
+05: void* operator new(std::size_t size) {
+06:     return std::malloc(size);
+07: }
+08: 
+09: void operator delete(void* ptr) noexcept {
+10:     std::free(ptr);
+11: }
+12: 
+13: namespace MemoryManagement {
+14: 
+15:     void test() {
+16: 
+17:         int* p = new int(123);   // dynamically allocate one int
+18:         delete p;                // deallocate it
+19: 
+20:         Foo* f = new Foo{ 123 }; // same for class type
+21:         delete f;
+22:     }
+23: }
+```
 
 ---
 

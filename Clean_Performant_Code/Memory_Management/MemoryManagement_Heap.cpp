@@ -124,6 +124,27 @@ namespace MemoryManagement {
         }
 
         // ===================================================================
+        // Aligned Allocation (C++17)
+
+        struct alignas(64) Big {
+            int x;
+        };
+
+        static void test_05_aligned_allocation() {
+
+            Big* ptr = new Big;
+            std::println("ptr: {:#X}", reinterpret_cast<intptr_t>(ptr));
+
+            // is the address really 64 bit aligned?
+            // 64 bits == 8 bytes ==> last three bits of the address must be null
+            // https://stackoverflow.com/questions/56753138/how-to-know-if-the-address-is-64-bit-aligned
+            if ((reinterpret_cast<uintptr_t>(ptr) & 0x7) != 0x0) {
+                std::println("Address not 64 bit aligned !");
+            }
+            delete ptr;
+        }
+
+        // ===================================================================
         // Class-specific allocation
 
         class AnotherFoo
@@ -132,51 +153,64 @@ namespace MemoryManagement {
             static void* operator new(std::size_t size)
             {
                 void* ptr = std::malloc(size);
-                std::println("operator new:    >>> {:#X} - {} bytes", reinterpret_cast<intptr_t>(ptr), size);
+                std::println("operator new:      >>> {:#X} - {} bytes", reinterpret_cast<intptr_t>(ptr), size);
                 return ptr;
             }
 
             static void operator delete(void* ptr)
             {
-                std::println("operator delete: >>> {:#X}", reinterpret_cast<intptr_t>(ptr));
+                std::println("operator delete:   >>> {:#X}", reinterpret_cast<intptr_t>(ptr));
+                std::free(ptr);
+            }
+
+            static void* operator new[](std::size_t size)
+            {
+                void* ptr = std::malloc(size);
+                std::println("operator new[]:    >>> {:#X} - {} bytes", reinterpret_cast<intptr_t>(ptr), size);
+                return ptr;
+            }
+
+            static void operator delete[](void* ptr)
+            {
+                std::println("operator delete[]: >>> {:#X}", reinterpret_cast<intptr_t>(ptr));
                 std::free(ptr);
             }
         };
 
-        static void test_05_custom_new_custom_delete() {
+        static void test_06_custom_new_custom_delete() {
 
             AnotherFoo* f = new AnotherFoo;
             delete f;
+
+            AnotherFoo* foos = new AnotherFoo[3];
+            delete[] foos;
         }
+    }
+}
 
+// ===================================================================
+// Global operator new / operator delete
+// Note: May onyl be declared within the global namespace
 
-        // ===================================================================
-        // Aligned Allocation (C++17)
+void* operator new(std::size_t size) {
+    return std::malloc(size);
+}
 
-        //static void test_09()
-        //{
-        //    int n = 123;
-        //    int* ip = &n;
+void operator delete(void* ptr) noexcept {
+    std::free(ptr);
+}
 
-        //    std::println("&n: {:#X}", reinterpret_cast<intptr_t>(ip));
-        //    std::println("&n: {:#x}", reinterpret_cast<intptr_t>(&n));
-        //}
+namespace MemoryManagement {
 
-        struct alignas(64) Big {
-            int x;
-        };
+    namespace Using_New_delete {
 
-        // https://stackoverflow.com/questions/56753138/how-to-know-if-the-address-is-64-bit-aligned
+        static void test_07_global_new_delete() {
 
-        // Wie kann man überprüfen, ob eine Adresse 64 Bit ausgerichtet ist !!!
+            int* p = new int(123);   // dynamically allocate one int
+            delete p;                // deallocate it
 
-        static void test_06_aligned_allocation() {
-
-            Big* ptr = new Big;
-
-            std::println("ptr: {:#X}", reinterpret_cast<intptr_t>(ptr));
-
-            delete ptr;
+            Foo* f = new Foo{ 123 }; // same for class type
+            delete f;
         }
     }
 }
@@ -185,12 +219,13 @@ void memory_management_heap()
 {
     using namespace MemoryManagement;
 
-    //Using_New_delete::test_01_single_object();
-    //Using_New_delete::test_02_arrays();
-    //// Using_New_delete::test_03_nothrow_new();    // runs very long
-    //Using_New_delete::test_04_value_initialization_vs_default_initialization();
-    //Using_New_delete::test_05_custom_new_custom_delete();
-    Using_New_delete::test_06_aligned_allocation();
+    Using_New_delete::test_01_single_object();
+    Using_New_delete::test_02_arrays();
+    Using_New_delete::test_03_nothrow_new();
+    Using_New_delete::test_04_value_initialization_vs_default_initialization();
+    Using_New_delete::test_05_aligned_allocation();
+    Using_New_delete::test_06_custom_new_custom_delete();
+    Using_New_delete::test_07_global_new_delete();
 }
 
 // ===========================================================================
