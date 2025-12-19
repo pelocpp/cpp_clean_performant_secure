@@ -8,7 +8,7 @@
 #include <print>
 #include <string>
 
-namespace MemoryManagement {
+namespace Memory_Management_Stack {
 
     namespace Stack_Simple_Demo {
     
@@ -112,7 +112,7 @@ namespace MemoryManagement {
 
 void memory_management_stack()
 {
-    using namespace MemoryManagement;
+    using namespace Memory_Management_Stack;
 
     Stack_Simple_Demo::test_simple_stack_demo();
     Stack_Debug_Versus_Release_Mode::test_stack_debug_versus_release_mode();

@@ -70,18 +70,20 @@ Im Folgenden finden Sie eine kategorisierte Übersicht der gebräuchlichsten (und 
 
 | Beschreibung | Syntax |
 |:-|:-|
-| XXX | `` |
-| XXX | `` |
-| XXX | `` |
-| XXX | `` |
-| XXX | `` |
-| XXX | `` |
-| XXX | `` |
-| XXX | `` |
+| Allokation und Freigabe einer einzelnen Variable oder eines einzelnen Objekts | `new T` / `delete` |
+| Allokation und Freigabe von Arrays | `new T[n]` / `delete[]` |
+| *nothrow* `new` (Allokation, die keine Ausnahme wirft) | `new (std::nothrow) T` |
+| *Placement New*: Trennung von Speicherallokation und Objektkonstruktion | `new (ptr) T` |
+| Wert-Initialisierung vs. Default-Initialisierung | `new T()` bzw. `new T{}` |
+| *Aligned* Allokation | `alignas(size)` |
+| Klassenspezifische Allokation | `operator new` / `operator delete` |
+| Globaler `operator new` / `operator delete` |  `operator new` / `operator delete`|
 
+*Tabelle* 1: Unterschiedliche Anwendungsmöglichkeiten des `new`-Operators.
 
-*Tabelle* 1: Anwendungen des `new`-Operators.
-
+*Bemerkung*:<br />
+Zum Thema &bdquo;*Placement New*: Trennung von Speicherallokation und Objektkonstruktion&rdquo; finden Sie
+[hier](Readme_MemoryManagement_Placement_New.md) einen eigenen Abschnitt.
 
 Es folgen einige anschauliche Beispielen:
 
@@ -170,7 +172,7 @@ Es folgen einige anschauliche Beispielen:
 18: }
 ```
 
-### *Aligned* Alloation
+### *Aligned* Allokation
 
 
 ```cpp
