@@ -14,7 +14,7 @@
 
 namespace ObjectPool_ThreadSafe_SimpleTest {
 
-    static void test_object_pool_thread_safe_01()
+    static void main_object_pool_thread_safe_01()
     {
         using PersonPool = Pool<Person>;
 
@@ -37,11 +37,11 @@ namespace ObjectPool_ThreadSafe_SimpleTest {
     }
 }
 
-void test_object_pool_thread_safe_02()
+void main_object_pool_thread_safe_02()
 {
     using namespace ObjectPool_ThreadSafe_SimpleTest;
 
-    test_object_pool_thread_safe_01();
+    main_object_pool_thread_safe_01();
 }
 
 // ===========================================================================

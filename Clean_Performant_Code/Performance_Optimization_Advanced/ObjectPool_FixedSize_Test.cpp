@@ -29,7 +29,7 @@ namespace ObjectPool_FixedSize_SimpleTest {
 
     using namespace FixedSizeObjectPool;
 
-    static void test_object_pool_01()
+    static void main_object_pool_01()
     {
         ObjectPool<int> pool;
 
@@ -40,7 +40,7 @@ namespace ObjectPool_FixedSize_SimpleTest {
         pool.destroy(ptr);
     }
 
-    static void test_object_pool_02()
+    static void main_object_pool_02()
     {
         ObjectPool<Person> pool;
 
@@ -50,7 +50,7 @@ namespace ObjectPool_FixedSize_SimpleTest {
         pool.destroy(ptr);
     }
 
-    static void test_object_pool_03()
+    static void main_object_pool_03()
     {
         ObjectPool<int> pool;
 
@@ -67,7 +67,7 @@ namespace ObjectPool_FixedSize_SimpleTest {
         pool.destroy(ptr3);
     }
 
-    static void test_object_pool_04()
+    static void main_object_pool_04()
     {
         ObjectPool<Person> pool;
 
@@ -89,7 +89,7 @@ namespace ObjectPool_FixedSize_AdvancedTest {
 
     using namespace FixedSizeObjectPool;
 
-    static void test_object_pool_10()
+    static void main_object_pool_10()
     {
         ObjectPool<int> pool;
 
@@ -114,7 +114,7 @@ namespace ObjectPool_FixedSize_AdvancedTest {
         }
     }
 
-    static void test_object_pool_11()
+    static void main_object_pool_11()
     {
         ObjectPool<Person> pool;
 
@@ -142,21 +142,19 @@ namespace ObjectPool_FixedSize_AdvancedTest {
     }
 }
 
-void test_object_pool_fixed_size()
+void main_object_pool_fixed_size()
 {
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-    ObjectPool_FixedSize_SimpleTest::test_object_pool_01();
-    ObjectPool_FixedSize_SimpleTest::test_object_pool_02();
-    ObjectPool_FixedSize_SimpleTest::test_object_pool_03();
-    ObjectPool_FixedSize_SimpleTest::test_object_pool_04();
+    ObjectPool_FixedSize_SimpleTest::main_object_pool_01();
+    ObjectPool_FixedSize_SimpleTest::main_object_pool_02();
+    ObjectPool_FixedSize_SimpleTest::main_object_pool_03();
+    ObjectPool_FixedSize_SimpleTest::main_object_pool_04();
 
-    ObjectPool_FixedSize_AdvancedTest::test_object_pool_10();
-    ObjectPool_FixedSize_AdvancedTest::test_object_pool_11();
+    ObjectPool_FixedSize_AdvancedTest::main_object_pool_10();
+    ObjectPool_FixedSize_AdvancedTest::main_object_pool_11();
 }
 
 // ===========================================================================
 // End-of-File
 // ===========================================================================
-
-

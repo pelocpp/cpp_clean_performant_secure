@@ -10,7 +10,7 @@
 
 namespace Custom_Allocator_Test {
 
-    static void test_custom_allocator_01()
+    static void main_custom_allocator_01()
     {
         CustomAllocator<int> alloc;
 
@@ -29,7 +29,7 @@ namespace Custom_Allocator_Test {
         }
     }
 
-    static void test_custom_allocator_02()
+    static void main_custom_allocator_02()
     {
         std::vector<Person, CustomAllocator<Person>> vec;
 
@@ -42,7 +42,7 @@ namespace Custom_Allocator_Test {
         }
     }
 
-    static void test_custom_allocator_03()
+    static void main_custom_allocator_03()
     {
         CustomAllocator<int> alloc;
 
@@ -69,13 +69,13 @@ namespace Custom_Allocator_Test {
     }
 }
 
-void test_custom_allocator()
+void main_custom_allocator()
 {
     using namespace Custom_Allocator_Test;
 
-    test_custom_allocator_01();
-    test_custom_allocator_02();
-    test_custom_allocator_03();
+    main_custom_allocator_01();
+    main_custom_allocator_02();
+    main_custom_allocator_03();
 }
 
 // ===========================================================================

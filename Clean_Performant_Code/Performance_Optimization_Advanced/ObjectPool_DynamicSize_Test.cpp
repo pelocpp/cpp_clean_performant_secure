@@ -15,7 +15,7 @@ namespace ObjectPool_DynamicSize_SimpleTest {
 
     using namespace DynamicSizeObjectPool;
 
-    static void test_object_pool_01()
+    static void main_object_pool_01()
     {
         using PersonPool = ObjectPool<Person>; 
 
@@ -29,7 +29,7 @@ namespace ObjectPool_DynamicSize_SimpleTest {
         std::println("Done.");
     }
 
-    static void test_object_pool_02()
+    static void main_object_pool_02()
     {
         using PersonPool = ObjectPool<Person>;
 
@@ -60,7 +60,7 @@ namespace ObjectPool_DynamicSize_AdvancedTest {
 
     using namespace DynamicSizeObjectPool;
 
-    static void test_object_pool_01()
+    static void main_object_pool_01()
     {
 #ifdef _DEBUG
         static constexpr int Iterations = 1'000'000;        // debug
@@ -89,7 +89,7 @@ namespace ObjectPool_DynamicSize_AdvancedTest {
         }
     }
 
-    static void test_object_pool_02()
+    static void main_object_pool_02()
     {
 #ifdef _DEBUG
         static constexpr int Iterations = 1'000'000;        // debug
@@ -150,7 +150,7 @@ namespace ObjectPool_DynamicSize_AdvancedTest {
         // Process the object. (not shown)
     }
 
-    static void test_object_pool_03()
+    static void main_object_pool_03()
     {
         const size_t NumberOfIterations{ 10'000 };
 
@@ -177,7 +177,7 @@ namespace ObjectPool_DynamicSize_AdvancedTest {
         }
     }
 
-    static void test_object_pool_04()
+    static void main_object_pool_04()
     {
         const size_t NumberOfIterations{ 1'000 };
 
@@ -220,15 +220,15 @@ namespace ObjectPool_DynamicSize_AdvancedTest {
     }
 }
 
-void test_object_pool_dynamic_size()
+void main_object_pool_dynamic_size()
 {
-    ObjectPool_DynamicSize_SimpleTest::test_object_pool_01();
-    ObjectPool_DynamicSize_SimpleTest::test_object_pool_02();
+    ObjectPool_DynamicSize_SimpleTest::main_object_pool_01();
+    ObjectPool_DynamicSize_SimpleTest::main_object_pool_02();
 
-    ObjectPool_DynamicSize_AdvancedTest::test_object_pool_01();
-    ObjectPool_DynamicSize_AdvancedTest::test_object_pool_02();
-    ObjectPool_DynamicSize_AdvancedTest::test_object_pool_03();
-    ObjectPool_DynamicSize_AdvancedTest::test_object_pool_04();
+    ObjectPool_DynamicSize_AdvancedTest::main_object_pool_01();
+    ObjectPool_DynamicSize_AdvancedTest::main_object_pool_02();
+    ObjectPool_DynamicSize_AdvancedTest::main_object_pool_03();
+    ObjectPool_DynamicSize_AdvancedTest::main_object_pool_04();
 }
 
 // ===========================================================================

@@ -54,6 +54,18 @@
     <ClCompile Include="ObjectPool_ThreadSafe_Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CowStringImpl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CowString_TextfileStatistics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CowString_TextfileStatisticsImpl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CowString_Test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ObjectPool_DynamicSize.h">
@@ -78,6 +90,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ObjectPool_ThreadSafe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CowString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CowString_TextfileStatistics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -136,5 +154,43 @@
     <None Include="cpp_fixed_size_object_pool_04.svg">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="cpp_copy_on_write_01.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="cpp_copy_on_write_02.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="cpp_copy_on_write_03.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="cpp_copy_on_write_04.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="cpp_copy_on_write_05.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="cpp_copy_on_write_06.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Readme_Performance_Optimization_Advanced_Copy_On_Write.md">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="LoremIpsumExtremeHuge.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="LoremIpsumHuge.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="LoremIpsumLarge.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="LoremIpsumSmall.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="LoremIpsumVeryHuge.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

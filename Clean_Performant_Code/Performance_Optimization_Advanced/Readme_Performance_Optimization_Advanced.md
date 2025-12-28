@@ -14,6 +14,8 @@
 
 ### [Realisierung eines Objektpools / *Object Pools*](Readme_Performance_Optimization_Advanced_Object_Pool.md)
 
+### [*Lazy Copy* / *Copy-on-Write*](Readme_Performance_Optimization_Advanced_Copy_On_Write.md)
+
 ---
 
 [Zurück](../Performance_Optimization/Readme_Performance_Optimization.md)

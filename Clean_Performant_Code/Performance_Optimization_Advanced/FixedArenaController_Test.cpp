@@ -9,7 +9,7 @@ namespace FixedArenaControllerTest {
     const int ArenaLength = 40;
     static alignas(std::max_align_t) char arena[ArenaLength];
 
-    static void test_fixed_arena_controller_01()
+    static void main_fixed_arena_controller_01()
     {
         FixedArenaController controller{ arena };
 
@@ -21,9 +21,9 @@ namespace FixedArenaControllerTest {
     }
 }
 
-void test_fixed_arena_controller()
+void main_fixed_arena_controller()
 {
-    FixedArenaControllerTest::test_fixed_arena_controller_01();
+    FixedArenaControllerTest::main_fixed_arena_controller_01();
 }
 
 // ===========================================================================

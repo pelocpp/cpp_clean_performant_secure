@@ -125,6 +125,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CowStringImpl.cpp" />
+    <ClCompile Include="CowString_Test.cpp" />
     <ClCompile Include="CustomAllocator.cpp" />
     <ClCompile Include="CustomAllocator_Test.cpp" />
     <ClCompile Include="FixedArenaController_Test.cpp" />
@@ -138,8 +140,11 @@
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="ObjectPool_DynamicSize_Test.cpp" />
     <ClCompile Include="StandardAllocator_Test.cpp" />
+    <ClCompile Include="CowString_TextfileStatistics.cpp" />
+    <ClCompile Include="CowString_TextfileStatisticsImpl.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CowString.h" />
     <ClInclude Include="CustomAllocator.h" />
     <ClInclude Include="FixedArenaController.h" />
     <ClInclude Include="FixedBlockAllocator.h" />
@@ -148,6 +153,7 @@
     <ClInclude Include="ObjectPool_FixedSize.h" />
     <ClInclude Include="ObjectPool_ThreadSafe.h" />
     <ClInclude Include="ObjectPool_ThreadSafe_02.h" />
+    <ClInclude Include="CowString_TextfileStatistics.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp_arena_01.svg" />
@@ -155,6 +161,12 @@
     <None Include="cpp_arena_03.svg" />
     <None Include="cpp_arena_04.svg" />
     <None Include="cpp_arena_05.svg" />
+    <None Include="cpp_copy_on_write_01.svg" />
+    <None Include="cpp_copy_on_write_02.svg" />
+    <None Include="cpp_copy_on_write_03.svg" />
+    <None Include="cpp_copy_on_write_04.svg" />
+    <None Include="cpp_copy_on_write_05.svg" />
+    <None Include="cpp_copy_on_write_06.svg" />
     <None Include="cpp_fixed_size_object_pool_01.svg" />
     <None Include="cpp_fixed_size_object_pool_02.svg" />
     <None Include="cpp_fixed_size_object_pool_03.svg" />
@@ -163,11 +175,19 @@
     <None Include="cpp_object_pool_02.svg" />
     <None Include="cpp_object_pool_03.svg" />
     <None Include="cpp_object_pool_04.svg" />
+    <None Include="Readme_Performance_Optimization_Advanced_Copy_On_Write.md" />
     <None Include="Readme_Performance_Optimization_Advanced_Laundry.md" />
     <None Include="Readme_Performance_Optimization_Advanced.md" />
     <None Include="Readme_Performance_Optimization_Advanced_Custom_Allocator.md" />
     <None Include="Readme_Performance_Optimization_Advanced_Object_Pool.md" />
     <None Include="Readme_Performance_Optimization_Advanced_Fixed_Size_Block_Memory_Manager.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="LoremIpsumExtremeHuge.txt" />
+    <Text Include="LoremIpsumHuge.txt" />
+    <Text Include="LoremIpsumLarge.txt" />
+    <Text Include="LoremIpsumSmall.txt" />
+    <Text Include="LoremIpsumVeryHuge.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

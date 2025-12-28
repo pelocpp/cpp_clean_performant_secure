@@ -12,7 +12,7 @@
 
 namespace ObjectPool_ThreadSafe_SimpleTest {
 
-    static void test_object_pool_thread_safe_01()
+    static void main_object_pool_thread_safe_01()
     {
         using namespace FixedSizeObjectPoolThreadSafe;
 
@@ -27,11 +27,11 @@ namespace ObjectPool_ThreadSafe_SimpleTest {
     }
 }
 
-void test_object_pool_thread_safe()
+void main_object_pool_thread_safe()
 {
     using namespace ObjectPool_ThreadSafe_SimpleTest;
 
-    test_object_pool_thread_safe_01();
+    main_object_pool_thread_safe_01();
 }
 
 // ===========================================================================

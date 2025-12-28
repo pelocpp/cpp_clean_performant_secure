@@ -8,7 +8,7 @@
 
 namespace Standard_Allocator_Test {
 
-    static void test_standard_allocator_01()
+    static void main_standard_allocator_01()
     {
         // create an allocator to use
         std::allocator<Person> alloc;
@@ -32,11 +32,11 @@ namespace Standard_Allocator_Test {
     }
 }
 
-void test_standard_allocator()
+void main_standard_allocator()
 {
     using namespace Standard_Allocator_Test;
 
-    test_standard_allocator_01();
+    main_standard_allocator_01();
 }
 
 // ===========================================================================

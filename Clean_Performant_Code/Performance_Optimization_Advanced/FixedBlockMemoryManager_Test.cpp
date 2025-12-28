@@ -8,7 +8,7 @@
 
 namespace FixedBlockMemoryManagerTest {
 
-    static void test_fixed_block_memory_manager_01()
+    static void main_fixed_block_memory_manager_01()
     {
         const int ArenaLength = 40;
         static alignas(std::max_align_t) char arena[ArenaLength];
@@ -21,7 +21,7 @@ namespace FixedBlockMemoryManagerTest {
         memoryManager.deallocate(ptr);
     }
 
-    static void test_fixed_block_memory_manager_02()
+    static void main_fixed_block_memory_manager_02()
     {
         const int ArenaLength = 16;
         static alignas(std::max_align_t) char arena[ArenaLength];
@@ -43,7 +43,7 @@ namespace FixedBlockMemoryManagerTest {
         }
     }
 
-    static void test_fixed_block_memory_manager_03()
+    static void main_fixed_block_memory_manager_03()
     {
         const int ArenaLength = 16;
         static alignas(std::max_align_t) char arena[ArenaLength];
@@ -60,7 +60,7 @@ namespace FixedBlockMemoryManagerTest {
         memoryManager.deallocate(p2);
     }
 
-    static void test_fixed_block_memory_manager_04()
+    static void main_fixed_block_memory_manager_04()
     {
         const int ArenaLength = 16;
         static alignas(std::max_align_t) char arena[ArenaLength];
@@ -81,14 +81,14 @@ namespace FixedBlockMemoryManagerTest {
     }
 }
 
-void test_block_memory_manager()
+void main_block_memory_manager()
 {
     using namespace FixedBlockMemoryManagerTest;
 
-    test_fixed_block_memory_manager_01();
-    test_fixed_block_memory_manager_02();
-    test_fixed_block_memory_manager_03();
-    test_fixed_block_memory_manager_04();
+    main_fixed_block_memory_manager_01();
+    main_fixed_block_memory_manager_02();
+    main_fixed_block_memory_manager_03();
+    main_fixed_block_memory_manager_04();
 }
 
 // ===========================================================================

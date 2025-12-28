@@ -14,7 +14,7 @@ namespace MemoryLaundry {
 
     // =======================================================================
     // Memory Laundry: std::launder
-    static void test_std_launder()
+    static void main_std_launder()
     {
         constexpr int CountPersons{ 5 };
 
@@ -38,9 +38,9 @@ namespace MemoryLaundry {
     }
 }
 
-void test_laundry()
+void main_laundry()
 {
-    MemoryLaundry::test_std_launder();
+    MemoryLaundry::main_std_launder();
 }
 
 // ===========================================================================

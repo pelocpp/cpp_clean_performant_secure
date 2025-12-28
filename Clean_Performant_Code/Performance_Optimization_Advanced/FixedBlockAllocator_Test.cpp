@@ -16,7 +16,7 @@ static FixedBlockMemoryManager<FixedArenaController> memoryManager{ arena };
 
 namespace FixedBlockAllocatorTest {
 
-    static void test_fixed_block_allocator_01()
+    static void main_fixed_block_allocator_01()
     {
         FixedBlockAllocator<double> alloc;
 
@@ -33,7 +33,7 @@ namespace FixedBlockAllocatorTest {
         }
     }
 
-    static void test_fixed_block_allocator_02()
+    static void main_fixed_block_allocator_02()
     {
         FixedBlockAllocator<int> alloc;
         std::forward_list<int, FixedBlockAllocator<int>> list{ alloc };
@@ -47,7 +47,7 @@ namespace FixedBlockAllocatorTest {
         }
     }
 
-    static void test_fixed_block_allocator_03()
+    static void main_fixed_block_allocator_03()
     {
         // works only if block size is adjusted to hold both list proxy objects
         // and list item objects, in this example 24 bytes.
@@ -94,7 +94,7 @@ public:
     }
 };
 
-static void test_fixed_block_allocator_10()
+static void main_fixed_block_allocator_10()
 {
     {
         {
@@ -110,7 +110,7 @@ static void test_fixed_block_allocator_10()
     }
 }
 
-static void test_fixed_block_allocator_11()
+static void main_fixed_block_allocator_11()
 {
     const size_t MaxIterations = 10'000;
     {
@@ -139,16 +139,16 @@ static void test_fixed_block_allocator_11()
     }
 }
 
-void test_fixed_block_allocator()
+void main_fixed_block_allocator()
 {
     using namespace FixedBlockAllocatorTest;
 
-    test_fixed_block_allocator_01();
-    test_fixed_block_allocator_02();
-    // test_fixed_block_allocator_03();   // may crash
+    main_fixed_block_allocator_01();
+    main_fixed_block_allocator_02();
+    // main_fixed_block_allocator_03();   // may crash
 
-    test_fixed_block_allocator_10();
-    test_fixed_block_allocator_11();
+    main_fixed_block_allocator_10();
+    main_fixed_block_allocator_11();
 }
 
 // ===========================================================================

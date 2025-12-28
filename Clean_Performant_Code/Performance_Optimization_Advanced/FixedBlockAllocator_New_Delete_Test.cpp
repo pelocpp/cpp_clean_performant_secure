@@ -37,7 +37,7 @@ namespace FixedBlockAllocatorTest_NewDelete {
         }
     };
 
-    static void test_fixed_block_allocator_01()
+    static void main_fixed_block_allocator_01()
     {
         {
             {
@@ -53,7 +53,7 @@ namespace FixedBlockAllocatorTest_NewDelete {
         }
     }
 
-    static void test_fixed_block_allocator_02()
+    static void main_fixed_block_allocator_02()
     {
         const size_t MaxIterations = 10'000;
         {
@@ -86,12 +86,12 @@ namespace FixedBlockAllocatorTest_NewDelete {
 
 // ===========================================================================
 
-void test_fixed_block_allocator_new_delete()
+void main_fixed_block_allocator_new_delete()
 {
     using namespace FixedBlockAllocatorTest_NewDelete;
 
-    test_fixed_block_allocator_01();
-    test_fixed_block_allocator_02();
+    main_fixed_block_allocator_01();
+    main_fixed_block_allocator_02();
 }
 
 // ===========================================================================

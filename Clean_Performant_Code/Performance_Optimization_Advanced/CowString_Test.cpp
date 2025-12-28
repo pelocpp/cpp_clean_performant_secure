@@ -1,0 +1,266 @@
+// =====================================================================================
+// CowString_Test.cpp // Simple implementation of a COW string class
+// =====================================================================================
+
+#define _CRTDBG_MAP_ALLOC
+#include <crtdbg.h>
+#include <cstdlib>
+
+#ifdef _DEBUG
+#ifndef DBG_NEW
+#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+#define new DBG_NEW
+#endif
+#endif  // _DEBUG
+
+#include "CowString.h"
+
+#include <print>
+#include <string_view>
+#include <vector>
+
+extern void main_cow_textfile_statistics_01();
+extern void main_cow_textfile_statistics_02();
+
+namespace COWString
+{
+    static void main_cow_string_01()
+    {
+        CowString a;
+        std::println("String: {}", a);
+        std::println("Length: {}", a.size());
+        std::println("Data:   {}", a.c_str());
+        std::println();
+    }
+
+    static void main_cow_string_02()
+    {
+        CowString a{ "1234567890" };
+        std::println("String: {}", a);
+        std::println("Length: {}", a.size());
+        std::println("Data:   {}", a.c_str());
+        std::println();
+    }
+
+    static void main_cow_string_03()
+    {
+        const char* s = "1234567890";
+        CowString a{ s, std::strlen(s) };
+
+        std::println("String: {}", a);
+        std::println("Length: {}", a.size());
+        std::println("Data:   {}", a.c_str());
+        std::println();
+    }
+
+    static void main_cow_string_04()
+    {
+        std::string_view sv{ "1234567890" };
+        std::println("sv: {}", sv);
+
+        CowString a{ sv };
+
+        std::println("String: {}", a);
+        std::println("Length: {}", a.size());
+        std::println("Data:   {}", a.c_str());
+        std::println();
+    }
+
+    static void main_cow_string_05()
+    {
+        CowString a{ "1234567890" };
+        CowString b{ a };
+    }
+
+    static void main_cow_string_06()
+    {
+        CowString a{ "1234567890" };
+        CowString b{ a };
+        CowString c{ a };
+
+        c[0] = '!';
+    }
+
+    static void main_cow_string_07()
+    {
+        CowString a{ "1234567890" };
+        CowString b{ a };
+        CowString c{ a };
+
+        CowString x{ "ABC" };
+        CowString y{ x };
+
+        a = x;
+    }
+
+    static void main_cow_string_08()
+    {
+        CowString a{ "Hello World" };
+        CowString b{ a };  // shares buffer
+        CowString c{ b };  // shares buffer
+
+        std::println("Before modification:");
+        std::println("a: {}", a);
+        std::println("b: {}", b);
+        std::println("c: {}", c);
+
+        b[0] = 'h'; // triggers copy-on-write only for 'b'
+        b[6] = 'w'; // triggers copy-on-write only for 'b'
+
+        std::println("After modification:");
+        std::println("a: {}", a);  // unchanged
+        std::println("b: {}", b);  // modified
+        std::println("c: {}", c);  // unchanged
+    }
+
+    static void main_cow_string_09()
+    {
+        CowString s{ "1234567890" };
+
+        std::string_view sv{ s };
+        std::println("sv: {}", sv);
+
+        s[9] = '!';
+
+        std::string_view sv1 = s;
+        std::println("sv: {}", sv);
+        std::println("sv1: {}", sv1);
+    }
+
+    static void main_cow_string_10()
+    {
+        // testing move semantics
+        CowString s1{ "1234567890" };
+        std::string_view sv1{ s1 };
+        std::println("sv: {}", sv1);
+
+        CowString s2{ std::move(s1) };
+        std::string_view sv2{ s2 };
+        std::println("sv: {}", sv2);
+
+        CowString s3{};
+        s3 = std::move(s2);
+        std::string_view sv3{ s3 };
+        std::println("sv: {}", sv3);
+    }
+
+    static void main_cow_string_11()
+    {
+        // testing move semantics
+        CowString s1{ "1234567890" };
+        std::string_view sv1{ s1 };
+        std::println("sv: {}", sv1);
+
+        CowString s2{ std::move(s1) };
+        std::string_view sv2{ s2 };
+        std::println("sv: {}", sv2);
+
+        CowString s3{};
+        s3 = std::move(s2);
+        std::string_view sv3{ s3 };
+        std::println("sv: {}", sv3);
+    }
+
+    static void main_cow_string_12()
+    {
+        std::vector<CowString> vec;
+
+        // testing move semantics
+        vec.push_back(CowString{ "ABC" });
+        vec.push_back(CowString{ "DEF" });
+        vec.push_back(CowString{ "GHI" });
+
+        for (const auto& cs : vec) {
+            std::println("{}", cs);
+        }
+    }
+
+    // pitfalls
+    static void main_cow_string_20()
+    {
+        CowString a{ "Hello" };
+        std::println("a: {}", a);
+
+        char& ch = a[0];            // Non-const detachment does nothing here
+
+        CowString b{ a };           // Lazy-copy, shared state
+        std::println("b: {}", b);
+
+        ch = '!';                   // Arghh - Ohhh
+
+        std::println("a: {}", a);
+        std::println("b: {}", b);
+    }
+
+    static void main_cow_string_21()
+    {
+        /*const*/ CowString s{ "1234567890" };
+        const char* p{ s.c_str() };
+
+        {
+            // in this block the contents of `s` is not modified
+            CowString other{ s };
+            char firstChar{ s[0] };
+        }
+
+        std::println("After block:");
+        std::println("p: {}", p);      // p is no more valid!
+    }
+
+    static void main_cow_string_22()
+    {
+        CowString s{ "1234567890" };
+        const char* p{ s.c_str() };
+
+        CowString other{ s };
+        char first_char{ s[0] };
+
+        std::println("After block:");
+        std::println("p: {}", p);
+    }
+
+    static void main_cow_string_23()
+    {
+        std::string s{ "Eros parturient vulputate feugiat risus" };
+        const char* p{ s.c_str() };
+
+        std::string_view sv{ s };
+        std::println("sv: {}", sv);
+
+        s.append(" ex facilisis molestie tristique fermentum.");
+
+        std::println("sv: {}", sv);
+    }
+}
+
+void main_cow_string()
+{
+    using namespace COWString;
+
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
+    main_cow_string_01();
+    main_cow_string_02();
+    main_cow_string_03();
+    main_cow_string_04();
+    main_cow_string_05();
+    main_cow_string_06();
+    main_cow_string_07();
+    main_cow_string_08();
+    main_cow_string_09();
+    main_cow_string_10();
+    main_cow_string_11();
+    main_cow_string_12();
+
+    main_cow_string_20();
+    main_cow_string_21();     // fails - by design
+    main_cow_string_22();
+    main_cow_string_23();
+
+    main_cow_textfile_statistics_01();
+    main_cow_textfile_statistics_02();
+}
+
+// =====================================================================================
+// End-of-File
+// =====================================================================================
