@@ -19,13 +19,12 @@
 #### Quellcode
 
 [*CowString.h*](CowString.h)<br />
-[*CowString.cpp*](CowString.cpp)<br />
-[*CowStringImple.cpp*](CowStringImple.cpp)
+[*CowString_TextfileStatistics.h*](CowString_TextfileStatistics.h)<br />
 
-
-[*TextfileStatistics.h*](CowString.h)<br />
-[*TextfileStatistics.cpp*](CowString.cpp)<br />
-[*TextfileStatisticsImpl.cpp*](CowStringImple.cpp)
+[*CowStringImpl.cpp*](CowStringImpl.cpp)<br />
+[*CowString_Test.cpp*](CowString_Test.cpp)<br />
+[*CowString_TextfileStatistics.cpp*](CowString_TextfileStatistics.cpp)<br />
+[*CowString_TextfileStatisticsImpl.cpp*](CowString_TextfileStatisticsImpl.cpp)<br />
 
 ---
 
@@ -53,7 +52,6 @@ Sprich das Erstellen einer Kopie wird erst dann angegangen, wenn es zu schreiben
 Wir betrachten eine &bdquo;Copy-On-Write&rdquo;-Realisierung für Zeichenketten in dieser Fallstudie.
 Neben einem Vergleich der Performanz zwischen der `std::string`-Klasse aus der STL und unserer selbstgeschriebenen `CowString`-Klasse
 kommt auch ein Anwendungsbeispiel zum Zuge.
-
 
 ## Einführung
 
