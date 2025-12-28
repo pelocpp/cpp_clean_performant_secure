@@ -1,6 +1,6 @@
 # STL-Container und -Algorithmen im Detail
 
-[Zurück &bdquo;*Clean Code*&rdquo;](../Guidelines/Readme_Guidelines.md)
+[Zurück &bdquo;*Clean Code*&rdquo;](../Clean_Code/Readme_Clean_Code.md)
 
 [Zurück &bdquo;*Performanz und Optimierung*&rdquo;](../Performance_Optimization/Readme_Performance_Optimization.md)
 
