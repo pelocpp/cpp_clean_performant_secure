@@ -201,7 +201,6 @@ void* operator new(std::size_t size) {
     return std::malloc(size);
 }
 
-_Use_decl_annotations_
 void operator delete(void* ptr) noexcept {
     std::free(ptr);
 }
