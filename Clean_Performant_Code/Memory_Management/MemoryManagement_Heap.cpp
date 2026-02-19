@@ -196,10 +196,12 @@ namespace Memory_Management_Heap
 
 #if defined (Demonstrate_Global_New_Delete)
 
+_Use_decl_annotations_
 void* operator new(std::size_t size) {
     return std::malloc(size);
 }
 
+_Use_decl_annotations_
 void operator delete(void* ptr) noexcept {
     std::free(ptr);
 }
