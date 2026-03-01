@@ -49,12 +49,35 @@ namespace DataStructuresAndAlgorithms {
         // constexpr auto Size = 1;  // just to prevent huge compilation times!
         constexpr auto Size = 1'000'000;
 #else
-        constexpr auto Size = 1;  // just to prevent huge compilation times!
-        // constexpr auto Size = 2'000'000; 
+        // constexpr auto Size = 1;  // just to prevent huge compilation times!
+        constexpr auto Size = 2'000'000; 
 #endif
 
-        auto smallObjects = std::vector<SmallObject>(Size);
-        auto bigObjects = std::vector<BigObject>(Size);
+        /**
+        * 
+        * Problem of extremly huge compilation times:
+        * 
+        * The problem most likely lies in the static initialization of global objects and how the compiler attempts to optimize it.
+        * Although the memory for a `std::vector` is only allocated on the heap at runtime, its definition in the global namespace means
+        * the compiler has to parse the constructor call during compilation.
+        *
+        * Here are the main reasons for the long compilation time:
+        * Inlining and constant folding: When the compiler sees that a global object is initialized with a constant value (`Size = 1,000,000`),
+        * it often tries to "inline" the constructor or prepare the initialization sequence.
+        * With a million elements of `BigObject`, the compiler has to check for each element
+        * whether the default constructor needs to be called,
+        * resulting in a massive internal data structure in the compiler.
+        *
+        * Solution: I've moved the 'Size'-Factor to an invocation of the 'resize'-method:
+        * This works fine!
+        * 
+        **/
+
+        // auto smallObjects = std::vector<SmallObject>(Size);
+        // auto bigObjects = std::vector<BigObject>(Size);
+
+        auto smallObjects = std::vector<SmallObject>();
+        auto bigObjects = std::vector<BigObject>();
 
         template <class T>
         auto sumScores(const std::vector<T>& objects) {
@@ -75,6 +98,9 @@ namespace DataStructuresAndAlgorithms {
             std::srand(static_cast<unsigned int>(std::time({})));
 
             size_t sum{ 0 };
+
+            smallObjects.resize(Size);   // due to extremly huge compilation times
+            bigObjects.resize(Size);     // due to extremly huge compilation times
 
             sum += sumScores(smallObjects);
             sum += sumScores(bigObjects);

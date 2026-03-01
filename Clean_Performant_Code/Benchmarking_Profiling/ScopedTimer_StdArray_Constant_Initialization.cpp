@@ -11,7 +11,6 @@
 
 namespace Benchmarking_StdArray_Constant_Initialization {
 
-
 #ifdef _DEBUG
     static const size_t Iterations = 10'000;       // debug
     static const size_t Size = 10'000;              // debug
