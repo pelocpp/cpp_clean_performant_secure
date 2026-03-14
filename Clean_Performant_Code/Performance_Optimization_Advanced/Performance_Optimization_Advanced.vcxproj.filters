@@ -235,6 +235,15 @@
     <None Include="Readme_Performance_Optimization_Advanced_PMR_09.md">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="cpp_pmr_nested_memory_resources.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="cpp_pmr_overview.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="cpp_pmr_pool_resource.svg">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="LoremIpsumExtremeHuge.txt">

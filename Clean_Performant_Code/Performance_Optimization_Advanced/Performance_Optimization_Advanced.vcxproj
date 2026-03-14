@@ -185,6 +185,9 @@
     <None Include="cpp_object_pool_02.svg" />
     <None Include="cpp_object_pool_03.svg" />
     <None Include="cpp_object_pool_04.svg" />
+    <None Include="cpp_pmr_nested_memory_resources.svg" />
+    <None Include="cpp_pmr_overview.svg" />
+    <None Include="cpp_pmr_pool_resource.svg" />
     <None Include="Readme_Performance_Optimization_Advanced_Copy_On_Write.md" />
     <None Include="Readme_Performance_Optimization_Advanced_Laundry.md" />
     <None Include="Readme_Performance_Optimization_Advanced.md" />

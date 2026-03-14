@@ -19,6 +19,13 @@ extern void main_object_pool_thread_safe();
 extern void main_cow_string();
 
 extern void test_pmr_02();
+extern void test_pmr_03();
+extern void test_pmr_04();
+extern void test_pmr_05();
+extern void test_pmr_06();
+extern void test_pmr_07();
+extern void test_pmr_08();
+extern void test_pmr_09();
 
 int main()
 {
@@ -39,7 +46,14 @@ int main()
     main_cow_string();
 
     test_pmr_02();
-
+    test_pmr_03();
+    test_pmr_04();
+    test_pmr_05();
+    test_pmr_06();
+    test_pmr_07();
+    test_pmr_08();
+    test_pmr_09();
+    
     return 0;
 }
 
