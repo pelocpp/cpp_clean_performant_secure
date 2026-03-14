@@ -6,6 +6,17 @@
 
 ---
 
+## Inhalt
+  
+  * [Allgemeines](#link1)
+  * [Erstes Beispiel: `std::pmr::vector<std::pmr::string>` mit &bdquo;kurzen&rdquo; Zeichenketten](#link2)
+  * [Zweites Beispiel: `std::pmr::vector<std::pmr::string>` mit &bdquo;langen&rdquo; Zeichenketten](#link3)
+  * [Erste Stolperfalle: Klasse `std::pmr::vector<std::pmr::string>` und Methode `push_back`](#link4)
+  * [Zweite Stolperfalle: Klasse `std::pmr::vector<std::pmr::string>` und Initialisierungslisten](#link5)
+  * [Literatur](#link6)
+
+---
+
 #### Quellcode
 
 [*PMR_07.cpp*](PMR_07.cpp)<br />
@@ -34,7 +45,7 @@ std::pmr::vector<std::pmr::string> strings;
 Auf diese Weise kann man erreichen, dass der polymorphe Allokator von `std::pmr::vector` an die von ihm
 verwalteten `std::pmr::string`-Elemente durchgereicht wird. Das wollen wir nun näher betrachten.
 
-## Ein erstes Beispiel: `std::pmr::vector<std::pmr::string>` mit &bdquo;kurzen&rdquo; Zeichenketten
+## Erstes Beispiel: `std::pmr::vector<std::pmr::string>` mit &bdquo;kurzen&rdquo; Zeichenketten <a name="link2"></a>
 
 Die Klasse `std::string` hat a priori nicht nur ihren eigenen Allokator, für &bdquo;kurze&rdquo; Zeichenketten 
 hält sie auch noch eine Überraschung bereit: Die Zeichen kurzer Zeichenketten werden in einem internen Puffer der Klasse `std::string` selbst abgelegt,
@@ -95,8 +106,7 @@ Die beiden Zeichenketten `A lazy dog` und `Another dog` sind &bdquo;vergleichswe
 sie werden im `std::string`-Objekt direkt abgelegt. Das können wir anhand der Ausgabe
 erkennen. Außerdem finden wir die beiden Längen `0a` (10 dezimal) und `0b` (11 dezimal) im Speicher vor.
 
-## Ein zweites Beispiel: `std::pmr::vector<std::pmr::string>` mit &bdquo;langen&rdquo; Zeichenketten
-
+## Zweites Beispiel: `std::pmr::vector<std::pmr::string>` mit &bdquo;langen&rdquo; Zeichenketten <a name="link3"></a>
 
 Wie sieht es mit längeren Zeichenketten aus? Dazu tauschen wir die beiden Argumente der `emplace_back`-Methode wie folgt aus:
 
@@ -152,7 +162,7 @@ Auch können wir die Längenangaben nachspüren.
 Was haben wir damit erreicht? Es ist mit Hilfe der beiden Klassen `std::pmr::vector<>` und `std::pmr::string` möglich,
 jegliche Allokationen auf dem Heap zu umgehen!
 
-## Erste Stolperfalle: Klasse `std::pmr::vector<std::pmr::string>` und Methode `push_back`
+## Erste Stolperfalle: Klasse `std::pmr::vector<std::pmr::string>` und Methode `push_back` <a name="link4"></a>
 
 Wir bleiben bei dem Thema &bdquo;Einsatz der `std::pmr::vector<std::pmr::string>`-Klasse&rdquo;
 unter Verwendung einer `std::pmr::monotonic_buffer_resource`-SpeicherRessource.
@@ -314,8 +324,7 @@ dass zuvor schon dem Containerobjekt vom Typ `std::pmr::vector<std::pmr::string>
 Es ist sehr wohl möglich, dass STL-Container und die Elemente dasselbe Speicherressourcenobjekt haben!
 Man muss nur etwas aufpassen, das nicht versehentlich die dynamischen Speicherverwaltung mit `new` / `delete` dazwischen funkt.
 
-
-## Zweite Stolperfalle: Klasse `std::pmr::vector<std::pmr::string>` und Initialisierungslisten
+## Zweite Stolperfalle: Klasse `std::pmr::vector<std::pmr::string>` und Initialisierungslisten <a name="link5"></a>
 
 Wir wenden uns polymorphen STL-Containern wie z. B. der Klasse `std::pmr::vector<std::pmr::string>` noch einmal zu,
 dieses Mal syntaktisch gesehen mit dem Sprachmittel einer Initialisierungsliste (`std::initializer_list<T>`).
@@ -501,7 +510,7 @@ Wir haben es wieder geschafft, den Heap außer Acht zu lassen. Um es aber noch ei
 wir sollten einfach beim Befüllen eines solchen Objekts auf eine Initialisierungsliste verzichten.
 
 
-## Literatur
+## Literatur <a name="link6"></a>
 
 Die Idee zu der Funktion `createContainer` stammt von Jason Turner und wurde [hier](https://www.youtube.com/watch?v=6BLlIj2QoT8) gefunden.
 

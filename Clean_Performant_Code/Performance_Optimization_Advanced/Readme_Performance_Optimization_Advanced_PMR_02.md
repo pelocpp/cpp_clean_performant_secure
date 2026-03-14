@@ -6,6 +6,20 @@
 
 ---
 
+## Inhalt
+  
+  * [Allgemeines](#link1)
+  * [Eine Besonderheit in der Definition der Klasse `std::pmr::memory_resource`](#link2)
+  * [Globale Speicherressourcen](#link3)
+  * [Spezialisierte Ressourcenklassen](#link4)
+  * [Die vordefinierten Ressourcenklassen im Vergleich](#link5)
+  * [Beispiel zur Klasse `std::pmr::monotonic_buffer_resource`](#link6)
+  * [Die &bdquo;*Upstream*&rdquo; Speicherressource](#link7)
+  * [Zweites Beispiel zur Klasse `std::pmr::monotonic_buffer_resource`](#link8)
+  * [Ausgabe eines Speicherbereichs in der Konsole (*Dump*)](#link9)
+
+---
+
 #### Quellcode
 
 [*PMR_02.cpp*](PMR_02.cpp)<br />
@@ -13,11 +27,7 @@
 
 ---
 
-### Allgemeines <a name="link1"></a>
-
----
-
-## Überblick
+## Allgemeines <a name="link1"></a>
 
 Ab C++ 17 sind Klassen, die eine Speicherressource repräsentieren möchten,
 von der abstrakten Klasse `std::pmr::memory_resource` abzuleiten:
@@ -52,7 +62,7 @@ Mit einer gewissen Vereinfachung sieht ihre Definition so aus:
 20: };
 ```
 
-### Eine Besonderheit in der Definition der Klasse `std::pmr::memory_resource`
+## Eine Besonderheit in der Definition der Klasse `std::pmr::memory_resource` <a name="link2"></a>
 
 Vielleicht ist es Ihnen schon aufgefallen, dass die Klasse `std::pmr::memory_resource` 
 nicht ganz wie eine &bdquo;gewöhnliche&rdquo; Schnittstellenklasse in C++ aussieht
@@ -91,7 +101,7 @@ um sicherzustellen, dass die Speicherverwaltung strikten Regeln folgt, während d
 nur die Kernlogik implementieren müssen.
 
 
-## Globale Speicherressourcen
+## Globale Speicherressourcen <a name="link3"></a>
 
 Dies sind Singleton-ähnliche Ressourcen, auf die über freie Funktionen zugegriffen werden kann:
 
@@ -100,7 +110,7 @@ Dies sind Singleton-ähnliche Ressourcen, auf die über freie Funktionen zugegriff
     vom Typ `std::bad_alloc` auslöst. Sie wird häufig als &bdquo;terminale&rdquo; *Upstream*-Ressource verwendet, um versehentliche Heap-Fallbacks zu verhindern.
 
 
-## Spezialisierte Ressourcenklassen
+## Spezialisierte Ressourcenklassen <a name="link4"></a>
 
 Die STL enthält mehrere klassenbasierte Implementierungen für gängige Allokationsstrategien:
 
@@ -109,7 +119,7 @@ Die STL enthält mehrere klassenbasierte Implementierungen für gängige Allokation
   * `std::pmr::unsynchronized_pool_resource`: Ähnlich dem synchronisierten Pool, jedoch ohne den Overhead der Threadsicherheit. Verwenden Sie diese Klasse, wenn die Ressource nur von einem einzigen Thread verwendet wird.
 
 
-## Die vordefinierten Ressourcenklassen im Vergleich
+## Die vordefinierten Ressourcenklassen im Vergleich <a name="link5"></a>
 
 | Ressource | Thread-sicher? | Allokationsstrategie | Bester Anwendungsfall |
 |:-|:-|:-|:-|
@@ -122,7 +132,7 @@ Die STL enthält mehrere klassenbasierte Implementierungen für gängige Allokation
 Tabelle 1: Hauptmerkmale der einzelnen Ressourcenklassen.
 
 
-## Ein Beispiel zur Klasse `std::pmr::monotonic_buffer_resource`
+## Beispiel zur Klasse `std::pmr::monotonic_buffer_resource` <a name="link6"></a>
 
 Im ersten Beispiel betrachten wir ein Beispiel zur Klasse `std::pmr::monotonic_buffer_resource`.
 Diese benötigt einen Speicherbereich, der von der Resource verwaltet wird.
@@ -193,7 +203,7 @@ Um mit diesen Adressen typ-konform arbeiten zu können, benötigt man `reinterpret
 Auf dieser Ebene will man nicht wirklich arbeiten, deshalb gibt es die *Allokatorenobjekte*, hierauf kommen wir im nächsten Abschnitt zu sprechen.
 
 
-## Die &bdquo;*Upstream*&rdquo; Speicherressource
+## Die &bdquo;*Upstream*&rdquo; Speicherressource <a name="link7"></a>
 
 Die Ressource `std::pmr::monotonic_buffer_resource` kann mit einem initialen Puffer erstellt werden.
 Ist kein initialer Puffer vorhanden oder ist dieser erschöpft,
@@ -215,7 +225,7 @@ nicht mehr ausreicht. Auf der anderen Seite ist dies die einzige Möglichkeit, we
 dass das `std::pmr::monotonic_buffer_resource`-Objekt den ihm zugewiesenen Speicherbereich nicht verlässt.
 
 
-## Zweites Beispiel zur Klasse `std::pmr::monotonic_buffer_resource`
+## Zweites Beispiel zur Klasse `std::pmr::monotonic_buffer_resource` <a name="link8"></a>
 
 Wir gehen in diesem Beispiel auf die *Upstream*-Speicherressource eines Speicherressourcenobjekts näher ein:
 
@@ -252,7 +262,7 @@ dann wird dem Objekt automatisch das *Default*-Speicherressourcenobjekt zugeordn
 Dieses ist vom Typ `std::pmr::new_delete_resource`, solange wir mit einem Aufruf von `std::pmr::set_default_resource` kein anderes Objekt zugeordnet haben.
 
 
-# Ausgabe eines Speicherbereichs in der Konsole (*Dump*)
+## Ausgabe eines Speicherbereichs in der Konsole (*Dump*) <a name="link9"></a>
 
 Da wir öfters den Speicherbereich, der von einem Speicherressourcenobjekt verwaltet wird, näher betrachten wollen,
 habe ich eine Utility-Funktion `dumpBuffer` geschrieben:

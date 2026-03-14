@@ -6,6 +6,15 @@
 
 ---
 
+## Inhalt
+  
+  * [Allgemeines](#link1)
+  * [Ein Anwendungsfall](#link2)
+  * [Erster Lösungsansatz &ndash; mit Absturz](#link3)
+  * [Zweiter Lösungsansatz &ndash; mit Fehlerkorrektur](#link4)
+
+---
+
 #### Quellcode
 
 [*PMR_05.cpp*](PMR_05.cpp)<br />
@@ -15,8 +24,10 @@
 ### Allgemeines <a name="link1"></a>
 
 In diesem Abschnitt wollen wir ein Anwendungsbeispiel für den Einsatz eines PMR-Containers betrachten.
+Im Besonderen geht es um die Betrachtung eines klassischen Fehlers im Umfeld der polymorphen Speicherverwaltung.
 
-## Ein Anwendungsfall
+
+## Ein Anwendungsfall <a name="link2"></a>
 
 Schreiben Sie eine Funktion `splitToDigits`, die eine ganze Zahl in ihre einzelnen Ziffern zerlegt.
 Die Ziffern der Zahl sind der Reihe nach in einem dynamisch allokierten Speicherbereich abzulegen:
@@ -28,7 +39,7 @@ std::pmr::vector<std::uint8_t> splitToDigits(std::size_t number);
 Offensichtlich kennt die Funktion die Anzahl der Ziffern nicht von vorneherein,
 ein STL-Container mit einer variablen Anzahl von Elementen wie ein Objekt der Klasse `std::vector` bietet sich an.
 
-## Erster Lösungsansatz &ndash; mit Absturz
+## Erster Lösungsansatz &ndash; mit Absturz <a name="link3"></a>
 
 Die Aufgabenstellung ist prädestiniert für einen STL Container,
 dessen Daten in einem `std::pmr::monotonic_buffer_resource`-Objekt abgelegt sind.
@@ -105,7 +116,7 @@ C:\Development\Cpp_PMR.exe (process 26128) exited with code -1073741819 (0xc0000
 
 Erkennen Sie das Problem in der Realisierung?
 
-## Zweiter Lösungsansatz &ndash; mit Fehlerkorrektur
+## Zweiter Lösungsansatz &ndash; mit Fehlerkorrektur <a name="link4"></a>
 
 Eigentlich muss man zugeben, dass es sich bei dem Absturz um einen höchst trivialen Fehler handelt,
 man sieht nur vor lauter Bäumen, sprich vor lauter &bdquo;*Ressourcen*&rdquo;- und &bdquo;*Allokatoren*&rdquo;-Objekten, den Wald nicht:

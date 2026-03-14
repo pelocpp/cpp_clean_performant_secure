@@ -6,6 +6,14 @@
 
 ---
 
+## Inhalt
+  
+  * [Allgemeines](#link1)
+  * [Ein Beispiel zur Klasse `std::pmr::polymorphic_allocator`](#link2)
+  * [Zweites Beispiel zur Klasse `std::pmr::polymorphic_allocator`](#link3)
+
+---
+
 #### Quellcode
 
 [*PMR_03.cpp*](PMR_03.cpp)<br />
@@ -31,7 +39,7 @@ polymorpher Allokator (`std::pmr::polymorphic_allocator`)<br />&nbsp;&nbsp;&nbsp
 Speicherressource (`std::pmr::memory_resource`)<br />&nbsp;&nbsp;&nbsp;&Rightarrow;
 eigentliche Speicherquelle.
 
-## Ein Beispiel zur Klasse `std::pmr::polymorphic_allocator`
+## Ein Beispiel zur Klasse `std::pmr::polymorphic_allocator` <a name="link2"></a>
 
 *Beispiel*:
 
@@ -89,7 +97,7 @@ Bytes:  16
 ---------------------------------------------------------------------------
 ```
 
-## Zweites Beispiel zur Klasse `std::pmr::polymorphic_allocator`
+## Zweites Beispiel zur Klasse `std::pmr::polymorphic_allocator` <a name="link3"></a>
 
 Wir wiederholen im Prinzip das Beispiel aus dem letzten Abschnitt noch einmal.
 Nur dieses Mal instanziieren wir die `std::pmr::polymorphic_allocator`-Klasse mit dem Datentyp  `T` gleich `std::uint8_t`:

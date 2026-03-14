@@ -6,6 +6,14 @@
 
 ---
 
+## Inhalt
+  
+  * [Allgemeines](#link1)
+  * [Eine Korrektur des letzten Beispiels: Einsatz der Methode `reserve`](#link2)
+  * [Verschiedene STL Container &ndash; eine Speicherressource](#link3)
+
+---
+
 #### Quellcode
 
 [*PMR_04.cpp*](PMR_04.cpp)<br />
@@ -130,7 +138,7 @@ Ferner kann man erkennen, dass ein anfänglich leeres `std::pmr::vector<std::uint
 keinen Speicher für seine Daten vorab reserviert hat.
 Dadurch lassen sich die permanenten Reallokationen und Umkopieroperationen erklären.
 
-## Eine Korrektur des letzten Beispiels: Einsatz der Methode `reserve`
+## Eine Korrektur des letzten Beispiels: Einsatz der Methode `reserve` <a name="link1"></a>
 
 Die Reservierung des Speichers ist im letzten Beispiel etwas &bdquo;großzügig&rdquo; ausgefallen.
 Mit einem Aufruf der `reserve`-Methode am `std::pmr::vector<T>`-Objekt kann man hier Abhilfe schaffen:
@@ -212,7 +220,7 @@ Bytes:  32
 
 Es ist klar erkennbar, dass die konsekutiven `push_back`-Aufrufe nicht zu Reallokationen im Speicher führen.
 
-## Verschiedene STL Container &ndash; eine Speicherressource
+## Verschiedene STL Container &ndash; eine Speicherressource <a name="link1"></a>
 
 Unterschiedliche Containertypen können dieselbe Speicherressource gemeinsam nutzen.
 Dies demonstrieren wir an folgendem Beispiel, in dem

@@ -1,8 +1,15 @@
-# Ein Laufzeitvergleich
+# Ein Laufzeitvergleich: Vektoren mit Zeichenketten
 
 ---
 
 [Zurück](Readme_Performance_Optimization_Advanced_PMR.md)
+
+---
+
+## Inhalt
+  
+  * [Allgemeines](#link1)
+  * [Ein Performanzvergleich](#link2)
 
 ---
 
@@ -28,7 +35,7 @@ Auf diese Weise vergleichen wir damit die klassischen Speicherverwaltungsmethode
 mit denen eines `std::pmr::monotonic_buffer_resource`-Objekts: `allocate` und `deallocate`.
 Da hier speziell die `deallocate`-Methode ein No-Op ist, sollten wir in der Laufzeit einen Unterschied beobachten.
 
-## Ein Performanzvergleich
+## Ein Performanzvergleich <a name="link2"></a>
 
 Die beiden Methoden, deren Laufzeit wir messen, sehen so aus:
 

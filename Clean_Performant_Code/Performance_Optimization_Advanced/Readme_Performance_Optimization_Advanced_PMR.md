@@ -18,7 +18,7 @@
 
 ### [7. PMR STL-Container mit unterlagerten PMR Objekten](Readme_Performance_Optimization_Advanced_PMR_07.md)
 
-### [8. Ein Laufzeitvergleich](Readme_Performance_Optimization_Advanced_PMR_08.md)
+### [8. Ein Laufzeitvergleich: Vektoren mit Zeichenketten](Readme_Performance_Optimization_Advanced_PMR_08.md)
 
 ### [9. Pool-Allokatoren: Klasse `std::pmr::unsynchronized_pool_resource`](Readme_Performance_Optimization_Advanced_PMR_09.md)
 

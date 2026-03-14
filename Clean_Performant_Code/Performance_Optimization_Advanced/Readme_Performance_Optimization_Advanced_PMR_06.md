@@ -6,17 +6,18 @@
 
 ---
 
+## Inhalt
+  
+  * [Allgemeines](#link1)
+  * [Erstes Beispiel: Verkettung von Speicherressourcen](#link2)
+  * [Zweites Beispiel: Implementierung eines Arena-basierten Speichermanagers](#link3)
+  * [Drittes Beispiel: Verkettung von Speicherressourcen](#link4)
+
+---
+
 #### Quellcode
 
 [*PMR_06.cpp*](PMR_06.cpp)<br />
-
-
-> Datei PMR_Allocator_12.cpp
-
-> Datei PMR_Allocator_17.cpp
-
-> Datei PMR_Allocator_18_Hooking_Paramters.cpp
-
 
 ---
 
@@ -25,7 +26,7 @@
 Die Implementierung einer benutzerdefinierten Speicherressource kann recht einfach sein. Wir müssen öffentlich von der Klasse `std::pmr::memory_resource` erben
 und anschließend drei rein virtuelle Funktionen implementieren, die wiederum von der Basisklasse aufgerufen werden.
 
-## Erstes Beispiel: Verkettung von Speicherressourcen
+## Erstes Beispiel: Verkettung von Speicherressourcen <a name="link2"></a>
 
 Wir demonstrieren das Implementieren einer benutzerdefinierten Speicherressource an einem einfachen Beispiel.
 Zu diesem Zweck schreiben wir eine Speicherressource zum Loggen aller eingehenden Anforderungen.
@@ -154,7 +155,7 @@ before push_back 10
 
 Man sieht, dass das Vorab-Reservieren von Speicher erhebliche Einsparungen an unnützen Zwischenallokationen zur Folge hat.
 
-## Zweites Beispiel: Implementierung eines Arena-basierten Speichermanagers
+## Zweites Beispiel: Implementierung eines Arena-basierten Speichermanagers <a name="link3"></a>
 
 > Datei PMR_Allocator_17.cpp
 
@@ -346,7 +347,7 @@ Elapsed time: 915 milliseconds.  // Classic
 Elapsed time: 630 milliseconds.  // PMR
 ```
 
-## Drittes Beispiel: Verkettung von Speicherressourcen
+## Drittes Beispiel: Verkettung von Speicherressourcen <a name="link4"></a>
 
 In diesem dritten Beispiel geht es noch einmal um die Verschachtelung (oder Verkettung) von Speicherressourcen.
 Es sind zwei Zielsetzungen erwünscht:
@@ -462,10 +463,8 @@ Start
 Done.
 ```
 
-
 ---
 
 [Zurück](Readme_Performance_Optimization_Advanced_PMR.md)
 
 ---
-

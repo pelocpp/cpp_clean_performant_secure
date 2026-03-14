@@ -6,6 +6,17 @@
 
 ---
 
+## Inhalt
+  
+  * [Allgemeines](#link1)
+  * [Kernkonzepte und Funktionsweise](#link2)
+  * [Struktur `std::pmr::pool_options`](#link3)
+  * [Erstes Beispiel](#link4)
+  * [Wieder eine Stolperfalle](#link5)
+  * [Zweites Beispiel: Histogramme](#link6)
+
+---
+
 #### Quellcode
 
 [*PMR_09.cpp*](PMR_09.cpp)<br />
@@ -20,7 +31,7 @@ die eine effiziente Verwaltung von Speicher durch Pool-Allokationen vornehmen.
 Sie ist Teil des &bdquo;*Polymorphic Memory Resources*&rdquo;-APIs (PMR) und ist eine optimierte Implementierung für Speicher-Allokatoren,
 bei denen viele Objekte ähnlicher Größe angefordert werden.
 
-## Kernkonzept und Funktionsweise
+## Kernkonzepte und Funktionsweise <a name="link2"></a>
 
   * Pool-Struktur:<br />`std::pmr::unsynchronized_pool_resource`-Objekte verwalten eine Sammlung von Pools,
 wobei jeder Pool für eine bestimmte Blockgröße zuständig ist.
@@ -60,7 +71,7 @@ den `largest_required_pool_block`-Eintrag festgelegt werden.
 stagniert in der Abbildung die Anzahl der Blöcke im &bdquo;64&rdquo;-Pool.
 
 
-### Struktur `std::pmr::pool_options`
+## Struktur `std::pmr::pool_options` <a name="link3"></a>
 
 
 `std::pmr::unsynchronized_pool_resource`-Objekte verwalten intern mehrere Pools mit einer einheitlichen Blockgröße.
@@ -124,7 +135,7 @@ largest_required_pool_block: 128
 max_blocks_per_chunk: 64
 ```
 
-## Ein erstes Beispiel
+## Erstes Beispiel <a name="link4"></a>
 
 Wir vergleichen zwei geschachtelte `std::vector`-Objekte:
 
@@ -211,7 +222,7 @@ Using std::pmr::vector<std::pmr::vector<std::size_t>>
 Elapsed time: 687 milliseconds.
 ```
 
-## Wieder eine Stolperfalle
+## Wieder eine Stolperfalle <a name="link5"></a>
 
 Wenn wir STL-Containerklassen mit PMR Speicherresourcen ausstatten, müssen wir bei der &bdquo;Freigabe&rdquo; des reservierten Speicher vorsichtig sein.
 Wie ist diese Aussage zu verstehen? Betrachten wir dazu das folgende Code-Fragment:
@@ -284,16 +295,16 @@ bevor es zum `release`-Aufruf an der Speicherresource kommt. Die Funktion wird f
 
 ---
 
-## Ein zweites Beispiel: Histogramme
+## Zweites Beispiel: Histogramme <a name="link6"></a>
 
 Wir wollen die Klasse `std::pmr::unsynchronized_pool_resource` auch in einem *Real-World*-Beispiel betrachten.
 Zu diesem Zweck erstellen wir Histogramme. Darunter versteht man Tabellen, die die Häufigkeiten von Wörtern 
 in einem Text zählen.
 
-Wir stellen einen Klasse `Histogram` vor. Diese muss zunächst den Zugang zu einer Textdatei herstellen,
-aus der sie die einzelnen Zeilen und dann in einem zweiten Schritt die einzelnen Wörter extrahiert.
+Wir stellen eine Klasse `Histogram` vor. Diese muss zunächst den Zugang zu einer Textdatei herstellen,
+aus der sie die einzelnen Zeilen und dann anschließend in einem zweiten Schritt die einzelnen Wörter extrahiert.
 
-Dann fügen wir die gefundenen Wörter in einem `std::unordered_map`-Objekt ein:
+Dann fügen wir die gefundenen Wörter in ein `std::unordered_map`-Objekt ein:
 
 ```cpp
 std::unordered_map<std::string, std::size_t> m_frequenciesMap;
