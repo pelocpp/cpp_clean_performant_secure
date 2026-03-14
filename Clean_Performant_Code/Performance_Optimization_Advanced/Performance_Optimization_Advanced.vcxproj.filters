@@ -66,6 +66,33 @@
     <ClCompile Include="CowString_Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PMR_02.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PMR_03.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PMR_04.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PMR_05.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PMR_06.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PMR_07.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PMR_08.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PMR_09.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PMR_DumpBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ObjectPool_DynamicSize.h">
@@ -96,6 +123,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CowString_TextfileStatistics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PMR_DumpBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -173,6 +203,36 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Readme_Performance_Optimization_Advanced_Copy_On_Write.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Readme_Performance_Optimization_Advanced_PMR.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Readme_Performance_Optimization_Advanced_PMR_01.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Readme_Performance_Optimization_Advanced_PMR_02.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Readme_Performance_Optimization_Advanced_PMR_03.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Readme_Performance_Optimization_Advanced_PMR_04.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Readme_Performance_Optimization_Advanced_PMR_05.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Readme_Performance_Optimization_Advanced_PMR_06.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Readme_Performance_Optimization_Advanced_PMR_07.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Readme_Performance_Optimization_Advanced_PMR_08.md">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Readme_Performance_Optimization_Advanced_PMR_09.md">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

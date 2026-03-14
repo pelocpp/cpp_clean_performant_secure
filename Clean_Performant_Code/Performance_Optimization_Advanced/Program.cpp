@@ -18,6 +18,8 @@ extern void main_object_pool_thread_safe();
 
 extern void main_cow_string();
 
+extern void test_pmr_02();
+
 int main()
 {
     main_laundry();
@@ -35,6 +37,8 @@ int main()
     main_object_pool_thread_safe();
 
     main_cow_string();
+
+    test_pmr_02();
 
     return 0;
 }
