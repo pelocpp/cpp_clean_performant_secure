@@ -39,11 +39,11 @@ Die folgende Liste listet einige interessante Artikel aus dem Netz zum Thema &bd
 [Custom Memory Management using Polymorphic Allocators](https://github.com/ndsev/zserio-tutorial-cpp/blob/master/pmr/README.md)
 
 Nicht zu vergessen: Im Buch &bdquo;C++17 - The Complete Guide&rdquo; von Nicolai M. Josuttis
-gibt es ein ganzes Kapüitel zu diesem Thema:
+gibt es ein ganzes Kapitel zu diesem Thema:
 
 [C++17 - The Complete Guide](https://www.cppstd17.com/)
 
-Der Quellcode zu den Beispielen aus dem Buch von Josuttis kann [hier](https://www.cppstd17.com/code/toc.html) entnommen werden.
+Der Quellcode zu den Beispielen aus dem Buch von Nicolai M. Josuttis kann [hier](https://www.cppstd17.com/code/toc.html) entnommen werden.
 
 ---
 
