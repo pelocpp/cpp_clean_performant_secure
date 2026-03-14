@@ -49,7 +49,7 @@ Das folgende Diagramm zeigt den Kontrollfluss, wenn ein `std::vector`-Objekt Spe
 und dieser Allokator wiederum entsprechende Anforderungen an eine unterlagerte Speicherressource weiterreicht:
 
 
-<img src="cpp_pmr_overview.svg" width="400">
+<img src="cpp_pmr_overview.svg" width="350">
 
 *Abbildung* 1: Speicherzuweisung mit einem polymorphen Allokator.
 

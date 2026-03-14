@@ -286,8 +286,134 @@ bevor es zum `release`-Aufruf an der Speicherresource kommt. Die Funktion wird f
 
 ## Ein zweites Beispiel: Histogramme
 
-TEXT Tbd
+Wir wollen die Klasse `std::pmr::unsynchronized_pool_resource` auch in einem *Real-World*-Beispiel betrachten.
+Zu diesem Zweck erstellen wir Histogramme. Darunter versteht man Tabellen, die die Häufigkeiten von Wörtern 
+in einem Text zählen.
 
+Wir stellen einen Klasse `Histogram` vor. Diese muss zunächst den Zugang zu einer Textdatei herstellen,
+aus der sie die einzelnen Zeilen und dann in einem zweiten Schritt die einzelnen Wörter extrahiert.
+
+Dann fügen wir die gefundenen Wörter in einem `std::unordered_map`-Objekt ein:
+
+```cpp
+std::unordered_map<std::string, std::size_t> m_frequenciesMap;
+```
+
+Die Schlüssel entsprechen den Wörtern aus dem Text, die jeweils dazugehörigen Werte den Häufigkeiten der Wörter.
+
+Es ist offensichtlich, dass es hier viele Ansätze gibt, Container und `std::string`-Objekte der STL
+auch in ihren polymorphen Pendants zu verwenden. Die Details überlasse ich Ihnen als Übung:
+
+
+```cpp
+01: namespace std
+02: {
+03:     template<>
+04:     struct greater<std::pair<std::string, std::size_t>>
+05:     {
+06:         bool operator() (const std::pair<std::string, std::size_t>& lhs, const std::pair<std::string, std::size_t>& rhs) const {
+07:             return lhs.second > rhs.second;
+08:         }
+09:     };
+10: }
+11: 
+12: class Histogram
+13: {
+14: private:
+15:     std::unordered_map<std::string, std::size_t> m_frequenciesMap;
+16: 
+17: public:
+18:     void add(const std::string& word) {
+19:         // if word does not exist, it is automatically inserted with value 0
+20:         ++m_frequenciesMap[word];
+21:     }
+22: 
+23:     void printTopScore(std::size_t top) const {
+24: 
+25:         std::vector<std::pair<std::string, std::size_t>> popular(m_frequenciesMap.begin(), m_frequenciesMap.end());
+26: 
+27:         std::partial_sort(popular.begin(), popular.begin() + top, popular.end(), std::greater{});
+28: 
+29:         for (std::size_t n{}; const auto& elem : popular) {
+30:             std::println("{}: {}", elem.first, elem.second);
+31: 
+32:             ++n;
+33:             if (n == top)
+34:                 break;
+35:         }
+36:     }
+37: 
+38:     void readWords() {
+39: 
+40:         std::string m_fileName{ "LoremIpsumHuge.txt" };
+41: 
+42:         if (m_fileName.empty()) {
+43:             std::println("No Filename specified!");
+44:             return;
+45:         }
+46: 
+47:         std::ifstream file{ m_fileName.data() };
+48:         if (!file.good()) {
+49:             std::println("File not found!");
+50:             return;
+51:         }
+52: 
+53:         std::println("File {}", m_fileName);
+54:         std::println("Starting [Standard Classes] ...");
+55: 
+56:         std::string line;
+57:         while (std::getline(file, line))
+58:         {
+59:             // process single line
+60:             std::string_view sv{ line };
+61: 
+62:             std::size_t begin{};
+63:             std::size_t end{};
+64: 
+65:             while (end != sv.size()) {
+66: 
+67:                 while (std::isalpha(sv[end]))
+68:                     ++end;
+69: 
+70:                 std::string_view word{ sv.substr(begin, end - begin) };
+71: 
+72:                 std::string s{ word };
+73:                 if (std::isupper(s[0])) {
+74:                     s[0] = std::tolower(s[0]);
+75:                 }
+76: 
+77:                 add(s);
+78: 
+79:                 while (end != sv.size() && (sv[end] == ' ' || sv[end] == '.' || sv[end] == ','))
+80:                     ++end;
+81: 
+82:                 begin = end;
+83:             }
+84:         }
+85: 
+86:         std::println("Done Reading Dictionary");
+87:     }
+88: };
+```
+
+Ein Laufzeitvergleich sieht auf meinem Rechner so aus:
+
+
+```
+File LoremIpsumHuge.txt
+Starting [Standard Classes] ...
+Done Reading Dictionary
+vulputateportapellentesque: 566
+volutpatintegerfinibus: 559
+Elapsed time: 320 milliseconds.
+
+File LoremIpsumHuge.txt
+Starting [PMR Classes] ...
+Done Reading Dictionary
+vulputateportapellentesque: 566
+volutpatintegerfinibus: 559
+Elapsed time: 251 milliseconds.
+```
 
 ---
 

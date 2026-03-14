@@ -16,9 +16,7 @@
 
 Wir betrachten in diesem Abschnitt STL-Container mit polymorphen Allokatoren.
 
-## Ein erstes Beispiel: Ein `std::vector`-Objekt mit einer `std::pmr::monotonic_buffer_resource`-Speicherresource
-
-> Datei PMR_Allocator_10.cpp
+## Ein Beispiel: Ein `std::vector`-Objekt mit einer `std::pmr::monotonic_buffer_resource`-Speicherresource
 
 In diesem Beispiel demonstrieren wir den Einsatz einer `std::pmr::monotonic_buffer_resource`-Speicherressource
 in Verbindung mit einem `std::vector`-Objekt:

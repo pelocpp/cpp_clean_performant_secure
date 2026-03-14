@@ -366,7 +366,7 @@ void test_pmr_09()
     
     test_pmr_09_02_benchmark();
 
-    test_pmr_09_03_crash_01();     // crashes by design
+    // test_pmr_09_03_crash_01();     // crashes by design
     test_pmr_09_03_nocrash_02();
 
     test_pmr_09_04_histogram();

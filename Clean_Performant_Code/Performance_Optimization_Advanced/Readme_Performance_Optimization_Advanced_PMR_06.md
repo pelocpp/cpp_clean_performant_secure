@@ -346,7 +346,7 @@ Elapsed time: 915 milliseconds.  // Classic
 Elapsed time: 630 milliseconds.  // PMR
 ```
 
-## Ein drittes Beispiel: Verschachtelung von Speicherressourcen
+## Drittes Beispiel: Verkettung von Speicherressourcen
 
 In diesem dritten Beispiel geht es noch einmal um die Verschachtelung (oder Verkettung) von Speicherressourcen.
 Es sind zwei Zielsetzungen erwünscht:

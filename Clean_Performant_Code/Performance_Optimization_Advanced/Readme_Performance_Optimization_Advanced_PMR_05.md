@@ -1,4 +1,4 @@
-# Ein PMR Beispiel mit einer Stolperfalle
+# Eine Stolperfalle im Umfeld der polymorphen Speicherverwaltung
 
 ---
 
@@ -9,11 +9,6 @@
 #### Quellcode
 
 [*PMR_05.cpp*](PMR_05.cpp)<br />
-
-
-
-> PMR_Allocator_11.cpp
-
 
 ---
 

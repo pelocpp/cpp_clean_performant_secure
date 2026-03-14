@@ -10,8 +10,6 @@
 
 [*PMR_07.cpp*](PMR_07.cpp)<br />
 
-> Datei PMR_Allocator_13.cpp
-
 ---
 
 ### Allgemeines <a name="link1"></a>

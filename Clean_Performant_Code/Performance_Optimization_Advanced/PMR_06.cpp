@@ -4,15 +4,13 @@
 
 #include "../LoggerUtility/ScopedTimer.h"
 
-#include <array>
-#include <cstddef>
-#include <memory_resource>
-#include <print>
+#include "PMR_DumpBuffer.h"
 
 #include <array>
 #include <cstddef>
 #include <cstdint>
 #include <memory_resource>
+#include <print>
 #include <random>
 #include <string>
 #include <vector>
@@ -82,6 +80,7 @@ static void test_pmr_06_01_logging()
 }
 
 // =====================================================================================
+// Second example: Implementation of an Arena-based memory manager
 
 class FixedArenaResource : public std::pmr::memory_resource
 {
@@ -128,7 +127,7 @@ protected:
 
     void do_deallocate(void*, std::size_t, std::size_t) override
     {
-        // Arena based behaviour — no deallocation
+        // Arena based behaviour - no deallocation
     }
 
     bool do_is_equal(const std::pmr::memory_resource& other) const noexcept override
@@ -255,10 +254,230 @@ static void test_pmr_06_02_benchmark()
     }
 }
 
+// =====================================================================================
+// Third example: Chaining of memory resources
+
+class LoggingMemoryResource : public std::pmr::memory_resource
+{
+private:
+    std::pmr::memory_resource* m_upstream;
+
+public:
+    LoggingMemoryResource(std::pmr::memory_resource* upstream)
+        : m_upstream{ upstream }
+    {
+    }
+
+protected:
+    void* do_allocate(std::size_t bytes, std::size_t alignment) override {
+        void* ptr{ m_upstream->allocate(bytes, alignment) };
+        std::println("[do_allocate]   {:6} bytes (alignment {}) at   {:#X}", bytes, alignment, reinterpret_cast<intptr_t>(ptr));
+        return ptr;
+    }
+
+    void do_deallocate(void* ptr, std::size_t bytes, std::size_t alignment) override {
+        std::println("[do_deallocate] {:6} bytes (alignment {}) from {:#X}", bytes, alignment, reinterpret_cast<intptr_t>(ptr));
+        m_upstream->deallocate(ptr, bytes, alignment);
+    }
+
+    bool do_is_equal(const std::pmr::memory_resource& other) const noexcept override {
+        std::println("[do_is_equal]");
+        return this == &other;
+    }
+};
+
+// =====================================================================================
+
+class NoHeapMemoryResource : public std::pmr::memory_resource
+{
+protected:
+    void* do_allocate(std::size_t bytes, std::size_t alignment) override {
+        std::println("[NoHeapMemory] do_allocate => {:6} bytes (alignment {})", bytes, alignment);
+        throw std::bad_alloc();  // forbid heap fallback
+    }
+
+    void do_deallocate(void* ptr, std::size_t, std::size_t) override {}
+
+    bool do_is_equal(const std::pmr::memory_resource& other) const noexcept override {
+        return this == &other;
+    }
+};
+
+// =====================================================================================
+
+// lowest level: buffer of fixed length - just plain memory
+static constexpr std::size_t NumBytes = 8192;
+static std::array<std::uint8_t, NumBytes> g_memory{};
+
+// =====================================================================================
+
+static void test_pmr_06_03_chaining_pmr()
+{
+    std::println("Start"); 
+
+    // bottom layer: forbidding dynamic memory
+    NoHeapMemoryResource NoHeapMemoryResource{};
+
+    // middle layer: create monotonic allocator using only the low-level memory buffer
+    std::pmr::monotonic_buffer_resource monotonic{
+        g_memory.data(),
+        g_memory.size(),
+        &NoHeapMemoryResource  // upstream resource: preventing any heap access
+    };
+
+    // top layer: logging every allocation request
+    LoggingMemoryResource logging{ &monotonic };
+
+    // STL container using the logging layer
+    std::pmr::vector<std::size_t> vec{ &logging };
+
+    for (std::size_t i{}; i != 10; ++i) {
+        vec.push_back(i);
+    }
+}
+
+// =====================================================================================
+
+static void test_pmr_06_04_chaining_pmr()
+{
+    std::println("Start");
+
+    // needing buffer size 320
+
+    // just for debugging purposes: fill memory
+    std::fill(g_memory.begin(), g_memory.end(), std::numeric_limits<std::uint8_t>::max());
+
+    // bottom layer: forbidding dynamic memory
+    NoHeapMemoryResource NoHeapMemoryResource{};
+
+    // middle layer: create monotonic allocator using only the low-level buffer
+    std::pmr::monotonic_buffer_resource monotonic{
+        g_memory.data(),
+        g_memory.size(),
+        &NoHeapMemoryResource  // upstream resource: preventing any heap access
+    };
+
+    // top layer: logging every allocation request
+    LoggingMemoryResource logging{ &monotonic };
+
+    // STL container using the logging layer
+    std::pmr::vector<std::size_t> vec{ &logging };
+    vec.reserve(10);
+
+    for (std::size_t i{}; i != 10; ++i) {
+        vec.push_back(i);
+    }
+
+    dumpBuffer(std::span{ g_memory });
+}
+
+// =====================================================================================
+
+static void test_pmr_06_05_chaining_pmr()
+{
+    std::println("Start");
+
+    // needing buffer size 8192
+
+    // just for debugging purposes: fill memory
+    std::fill(g_memory.begin(), g_memory.end(), std::numeric_limits<std::uint8_t>::max());
+
+    // bottom layer: forbidding dynamic memory
+    NoHeapMemoryResource NoHeapMemoryResource{};
+
+    // middle layer: create monotonic allocator using only the low-level buffer
+    std::pmr::monotonic_buffer_resource monotonic{
+        g_memory.data(),
+        g_memory.size(),
+        &NoHeapMemoryResource  // upstream resource: preventing any heap access
+    };
+
+    // top layer: logging every allocation request
+    LoggingMemoryResource logging{ &monotonic };
+
+    // STL container using the logging layer
+    std::pmr::vector<std::pmr::string> vec{ &logging };
+
+    //// This is a false approach:
+    // The important detail is this:
+    // A std::pmr container only propagates its memory resource to elements that it constructs itself.
+
+    for (std::size_t i{}; i != 10; ++i) {
+        std::pmr::string small("Not really a small String");
+        vec.push_back(small);
+    }
+
+    // In this code, small is constructed outside the vector, so it uses the default resource(std::pmr::get_default_resource()), not '&logging'.
+    // When you then push_back(small), the string already owns memory from a different resource.
+
+    // ---------------------
+
+    // This works !!!
+    // Explicitly give small the same resource
+    for (std::size_t i{}; i != 10; ++i) {
+        std::pmr::string large("Not really a small String", &logging);
+        vec.push_back(large);
+    }
+
+    dumpBuffer(std::span{ g_memory });
+}
+
+// =====================================================================================
+
+static void test_pmr_06_06_chaining_pmr()
+{
+    std::println("Start");
+
+    // needing buffer size 8192
+
+    // just for debugging purposes: fill memory
+    std::fill(g_memory.begin(), g_memory.end(), std::numeric_limits<std::uint8_t>::max());
+
+    // bottom layer: forbidding dynamic memory
+    NoHeapMemoryResource NoHeapMemoryResource{};
+
+    // middle layer: create monotonic allocator using only the low-level buffer
+    std::pmr::monotonic_buffer_resource monotonic{
+        g_memory.data(),
+        g_memory.size(),
+        &NoHeapMemoryResource  // upstream resource: preventing any heap access
+    };
+
+    // top layer: logging every allocation request
+    LoggingMemoryResource logging{ &monotonic };
+
+    // STL container using the logging layer
+    std::pmr::vector<std::pmr::string> vec{ &logging };
+
+    // Correct Approach
+    /**
+      You must:
+      a) Create a std::pmr::monotonic_buffer_resource
+      b) Construct both the vector and the strings with that same resource
+      c) Prefer emplace_back() so the vector constructs the string using its allocator
+    **/
+
+    // Optional
+    vec.reserve(10);
+
+    for (std::size_t i{}; i != 10; ++i) {
+        vec.emplace_back("Not really a small String");
+    }
+
+    dumpBuffer(std::span{ g_memory });
+}
+
+// =====================================================================================
+
 void test_pmr_06()
 {
     test_pmr_06_01_logging();
     test_pmr_06_02_benchmark();
+
+    test_pmr_06_03_chaining_pmr();
+    test_pmr_06_04_chaining_pmr();
+    test_pmr_06_05_chaining_pmr();
+    test_pmr_06_06_chaining_pmr();
 }
 
 // =====================================================================================

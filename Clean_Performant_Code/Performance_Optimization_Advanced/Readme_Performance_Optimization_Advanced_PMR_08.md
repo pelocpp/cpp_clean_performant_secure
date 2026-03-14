@@ -10,8 +10,6 @@
 
 [*PMR_08.cpp*](PMR_08.cpp)<br />
 
-> Datei PMR_Allocator_16_Benchmark.cpp
-
 ---
 
 ### Allgemeines <a name="link1"></a>

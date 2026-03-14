@@ -100,7 +100,6 @@ Dies sind Singleton-ähnliche Ressourcen, auf die über freie Funktionen zugegriff
     vom Typ `std::bad_alloc` auslöst. Sie wird häufig als &bdquo;terminale&rdquo; *Upstream*-Ressource verwendet, um versehentliche Heap-Fallbacks zu verhindern.
 
 
-
 ## Spezialisierte Ressourcenklassen
 
 Die STL enthält mehrere klassenbasierte Implementierungen für gängige Allokationsstrategien:
@@ -108,7 +107,6 @@ Die STL enthält mehrere klassenbasierte Implementierungen für gängige Allokation
   * `std::pmr::monotonic_buffer_resource`: Ein schneller Allokator im Stile einer &bdquo;Arena&rdquo;. Der Speicher wird nur freigegeben, wenn die Ressource selbst zerstört wird. Er eignet sich ideal für kurzlebige, große Allokationen, ist aber nicht threadsicher.
   * `std::pmr::synchronized_pool_resource`: Ein threadsicherer, universeller Pool-Allokator. Er verwaltet eine Sammlung von Pools für verschiedene Blockgrößen, um die Fragmentierung zu reduzieren, und kann von mehreren Threads ohne externe Sperren verwendet werden.
   * `std::pmr::unsynchronized_pool_resource`: Ähnlich dem synchronisierten Pool, jedoch ohne den Overhead der Threadsicherheit. Verwenden Sie diese Klasse, wenn die Ressource nur von einem einzigen Thread verwendet wird.
-
 
 
 ## Die vordefinierten Ressourcenklassen im Vergleich
@@ -125,8 +123,6 @@ Tabelle 1: Hauptmerkmale der einzelnen Ressourcenklassen.
 
 
 ## Ein Beispiel zur Klasse `std::pmr::monotonic_buffer_resource`
-
-> Datei PMR_Allocator_09.cpp
 
 Im ersten Beispiel betrachten wir ein Beispiel zur Klasse `std::pmr::monotonic_buffer_resource`.
 Diese benötigt einen Speicherbereich, der von der Resource verwaltet wird.
