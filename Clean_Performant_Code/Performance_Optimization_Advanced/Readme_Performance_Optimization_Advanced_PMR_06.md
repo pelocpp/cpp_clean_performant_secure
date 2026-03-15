@@ -230,7 +230,7 @@ z. B. ein Frame in einem Videospiel oder ein Request in einem Webserver.
 43: 
 44:     void do_deallocate(void*, std::size_t, std::size_t) override
 45:     {
-46:         // Arena based behaviour — no deallocation
+46:         // Arena based behaviour - no deallocation
 47:     }
 48: 
 49:     bool do_is_equal(const std::pmr::memory_resource& other) const noexcept override
