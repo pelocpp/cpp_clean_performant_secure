@@ -13,7 +13,7 @@
 
 ## Allgemeines <a name="link1"></a>
 
-Die Sprachen C und C++ bieten die Möglichkeit, über Adressen auf Variablen in einem Programm zuzugreifen,
+Die Sprachen C und C++ bieten die Möglichkeit, über Adressen auf Variablen in einem Programm zugreifen zu können,
 zum Beispiel so:
 
 ```cpp
@@ -22,21 +22,21 @@ int *ptr = &x;
 *ptr = 456;
 ```
 
-Da wird nachfolgend noch das Thema &bdquo;Cache&rdquo; betrachten, sollten wir zunächst ein klares Verständnis davon haben,
-was eine Adresse eines Zeigers (Pointers) wirklich darstellt.
+Da wir nachfolgend noch das Thema &bdquo;Cache&rdquo; betrachten werden, sollten wir zunächst ein klares Verständnis davon haben,
+wofür eine Adresse eines Zeigers (Pointers) in einem C/C++ Programm wirklich steht.
 
 ---
 
 ## Zugriff auf Variablen im Speicher <a name="link2"></a>
 
-Bei diesen Adressen handelt es sich fast ausschließlich um &bdquo;virtuelle Adressen&rdquo;.
-Eine virtuelle Adresse zeigt weder auf eine konkrete RAM-Speicherzelle (physische Adresse) oder einen Cache-Eintrag.
-
+Bei Adressen in einem C/C++ Programm handelt es sich fast ausschließlich um &bdquo;virtuelle Adressen&rdquo;.
+Eine virtuelle Adresse zeigt weder auf eine konkrete RAM-Speicherzelle (physische Adresse) noch auf einen Cache-Eintrag,
+daher auch ihr Name. 
 
 Der Hauptunterschied liegt darin,
-wie der Computer den Speicher aus Sicht der Software (virtuell) im Vergleich zur tatsächlichen Hardware (physisch) organisiert ist:
+wie der Computer den Speicher aus Sicht der Software (virtuell) im Vergleich zur tatsächlichen Hardware (physisch) organisiert:
 
-  * Virtuelle Adresse:<br />Dies ist die Adresse, die ein Pointer in deinem C-Programm tatsächlich enthält (z. B. 0x7ffee33ca230).
+  * Virtuelle Adresse:<br />Dies ist die Adresse, die ein Pointer in deinem C-Programm tatsächlich enthält (z. B. `0x7ffee33ca230`).
     Sie ist eine Abstraktion, die jedem Prozess vorgaukelt, er hätte einen eigenen, riesigen und zusammenhängenden Speicherbereich für sich allein.
   * Physische Adresse:<br />Dies ist der reale Ort auf dem RAM-Chip. Nur das Betriebssystem und die Hardware greifen direkt darauf zu. 
 
@@ -44,7 +44,7 @@ wie der Computer den Speicher aus Sicht der Software (virtuell) im Vergleich zur
 ### Wie funktioniert die Umrechnung?
 
 Wenn dein Programm auf einen Pointer zugreift, übersetzt die Memory Management Unit (MMU) der CPU die virtuelle Adresse
-in die physische Adresse. Dieser Vorgang wird meist über Paging (Seitentabellen) gesteuert. 
+in die physische Adresse. Dieser Vorgang wird meist über *Paging* (Seitentabellen) gesteuert. 
 
 Hinweis:<br />Auf modernen Betriebssystemen (Windows, Linux, macOS) kann man nicht einfach die physische Adresse eines Pointers ermitteln
 oder direkt darauf zugreifen, da dies aus Sicherheitsgründen blockiert wird.
@@ -66,7 +66,7 @@ In diesem Fall zeigt `ptr` auf eine virtuelle Adresse, also nicht direkt auf ein
 
 Was bedeutet das nun konkret?
 
-#### Ein Pointer besitzt eine virtuelle Adresse
+#### Ein Pointer enthält eine virtuelle Adresse
 
   * Jeder Prozess besitzt einen eigenen Adressraum.
   * Ein Pointer ist nur eine Zahl innerhalb dieses Adressraums.
