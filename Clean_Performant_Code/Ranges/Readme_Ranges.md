@@ -844,7 +844,50 @@ Sum: 30
   liefert die entsprechenden booleschen Reduktionen auf der Grundlage eines unären Prädikats.
 
   * Während `std::all_of` und `std::none_of` für leere Bereiche *true* zurückgeben,
-  erfordert `std::any_of` mindestens ein Argument und gibt für einen leeren Bereich *false* zurück.
+  erfordert `std::any_of` mindestens ein Argument und gibt für einen leeren Bereich *false* zurück,
+  siehe dazu auch die nachfolgende Tabelle.
+
+
+
+<table>
+ <thead>
+   <tr>
+    <th>Has <i>true</i> element</th>
+    <th colspan="2">Yes</th>
+    <th colspan="2">No</th>
+  </tr>
+  <tr>
+    <td><b>Has false element</b></td>
+    <td><b>Yes</b></td>
+    <td><b>No</b></td>
+    <td><b>Yes</b></td>
+    <td><b>No</b></td>
+  </tr>
+ </thead>
+ <tbody>
+   <tr>
+    <td style='text-align:center;'><pre>std::all_of</pre></td>
+    <td><i>false</i></td>
+    <td><i>true</i></td>
+    <td><i>false</i></td>
+    <td><i>true</i></td>
+  </tr>
+  <tr>
+    <td style='text-align:center;'><pre>std::any_of</pre></td>
+    <td><i>true</i></td>
+    <td><i>true</i></td>
+    <td><i>false</i></td>
+    <td><i>false</i></td>
+  </tr>
+  <tr>
+    <td style='text-align:center;'><pre>std::none_of</pre></td>
+    <td><i>false</i></td>
+    <td><i>false</i></td>
+    <td><i>true</i></td>
+    <td><i>true</i></td>
+  </tr>
+ </tbody>
+</table>
 
 
 *Beispiel*:
