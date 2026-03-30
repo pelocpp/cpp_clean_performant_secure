@@ -3,9 +3,9 @@
 // ===========================================================================
 
 #include <algorithm>
+#include <cctype>
 #include <cstddef>
 #include <cstdlib>
-//#include <iostream>
 #include <list>
 #include <map>
 #include <numeric>
@@ -15,17 +15,6 @@
 #include <unordered_map>
 #include <variant>
 #include <vector>
-//
-//#include <iomanip>
-//#include <iostream>
-//#include <iterator>
-//#include <list>
-//#include <print>
-//#include <ranges>
-//#include <sstream>
-//#include <string>
-//#include <vector>
-#include <cctype>
 
 namespace Ranges {
 
@@ -101,6 +90,17 @@ namespace Ranges {
 
     // =======================================================================
     // Range Adaptors
+
+    static void ranges_range_adaptors_last_example_improved()
+    {
+        std::vector<int> numbers = { 1, 2, 3, 4, 5, 6 };
+
+        auto result = numbers | std::views::take(3);
+            
+        for (auto n : result) {
+            std::print("{} ", n);
+        }
+    }
 
     static void ranges_range_adaptors()
     {
@@ -357,11 +357,12 @@ namespace Ranges {
     }
 }
 
-namespace Ranges {
+namespace Ranges
+{
     struct Person
     {
         std::string m_name{};
-        size_t      m_age{};
+        std::size_t m_age{};
     };
 }
 
@@ -546,7 +547,7 @@ namespace Ranges {
 
     static void ranges_dangling_iterators_01()
     {
-        // auto pos = std::ranges::find( getData(), 123); 
+        auto pos = std::ranges::find( getData(), 123); 
         
         // Error: You cannot dereference an operand of type 'std::ranges::dangling'
         // std::println("{} ", *pos);  
@@ -806,6 +807,7 @@ void ranges_clean_code_examples()
     //comparison_iterators_vs_ranges();
     //ranges_example_concepts();
     //ranges_views();
+    //ranges_range_adaptors_last_example_improved();
     //ranges_range_adaptors();
     //ranges_range_adaptors_classic();
     //ranges_composition_of_views();
@@ -813,7 +815,7 @@ void ranges_clean_code_examples()
     //ranges_eager_evaluation();
     //ranges_bounded_vs_unbounded_range();
     //ranges_lazy_primes();
-    //ranges_projections();
+    ranges_projections();
     //ranges_sentinels();
     //ranges_dangling_iterators();
     //ranges_keys_view_and_values_view();
@@ -821,7 +823,7 @@ void ranges_clean_code_examples()
     //ranges_all_of_any_of_none_of();
     //ranges_example_variant();
     //ranges_example_unordered_map();
-    ranges_example_trim_alpha_tolower();
+    //ranges_example_trim_alpha_tolower();
 }
 
 // ===========================================================================

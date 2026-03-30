@@ -192,7 +192,7 @@ std::ranges::operation_view { range, arguments... }
 ```
 
 Normalerweise werden Ansichten nicht mit ihren Konstruktoren,
-sondern durch *Range Adaptor* (Bereichsadapter) erstellt.
+sondern durch *Range Adaptoren* (Bereichsadapter) erstellt.
 
 ---
 
@@ -203,6 +203,7 @@ sondern durch *Range Adaptor* (Bereichsadapter) erstellt.
   und `views::take`.
 
   * Es ist vorzuziehen, Adapter zum Erstellen von Ansichten zu verwenden, da sie Optimierungen ermöglichen:
+
 ```cpp
 range | std::ranges::views::operation(arguments...)
 ```
@@ -217,8 +218,25 @@ range | std::views::operation(arguments...)
   * Bereichsadapter können zusammengesetzt werden (*Composition*),
   um komplexe *Data Processing Pipelines* (Datenverarbeitungspipelines) effizient aufzubauen.
 
+Das letzte Beispiel sieht mit Bereichsadaptern so aus:
 
-*Beispiel*:
+```cpp
+01: std::vector<int> numbers = { 1, 2, 3, 4, 5, 6 };
+02: 
+03: auto result = numbers | std::views::take(3);
+04:             
+05: for (auto n : result) {
+06:     std::print("{} ", n);
+07: }
+```
+
+*Ausgabe*:
+
+```
+1 2 3
+```
+
+Ein weiteres Beispiel:
 
 ```cpp
 01: std::vector<int> numbers = { 1, 2, 3, 4, 5, 6 };
@@ -242,7 +260,7 @@ range | std::views::operation(arguments...)
 
 ## *Function Composition, Pipelines* (Komposition von Funktionen) <a name="link7"></a>
 
-  * Da es sich bei einer View (Ansicht) um einen Range (Bereich) handelt,
+  * Da es sich bei einer *View* (Ansicht) um einen *Range* (Bereich) handelt,
   kann man eine Ansicht als Argument für eine andere Ansicht verwenden,
   um eine Verkettung zu ermöglichen:
 
@@ -294,6 +312,13 @@ range | std::views::operation(arguments...)
 09: for (auto n : result) {
 10:     std::print("{} ", n);
 11: }
+```
+
+
+*Ausgabe*:
+
+```
+64 36 16 4
 ```
 
 ---
@@ -851,8 +876,8 @@ all_of:  true
 
 Wir beenden unsere *Ranges*-Betrachtungen mit einigen Beispielen.
 Wir starten mit einem Beispiel zur Klasse `std::variant`:
-Diese benutzen wir, um einen Vektors mit Zahlen und Zeichenfolgen zu erzeugen (`std::variant<int, std::string>`).
-Nun wollen wir die Zeichenfolgen mit `std::views::filter` herausgefiltern:
+Diese benutzen wir, um einen Vektor mit Zahlen und Zeichenfolgen zu erzeugen (`std::variant<int, std::string>`).
+Nun wollen wir die Zeichenfolgen mit `std::views::filter` herausfiltern:
 
 *Beispiel*:
 
