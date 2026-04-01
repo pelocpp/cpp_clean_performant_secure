@@ -496,7 +496,7 @@ sort( R&& r, Comp comp = {}, Proj proj = {} );
 04: std::ranges::sort(
 05:     numbers,
 06:     std::ranges::less{},                  // comparison
-07:     [](auto n) { return std::abs(n); }    // identity
+07:     [](auto n) { return std::abs(n); }    // projection
 08: );
 09: 
 10: for (auto elem : numbers) {
@@ -517,11 +517,11 @@ sort( R&& r, Comp comp = {}, Proj proj = {} );
 ```cpp
 01: std::vector<int> numbers = { -8, 4, -6, -3, 2, -5, 10, 7, 1, -9 };
 02: 
-03: // using defaulted projection and original value
+03: // using defaulted projection with original value
 04: std::ranges::sort(
 05:     numbers,
-06:     {},
-07:     {}
+06:     {},           // default: std::ranges::less comparison
+07:     {}            // default: identity
 08: );
 09: 
 10: for (auto elem : numbers) {
@@ -545,7 +545,7 @@ sort( R&& r, Comp comp = {}, Proj proj = {} );
 
     * EOF als Ende eines Dateistreams
     * Der Nullterminator `\0` als Ende einer Zeichenfolge im C-Stil
-    * `nullptr` als Ende einer verknüpften Liste
+    * `nullptr` als Ende einer verketteten Liste
     * `-1` als Ende einer Liste mit nicht-negativen Ganzzahlen
     * `\n` als Ende einer Zeile
 

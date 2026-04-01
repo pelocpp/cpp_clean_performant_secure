@@ -238,7 +238,7 @@ Theoretisch erzeugt der Ausdruck `std::string{ "Hans" }` ein temporäres `std::st
 das dann nach `name` verschoben wird.
 Diese Syntax könnte also die Kosten einer Verschiebung verursachen.
 
-Ab C++ ist das Feature [Copy Elision](https://en.cppreference.com/w/cpp/language/copy_elision) 
+Ab C++ 17 ist das Feature [Copy Elision](https://en.cppreference.com/w/cpp/language/copy_elision) 
 in der Sprache per Definition vorhanden.
 Deshalb hat der *Left-to-Right* Initialisierungsstil keine Auswirkungen auf die Laufzeitleistung!
 
@@ -252,7 +252,7 @@ hier sollten wir diesen Initialisierungsstil deshalb vermeiden.
 X x();
 ```
 
-Diese Deklaration wird vom Compiler als eine Funktionsaufrufdeklaration interpretiert,
+Diese Deklaration wird vom Compiler als eine Funktionsdeklaration interpretiert,
 die eine Funktion des Namens `x` ohne Parameter deklariert, die ein Objekt vom Typ `X` zurückliefert.
 
 

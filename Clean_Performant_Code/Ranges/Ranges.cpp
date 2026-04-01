@@ -330,7 +330,7 @@ namespace Ranges {
         std::ranges::sort(
             numbers,
             std::ranges::less{},                  // comparison
-            [](auto n) { return std::abs(n); }    // identity
+            [](auto n) { return std::abs(n); }    // projection
         );
 
         for (auto elem : numbers) {
@@ -343,11 +343,11 @@ namespace Ranges {
     {
         std::vector<int> numbers = { -8, 4, -6, -3, 2, -5, 10, 7, 1, -9 };
 
-        // using defaulted projection and original value
+        // using defaulted projection with original value
         std::ranges::sort(
             numbers,
-            {},
-            {}
+            {},   // default: std::ranges::less comparison
+            {}    // default: identity
         );
 
         for (auto elem : numbers) {
@@ -473,7 +473,7 @@ namespace Ranges {
             numbers.begin(),
             NegativeNumber{},   // <== sentinel
             numbers.begin(),
-            [](const auto& n) { return n * n; }
+            [](auto n) { return n * n; }
         );
 
         for (auto elem : numbers) {
@@ -804,26 +804,26 @@ void ranges_clean_code_examples()
 {
     using namespace Ranges;
 
-    //comparison_iterators_vs_ranges();
-    //ranges_example_concepts();
-    //ranges_views();
-    //ranges_range_adaptors_last_example_improved();
-    //ranges_range_adaptors();
-    //ranges_range_adaptors_classic();
-    //ranges_composition_of_views();
-    //ranges_lazy_evaluation();
-    //ranges_eager_evaluation();
-    //ranges_bounded_vs_unbounded_range();
-    //ranges_lazy_primes();
+    comparison_iterators_vs_ranges();
+    ranges_example_concepts();
+    ranges_views();
+    ranges_range_adaptors_last_example_improved();
+    ranges_range_adaptors();
+    ranges_range_adaptors_classic();
+    ranges_composition_of_views();
+    ranges_lazy_evaluation();
+    ranges_eager_evaluation();
+    ranges_bounded_vs_unbounded_range();
+    ranges_lazy_primes();
     ranges_projections();
-    //ranges_sentinels();
-    //ranges_dangling_iterators();
-    //ranges_keys_view_and_values_view();
-    //ranges_common_view();
-    //ranges_all_of_any_of_none_of();
-    //ranges_example_variant();
-    //ranges_example_unordered_map();
-    //ranges_example_trim_alpha_tolower();
+    ranges_sentinels();
+    ranges_dangling_iterators();
+    ranges_keys_view_and_values_view();
+    ranges_common_view();
+    ranges_all_of_any_of_none_of();
+    ranges_example_variant();
+    ranges_example_unordered_map();
+    ranges_example_trim_alpha_tolower();
 }
 
 // ===========================================================================
