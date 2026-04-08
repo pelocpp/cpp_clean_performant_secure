@@ -13,8 +13,8 @@
   * [*Ranges* versus traditionelle Iteratoren im Vergleich](#link3)
   * [Ranges und Concepts (Konzepte)](#link4)
   * [*Views* (Ansichten)](#link5)
-  * [*Range Adaptors* (Bereichsadapter)](#link6)
-  * [*Function Composition, Pipelines* (Komposition von Funktionen)](#link7)
+  * [*Function Composition, Pipelines* (Komposition von Funktionen)](#link6)
+  * [*Range Adaptors* (Bereichsadapter)](#link7)
   * [*Lazy Evaluation* (*Lazy* Auswertung)](#link8)
   * [*Eager Evaluation* (*Gierige* Auswertung)](#link9)
   * [Begrenzte vs. unbegrenzte (unendliche) Ranges](#link10)
@@ -196,69 +196,7 @@ sondern durch *Range Adaptoren* (Bereichsadapter) erstellt.
 
 ---
 
-## *Range Adaptors* (Bereichsadapter) <a name="link6"></a>
-
-  * Bereichsadapter sind Hilfsfunktionen, die Views erstellen,
-  wie beispielsweise `views::filter` , `views::transform` 
-  und `views::take`.
-
-  * Es ist vorzuziehen, Adapter zum Erstellen von Ansichten zu verwenden, da sie Optimierungen ermöglichen:
-
-```cpp
-range | std::ranges::views::operation(arguments...)
-```
-
-  oder auch kürzer
-
-```cpp
-range | std::views::operation(arguments...)
-```
-
-
-  * Bereichsadapter können zusammengesetzt werden (*Composition*),
-  um komplexe *Data Processing Pipelines* (Datenverarbeitungspipelines) effizient aufzubauen.
-
-Das letzte Beispiel sieht mit Bereichsadaptern so aus:
-
-```cpp
-01: std::vector<int> numbers = { 1, 2, 3, 4, 5, 6 };
-02: 
-03: auto result = numbers | std::views::take(3);
-04:             
-05: for (auto n : result) {
-06:     std::print("{} ", n);
-07: }
-```
-
-*Ausgabe*:
-
-```
-1 2 3
-```
-
-Ein weiteres Beispiel:
-
-```cpp
-01: std::vector<int> numbers = { 1, 2, 3, 4, 5, 6 };
-02: 
-03: auto result = numbers 
-04:     | std::views::filter([](auto n) { return n % 2 == 0; })
-05:     | std::views::transform([](auto n) { return n * 2; });
-06: 
-07: for (auto n : result) {
-08:     std::print("{} ", n);
-09: }
-```
-
-*Ausgabe*:
-
-```
-4 8 12
-```
-
----
-
-## *Function Composition, Pipelines* (Komposition von Funktionen) <a name="link7"></a>
+## *Function Composition, Pipelines* (Komposition von Funktionen) <a name="link6"></a>
 
   * Da es sich bei einer *View* (Ansicht) um einen *Range* (Bereich) handelt,
   kann man eine Ansicht als Argument für eine andere Ansicht verwenden,
@@ -319,6 +257,81 @@ Ein weiteres Beispiel:
 
 ```
 64 36 16 4
+```
+
+---
+
+## *Range Adaptors* (Bereichsadapter) <a name="link7"></a>
+
+  * Bereichsadapter sind Hilfsfunktionen, die Views erstellen,
+  wie beispielsweise `views::filter` , `views::transform` 
+  und `views::take`.
+
+  * Es ist vorzuziehen, Adapter zum Erstellen von Ansichten zu verwenden, da sie Optimierungen ermöglichen:
+
+```cpp
+range | std::ranges::views::operation(arguments...)
+```
+
+  oder auch kürzer
+
+```cpp
+range | std::views::operation(arguments...)
+```
+
+
+  * Bereichsadapter können zusammengesetzt werden (*Composition*),
+  um komplexe *Data Processing Pipelines* (Datenverarbeitungspipelines) effizient aufzubauen.
+
+Das letzte Beispiel
+
+```cpp
+01: std::vector<int> numbers = { 1, 2, 3, 4, 5, 6 };
+02: 
+03: auto view = std::ranges::take_view{ numbers, 3 };
+04: 
+05: std::ranges::for_each(
+06:     view,
+07:     [] (auto n) { std::print("{} ", n); }
+08: );
+```
+
+sieht mit Bereichsadaptern so aus:
+
+```cpp
+01: std::vector<int> numbers = { 1, 2, 3, 4, 5, 6 };
+02: 
+03: auto view = numbers | std::views::take(3);
+04:             
+05: for (auto n : view) {
+06:     std::print("{} ", n);
+07: }
+```
+
+*Ausgabe*:
+
+```
+1 2 3
+```
+
+Ein weiteres Beispiel:
+
+```cpp
+01: std::vector<int> numbers = { 1, 2, 3, 4, 5, 6 };
+02: 
+03: auto result = numbers 
+04:     | std::views::filter([](auto n) { return n % 2 == 0; })
+05:     | std::views::transform([](auto n) { return n * 2; });
+06: 
+07: for (auto n : result) {
+08:     std::print("{} ", n);
+09: }
+```
+
+*Ausgabe*:
+
+```
+4 8 12
 ```
 
 ---

@@ -95,9 +95,9 @@ namespace Ranges {
     {
         std::vector<int> numbers = { 1, 2, 3, 4, 5, 6 };
 
-        auto result = numbers | std::views::take(3);
+        auto view = numbers | std::views::take(3);
             
-        for (auto n : result) {
+        for (auto n : view) {
             std::print("{} ", n);
         }
     }

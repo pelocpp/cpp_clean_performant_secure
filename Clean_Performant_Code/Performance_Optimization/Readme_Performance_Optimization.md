@@ -24,6 +24,8 @@
 
 ## [Performance Optimierung: Advanced Techniques](../Performance_Optimization_Advanced/Readme_Performance_Optimization_Advanced.md)
 
+## [Funktionale Programmierung: Die Bibliothek `std::ranges`](../Ranges/Readme_Ranges.md)
+
 ## [Compile-Time Programming](../CompileTimeProgramming/Readme_CompileTimeProgramming.md)
 
 ---
