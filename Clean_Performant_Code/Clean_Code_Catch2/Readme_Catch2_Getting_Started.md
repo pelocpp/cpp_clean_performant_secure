@@ -97,7 +97,6 @@ in Form von `TEMPLATE_TEST_CASE`:
 
   * **TEMPLATE_TEST_CASE** ( *test_name* , *tags*, *type_1*, *type_2*, ... , *type_n* )
 
-
 ## *Test Fixtures* <a name="link7"></a>
 
 Im Kontext von Software wird ein Test-Fixture (auch &bdquo;Testkontext&rdquo; genannt) verwendet,
@@ -111,6 +110,12 @@ Für wiederverwendbares Setup/Teardown bietet es sich an, eine Fixture-Klasse zu 
 
   * **TEST_CASE_METHOD**(  *class_name* , *unique_test_name_name*, *tags* )
   
+
+Jeder Testfall, der sich auf *Test Fixtures* bezieht,
+erzeugt eine eindeutig benannte abgeleitete Klassen von der *Test Fixtures*-Klasse.
+Folglich können so die `protected`-Methode dieser Klasse aufgerufen werden.
+
+Dadurch wird sichergestellt, dass alle Testfälle dieselbe Ausgangsbasis vorfinden.
 
 ## *Matchers* <a name="link8"></a>
 
