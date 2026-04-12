@@ -103,8 +103,10 @@ in Form von `TEMPLATE_TEST_CASE`:
 Im Kontext von Software wird ein Test-Fixture (auch &bdquo;Testkontext&rdquo; genannt) verwendet,
 um den Systemzustand und die Eingabedaten einzurichten, die für die Testausführung erforderlich sind.
 
-Für wiederverwendbares Setup/Teardown bieten sich du eine Fixture-Klasse definieren.
-Konstruktor = Setup, Destruktor = Teardown
+Für wiederverwendbares Setup/Teardown bietet es sich an, eine Fixture-Klasse zu definieren:
+
+  * Konstruktor = Setup
+  * Destruktor = Teardown
 
 
   * **TEST_CASE_METHOD**(  *class_name* , *unique_test_name_name*, *tags* )
