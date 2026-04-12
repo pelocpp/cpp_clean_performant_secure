@@ -112,8 +112,8 @@ Für wiederverwendbares Setup/Teardown bietet es sich an, eine Fixture-Klasse zu 
   
 
 Jeder Testfall, der sich auf *Test Fixtures* bezieht,
-erzeugt eine eindeutig benannte abgeleitete Klassen von der *Test Fixtures*-Klasse.
-Folglich können so die `protected`-Methode dieser Klasse aufgerufen werden.
+erzeugt eine eindeutig benannte abgeleitete Klasse von der *Test Fixture*-Klasse.
+Folglich können so die `protected`-Methoden dieser Klasse aufgerufen werden.
 
 Dadurch wird sichergestellt, dass alle Testfälle dieselbe Ausgangsbasis vorfinden.
 
