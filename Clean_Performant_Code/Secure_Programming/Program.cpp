@@ -9,7 +9,7 @@ extern void secure_programming_tools();
 
 int main()
 {
-    //secure_programming_issues();          // crashes
+    //secure_programming_issues();      // crashes intentionally
     secure_programming_more_issues();
     secure_programming_advices();
     secure_programming_tools();
