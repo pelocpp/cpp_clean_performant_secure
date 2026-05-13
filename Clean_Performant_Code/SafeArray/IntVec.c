@@ -20,7 +20,7 @@ int int_vec_expand_(char** data, int* length, int* capacity, int memsz) {
 
 void int_vec_init(int_vec* ptr)
 {
-    memset(ptr, 0, sizeof(*(ptr)));   // sizeof testen ...
+    memset(ptr, 0, sizeof(int_vec));
 }
 
 void int_vec_deinit(int_vec* ptr)
@@ -36,15 +36,25 @@ int int_vec_push(int_vec* ptr, int val)
 
    // (int_vec_expand_(vec_unpack_(ptr)) ? -1 : ((ptr)->data[(ptr)->length++] = (val), 0), 0);
 
-    return (int_vec_expand_((char**)&(ptr)->data, &ptr->length, &ptr->capacity, sizeof(*(ptr)->data)) ? -1 : ((ptr)->data[(ptr)->length++] = (val), 0), 0);
+    //return (int_vec_expand_((char**)&(ptr)->data, &ptr->length, &ptr->capacity, sizeof(*(ptr)->data)) ? -1 : ((ptr)->data[(ptr)->length++] = (val), 0), 0);
+
+    int ret = int_vec_expand_((char**)&(ptr)->data, &ptr->length, &ptr->capacity, sizeof(*(ptr)->data));
+
+    if (ret != 0) {
+        return -1;
+    }
+    else {
+        return (ptr)->data[(ptr)->length++] = val;
+        return 0;
+    }
 }
 
-int vec_pop(int_vec* ptr)
+int int_vec_pop(int_vec* ptr)
 {
     return ptr->data[--(ptr->length)];   // Operatoren vorang !!!
 }
 
-void vec_clear(int_vec* ptr)
+void int_vec_clear(int_vec* ptr)
 {
     ptr->length = 0;  // hmm, und was ist mit free ???????????????
 }

@@ -85,7 +85,7 @@ extern int int_vec_push(int_vec* ptr, int val);
 //    return ptr->data[--(ptr->length)];   // Operatoren vorang !!!
 //}
 
-int vec_pop(int_vec* ptr);
+int int_vec_pop(int_vec* ptr);
 
 // -------------------------------------------------------------------------
  // added: PeLo

@@ -6,7 +6,11 @@ extern void unit_test_int_vec(void);
 
 int main()
 {
-    test_int_vec();
+    //test_vec();
+    //test_int_vec();
+
+    //unit_test_vec();
+    unit_test_int_vec();
 
     return 0;
 }
