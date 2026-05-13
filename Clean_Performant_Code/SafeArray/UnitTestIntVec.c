@@ -3,8 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 
-// #include <assert.h>   // evtl. mit test_assert ersetzen
-
 static void test_section(const char* desc)
 {
     printf("--- %s\n", desc);
@@ -184,22 +182,50 @@ void unit_test_int_vec(void) {
         int_vec_free(&vec);
     }
 
-    //{
-    //    test_section("vec_foreach");
-    //    int_vec vec;
-    //    vec_init(&vec);
-    //    int_vec_push(&vec, 19);
-    //    int_vec_push(&vec, 31);
-    //    int_vec_push(&vec, 47);
-    //    int i, x;
-    //    int count = 0, acc = 1;
-    //    int_vec_foreach(&vec, x, i) {
-    //        acc *= (x + count);
-    //        count++;
-    //    }
-    //    test_assert(acc == (19 + 0) * (31 + 1) * (47 + 2));
-    //    int_vec_free(&vec);
-    //}
+    {
+        test_section("vec_foreach");
+
+        int_vec vec;
+        int_vec_init(&vec);
+
+        for (size_t i = 0; i < 10; i++) {
+            int_vec_push(&vec, (int) i * 10);
+        }
+
+        size_t i = 0;
+        int* value;
+
+        while ((value = int_vec_next(&vec, &i)) != NULL) {
+            //printf("%zu: %d\n", i, *value);
+            test_assert(*value == ((i - 1) * 10));
+        }
+
+        int_vec_free(&vec);
+    }
+
+    {
+        test_section("int_vec_shrink_to_fit");
+
+        int_vec vec;
+        int_vec_init(&vec);
+
+        for (int i = 0; i < 1000000; i++) {
+            int_vec_push(&vec, i);
+        }
+
+        for (int i = 0; i < 999999; i++) {
+            int_vec_pop(&vec, NULL);
+        }
+
+        printf("Length:   %zu\n", vec.length);
+        printf("Capacity: %zu\n", vec.capacity);
+
+        int_vec_shrink_to_fit(&vec);
+
+        printf("Length:   %zu\n", vec.length);
+        printf("Capacity: %zu\n", vec.capacity);
+
+    }
 
     test_print_res();
 }

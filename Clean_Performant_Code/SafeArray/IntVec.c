@@ -268,8 +268,75 @@ int int_vec_set(int_vec* vec, size_t index, int value)
 
 // ----------------------------------------------------------------------
 
+/*
+** Iterator helper
+**
+** Example:
+**
+** size_t i = 0;
+** int *value;
+**
+** while ((value = int_vec_next(&vec, &i))) {
+**     printf("%d\n", *value);
+** }
+*/
+int* int_vec_next(int_vec* vec, size_t* index)
+{
+    int* value;
+
+    if (*index >= vec->length) {
+        return NULL;
+    }
+
+    value = &vec->data[*index];
+
+    (*index)++;
+
+    return value;
+}
+
+// ----------------------------------------------------------------------
+
+// Reduce capacity to exactly fit length
+int int_vec_shrink_to_fit(int_vec* vec)
+{
+    int* new_data;
+
+    /*
+    ** Special case:
+    ** empty vector
+    */
+    if (vec->length == 0) {
+
+        free(vec->data);
+
+        vec->data = NULL;
+        vec->capacity = 0;
+
+        return 0;
+    }
+
+    new_data = realloc(
+        vec->data,
+        vec->length * sizeof(int)
+    );
+
+    /*
+    ** realloc failure:
+    ** original allocation remains valid
+    */
+    if (new_data == NULL) {
+        return -1;
+    }
+
+    vec->data = new_data;
+    vec->capacity = vec->length;
+
+    return 0;
+}
 
 
+// ----------------------------------------------------------------------
 
 
 void int_vec_truncate(int_vec* ptr, int len)

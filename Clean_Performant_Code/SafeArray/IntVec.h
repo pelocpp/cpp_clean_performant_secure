@@ -50,6 +50,13 @@ int* int_vec_get(int_vec* vec, size_t index);
 // const int* int_vec_get(int_vec* vec, size_t index);   // geht das mit dem const ?????????
 int int_vec_set(int_vec* vec, size_t index, int value);
 
+// Simplest Iterator Design
+int* int_vec_next(int_vec* vec, size_t* index);
+
+// Simplest Shrink API
+int int_vec_shrink_to_fit(int_vec* vec);
+
+
 // Obsolete
 extern void int_vec_clear(int_vec* ptr);
 extern void int_vec_truncate(int_vec* ptr, int len);
