@@ -131,12 +131,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.c" />
-    <ClCompile Include="SimpleIntVec.c" />
+    <ClCompile Include="IntVec.c" />
+    <ClCompile Include="TestIntVec.c" />
     <ClCompile Include="TestVec.c" />
+    <ClCompile Include="UnitTestIntVec.c" />
+    <ClCompile Include="UnitTestVec.c" />
     <ClCompile Include="Vec.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SimpleIntVec.h" />
+    <ClInclude Include="IntVec.h" />
     <ClInclude Include="Vec.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

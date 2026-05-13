@@ -1,26 +1,12 @@
-#include "Vec.h"
+extern void test_vec(void);
+extern void test_int_vec(void);
 
-#include <stdio.h>
+extern void unit_test_vec(void);
+extern void unit_test_int_vec(void);
 
-extern int test_vec(void);
-
-static void getting_started_vec(void)
+int main()
 {
-    vec_int_t v;
-    vec_init(&v);
-    vec_push(&v, 123);
-    vec_push(&v, 456);
+    test_int_vec();
 
-    printf("v[0]: %d\n", v.data[0]);
-    printf("v[1]: %d\n", v.data[1]);
-
-    printf("v[2]: %d\n", v.data[2]);     // UB
-    printf("v[2]: %d\n", vec_at(v, 2));  // abort
-}
-
-void main()
-{
-    // test_vec();
-
-    getting_started_vec();
+    return 0;
 }

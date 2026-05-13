@@ -7,17 +7,17 @@
  * under the terms of the MIT license. See LICENSE for details.
  */
 
-#ifndef SIMPLE_INT_VEC_H
-#define SIMPLE_INT_VEC_H
+#ifndef INT_VEC_H
+#define INT_VEC_H
 
 #include <stdlib.h>
 #include <string.h>
 
-#define SIMPLE_INT_VEC_VERSION "0.0.1"
+#define INT_VEC_VERSION "0.0.1"
 
 // -------------------------------------------------------------------------
 //               why not void** data,
-int simple_array_expand_(char** data, int* length, int* capacity, int memsz);
+int int_vec_expand_(char** data, int* length, int* capacity, int memsz);
 
 // Warum steht das oben ???
 //#define vec_unpack_(v)\
@@ -25,61 +25,67 @@ int simple_array_expand_(char** data, int* length, int* capacity, int memsz);
 
 // Hmmmmmmmmm, das muss entweder ein Makro bleiben ... oder man lässt es weg
 // Es werden 4 Werte ausgepackt ...
-//void vec_unpack_(simple_array* ptr) {
+//void vec_unpack_(int_vec* ptr) {
 //    (char**)&(ptr)->data, ptr->length, ptr->capacity, sizeof(*(ptr)->data);
 //}
 
 // -------------------------------------------------------------------------
-//#define simple_array (T)\
+//#define int_vec (T)\
 //  struct { int *data; int length, capacity; }
 
-typedef struct { int* data; int length; int capacity; } simple_array;
-
+typedef struct { int* data; int length; int capacity; } int_vec;
 
 // -------------------------------------------------------------------------
 //#define vec_init(v)\
 //  memset((v), 0, sizeof(*(v)))
 
-void simple_array_init(simple_array* ptr)
-{
-    memset(ptr, 0, sizeof(*(ptr)));   // sizeof testen ...
-}
+//void int_vec_init(int_vec* ptr)
+//{
+//    memset(ptr, 0, sizeof(*(ptr)));   // sizeof testen ...
+//}
+
+extern void int_vec_init(int_vec* ptr);
 
 // -------------------------------------------------------------------------
 //#define vec_deinit(v)\
 //  ( free((v)->data),\
 //    vec_init(v) ) 
 
-void simple_array_deinit(simple_array* ptr)
-{
-    free(ptr->data);
-    simple_array_init(ptr);
-}
+//void int_vec_deinit(int_vec* ptr)
+//{
+//    free(ptr->data);
+//    int_vec_init(ptr);
+//}
 
+extern void int_vec_deinit(int_vec* ptr);
 
 // -------------------------------------------------------------------------
 //#define vec_push(v, val)\
 //  ( vec_expand_(vec_unpack_(v)) ? -1 :\
 //    ((v)->data[(v)->length++] = (val), 0), 0 )
 
-void simple_array_push(simple_array* ptr, int val)
-{
-    // int simple_array_expand_(char** data, int* length, int* capacity, int memsz) {
+//int int_vec_push(int_vec* ptr, int val)
+//{
+//    // int int_vec_expand_(char** data, int* length, int* capacity, int memsz) {
+//
+//
+//   // (int_vec_expand_(vec_unpack_(ptr)) ? -1 : ((ptr)->data[(ptr)->length++] = (val), 0), 0);
+//
+//    return (int_vec_expand_((char**)&(ptr)->data, &ptr->length, &ptr->capacity, sizeof(*(ptr)->data)) ? -1 : ((ptr)->data[(ptr)->length++] = (val), 0), 0);
+//}
 
-
-   // (simple_array_expand_(vec_unpack_(ptr)) ? -1 : ((ptr)->data[(ptr)->length++] = (val), 0), 0);
-
-    (simple_array_expand_((char**)&(ptr)->data, &ptr->length, &ptr->capacity, sizeof(*(ptr)->data)) ? -1 : ((ptr)->data[(ptr)->length++] = (val), 0), 0);
-}
+extern int int_vec_push(int_vec* ptr, int val);
 
 // -------------------------------------------------------------------------
 //#define vec_pop(v)\
 //  (v)->data[--(v)->length]
 
-int vec_pop(simple_array* ptr)
-{
-    return ptr->data[--(ptr->length)];   // Operatoren vorang !!!
-}
+//int vec_pop(int_vec* ptr)
+//{
+//    return ptr->data[--(ptr->length)];   // Operatoren vorang !!!
+//}
+
+int vec_pop(int_vec* ptr);
 
 // -------------------------------------------------------------------------
  // added: PeLo
@@ -143,19 +149,23 @@ int vec_pop(simple_array* ptr)
 //#define vec_clear(v)\
 //  ((v)->length = 0)
 
-void vec_clear(simple_array* ptr)
-{
-    ptr->length = 0;  // hmm, und was ist mit free ???????????????
-}
+//void vec_clear(int_vec* ptr)
+//{
+//    ptr->length = 0;  // hmm, und was ist mit free ???????????????
+//}
+
+extern void vec_clear(int_vec* ptr);
 
 // -------------------------------------------------------------------------
 //#define vec_first(v)\
 //  (v)->data[0]
 
-int first(simple_array* ptr)
-{
-    return ptr->data[0];
-}
+//int first(int_vec* ptr)
+//{
+//    return ptr->data[0];
+//}
+
+extern int first(int_vec* ptr);
 
 #define vec_last(v)\
   (v)->data[(v)->length - 1]
@@ -239,14 +249,14 @@ int first(simple_array* ptr)
 
 // hmmm, die könnten alle static sein
 // das mit dem trailing _ steht wohl für lokal ?!?!=?!
-int  simple_array_expand_(char** data, int* length, int* capacity, int memsz);
-int  simple_array_reserve_(char** data, int* length, int* capacity, int memsz, int n);
-int  simple_array_reserve_po2_(char** data, int* length, int* capacity, int memsz, int n);
-int  simple_array_compact_(char** data, int* length, int* capacity, int memsz);
-int  simple_array_insert_(char** data, int* length, int* capacity, int memsz, int idx);
-void simple_array_splice_(char** data, int* length, int* capacity, int memsz, int start, int count);
-void simple_array_swapsplice_(char** data, int* length, int* capacity, int memsz, int start, int count);
-void simple_array_swap_(char** data, int* length, int* capacity, int memsz, int idx1, int idx2);
+int  int_vec_expand_(char** data, int* length, int* capacity, int memsz);
+int  int_vec_reserve_(char** data, int* length, int* capacity, int memsz, int n);
+int  int_vec_reserve_po2_(char** data, int* length, int* capacity, int memsz, int n);
+int  int_vec_compact_(char** data, int* length, int* capacity, int memsz);
+int  int_vec_insert_(char** data, int* length, int* capacity, int memsz, int idx);
+void int_vec_splice_(char** data, int* length, int* capacity, int memsz, int start, int count);
+void int_vec_swapsplice_(char** data, int* length, int* capacity, int memsz, int start, int count);
+void int_vec_swap_(char** data, int* length, int* capacity, int memsz, int idx1, int idx2);
 
 
 //typedef vec_t(void*) vec_void_t;

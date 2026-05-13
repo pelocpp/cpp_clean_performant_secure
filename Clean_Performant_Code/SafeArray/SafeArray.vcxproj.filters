@@ -23,18 +23,27 @@
     <ClCompile Include="Program.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SimpleIntVec.c">
+    <ClCompile Include="IntVec.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestVec.c">
+    <ClCompile Include="UnitTestVec.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Vec.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UnitTestIntVec.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestVec.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestIntVec.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SimpleIntVec.h">
+    <ClInclude Include="IntVec.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Vec.h">
