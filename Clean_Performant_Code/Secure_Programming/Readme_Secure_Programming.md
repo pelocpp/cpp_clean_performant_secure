@@ -16,6 +16,8 @@
 
 ### [*SafeInt*: Eine Bibliothek zum Schutz vor Integer-Überläufen](../SafeInt/Readme_SafeInt.md)
 
+### [Hilfsbibliotheken für Arrays zum Schutz vor falschen Indices](../SafeArray/Readme_SafeArray.md)
+
 ### [*BigInt*: Eine Bibliothek für sehr große Zahlen](../BigInt/Readme_BigInt.md)
 
 ### [Literatur](./Literature.md)

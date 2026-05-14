@@ -41,18 +41,12 @@
     <ClCompile Include="TestIntVec.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IntVecOldCopy.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IntVec.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Vec.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IntVecOldCopy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

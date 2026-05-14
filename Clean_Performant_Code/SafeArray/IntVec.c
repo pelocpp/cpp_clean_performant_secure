@@ -1,3 +1,7 @@
+// ===========================================================================
+// IntVec.c // Small Safe Array Library
+// ===========================================================================
+
 #include "IntVec.h"
 
 #include <limits.h>
@@ -27,6 +31,91 @@ void int_vec_free(int_vec* vec)
     free(vec->data);
 
     int_vec_init(vec);
+}
+
+// ----------------------------------------------------------------------
+// capacity management
+
+int int_vec_reserve(int_vec* vec, size_t new_capacity)
+{
+    if (vec == NULL) {
+        return -1;
+    }
+
+    if (new_capacity > SIZE_MAX / sizeof(int)) {
+        return -1;
+    }
+
+    if (new_capacity <= vec->capacity) {
+        return 0;
+    }
+
+    int* new_data = realloc(vec->data, new_capacity * sizeof(int));
+    if (new_data == NULL) {
+        return -1;
+    }
+
+    vec->data = new_data;
+    vec->capacity = new_capacity;
+
+    return 0;
+}
+
+// resize logical length
+int int_vec_resize(int_vec* vec, size_t new_length)
+{
+    if (vec == NULL) {
+        return -1;
+    }
+
+    size_t new_capacity;
+
+    if (new_length > vec->capacity) {
+
+        // growth strategy: double until large enough, but avoid overflow
+        new_capacity = vec->capacity ? vec->capacity : 1;
+
+        while (new_capacity < new_length) {
+
+            if (new_capacity > SIZE_MAX / 2) {
+
+                /* can't safely double - use exact required size */
+                new_capacity = new_length;
+                break;
+            }
+
+            new_capacity *= 2;
+        }
+
+        if (new_capacity > SIZE_MAX / sizeof(int)) {
+            return -1;
+        }
+
+        if (int_vec_reserve(vec, new_capacity) != 0) {
+            return -1;
+        }
+    }
+
+    // guard against overflow when computing bytes
+    size_t diff = new_length - vec->length;
+
+    if (diff > 0) {
+
+        if (diff > SIZE_MAX / sizeof(int)) {
+            return -1;
+        }
+
+        // zero initialize newly created elements
+        memset(
+            vec->data + vec->length,
+            0,
+            diff * sizeof(int)
+        );
+    }
+
+    vec->length = new_length;
+
+    return 0;
 }
 
 // reduce capacity to exactly fit length
@@ -71,95 +160,34 @@ int int_vec_shrink_to_fit(int_vec* vec)
     return 0;
 }
 
-// ----------------------------------------------------------------------
-
-// ensure capacity is at least new_capacity
-int int_vec_reserve(int_vec* vec, size_t new_capacity)
+// remove all elements
+void int_vec_clear(int_vec* vec)
 {
     if (vec == NULL) {
-        return -1;
+        return;
     }
 
-    if (new_capacity > SIZE_MAX / sizeof(int)) {
-        return -1;
+    // preferring no old values
+    if (vec->data != NULL && vec->length != 0) {
+        memset(vec->data, 0, vec->length * sizeof(int));
     }
 
-    if (new_capacity <= vec->capacity) {
-        return 0;
-    }
-
-    int* new_data = realloc(vec->data, new_capacity * sizeof(int));
-    if (new_data == NULL) {
-        return -1;
-    }
-
-    vec->data = new_data;
-    vec->capacity = new_capacity;
-
-    return 0;
+    vec->length = 0;
 }
 
-
-// resize logical length
-int int_vec_resize(int_vec* vec, size_t new_length)
+void int_vec_truncate(int_vec* vec, size_t len)
 {
     if (vec == NULL) {
-        return -1;
+        return;
     }
 
-    size_t new_capacity;
-
-    if (new_length > vec->capacity) {
-
-        // growth strategy: double until large enough, but avoid overflow
-        new_capacity = vec->capacity ? vec->capacity : 1;
-
-        while (new_capacity < new_length) {
-
-            if (new_capacity > SIZE_MAX / 2) {
-
-                /* can't safely double - use exact required size */
-                new_capacity = new_length;
-                break;
-            }
-
-            new_capacity *= 2;
-        }
-
-        if (new_capacity > SIZE_MAX / sizeof(int)) {
-            return -1;
-        }
-        
-        if (int_vec_reserve(vec, new_capacity) != 0) {
-            return -1;
-        }
-    }
-
-    // guard against overflow when computing bytes
-    size_t diff = new_length - vec->length;
-    
-    if (diff > 0) {
-
-        if (diff > SIZE_MAX / sizeof(int)) {
-            return -1;
-        }
-
-        // zero initialize newly created elements
-        memset(
-            vec->data + vec->length,
-            0,
-            diff * sizeof(int)
-        );
-    }
-
-    vec->length = new_length;
-
-    return 0;
+    vec->length = (len < vec->length) ? len : vec->length;
 }
 
 // ----------------------------------------------------------------------
-
-//  push value to end
+// vector based operations
+ 
+//  push value to the end
 int int_vec_push(int_vec* vec, int value)
 {
     if (vec == NULL) {
@@ -213,10 +241,7 @@ int int_vec_pop(int_vec* vec, int* out_value)
     return 0;
 }
 
-// ----------------------------------------------------------------------
-
-
-// insert value at index
+// insert value at a given index
 int int_vec_insert(int_vec* vec, size_t index, int value)
 {
     if (vec == NULL) {
@@ -272,9 +297,7 @@ int int_vec_insert(int_vec* vec, size_t index, int value)
     return 0;
 }
 
-// remove value at index
-// Chat GPT
-// Die Version von rxi ist ein remove Value, not at index....
+// remove value at a given index
 int int_vec_remove(int_vec* vec, size_t index)
 {
     if (vec == NULL) {
@@ -301,22 +324,10 @@ int int_vec_remove(int_vec* vec, size_t index)
     return 0;
 }
 
-// remove all elements
-void int_vec_clear(int_vec * vec)
-{
-    if (vec == NULL) {
-        return;
-    }
-
-    // preferring no old values
-    if (vec->data != NULL && vec->length != 0) {
-        memset(vec->data, 0, vec->length * sizeof(int));
-    }
-
-    vec->length = 0;
-}
-
+// -------------------------------------------------------------------------
 // safe element access
+
+// immutable read
 const int* int_vec_get(const int_vec* vec, size_t index)
 {
     if (vec == NULL) {
@@ -330,7 +341,7 @@ const int* int_vec_get(const int_vec* vec, size_t index)
     return &vec->data[index];
 }
 
-// safe element assignment
+// mutable write
 int int_vec_set(int_vec* vec, size_t index, int value)
 {
     if (vec == NULL) {
@@ -346,43 +357,7 @@ int int_vec_set(int_vec* vec, size_t index, int value)
     return 0;
 }
 
-
-// ----------------------------------------------------------------------
-
-// iterator support
-int* int_vec_next(const int_vec* vec, size_t* index_ptr)
-{
-    if (vec == NULL) {
-        return NULL;
-    }
-
-    if (index_ptr == NULL) {
-        return NULL;
-    }
-
-    if (*index_ptr >= vec->length) {
-        return NULL;
-    }
-
-    int* value = &vec->data[*index_ptr];
-
-    (*index_ptr)++;
-
-    return value;
-}
-
-// ----------------------------------------------------------------------
-
-void int_vec_truncate(int_vec* vec, size_t len)
-{
-    if (vec == NULL) {
-        return;
-    }
-
-    vec->length = (len < vec->length) ? len : vec->length;
-}
-
-// first element
+// get first element
 int int_vec_front(const int_vec* vec, int* out)
 {
     if (vec == NULL) {
@@ -401,7 +376,7 @@ int int_vec_front(const int_vec* vec, int* out)
     return 0;
 }
 
-// last element
+// get last element
 int int_vec_back(const int_vec* vec, int* out)
 {
     if (vec == NULL) {
@@ -420,5 +395,74 @@ int int_vec_back(const int_vec* vec, int* out)
     return 0;
 }
 
-// ----------------------------------------------------------------------
-// helper functions
+int int_vec_find(const int_vec* vec, int value, size_t* index_ptr)
+{
+    if (vec == NULL) {
+        return -1;
+    }
+
+    if (index_ptr == NULL) {
+        return -1;
+    }
+
+    for (size_t i = 0; i < vec->length; ++i) {
+
+        if (vec->data[i] == value) {
+            *index_ptr = i;
+            return 0;
+        }
+    }
+
+    return -1;
+}
+
+// -------------------------------------------------------------------------
+// iterator support
+
+const int* int_vec_next(const int_vec* vec, size_t* index_ptr)
+{
+    if (vec == NULL) {
+        return NULL;
+    }
+
+    if (index_ptr == NULL) {
+        return NULL;
+    }
+
+    // cursor is expected to start at 0; stop when it reaches length
+    if (*index_ptr >= vec->length) {
+        return NULL;
+    }
+
+    int* value = &vec->data[*index_ptr];
+
+    (*index_ptr)++;
+
+    return value;
+}
+
+const int* int_vec_prev(const int_vec* vec, size_t* index_ptr)
+{
+    if (vec == NULL) {
+        return NULL;
+    }
+
+    if (index_ptr == NULL) {
+        return NULL;
+    }
+
+    // cursor is expected to start at vec->length; stop when it reaches 0
+    if (*index_ptr == 0) {
+        return NULL;
+    }
+
+    (*index_ptr)--;    // move to previous element
+
+    int* value = &vec->data[*index_ptr];
+    
+    return value;      // return pointer to it
+}
+
+// ===========================================================================
+// End-of-File
+// ===========================================================================

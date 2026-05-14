@@ -1,3 +1,7 @@
+// ===========================================================================
+// Vec.h // Small Safe Array Library
+// ===========================================================================
+
 /**
  * Copyright (c) 2014 rxi
  *
@@ -68,7 +72,6 @@
 //
 #define vec_try_set(v, i, val) \
     ((i) >= 0 && (i) < (v).length ? ((v).data[i] = (val), 1) : 0)
-
 
 #define vec_splice(v, start, count)\
   ( vec_splice_(vec_unpack_(v), start, count),\
@@ -201,3 +204,7 @@ typedef vec_t(float) vec_float_t;
 typedef vec_t(double) vec_double_t;
 
 #endif
+
+// ===========================================================================
+// End-of-File
+// ===========================================================================

@@ -1,8 +1,12 @@
+// ===========================================================================
+// TestIntVec.c // Small Safe Array Library
+// ===========================================================================
+
 #include "IntVec.h"
 
 #include <stdio.h>
 
-void test_int_vec(void)
+void test_int_vec()
 {
     int_vec vec;
 
@@ -16,10 +20,14 @@ void test_int_vec(void)
     printf("v[2]: %d\n", vec.data[2]);
 
     size_t i = 0;
-    int* value;
+    const int* value;
     while ((value = int_vec_next(&vec, &i)) != NULL) {
         printf("%zu: %d\n", i, *value);
     }
 
     int_vec_free(&vec);
 }
+
+// ===========================================================================
+// End-of-File
+// ===========================================================================

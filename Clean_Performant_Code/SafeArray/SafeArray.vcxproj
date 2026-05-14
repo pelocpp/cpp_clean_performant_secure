@@ -130,7 +130,6 @@
     <None Include="Readme_SafeArray.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="IntVecOldCopy.c" />
     <ClCompile Include="Program.c" />
     <ClCompile Include="IntVec.c" />
     <ClCompile Include="TestIntVec.c" />
@@ -141,7 +140,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IntVec.h" />
-    <ClInclude Include="IntVecOldCopy.h" />
     <ClInclude Include="Vec.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
