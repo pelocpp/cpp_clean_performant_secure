@@ -30,9 +30,9 @@ Wird dieser Wertebereich verlassen, kommt es zu Rechenungenauigkeiten oder noch 
 Wird mit den intrinsischen Datentypen höherer Programmiersprachen (wie z. B. `int`, `long`, `float`, `double` etc. in C++)
 gearbeitet, gibt es keine unmittelbare Lösung für dieses Problem.
 
-Für eine Arithmetik mit beliebiger Genauigkeit benötigt man spezielle Reailsierungen (externe Bibliotheken, Header-Files),
+Für eine Arithmetik mit beliebiger Genauigkeit benötigt man spezielle Realisierungen (externe Bibliotheken, Header-Files),
 die neue Datentypen und Rechenoperationen (Strukturen oder Klassen, Funktionen, Methoden) bereitstellen,
-die Zahlen mit der angeforderten Genauigkeit speichern und exakte Berechnungen durchführen können.
+die Zahlen mit der geforderten Genauigkeit speichern und exakte Berechnungen durchführen können.
 
 ---
 
@@ -65,7 +65,7 @@ Die Bibliothek genießt hohes Ansehen, da sie die Lücke zwischen der standardmäßi
 
 ---
 
-## Eine leichgewichtige Alternative: *InfInt*  <a name="link3"></a>
+## Eine leichtgewichtige Alternative: *InfInt*  <a name="link3"></a>
 
 Wenn Sie keine riesige Bibliothek wie Boost einbinden wollen, ist InfInt eine hervorragende Alternative.
 

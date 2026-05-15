@@ -15,7 +15,7 @@ Dies ist eine Realisierung in C.
   * [Allgemeines](#link1)
   * [Gültigkeit von Array-Indizes in der Programmiersprache C](#link2)
   * [Hilfestellungen für eine Absicherung](#link3)
-  * [*vec* - A type-safe dynamic array implementation for C](#link4)
+  * [*vec* &ndash; Eine sichere Array-Implementierung für C](#link4)
   * [Vor- und Nachteile der *vec*&ndash;Bibliothek ](#link5)
   * [Struktur *IntVec* &ndash; eine einfache Realisierung](#link6)
   * [Literatur](#link7)
@@ -49,7 +49,7 @@ size_t index = 5;
 int value = numbers[index];  // fine
 ...
 index = 20;
-value = numbers[index];  // crashes
+value = numbers[index];      // crashes
 ```
 
 ## Gültigkeit von Array-Indizes in der Programmiersprache C <a name="link2"></a>
@@ -110,11 +110,11 @@ if (index >= 0 && index < MAX_ELEMENTS) {
 }
 ```
 
-Ein besserer Lösungsamsatz besteht darin, an Stelle der direkten Verwendung des C-Array Datentyps
+Ein besserer Lösungsansatz besteht darin, anstelle der direkten Verwendung des C-Array Datentyps
 den Umweg über eine C-Hilfsbibliothek zu gehen.
 
 Derartige Implementierungen können Arrays mit fester oder dynamischer Kapazität realisieren,
-also den Funktionsumfang des intrinsischen C-Arraydatentyps noch erweitern.
+also den Funktionsumfang des intrinsischen C-Array Datentyps noch erweitern.
 
 Das Ziel besteht darin, einige der häufigsten und fehleranfälligen Aspekte typischen C-Codes zu eliminieren.
 Die Länge und Kapazität eines solchen C-Arrays werden automatisch verwaltet und jeglicher lesender als auch schreibender
@@ -123,7 +123,7 @@ Zugriff auf die Daten wird bzgl. der Zugriffsgrenzen überprüft.
 Im Wesentlichen handelt es sich bei derartigen C-Hilfsbibliotheken
 um eine schlanke Verwaltungsschicht für Daten mit fester Kapazität.
 
-## *vec* - A type-safe dynamic array implementation for C <a name="link4"></a>
+## *vec* &ndash; Eine sichere Array-Implementierung für C <a name="link4"></a>
 
 In den Beispielen zu diesem repository wird eine Bibliothek `vec` von *RXI* verwendet:
 
@@ -214,7 +214,7 @@ typedef vec_t(double) vec_double_t;
 ```
 
 Dies ist eine Stärke der Bibliothek, ihr Nachteil, sofern man dies auf diese Weise überhaupt so formulieren möchte,
-besteht in der sehr anspruchsvollen Realisierung: Umfangreicher Einsatz von C-Makros sowie der Stringification-Technik.
+besteht in der sehr anspruchsvollen Realisierung: Umfangreicher Einsatz von C-Makros sowie der *Stringification*-Technik.
 Natürlich hat dies einen Grund: Nur auf diese Weise kann man in C eine (ansatzweise) generische Bibliothek erstellen.
 
 Vor diesem Hintergrund sollte man mit Änderungen an dieser Vorlage äußert behutsam umgehen, 
@@ -223,9 +223,9 @@ sofern dies überhaupt notwendig sein sollte.
 Ein weiterer Nachteil der vorliegenden Realisierung zum Studium des Quelltextes besteht darin,
 dass sich C-Makros nicht debuggen lassen.
 
-Aus diesem Grund habe ich eine zweite Bibliothek diesem Repositoty hinzugefügt: `int_vec`.
+Aus diesem Grund habe ich eine zweite Bibliothek diesem Repository hinzugefügt: `int_vec`.
 Die Funktionalität der Struktur `int_vec` und den auf ihr operierenden Funktionen ist ähnlich zur *vec*&ndash;Bibliothek,
-nur dass diese einzig und allein `int`-Arrays unterstützt. Dafür sind die Funktionen in C geschrieben, dass man debuggen kann.
+nur dass diese einzig und allein `int`-Arrays unterstützt. Dafür sind die Funktionen in C geschrieben, die man debuggen kann.
 
 
 ## Struktur *IntVec* &ndash; eine einfache Realisierung <a name="link6"></a>
