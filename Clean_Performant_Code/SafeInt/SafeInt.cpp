@@ -38,7 +38,7 @@ namespace SafeArithmetic {
             }
             else if (num < 0 && result < std::numeric_limits<int16_t>::min() - num)
             {
-                throw std::overflow_error("Overflow in Sum function when adding a negative number.");
+                throw std::overflow_error("Underflow in Sum function when adding a negative number.");
             }
             else {
                 result += num;
@@ -103,7 +103,7 @@ namespace SafeArithmetic {
         {
             if (ex.m_code == SafeIntArithmeticOverflow)
             {
-                std::println("SafeInt integer overflow exception correctly caught!");
+                std::println("SafeInt integer overflow exception caught!");
             }
         }
     }
@@ -162,18 +162,18 @@ namespace SafeFaculty {
 
 // =================================================================
 
-void clean_code_arithmetic()
+void safe_code_arithmetic()
 {
     using namespace SafeArithmetic;
-    test_maximum_int16_t();
-    test_sum_unsave();
-    test_sum_safe_hand_written();   // crashes
-    test_sum_safe();                // crashes
+    //test_maximum_int16_t();
+    //test_sum_unsave();
+    //test_sum_safe_hand_written();   // crashes
+    //test_sum_safe();                // crashes
     test_sum_more_safe();
 
     using namespace SafeFaculty;
-    test_factorial_unsafe();
-    test_factorial_safe();
+    //test_factorial_unsafe();
+    //test_factorial_safe();
 }
 
 // ===========================================================================

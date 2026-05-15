@@ -15,6 +15,8 @@
 
 #### Quellcode
 
+[*SafeInt.hpp*](SafeInt.hpp) &ndash; aus dem Repository [SafeInt](https://github.com/dcleblanc/SafeInt) entnommen.<br />
+
 [*SafeInt.cpp*](SafeInt.cpp)<br />
 
 ---
@@ -118,7 +120,19 @@ Die neueste Version dieser Bibliothek befindet sich unter [https://github.com/dc
 11: }
 ```
 
-Und noch ein zweites Beispiel:
+Ausführung:
+
+```
+SafeInt integer overflow exception caught!
+```
+
+Unter Verwendung der *SafeInt*-Bibliothek lassen sich Überlaufe erkennen!
+
+## Beispiel: Die Berechung von Fakultäten <a name="link2"></a>
+
+Und noch ein weiteres Beispiel zur Berechung von Fakultäten.
+Einmal in einer klassischen Herangehensweise und zum Zweiten
+unter Verwendung der *SafeInt*-Bibliothek:
 
 ```cpp
 01: size_t factorial(size_t x) {
@@ -178,7 +192,7 @@ Factorial of 28: 12478583540742619136
 Factorial of 29: 11390785281054474240
 ```
 
-und
+bzw.
 
 ```
 Factorial of  1: 1

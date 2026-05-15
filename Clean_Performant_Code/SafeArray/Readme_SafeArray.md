@@ -1,4 +1,4 @@
-# Hilfsbibliotheken für Arrays zum Schutz vor falschen Indices
+# *SafeArray*: Hilfsbibliotheken für Arrays zum Schutz vor falschen Indizes
 
 [Zurück](../Secure_Programming/Readme_Secure_Programming.md)
 
@@ -17,7 +17,7 @@ Dies ist eine Realisierung in C.
   * [Hilfestellungen für eine Absicherung](#link3)
   * [*vec* - A type-safe dynamic array implementation for C](#link4)
   * [Vor- und Nachteile der *vec*&ndash;Bibliothek ](#link5)
-  * [*IntVec*-Bibliothek ](#link6)
+  * [Struktur *IntVec* &ndash; eine einfache Realisierung](#link6)
   * [Literatur](#link7)
 
 ---
@@ -228,7 +228,7 @@ Die Funktionalität der Struktur `int_vec` und den auf ihr operierenden Funktione
 nur dass diese einzig und allein `int`-Arrays unterstützt. Dafür sind die Funktionen in C geschrieben, dass man debuggen kann.
 
 
-## *IntVec*-Bibliothek <a name="link6"></a>
+## Struktur *IntVec* &ndash; eine einfache Realisierung <a name="link6"></a>
 
 Zum Zwecke des Studiums einer Hilfsbibliothek für sichere Array-Realisierungen
 kann man in den beiden Dateien `IntVec.h` und `IntVec.c` eine abgespeckte Variante der *vec*-Bibliothek von *RIX* betrachten.

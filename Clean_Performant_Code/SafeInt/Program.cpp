@@ -2,11 +2,11 @@
 // Program.cpp // SafeInt
 // ===========================================================================
 
-extern void clean_code_arithmetic();
+extern void safe_code_arithmetic();
 
 int main()
 {
-    clean_code_arithmetic();
+    safe_code_arithmetic();
     return 0;
 }
 
