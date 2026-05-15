@@ -24,6 +24,7 @@
     <ProjectGuid>{9432adfa-7da0-45a7-afed-52b09ad27185}</ProjectGuid>
     <RootNamespace>SafeInt</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Secure_Programming_SafeInt</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

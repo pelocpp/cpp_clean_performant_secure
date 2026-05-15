@@ -24,6 +24,7 @@
     <ProjectGuid>{cdffc9ab-fa4d-4f1d-b7da-66112d5574ed}</ProjectGuid>
     <RootNamespace>BigInt</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Secure_Programming_InfInt</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

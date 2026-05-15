@@ -17,7 +17,7 @@
 #### Quellcode
 
 [*InfInt.h*](InfInt.h)<br />
-[*InfIntExamples.c*](InfIntExamples.c)
+[*InfIntExamples.cpp*](InfIntExamples.cpp)
 
 ---
 
