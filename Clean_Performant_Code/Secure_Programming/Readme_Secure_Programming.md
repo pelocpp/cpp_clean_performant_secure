@@ -18,7 +18,7 @@
 
 ### [*SafeArray*: Hilfsbibliotheken für Arrays zum Schutz vor falschen Indizes](../SafeArray/Readme_SafeArray.md)
 
-### [*BigInt*: Eine Bibliothek für sehr große Zahlen](../BigInt/Readme_BigInt.md)
+### [*InfInt*: Eine Bibliothek für sehr große Zahlen](../BigInt/Readme_InfInt.md)
 
 ### [Literatur](./Literature.md)
 

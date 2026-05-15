@@ -129,14 +129,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BigIntExamples.cpp" />
+    <ClCompile Include="InfIntExamples.cpp" />
     <ClCompile Include="Program.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Readme_BigInt.md" />
+    <None Include="Readme_InfInt.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BigInt.hpp" />
+    <ClInclude Include="InfInt.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

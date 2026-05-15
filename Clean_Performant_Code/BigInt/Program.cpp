@@ -1,12 +1,12 @@
 // ===========================================================================
-// Program.cpp // BigInt
+// Program.cpp // InfInt // Arbitrary-sized integer class for C++
 // ===========================================================================
 
-extern void big_int_examples();
+extern void infint_examples();
 
 int main()
 {
-    big_int_examples();
+    infint_examples();
     return 0;
 }
 

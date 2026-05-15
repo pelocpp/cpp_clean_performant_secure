@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BigIntExamples.cpp">
+    <ClCompile Include="InfIntExamples.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Program.cpp">
@@ -23,12 +23,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Readme_BigInt.md">
+    <None Include="Readme_InfInt.md">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BigInt.hpp">
+    <ClInclude Include="InfInt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
