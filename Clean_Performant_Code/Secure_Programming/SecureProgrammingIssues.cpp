@@ -344,9 +344,9 @@ namespace SecureProgrammingExploitability {
 
         static void test_use_of_external_format_string() {
 
-        //    test_use_of_external_format_string_internal("%s", "Very, very long string");
+            test_use_of_external_format_string_internal("%s", "Very, very long string");     // works
 
-            test_use_of_external_format_string_internal("%s %d", "Very, very long string");
+            test_use_of_external_format_string_internal("%s %d", "Very, very long string");  // wrong format string
         }
     }
 }

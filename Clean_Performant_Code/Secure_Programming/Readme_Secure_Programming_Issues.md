@@ -161,6 +161,8 @@ Es ist dem Compiler nicht möglich, zur Übersetzungszeit zu überprüfen,
 ob Variablen, die nur via Zeiger erreichbar sind (`malloc`, `new`), noch verfügbar sind (`free`, `delete`).
 Dies ist eine Sicherheitslücke in der Definition der Programmiersprache.
 
+##### Beispiel für *Undefined Behaviour* (*UB*): Nutzung einer Variablen nach ihrer Freigabe
+
 Aus der Nutzung der Variable nach ihrer Freigabe resultieren im Programm
 unerwartete Aktionen oder andere unerwünschte Effekte. Dies bezeichnet man als *Undefined Behaviour*.
 Häufig macht man die Beobachtung, dass *Undefined Behaviour* zu einem Absturz des Programms führt.
@@ -356,7 +358,7 @@ deren Abbruchkriterium nicht funktioniert:
 Lässt man das Programm im Debugger laufen, kann man im Debugger-Fenster erkennen,
 wieviele rekursive Aufrufe das Programm geschafft hat:
 
-<img src="Stack_Overflow_Exception_01.png" width="350">
+<img src="Stack_Overflow_Exception_01.png" width="450">
 
 *Abbildung* 1: Anzahl der rekursiven Funktionsaufrufe einer Funktion `call_myself` (hier: 4020).
 
@@ -429,7 +431,27 @@ Die Schwachstelle schreibt Daten über das Ende oder vor den Anfang des vorgesehe
 Bei einem Heap-Überlauf handelt es sich um einen Pufferüberlauf, bei dem der Puffer, der überschrieben werden kann,
 im Heap-Bereich des Speichers liegt.
 
-Dies bedeutet im Allgemeinen, dass der Puffer mithilfe einer Routine wie `malloc()` / `new` zugewiesen wurde.
+Dies bedeutet häufig, dass der Puffer mithilfe einer Routine wie `malloc()` / `new` zugewiesen wurde.
+
+*Beispiel*:
+
+```cpp
+01: void heap_based_buffer_overflow_internal(const char* input) {
+02: 
+03:     char* buffer = new char[32];
+04: 
+05:     // Heap Buffer Overflow when data is bigger than 32
+06:     strcpy(buffer, input);          // <- Write outside 
+07:     std::println("{}", buffer);
+08: 
+09:     delete[] buffer;                // crashes due to outside write of 'strcpy'
+10: }
+11: 
+12: void test() {
+13: 
+14:     heap_based_buffer_overflow_internal("This is way too long for this buffer");
+15: }
+```
 
 
 
@@ -458,6 +480,11 @@ der auf einen Speicherort vor dem Anfang des Puffers verweist.
 11: }
 ```
 
+Die Variable `length` wird auf die Länge der Zeichenkette `"Hello World"` gesetzt, das passt soweit.
+In der Zeichkette ist aber kein Zeichen `':'` enthalten, folglich gerät die Indexvariable `index` in den negativen Zahlenbereich.
+Die führt zu einem Absturz in Zeile 9.
+
+
 ### &bdquo;*Use after Free*&rdquo; <a name="link12"></a>
 
 *Beschreibung*:
@@ -465,6 +492,7 @@ der auf einen Speicherort vor dem Anfang des Puffers verweist.
 [CWE-416: Use After Free](https://cwe.mitre.org/data/definitions/416.html)
 
 Die Schwachstelle verwendet den Speicher erneut oder verweist auf ihn, nachdem er freigegeben wurde.
+
 Irgendwann danach kann der Speicher erneut zugewiesen und in einem anderen Zeiger gespeichert werden,
 während der ursprüngliche Zeiger auf einen Speicherort irgendwo innerhalb der neuen Zuweisung verweist.
 
@@ -496,8 +524,10 @@ der mit dem neuen Zeiger arbeitet.
 
 [CWE-415: Double Free](https://cwe.mitre.org/data/definitions/415.html)
 
-Die Schwachstelle ruft `free()` / `delete` zweimal für dieselbe Speicheradresse auf,
-was möglicherweise zur Änderung unerwarteter Speicherorte führt.
+Die Schwachstelle ruft `free()` / `delete` zweimal für dieselbe Speicheradresse auf.
+
+Da ein `free()` / `delete` Aufruf eine ungültige Adresse nicht von einer gültigen Adresse unterscheiden kann,
+führt der zweite Aufruf zu einem Absturz.
 
 *Beispiel*:
 
@@ -523,14 +553,11 @@ was möglicherweise zur Änderung unerwarteter Speicherorte führt.
 
 Die Schwachstelle konvertiert ein Objekt, eine Ressource oder eine Struktur nicht ordnungsgemäß von einem Typ in einen anderen Typ.
 
-Was bezeichnet man als *Type Punning*?
-
+Was bezeichnet man als *Type Punning*?<br />
 &bdquo;Eine Form des Zeigeraliasings, bei der zwei Zeiger auf dieselbe Stelle im Speicher verweisen,
-diese Stelle aber aus der Sichtweise unterschiedlicher Datentypen betrachten&rdquo;<br />.
+diese Stelle aber aus der Sichtweise unterschiedlicher Datentypen betrachten&rdquo;.
 
 Der Compiler behandelt beide &bdquo;*Type Punnings*&rdquo; als nicht verwandte Zeiger.
-
-*Type Punnings* können Abhängigkeitsprobleme für alle Daten verursachen, auf die über beide Zeiger zugegriffen wird.&rdquo;
 
 *Beispiel*:
 
@@ -544,6 +571,20 @@ Der Compiler behandelt beide &bdquo;*Type Punnings*&rdquo; als nicht verwandte Z
 07: struct B* b = (struct B*) a;
 ```
 
+Ein zweites Beispiel:
+
+```cpp
+01: void test() {
+02: 
+03:     uint16_t data{ 0x1234 };
+04: 
+05:     uint16_t* u16 = &data;
+06: 
+07:     uint32_t* u32 = (uint32_t*) &data;
+08: 
+09:     *u32 = 0x12345678; // de-referencing invokes undefined behavior
+10: }
+```
 
 ### &bdquo;*Uncontrolled Format String*&rdquo; <a name="link15"></a>
 
@@ -553,6 +594,22 @@ Der Compiler behandelt beide &bdquo;*Type Punnings*&rdquo; als nicht verwandte Z
 
 Die Schwachstelle verwendet eine Funktion,
 die eine Formatzeichenfolge als Argument akzeptiert, die Formatzeichenfolge stammt jedoch aus einer externen Quelle.
+
+*Beispiel*:
+
+```cpp
+01: void use_of_external_format_string_internal(const char* format, const char* str) {
+02: 
+03:     printf(format, str);
+04: }
+05: 
+06: void test() {
+07: 
+08:     use_of_external_format_string_internal("%s", "Very, very long string");     // works
+09: 
+10:     use_of_external_format_string_internal("%s %d", "Very, very long string");  // wrong format string
+11: }
+```
 
 ---
 
