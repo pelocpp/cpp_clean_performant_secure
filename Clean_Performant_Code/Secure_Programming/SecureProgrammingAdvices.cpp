@@ -16,6 +16,7 @@
 #include <numeric>
 #include <print>
 #include <string>
+#include <vector>
 
 namespace SecureProgrammingAdvices {
 
@@ -91,45 +92,27 @@ namespace SecureProgrammingAdvices {
         }
     }
 
+    namespace TakeCareOfWarnings {
+
+        static void calculate(int* a, int b)
+        {
+            *a = 4;
+            // b = b + a;                           // remove comment / compiles in C !!!
+            printf("%d - %d\n", *a, b);
+        }
+
+        static void test_take_care_of_warnings() {
+
+            int n = 123;
+            int* ptr = &n;
+
+            // ...
+            int error = 0;
+            // error = ptr;                         // remove comment / compiles in C !!!
+        }
+    }
+
     namespace TakeCareOfBufferOverflow {
-
-        // use secure functions
-
-        static void test_take_care_of_buffer_overflow_01() {
-
-            char buffer[16];
-
-            const char* str = "This is way too long for this buffer";
-            std::println("Source:      >{}<", str);
-
-            auto length = strlen(str);
-            auto size = std::size(buffer);
-
-            // strncpy(buffer, str, length);             // crashes
-            strncpy_s(buffer, size, str, size - 1);      // copy with adjusted boundary
-
-            buffer[size - 1] = '\0';
-
-            std::println("Destination: >{}<", buffer);
-        }
-
-        static void test_take_care_of_buffer_overflow_02() {
-
-            const int Size = 64;
-
-            char buffer[Size];
-
-            auto bytesWritten = 0;
-
-            bytesWritten = snprintf(buffer, Size, "The half of %d is %d", 60, 60/2);
-
-            if (bytesWritten >= 0 && bytesWritten < Size) {    // check returned value
-
-                bytesWritten = snprintf(buffer + bytesWritten, Size - bytesWritten, ", and the half of that is %d.", 60/2/2);
-            }
-
-            std::println("Buffer: >{}< // Bytes written: {}", buffer, bytesWritten);
-        }
 
         // -------------------------------------------------------------------------
         // work precisely
@@ -188,7 +171,8 @@ namespace SecureProgrammingAdvices {
                     exit(-1);
                 }
 
-                ptr[offset] = '\0';
+                cmdLine = ptr;
+                cmdLine[offset] = '\0';
             }
 
             // print created buffer 'cmdLine'
@@ -197,13 +181,52 @@ namespace SecureProgrammingAdvices {
             free(cmdLine);
         }
 
-        static void test_take_care_of_buffer_overflow_03() {
+        static void test_take_care_of_buffer_overflow_01() {
 
             int argc = 5;
             const char* argv[]{ "program.exe", "one", "two", "three", "four"};
 
             evaluateArgsSloppy(argc, argv);
             evaluateArgs(argc, argv);
+        }
+
+        // -------------------------------------------------------------------------
+        // use secure functions
+        
+        static void test_take_care_of_buffer_overflow_02() {
+
+            char buffer[16];
+
+            const char* str = "This is way too long for this buffer";
+            std::println("Source:      >{}<", str);
+
+            auto length = strlen(str);
+            auto size = std::size(buffer);
+
+            // strncpy(buffer, str, length);             // crashes
+            strncpy_s(buffer, size, str, size - 1);      // copy with adjusted boundary
+
+            buffer[size - 1] = '\0';
+
+            std::println("Destination: >{}<", buffer);
+        }
+
+        static void test_take_care_of_buffer_overflow_03() {
+
+            const int Size = 64;
+
+            char buffer[Size];
+
+            auto bytesWritten = 0;
+
+            bytesWritten = snprintf(buffer, Size, "The half of %d is %d", 60, 60 / 2);
+
+            if (bytesWritten >= 0 && bytesWritten < Size) {    // check returned value
+
+                bytesWritten = snprintf(buffer + bytesWritten, Size - bytesWritten, ", and the half of that is %d.", 60 / 2 / 2);
+            }
+
+            std::println("Buffer: >{}< // Bytes written: {}", buffer, bytesWritten);
         }
 
         static void test_take_care_of_buffer_overflow() {
@@ -218,11 +241,11 @@ namespace SecureProgrammingAdvices {
 
         static void test_arithmetic_overflow_addition() {
 
-            std::uint32_t a;
-            std::uint32_t b;
-            std::uint32_t sum;
+            std::uint32_t a = 0;
+            std::uint32_t b = 0;
+            std::uint32_t sum = 0;
 
-            // ....
+            // ...
             sum = a + b;
         }
 
@@ -230,9 +253,11 @@ namespace SecureProgrammingAdvices {
 
             std::uint32_t sum = 0;
 
-            if (std::numeric_limits<std::uint32_t>::max() - a < b)
+            std::uint32_t max = std::numeric_limits<std::uint32_t>::max();
+
+            if (max - a < b)
             {
-                // test for UIntMax - a < b: handle error condition
+                // test for UINT_MAX - a < b: handle error condition
                 std::println("Sum of {} and {} is too large, cannot add !", a, b);
             }
             else
@@ -263,17 +288,17 @@ namespace SecureProgrammingAdvices {
 
         static void test_arithmetic_overflow_subtraction() {
 
-            std::int32_t a;
-            std::int32_t b;
-            std::int32_t sum;
+            std::int32_t a = 0;
+            std::int32_t b = 0;
+            std::int32_t diff = 0;
 
             // ....
-            sum = a - b;
+            diff = a - b;
         }
 
         static void subtraction_compliant(std::int32_t a, std::int32_t b) {
 
-            int32_t result = 0;
+            std::int32_t result = 0;
 
             if (b > 0 && a < std::numeric_limits<std::int32_t>::min() + b ||
                 b < 0 && a > std::numeric_limits<std::int32_t>::max() + b)
@@ -289,10 +314,14 @@ namespace SecureProgrammingAdvices {
 
         static void subtraction_compliant_no_short_circuit_evaluation(std::int32_t a, std::int32_t b) {
 
-            int32_t result = 0;
+            std::int32_t result = 0;
+
+            std::int32_t min = std::numeric_limits<std::int32_t>::min();
+
+            std::int32_t max = std::numeric_limits<std::int32_t>::max();
 
             if (b > 0) {
-                if (a < std::numeric_limits<std::int32_t>::min() + b) {
+                if (a < min + b) {
                     std::println("Cannot subtract {} from {}! !", b, a);
                 }
                 else {
@@ -301,7 +330,7 @@ namespace SecureProgrammingAdvices {
                 }
             }
             else if (b < 0) {
-                if (a > std::numeric_limits<std::int32_t>::max() + b) {
+                if (a > max + b) {
                     std::println("Cannot subtract {} from {}! !", b, a);
                 }
                 else {
@@ -320,15 +349,19 @@ namespace SecureProgrammingAdvices {
 
             // for example
             std::int32_t a = std::numeric_limits<std::int32_t>::min() / 2;
+
             std::int32_t b = std::numeric_limits<std::int32_t>::max() / 2;
 
             subtraction_compliant(a, b);
+            subtraction_compliant_no_short_circuit_evaluation(a, b);  // easier to read
 
             b = b + 1;
             subtraction_compliant(a, b);
+            subtraction_compliant_no_short_circuit_evaluation(a, b);  // easier to read
 
             b = b + 1;
             subtraction_compliant(a, b);
+            subtraction_compliant_no_short_circuit_evaluation(a, b);  // easier to read
         }
 
         // ------------------------------------------
@@ -343,12 +376,12 @@ namespace SecureProgrammingAdvices {
             sum = a * b;
         }
 
-        static int32_t multiplication_compliant(std::int32_t a, std::int32_t b) {
+        static std::int32_t multiplication_compliant(std::int32_t a, std::int32_t b) {
 
             std::int32_t result = 0;
 
             // switching from 32-bit to 64-bit arithmetic
-            int64_t product = static_cast<int64_t>(a) * static_cast<int64_t>(b);
+            std::int64_t product = static_cast<std::int64_t>(a) * static_cast<std::int64_t>(b);
 
             // result needs to be represented as a 32-bit (std::int32_t) integer value (!)
             if (product > std::numeric_limits<std::int32_t>::max() || 
@@ -357,7 +390,7 @@ namespace SecureProgrammingAdvices {
                 std::println("Cannot multiply {} with {}! !", a, b);
             }
             else {
-                result = static_cast<int32_t>(product);
+                result = static_cast<std::int32_t>(product);
                 std::println("{} * {} = {}", a, b, result);
             }
 
@@ -372,10 +405,12 @@ namespace SecureProgrammingAdvices {
 
             for (int i = 1; i < 32; ++i) {
 
-                //b = a * b;                       // remove comment
-                //std::println("{}", b);
+                //b = a * b;                          // remove comment
+                //std::println("{}", b);              // remove comment
 
-                b = multiplication_compliant(a, b);
+                                                      // or
+
+                b = multiplication_compliant(a, b);   // remove comment
             }
         }
 
@@ -871,11 +906,12 @@ void secure_programming_advices()
 
     PreferCppToC::test_prefer_cpp_to_c();
     UseSeveralCompilers::test_use_several_compilers();
+    TakeCareOfWarnings::test_take_care_of_warnings();
     TakeCareOfBufferOverflow::test_take_care_of_buffer_overflow();
     TakeCareOfArithmeticOverflow::test_arithmetic_overflow();
     TakeCareOfArithmeticOverflowUsingMidpoint::test_take_care_of_arithmetic_overflow();
     PreventInjectionOfAttacks::test_injection();
-    // PreventOffbyOneErrors::test_off_by_one_errors();  // crashes
+    // PreventOffbyOneErrors::test_off_by_one_errors();  // crashes by design
     UseAlgorithms::test_use_algorithms();
     SafeDowncasting::test_safe_downcasting();
     DontUseNewExplicitely::test_dont_use_new_explicitely();

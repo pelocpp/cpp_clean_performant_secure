@@ -265,7 +265,7 @@ Der GCC-Compiler geht mit diesem Code-Beispiel entspannt um (*Abbildung* 1):
 ### *Warnings* und *Errors* <a name="link11"></a>
 
 Vermutlich durften Sie diesen Hinweis schon oft über sich ergehen lassen:
-Vermeiden Sie &ndash; so gut es geht &ndash; jegliche Warnungen, die ihr Übersetzer in ihrem Projekt erzeugt.
+Vermeiden Sie &ndash; so gut es geht &ndash; jegliche Art von Warnungen, die Ihr Übersetzer in Ihrem Projekt erzeugt.
 In den meisten Fällen ist eine Warnung ein Hinweis, dass mit Ihrem Quellcode an dieser Stelle etwas nicht in Ordnung ist.
 Nehmen Sie Warnungen nicht auf die leichte Schulter:
 
@@ -278,6 +278,20 @@ Warning C4047 : '=': 'int' differs in levels of indirection from 'int *'
 Dies wird zwar vom C/C++ Compiler als Warnung eingestuft, es handelt sich hierbei aber um einen beinharten Fehler!
 
 *Bemerkung*:<br />
+Diese Warnung tritt meistens nur in C-Programmen auf, also bei Verwendung einer C-Compilers.
+Ein C++-Compiler reagiert hier mit einer Fehlermeldung:
+
+```
+Error C2440 : '=': cannot convert from 'int *' to 'int'
+```
+
+oder
+
+```
+Error C2440 : a value of type "int *" cannot be assigned to an entity of type "int"
+```
+
+*Bemerkung*:<br />
 Über *Errors* müssen wir nicht so viel reden: Beim Vorhandensein von Fehlern ist ein Programm überhaupt nicht übersetzungsfähig!
 
 ---
@@ -288,7 +302,7 @@ Der *Warning Level* gibt an, welche Compilerwarnungen angezeigt werden sollen un
 
 Je höher Sie den *Warning Level* einstellen, desto mehr Warnungen werden angezeigt:
 
-<img src="WarningLevel.png" width="700">
+<img src="WarningLevel.png" width="800">
 
 *Abbildung* 2: Unterschiedliche *Warning Level* des Visual C++ Compilers.
 
@@ -298,9 +312,9 @@ ein zu großer Warning Level kann zu viele Warnungen erzeugen, die nicht unbeding
 
 ---
 
-### Typensicherheit: Datentypen sind unsere Freunde <a name="link13"></a>
+### Typsicherheit: Datentypen sind unsere Freunde <a name="link13"></a>
 
-Eine Stärke der beiden Programmiersprachen C/C++ ist, dass beide das Konzept von &bdquo;Datentypen&rdquo; beherzigen.
+Eine Stärke der beiden Programmiersprachen C/C++ ist es, dass beide das Konzept von &bdquo;Datentypen&rdquo; beherzigen.
 
   * Man sollte tunlichst vermeiden, `void*` einzusetzen bzw. damit eine Typprüfung zu umgehen.
 
@@ -345,7 +359,7 @@ Erkennen Sie die Schwachstellen an diesem Code-Fragment?
 *Beispiel*: Einlesen der Kommandozeile - bessere Lösung
 
 ```cpp
-01: void test(int argc, const char* argv[])
+01: static void evaluateArgs(int argc, const char* argv[])
 02: {
 03:     size_t bufsize = 0;
 04:     size_t offset = 0;
@@ -385,14 +399,15 @@ Erkennen Sie die Schwachstellen an diesem Code-Fragment?
 38:             exit(-1);
 39:         }
 40: 
-41:         ptr[offset] = '\0';
-42:     }
-43: 
-44:     // print created buffer 'cmdLine'
-45:     std::println("cmdLine: >{}<", cmdLine);
-46: 
-47:     free(cmdLine);
-48: }
+41:         cmdLine = ptr;
+42:         cmdLine[offset] = '\0';
+43:     }
+44: 
+45:     // print created buffer 'cmdLine'
+46:     std::println("cmdLine: >{}<", cmdLine);
+47: 
+48:     free(cmdLine);
+49: }
 ```
 
 *Ausgabe*:
@@ -496,7 +511,7 @@ Im Großen und Ganzen kann man sagen, dass man die kritischen Operationen zunächs
 umgehen muss. Bei der Addition und Subtraktion ist das durchaus möglich, man kann durch geschicktes Umordnen
 des arithmetischen Ausdrucks einen Überlauf verhindern.
 
-Bei der Multiplikation ist das Ganze etwas komplizierter. Ein Ansatz besteht darin, auf den nächstgrößeren Wertebereich umzusteigen,
+Bei der Multiplikation ist das Ganze etwas komplizierter. Ein Ansatz besteht darin, auf den nächst größeren Wertebereich umzusteigen,
 sofern dies noch möglich ist.
 
 
@@ -564,15 +579,15 @@ Sum of 2147483649 and 2147483647 is too large, cannot add !
 02: 
 03:     std::int32_t a;
 04:     std::int32_t b;
-05:     std::int32_t sum;
+05:     std::int32_t diff;
 06: 
 07:     // ....
-08:     sum = a - b;
+08:     diff = a - b;
 09: }
 10: 
 11: void subtraction_compliant(std::int32_t a, std::int32_t b) {
 12: 
-13:     int32_t result = 0;
+13:     std::int32_t result = 0;
 14: 
 15:     if (b > 0 && a < std::numeric_limits<std::int32_t>::min() + b ||
 16:         b < 0 && a > std::numeric_limits<std::int32_t>::max() + b)
@@ -621,12 +636,12 @@ Cannot subtract 1073741825 from -1073741824! !
 08:     sum = a * b;
 09: }
 10: 
-11: int32_t multiplication_compliant(std::int32_t a, std::int32_t b) {
+11: std::int32_t multiplication_compliant(std::int32_t a, std::int32_t b) {
 12: 
 13:     std::int32_t result = 0;
 14: 
 15:     // switching from 32-bit to 64-bit arithmetic
-16:     int64_t product = static_cast<int64_t>(a) * static_cast<int64_t>(b);
+16:     std::int64_t product = static_cast<std::int64_t>(a) * static_cast<std::int64_t>(b);
 17: 
 18:     // result needs to be represented as a 32-bit (std::int32_t) integer value (!)
 19:     if (product > std::numeric_limits<std::int32_t>::max() ||
@@ -635,7 +650,7 @@ Cannot subtract 1073741825 from -1073741824! !
 22:         std::println("Cannot multiply {} with {}! !", a, b);
 23:     }
 24:     else {
-25:         result = static_cast<int32_t>(product);
+25:         result = static_cast<std::int32_t>(product);
 26:         std::println("{} * {} = {}", a, b, result);
 27:     }
 28: 
@@ -822,7 +837,7 @@ Buffer (Cleaned): _bin_mail_bogus@addr_com__cat__etc_passwd___mail_somebadguy_ne
 ### Vermeide &bdquo;*Off-by-One*&rdquo; Fehler! <a name="link19"></a>
 
 Vermeiden Sie &bdquo;*Off-by-One*&rdquo; Fehler!
-Natürlich ist das leichter getan als gesagt. 
+Natürlich ist das leichter gesagt als getan. 
 
 Eine Option besteht &ndash; wenngleich das für das gesamte Spektrum der Entwicklung von Software gilt &ndash; darin,
 jede Zeile des Quellcodes mit dem Debugger zu durchlaufen!
@@ -836,7 +851,7 @@ jede Zeile des Quellcodes mit dem Debugger zu durchlaufen!
 03:     char source[10];
 04:     strcpy(source, "0123456789");
 05: 
-06:     char* dest = (char*)malloc(strlen(source));
+06:     char* dest = (char*) malloc(strlen(source));
 07:             
 08:     int i;
 09:     for (i = 1; i <= 11; i++)
