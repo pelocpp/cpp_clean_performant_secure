@@ -1,4 +1,6 @@
-
+// ===========================================================================
+// 06_Invalid_Allocation_Alignment.cpp // Visual Studio Address Sanitizer
+// ===========================================================================
 
 // example1.cpp
 // invalid-allocation-alignment error
@@ -15,3 +17,6 @@ void test_06_invalid_allocation_alignment() {
     bool result = (ptr == nullptr && errno == EINVAL) ? 0 : -1;
 }
 
+// ===========================================================================
+// End-of-File
+// ===========================================================================

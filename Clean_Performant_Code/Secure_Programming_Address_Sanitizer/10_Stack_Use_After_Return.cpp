@@ -1,3 +1,6 @@
+// ===========================================================================
+// 10_Stack_Use_After_Return.cpp // Visual Studio Address Sanitizer
+// ===========================================================================
 
 // geht nur mit:  /fsanitize-address-use-after-return 
 // Enter /fsanitize-address-use-after-return in “Additional Options” under “Command Line”.
@@ -63,3 +66,7 @@ void test_10_stack_use_after_return()
     // test_10_stack_use_after_return_01();
     test_10_stack_use_after_return_02();
 }
+
+// ===========================================================================
+// End-of-File
+// ===========================================================================

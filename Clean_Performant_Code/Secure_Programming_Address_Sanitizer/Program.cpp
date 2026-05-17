@@ -1,12 +1,33 @@
 // ===========================================================================
-// Program.cpp // Secure Programming Address Sanitizer
+// Program.cpp // Secure Programming // Visual Studio Address Sanitizer
 // ===========================================================================
 
-extern void infint_examples();
+extern void test_01_basic_global_buffer_overflow();
+extern void test_02_alloc_dealloc_mismatch();
+extern void test_03_stack_buffer_underflow();
+extern void test_04_double_free();
+extern void test_05_memory_leak_detection();
+extern void test_06_invalid_allocation_alignment();
+extern void test_07_virtual_base_class_destructor();
+extern void test_08_stl_container_overflow();
+extern void test_09_stack_use_after_scope();
+extern void test_10_stack_use_after_return();
+extern void test_11_global_buffer_overflow();
 
 int main()
 {
-    infint_examples();
+    //test_01_basic_global_buffer_overflow();
+   test_02_alloc_dealloc_mismatch();
+    //test_03_stack_buffer_underflow();
+    //test_04_double_free();
+    //test_05_memory_leak_detection();
+    //test_06_invalid_allocation_alignment();
+    //test_07_virtual_base_class_destructor();
+    //test_08_stl_container_overflow();
+    //test_09_stack_use_after_scope();
+    //test_10_stack_use_after_return();
+    //test_11_global_buffer_overflow();
+
     return 0;
 }
 

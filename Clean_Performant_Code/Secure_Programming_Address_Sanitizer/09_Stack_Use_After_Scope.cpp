@@ -1,3 +1,7 @@
+// ===========================================================================
+// 09_Stack_Use_After_Scope.cpp // Visual Studio Address Sanitizer
+// ===========================================================================
+
 #include <functional>
 #include <print>
 
@@ -65,12 +69,12 @@ struct A {
     const int* p;
 };
 
-void explicit_temp() {
+static void explicit_temp() {
     A a(5);     // the temp for 5 is no longer live;
     a.print();
 }
 
-void temp_from_conversion() {
+static void temp_from_conversion() {
     double v = 5;
     A a(v);     // local v is no longer live.
     a.print();
@@ -95,3 +99,7 @@ void test_09_stack_use_after_scope()
 
   //  test_09_stack_use_after_scope_04();
 }
+
+// ===========================================================================
+// End-of-File
+// ===========================================================================

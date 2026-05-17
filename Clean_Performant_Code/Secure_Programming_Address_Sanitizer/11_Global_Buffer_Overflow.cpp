@@ -1,3 +1,6 @@
+// ===========================================================================
+// 11_Global_Buffer_Overflow.cpp // Visual Studio Address Sanitizer
+// ===========================================================================
 
 // example3.cpp
 // global-buffer-overflow error
@@ -16,7 +19,7 @@ struct C {
 };
 
 // normal global
-int global[10];
+static int global[10];
 
 // class static
 int C::array[10];
@@ -52,3 +55,7 @@ void test_11_global_buffer_overflow()
 {
     auto result = test_11_global_buffer_overflow_01();
 }
+
+// ===========================================================================
+// End-of-File
+// ===========================================================================

@@ -83,7 +83,7 @@ siehe [hier](../Secure_Programming_Address_Sanitizer/Readme_Address_Sanitizer.md
 
 ---
 
-## Clang-Tidy <a name="link5"></a>
+## Clang-Tidy <a name="link4"></a>
 
 *Clang-Tidy* ist ein Clang-basiertes C++-Linter-Tool.
 Es bietet ein erweiterbares Framework zur Diagnose und Behebung typischer Programmierfehler,
@@ -101,7 +101,7 @@ Sie wird automatisch aktiviert, wenn Sie im Visual Studio Installer eine C++-Wor
 
 <img src="ClangTidy.png" width="400">
 
-*Abbildung* 7: Beispiel einer *Clang-Tidy*-Meldung mit &bdquo;*Squiggles*&rdquo;.
+*Abbildung* 5: Beispiel einer *Clang-Tidy*-Meldung mit &bdquo;*Squiggles*&rdquo;.
 
 ---
 

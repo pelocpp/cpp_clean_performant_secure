@@ -1,3 +1,7 @@
+// ===========================================================================
+// 07_Virtual_Base_Class_Destructor.cpp // Visual Studio Address Sanitizer
+// ===========================================================================
+
 // example1.cpp
 // new-delete-type-mismatch error
 #include <memory>
@@ -24,3 +28,7 @@ void test_07_virtual_base_class_destructor()
 
     std::unique_ptr<Base> b1 = std::make_unique<Derived>();
 }
+
+// ===========================================================================
+// End-of-File
+// ===========================================================================
