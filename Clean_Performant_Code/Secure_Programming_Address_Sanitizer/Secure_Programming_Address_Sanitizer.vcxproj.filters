@@ -39,16 +39,13 @@
     <ClCompile Include="07_Virtual_Base_Class_Destructor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="08_STL_Container_Overflow.cpp">
+    <ClCompile Include="08_Stack_Use_After_Scope.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="09_Stack_Use_After_Scope.cpp">
+    <ClCompile Include="09_Stack_Use_After_Return.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="10_Stack_Use_After_Return.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="11_Global_Buffer_Overflow.cpp">
+    <ClCompile Include="10_Global_Buffer_Overflow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

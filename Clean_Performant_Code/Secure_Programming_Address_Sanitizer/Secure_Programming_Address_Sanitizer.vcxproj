@@ -146,10 +146,9 @@
     <ClCompile Include="05_Memory_Leak_Detection.cpp" />
     <ClCompile Include="06_Invalid_Allocation_Alignment.cpp" />
     <ClCompile Include="07_Virtual_Base_Class_Destructor.cpp" />
-    <ClCompile Include="08_STL_Container_Overflow.cpp" />
-    <ClCompile Include="09_Stack_Use_After_Scope.cpp" />
-    <ClCompile Include="10_Stack_Use_After_Return.cpp" />
-    <ClCompile Include="11_Global_Buffer_Overflow.cpp" />
+    <ClCompile Include="08_Stack_Use_After_Scope.cpp" />
+    <ClCompile Include="09_Stack_Use_After_Return.cpp" />
+    <ClCompile Include="10_Global_Buffer_Overflow.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="01_Basic_Global_Buffer_Overflow.cpp" />
   </ItemGroup>

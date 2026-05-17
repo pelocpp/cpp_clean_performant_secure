@@ -9,6 +9,7 @@
 static void test_04_double_free_01()
 {
     char* buffer = (char*) std::malloc(10 * sizeof(char));
+
     std::memset(buffer, '0', 10);
 
     // ... some complex body of code
@@ -36,7 +37,7 @@ static void test_04_double_free_02()
 
 void test_04_double_free()
 {
-    test_04_double_free_01();
+    // test_04_double_free_01();
     test_04_double_free_02();
 }
 

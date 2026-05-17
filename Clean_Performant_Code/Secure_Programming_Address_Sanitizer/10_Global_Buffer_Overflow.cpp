@@ -24,7 +24,7 @@ static int global[10];
 // class static
 int C::array[10];
 
-static int test_11_global_buffer_overflow_01()
+static int test_10_global_buffer_overflow_01()
 { 
     int first = 1;
 
@@ -51,9 +51,9 @@ static int test_11_global_buffer_overflow_01()
     return 0;
 }
 
-void test_11_global_buffer_overflow()
+void test_10_global_buffer_overflow()
 {
-    auto result = test_11_global_buffer_overflow_01();
+    auto result = test_10_global_buffer_overflow_01();
 }
 
 // ===========================================================================

@@ -14,7 +14,7 @@ static void foo() {
     x = &stack_buffer[50];
 }
 
-static int test_10_stack_use_after_return_01() {
+static int test_09_stack_use_after_return_01() {
 
     foo();
     *x = 123; // Boom!
@@ -50,7 +50,7 @@ static void StackUseAfterReturn(int Idx, ReadOrWrite w) {
 }
 
 
-static void test_10_stack_use_after_return_02() {
+static void test_09_stack_use_after_return_02() {
 
 
     int kind = Read;   // oder Write
@@ -61,10 +61,10 @@ static void test_10_stack_use_after_return_02() {
     }
 }
 
-void test_10_stack_use_after_return()
+void test_09_stack_use_after_return()
 {
-    // test_10_stack_use_after_return_01();
-    test_10_stack_use_after_return_02();
+    test_09_stack_use_after_return_01();
+    test_09_stack_use_after_return_02();
 }
 
 // ===========================================================================

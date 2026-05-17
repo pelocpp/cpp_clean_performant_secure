@@ -5,17 +5,17 @@
 #include <functional>
 #include <print>
 
-// example1.cpp
-// stack-use-after-scope error
-int* gp;
+static int* gp = nullptr;
 
-bool b = true;
+static bool b = true;
 
 static int test_09_stack_use_after_scope_01() {
+
     if (b) {
         int x[5];
         gp = x + 1;
     }
+
     return *gp;  // Boom!
 }
 
@@ -89,15 +89,15 @@ static auto test_09_stack_use_after_scope_04() {
 
 
 
-void test_09_stack_use_after_scope()
+void test_08_stack_use_after_scope()
 {
- //   auto p = test_09_stack_use_after_scope_01();
+    auto p = test_09_stack_use_after_scope_01();
 
-   // auto l = test_09_stack_use_after_scope_02();
+    //auto l = test_09_stack_use_after_scope_02();
 
-    test_09_stack_use_after_scope_03(3);  // geht nicht ...
+    //test_09_stack_use_after_scope_03(3);  // geht nicht ...
 
-  //  test_09_stack_use_after_scope_04();
+    //test_09_stack_use_after_scope_04();
 }
 
 // ===========================================================================

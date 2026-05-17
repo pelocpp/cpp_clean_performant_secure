@@ -19,16 +19,16 @@ static void threadProcedure()
     buffer[subscript] = 123; // Boom!
 }
 
-static  void test_03_stack_buffer_underflow_02()
+static void test_03_stack_buffer_underflow_02()
 {
     std::thread t{ threadProcedure };
     t.join();
 }
 
-extern void test_03_stack_buffer_underflow()
+void test_03_stack_buffer_underflow()
 {
-    test_03_stack_buffer_underflow_01();
-    test_03_stack_buffer_underflow_02();
+   test_03_stack_buffer_underflow_01();
+   test_03_stack_buffer_underflow_02();
 }
 
 // ===========================================================================

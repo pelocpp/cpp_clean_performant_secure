@@ -2,8 +2,6 @@
 // 06_Invalid_Allocation_Alignment.cpp // Visual Studio Address Sanitizer
 // ===========================================================================
 
-// example1.cpp
-// invalid-allocation-alignment error
 #include <Windows.h>
 
 int ExternalAlign = 5;

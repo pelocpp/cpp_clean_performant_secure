@@ -4,7 +4,6 @@
 
 #include <print>
 
-
 // GEHT NICHT
 
 // ==21912==AddressSanitizer: detect_leaks is not supported on this platform.
@@ -17,7 +16,6 @@ void test_05_memory_leak_detection()
     // ... some complex body of code
 
     //delete[] buffer;
-
 }
 
 // ===========================================================================
