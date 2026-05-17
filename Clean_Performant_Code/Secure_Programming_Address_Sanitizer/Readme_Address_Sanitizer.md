@@ -1,4 +1,4 @@
-# Funktionale Programmierung: Die Bibliothek `std::ranges`
+# Visual Studio Address Sanitizer
 
 [Zurück](../Secure_Programming/Readme_Secure_Programming.md)
 
@@ -17,11 +17,11 @@
 
 #### Quellcode
 
-[*SecureProgrammingTools.cpp*](SecureProgrammingTools.cpp)<br />
+[*XX.cpp*](XX.cpp)<br />
 
 ---
 
-## Visual Studio Address Sanitizer <a name="link3"></a>
+## Allgemeines <a name="link3"></a>
 
 So genannte *Address Sanitizer* sind eine Compiler- und Laufzeittechnologie,
 die schwer zu findende Fehler aufdecken.
@@ -44,7 +44,7 @@ Der Visual C++ Sanitizer kann folgende Fehlerursachen aufspüren:
  * Stack use after return and use after scope.
  * Memory use after it's poisoned.
 
-#### Installation des Address Sanitizers <a name="link4"></a>
+## Installation des Address Sanitizers <a name="link4"></a>
 
 Zur Installation des Address Sanitizers finden sich [hier](https://learn.microsoft.com/en-us/cpp/sanitizers/asan?view=msvc-170) Hinweise.
 
@@ -52,13 +52,13 @@ Grundlegende Voraussetzung ist natürlich, dass der Sanitizer bei der Visual Stud
 
 <img src="VisualStudio_AddressSanitizer_02.png" width="300">
 
-*Abbildung* 5: Installation des *Address Sanitizers* in den Einstellungen des *Visual Studio Installers*.
+*Abbildung* 1: Installation des *Address Sanitizers* in den Einstellungen des *Visual Studio Installers*.
 
 Dann muss man den Sanitizer pro Projekt in den *Projekt Eigenschaften* aktivieren:
 
 <img src="VisualStudio_AddressSanitizer_01.png" width="700">
 
-*Abbildung* 6: *Enable Address Sanitizer*-Einstellung in den Einstellungen des Projekts.
+*Abbildung* 2: *Enable Address Sanitizer*-Einstellung in den Einstellungen des Projekts.
 
 
 *Hinweis*:<br />
@@ -79,6 +79,9 @@ PATH=$(VC_ExecutablePath_x64);%PATH%
 ASAN_SYMBOLIZER_PATH=$(VC_ExecutablePath_x64)
 ```
    
+
+## Ein Beispiel <a name="link4"></a>
+
 Es folgt ein Beispiel, um den Address Sanitizer zu testen:
 
 ```cpp
