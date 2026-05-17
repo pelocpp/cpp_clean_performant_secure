@@ -14,6 +14,8 @@
 
 ### [Tools für Code-Analyse und -Bewertung](../Secure_Programming/Readme_Secure_Tools.md)
 
+### [Visual Studio Address Sanitizer](../Secure_Programming_Address_Sanitizer/Readme_Address_Sanitizer.md)
+
 ### [*SafeInt*: Eine Bibliothek zum Schutz vor Integer-Überläufen](../SafeInt/Readme_SafeInt.md)
 
 ### [*SafeArray*: Hilfsbibliotheken für Arrays zum Schutz vor falschen Indizes](../SafeArray/Readme_SafeArray.md)
