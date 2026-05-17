@@ -1343,6 +1343,8 @@ COW-Zeichenketten sind weniger geeignet, wenn
   * häufige Änderungen an den Zeichenketten vorgenommen werden müssen.
 
 
+---
+
 ## Literatur
 
 Eine umfassende Einführung in das Thema &bdquo;*Copy-On-Write*&rdquo; findet man

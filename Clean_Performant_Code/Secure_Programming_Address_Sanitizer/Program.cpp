@@ -22,9 +22,9 @@ int main()
     //test_05_memory_leak_detection();
     //test_06_invalid_allocation_alignment();
    // test_07_virtual_base_class_destructor();
-    test_08_stack_use_after_scope();
+   // test_08_stack_use_after_scope();
     //test_09_stack_use_after_return();
-    //test_10_global_buffer_overflow();
+    test_10_global_buffer_overflow();
 
     return 0;
 }

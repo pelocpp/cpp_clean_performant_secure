@@ -5,23 +5,41 @@
 ---
 
 ## Inhalt
-
-#### Tools / Code-Analyse und -Bewertung
-  	
+  
   * [Allgemeines](#link1)
-  * [Visual Studio Address Sanitizer](#link3)
+  * [Interne Funktionsweise eines Address Sanitizers](#link2)
+  * [Debug- und Release-Build](#link3)
   * [Installation des Address Sanitizers](#link4)
-  * [Literatur](#link7)
+  * [Ein erstes Beispiel](#link5)
+  * [Fehler: *alloc-dealloc-mismatch*](#link6)
+  * [Fehler: *stack-buffer-underflow*](#link7)
+  * [Fehler: *double-free*](#link8)
+  * [Fehler: *invalid-allocation-alignment*](#link9)
+  * [Fehler: *new-delete-type-mismatch*](#link10)
+  * [Fehler: *stack-use-after-scope*](#link11)
+  * [Fehler: *stack-use-after-return*](#link12)
+  * [Fehler: *global-buffer-overflow*](#link13)
+  * [Literatur](#link14)
 
 ---
 
 #### Quellcode
 
-[*XX.cpp*](XX.cpp)<br />
+[*01_Basic_Global_Buffer_Overflow.cpp*](01_Basic_Global_Buffer_Overflow.cpp)<br/>
+[*02_Alloc_Dealloc_Mismatch.cpp*](02_Alloc_Dealloc_Mismatch.cpp)<br/>
+[*03_Stack_Buffer_Underflow.cpp*](03_Stack_Buffer_Underflow.cpp)<br/>
+[*04_Double_Free.cpp*](04_Double_Free.cpp)<br/>
+[*05_Memory_Leak_Detection.cpp*](05_Memory_Leak_Detection.cpp)<br/>
+[*06_Invalid_Allocation_Alignment.cpp*](06_Invalid_Allocation_Alignment.cpp)<br/>
+[*07_Virtual_Base_Class_Destructor.cpp*](07_Virtual_Base_Class_Destructor.cpp)<br/>
+[*08_Stack_Use_After_Scope.cpp*](08_Stack_Use_After_Scope.cpp)<br/>
+[*09_Stack_Use_After_Return.cpp*](09_Stack_Use_After_Return.cpp)<br/>
+[*10_Global_Buffer_Overflow.cpp*](10_Global_Buffer_Overflow.cpp)<br/>
+[*Program.cpp*](Program.cpp)<br />
 
 ---
 
-## Allgemeines <a name="link3"></a>
+## Allgemeines <a name="link1"></a>
 
 So genannte *Address Sanitizer* sind eine Compiler- und Laufzeittechnologie,
 die schwer zu findende Fehler aufdecken.
@@ -44,8 +62,44 @@ Der Visual C++ Sanitizer kann folgende Fehlerursachen aufspüren:
  * Stack use after return and use after scope.
  * Memory use after it's poisoned.
 
+---
 
-## Debug- und Release-Build
+## Interne Funktionsweise eines Address Sanitizers <a name="link2"></a>
+
+Ein Address Sanitizer (ASan) arbeitet, indem es Übersetungszeit-Zeit Instrumentierungen
+mit einer Laufzeitbibliothek kombiniert,
+um jedes einzelne Byte des Speichers zu überwachen, auf das ein Programm zugreift.
+
+### Der Kernmechanismus: Shadow Memory.
+
+ASan reserviert einen dedizierten Bereich des virtuellen Adressraums, der als &bdquo;*Shadow Memory*&rdquo; (Schatten-Speicher) bezeichnet wird.
+
+  * 1:8-Verhältnis: Jeweils acht Bytes des Anwendungsspeichers werden durch genau ein Byte im Shadow Memory überwacht.
+  * Mapping: Das Tool verwendet eine einfache mathematische Formel, um für jede beliebige Speicheradresse schnell das entsprechende Shadow-Byte zu ermitteln: `ShadowAddr = (Addr >> 3) + Offset`.
+  * Poisoning: Der Wert eines Shadow-Bytes gibt an, ob die zugehörigen 8 Bytes &bdquo;clean&rdquo; (sicher zugreifbar) oder &bdquo;poisoned&rdquo; (ungültig) sind.
+
+### Wie wird der Maschinencode modifiziert
+
+Wird in Visual Studio die Option `/fsanitize=address` aktiviert, &bdquo;bestückt&rdquo; der Compiler den Maschinencode tatsächlich mit zusätzlichen Instruktionen:
+
+  * Instruktions-Injektion: Vor jedem Lese- oder Schreibzugriff auf den Speicher fügt der Compiler eine &bdquo;Prüfung&rdquo; ein. Er berechnet die Shadow-Adresse, liest das entsprechende Shadow-Byte aus und überprüft, ob der Speicherbereich als &bdquo;poisoned&rdquo; markiert ist.
+  * Redzones: Der Compiler fügt &bdquo;Padding&rdquo; (Füllbereiche) um globale Variablen sowie Stack-Variablen herum ein. Diese &bdquo;Redzones&rdquo; werden im Shadow Memory als &bdquo;poisoned&rdquo; markiert; somit trifft jeder &bdquo;Off-by-one&rdquo;-Fehler (ein um eins verschobener Zugriff) unmittelbar auf ein markiertes Byte und löst einen Fehler aus.
+  * Funktions-Interzeption: Die Laufzeitbibliothek ersetzt Standardfunktionen wie `malloc` und `free`.
+    * `malloc` fügt um den zugewiesenen Speicherblock herum &bdquo;poisoned&rdquo; Redzones ein.
+    * `free` markiert den gesamten freigegebenen Block als &bdquo;poisoned&rdquo; und verschiebt ihn in eine &bdquo;Quarantäne&rdquo;, sodass er nicht unmittelbar wiederverwendet werden kann &ndash; dies hilft dabei, &bdquo;Use-after-free&rdquo;-Fehler zu erkennen.
+  
+### Leistung und Visual Studio-Integration
+
+  * 2-fache Verlangsamung: Aufgrund der zusätzlichen Instruktionen bei jedem Speicherzugriff läuft Ihr Programm typischerweise etwa doppelt so langsam.
+  * Speicher-Overhead: Der Speicherverbrauch steigt aufgrund des Shadow Memory und der Redzones häufig auf das 2- bis 4-fache an.
+  * IDE-Feedback: In Visual Studio 2019 (ab Version 16.9) und 2022 fängt die IDE im Fehlerfall die Meldung ab und zeigt einen detaillierten Bericht direkt im Editor an; dabei werden die exakte Codezeile sowie die Zuweisungshistorie des betroffenen Speicherbereichs präzise identifiziert.
+  
+*Fazit*:<br />
+ASan stellt keine bloßen Vermutungen an; Es validiert aktiv den Speicherzustand bei jeder einzelnen Lese- oder Schreiboperation auf der Ebene der Hardware-Instruktionen.
+
+---
+
+## Debug- und Release-Build <a name="link3"></a>
 
 In Visual Studio ist der Address Sanitizer sowohl im Debug- als auch im Release-Builds einsetzbar.
 
@@ -67,6 +121,8 @@ Wechseln Sie in diesen spezifischen Szenarien zu einem Release-Build mit ASan:
  * Leistungsintensive Anwendungen: ASan verursacht einen erheblichen Mehraufwand (2- bis 3-mal langsamer). Wenn Ihre Anwendung im Debug-Modus zu langsam für Tests ist, kann ein Release-Build sie wieder nutzbar machen.
  * Continuous Integration (CI): Viele Teams erstellen eine spezielle &bdquo;Release-ASan&rdquo;-Konfiguration für automatisierte Tests, um sicherzustellen, dass der produktionsnahe Code-Pfad stabil ist.
 
+
+---
 
 ## Installation des Address Sanitizers <a name="link4"></a>
 
@@ -103,8 +159,9 @@ PATH=$(VC_ExecutablePath_x64);%PATH%
 ASAN_SYMBOLIZER_PATH=$(VC_ExecutablePath_x64)
 ```
    
+---
 
-## Ein erstes Beispiel <a name="link4"></a>
+## Ein erstes Beispiel <a name="link5"></a>
 
 Es folgt ein Beispiel, um den Address Sanitizer zu testen:
 
@@ -175,7 +232,7 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
 
 ---
 
-## Fehler: *alloc-dealloc-mismatch*
+## Fehler: *alloc-dealloc-mismatch* <a name="link6"></a>
 
 Ermöglicht die Laufzeiterkennung von nicht übereinstimmenden Speicheroperationen,
 die zu undefiniertem Verhalten führen können &ndash; wie zum Beispiel:
@@ -294,7 +351,7 @@ SUMMARY: AddressSanitizer: alloc-dealloc-mismatch C:\02_Alloc_Dealloc_Mismatch.c
 
 ---
 
-## Fehler: *stack-buffer-underflow*
+## Fehler: *stack-buffer-underflow* <a name="link7"></a>
 
 Diese Fehlermeldungen weisen auf einen Speicherzugriff vor dem Beginn einer Stack-Variablen hin.
 
@@ -401,7 +458,7 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
 
 ---
 
-## Fehler: *double-free*
+## Fehler: *double-free* <a name="link8"></a>
 
 Es geht um die Freigabe eines bereits freigegebenen Speicherbereichs.
 
@@ -452,7 +509,7 @@ SUMMARY: AddressSanitizer: bad-free C:\Secure_Programming_Address_Sanitizer\04_D
 
 ---
 
-## Fehler: *invalid-allocation-alignment*
+## Fehler: *invalid-allocation-alignment* <a name="link9"></a>
 
 Die Funktion `_aligned_malloc` erfordert eine Zweierpotenz zur Angabe der Ausrichtung.
 Wir simulieren die &bdquo;externe&bdquo; Berechnung eines Alignment-Faktors mithilfe einer unoptimierten globalen Variable.
@@ -495,7 +552,7 @@ SUMMARY: AddressSanitizer: invalid-allocation-alignment C:\Secure_Programming_Ad
 
 ---
 
-## Fehler: *new-delete-type-mismatch*
+## Fehler: *new-delete-type-mismatch* <a name="link10"></a>
 
 Im Beispiel zu diesem Fehler wird von einer Klasse `Base` wird nur der Konstruktor `~Base` aufgerufen, nicht jedoch `~Derived`.
 
@@ -572,74 +629,380 @@ SUMMARY: AddressSanitizer: new-delete-type-mismatch C:\Secure_Programming_Addres
 
 ---
 
-## Fehler: *stack-use-after-scope*
+## Fehler: *stack-use-after-scope* <a name="link11"></a>
 
 Die Verwendung einer Stack-Adresse außerhalb des lexikalischen Gültigkeitsbereichs der Lebensdauer einer Variablen
 kann in C oder C++ auf vielfältige Weise erfolgen:
 
-Beispiel 1 – Einfache verschachtelte lokale Variable
-
-Beispiel 2 – Lambda-Capture
-
-Beispiel 3 – Destruktor-Reihenfolge bei lokalen Variablen
-
-Beispiel 4 – Temporäre Objekte
-
+### Beispiel 1 – Einfache verschachtelte lokale Variable
 
 *Beispiel*:
 
 ```cpp
+01: static int* gp = nullptr;
+02: static bool b = true;
+03: 
+04: int test() {
+05: 
+06:     if (b) {
+07:         int x[5] = { };
+08:         gp = x + 1;
+09:     }
+10: 
+11:     return *gp;  // Boom!
+12: }
 ```
 
 *Ausgabe*:
 
 ```
+=================================================================
+==10380==ERROR: AddressSanitizer: stack-use-after-scope on address 0x00b1099afcd4 at pc 0x7ff6df9e28cb bp 0x00b1099afc90 sp 0x00b1099afc98
+READ of size 4 at 0x00b1099afcd4 thread T0
+    #0 0x7ff6df9e28ca in test_09_stack_use_after_scope_01 C:\08_Stack_Use_After_Scope.cpp:22
+    #1 0x7ff6df9e2954 in test_08_stack_use_after_scope(void) C:\08_Stack_Use_After_Scope.cpp:78
+    #2 0x7ff6df9e34b4 in main C:\Program.cpp:25
+    #3 0x7ff6dfa60c38 in invoke_main D:\a\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:78
+    #4 0x7ff6dfa60b81 in __scrt_common_main_seh D:\a\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:288
+    #5 0x7ff6dfa60a3d in __scrt_common_main D:\a\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:330
+    #6 0x7ff6dfa60cad in mainCRTStartup D:\a\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_main.cpp:16
+    #7 0x7ffe8343e956  (C:\Windows\System32\KERNEL32.DLL+0x18002e956)
+    #8 0x7ffe843c427b  (C:\Windows\SYSTEM32\ntdll.dll+0x18000427b)
+
+Address 0x00b1099afcd4 is located in stack of thread T0 at offset 36 in frame
+    #0 0x7ff6df9e26ff in test_09_stack_use_after_scope_01 C:\08_Stack_Use_After_Scope.cpp:15
+
+  This frame has 1 object(s):
+    [32, 52) 'x' <== Memory access at offset 36 is inside this variable
+HINT: this may be a false positive if your program uses some custom stack unwind mechanism, swapcontext or vfork
+      (longjmp, SEH and C++ exceptions *are* supported)
+SUMMARY: AddressSanitizer: stack-use-after-scope C:\08_Stack_Use_After_Scope.cpp:22 in test_09_stack_use_after_scope_01
+Shadow bytes around the buggy address:
+  0x00b1099afa00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x00b1099afa80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x00b1099afb00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x00b1099afb80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x00b1099afc00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x00b1099afc80: 00 00 00 00 00 00 f1 f1 f1 f1[f8]f8 f8 f3 f3 f3
+  0x00b1099afd00: f3 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x00b1099afd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x00b1099afe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x00b1099afe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x00b1099aff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==10380==ABORTING
 ```
 
 
----
-
-## Fehler: *XXX*
-
-XXX
+### Beispiel 2 – Lambda-Capture
 
 *Beispiel*:
 
 ```cpp
+01: auto test() {
+02: 
+03:     std::function<int()> f;
+04: 
+05:     {
+06:         int x = 0;
+07:         f = [&x]() {
+08:             return x;
+09:         };
+10:     }
+11: 
+12:     return f();  // Boom!
+13: }
 ```
 
 *Ausgabe*:
 
 ```
-```
+=================================================================
+==22200==ERROR: AddressSanitizer: stack-use-after-scope on address 0x0087106ffcc0 at pc 0x7ff6a58c2a49 bp 0x0087106ffb00 sp 0x0087106ffb08
+READ of size 4 at 0x0087106ffcc0 thread T0
+    #0 0x7ff6a58c2a48 in `test_09_stack_use_after_scope_02'::`3'::<lambda_1>::operator() C:\08_Stack_Use_After_Scope.cpp:35
+    #1 0x7ff6a58c325e in std::invoke<`test_09_stack_use_after_scope_02'::`3'::<lambda_1> &> C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\type_traits:1801
+    #2 0x7ff6a58c2bf6 in std::_Func_impl_no_alloc<`test_09_stack_use_after_scope_02'::`3'::<lambda_1>,int>::_Do_call C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\functional:1007
+    #3 0x7ff6a58c33e2 in std::_Func_class<int>::operator()(void) const C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\include\functional:1057
+    #4 0x7ff6a58c2908 in test_09_stack_use_after_scope_02 C:\08_Stack_Use_After_Scope.cpp:39
+    #5 0x7ff6a58c2b04 in test_08_stack_use_after_scope(void) C:\08_Stack_Use_After_Scope.cpp:81
+    #6 0x7ff6a58c4604 in main C:\Program.cpp:25
+    #7 0x7ff6a5941d88 in invoke_main D:\a\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:78
+    #8 0x7ff6a5941cd1 in __scrt_common_main_seh D:\a\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:288
+    #9 0x7ff6a5941b8d in __scrt_common_main D:\a\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:330
+    #10 0x7ff6a5941dfd in mainCRTStartup D:\a\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_main.cpp:16
+    #11 0x7ffe8343e956  (C:\Windows\System32\KERNEL32.DLL+0x18002e956)
+    #12 0x7ffe843c427b  (C:\Windows\SYSTEM32\ntdll.dll+0x18000427b)
 
+Address 0x0087106ffcc0 is located in stack of thread T0 at offset 128 in frame
+    #0 0x7ff6a58c26ff in test_09_stack_use_after_scope_02 C:\08_Stack_Use_After_Scope.cpp:28
+
+  This frame has 3 object(s):
+    [32, 96) 'f'
+    [48, 52) 'x'
+    [64, 72) 'compiler temporary' <== Memory access at offset 128 overflows this variable
+HINT: this may be a false positive if your program uses some custom stack unwind mechanism, swapcontext or vfork
+      (longjmp, SEH and C++ exceptions *are* supported)
+SUMMARY: AddressSanitizer: stack-use-after-scope C:\08_Stack_Use_After_Scope.cpp:35 in `test_09_stack_use_after_scope_02'::`3'::<lambda_1>::operator()
+Shadow bytes around the buggy address:
+  0x0087106ffa00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0087106ffa80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0087106ffb00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0087106ffb80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0087106ffc00: 00 00 00 00 00 00 00 00 f1 f1 f1 f1 00 00 00 00
+=>0x0087106ffc80: 00 00 00 00 f2 f2 f2 f2[f8]f2 f8 f3 f3 f3 f3 00
+  0x0087106ffd00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0087106ffd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0087106ffe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0087106ffe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0087106fff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==22200==ABORTING
+```
 
 ---
 
-## Fehler: *XXX*
+## Fehler: *stack-use-after-return* <a name="link12"></a>
 
-XXX
+Verwendung von Stack-Speicher nach der Rückkehr.
+
+Unter Windows ist die Fehlererkennung für `stack-use-after-return` standardmäßig deaktiviert.
+Um sie zu aktivieren, ist die Umgebungsvariable `ASAN_OPTIONS=detect_stack_use_after_return=1` vor der Programmausführung zu setzen.
+
+*Hinweis*:<br />
+Mit der Eingabe von *env* im *Developer Command Prompt* erhält man den Zugang zu den Umgebungsvariablen.
+
+*Hinweis*:<br />
+Diese Überprüfung erfordert eine Codegenerierung, die durch eine zusätzliche Compiler-Option aktiviert wird: `/fsanitize-address-use-after-return`.
+Geben Sie `/fsanitize-address-use-after-return` unter &bdquo;Command Line&rdquo; unten in &bdquo;Additional Options&rdquo; ein.
+
+*Hinweis*:<br />
+Nach dem Setzen der Umgebungsvariablen ist Visual Studio neu zu starten, damit die Änderungen wirksam werden.
+
 
 *Beispiel*:
 
 ```cpp
+01: static volatile char* x = nullptr;
+02: 
+03: static void foo() {
+04:     char stack_buffer[100]{};
+05:     x = &stack_buffer[50];
+06: }
+07: 
+08: static int test_09_stack_use_after_return_01() {
+09: 
+10:     foo();
+11: 
+12:     *x = 123; // Boom!
+13: 
+14:     return (*x == 123);
+15: }
 ```
 
 *Ausgabe*:
 
 ```
+=================================================================
+==22700==ERROR: AddressSanitizer: stack-buffer-underflow on address 0x017080a10000 at pc 0x7ffd44ebc3a4 bp 0x0036164ff880 sp 0x0036164ff020
+WRITE of size 100 at 0x017080a10000 thread T0
+    #0 0x7ffd44ebc3a3 in __asan_memset D:\a\_work\1\s\src\vctools\asan\llvm\compiler-rt\lib\asan\asan_interceptors_memintrinsics.cpp:70
+    #1 0x7ff7189c6dec in foo C:\09_Stack_Use_After_Return.cpp:11
+    #2 0x7ff7189c6b50 in test_09_stack_use_after_return_01 C:\09_Stack_Use_After_Return.cpp:17
+    #3 0x7ff7189c6c44 in test_09_stack_use_after_return(void) C:\09_Stack_Use_After_Return.cpp:26
+    #4 0x7ff7189c70c4 in main C:\Program.cpp:26
+    #5 0x7ff718a44878 in invoke_main D:\a\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:78
+    #6 0x7ff718a447c1 in __scrt_common_main_seh D:\a\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:288
+    #7 0x7ff718a4467d in __scrt_common_main D:\a\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:330
+    #8 0x7ff718a448ed in mainCRTStartup D:\a\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_main.cpp:16
+    #9 0x7ffe8343e956  (C:\Windows\System32\KERNEL32.DLL+0x18002e956)
+    #10 0x7ffe843c427b  (C:\Windows\SYSTEM32\ntdll.dll+0x18000427b)
+
+Address 0x017080a10000 is located in stack of thread T0 at offset 0 in frame
+    #0 0x7ff7189c6c5f in foo C:\09_Stack_Use_After_Return.cpp:10
+
+  This frame has 1 object(s):
+    [32, 132) 'stack_buffer' <== Memory access at offset 0 partially underflows this variable
+HINT: this may be a false positive if your program uses some custom stack unwind mechanism, swapcontext or vfork
+      (longjmp, SEH and C++ exceptions *are* supported)
+SUMMARY: AddressSanitizer: stack-buffer-underflow C:\09_Stack_Use_After_Return.cpp:11 in foo
+Shadow bytes around the buggy address:
+  0x017080a0fd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x017080a0fe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x017080a0fe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x017080a0ff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x017080a0ff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x017080a10000:[f1]f1 f1 f1 00 00 00 00 00 00 00 00 00 00 00 00
+  0x017080a10080: 04 f2 f3 f3 f3 f3 f3 f3 f3 f3 f3 f3 f3 f3 f3 f3
+  0x017080a10100: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x017080a10180: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x017080a10200: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x017080a10280: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==22700==ABORTING
+```
+
+
+---
+
+## Fehler: *global-buffer-overflow* <a name="link13"></a>
+
+Globaler Pufferüberlauf.
+
+*Beispiel*:
+
+```cpp
+01: struct C {
+02:     static int array[10];
+03: };
+04: 
+05: // normal global
+06: static int global[10];
+07: 
+08: // class static
+09: int C::array[10];
+10: 
+11: static int test_10_global_buffer_overflow_01()
+12: { 
+13:     int first = 1;
+14: 
+15:     // choose one of these options: 'g', 'c', 'f', 'l'
+16:     char mode = { 'l' };
+17: 
+18:     switch (mode)
+19:     {
+20:     case 'g': return global[first * 11];         // Boom! simple global
+21:     case 'c': return C::array[first * 11];       // Boom! class static
+22:     case 'f':
+23:     {
+24:         static int array[10] = {};
+25:         return array[first * 11];                // Boom! function static
+26:     }
+27:     case 'l':
+28:         // literal global ptr created by compiler
+29:         const char* str = "0123456789";
+30:         return str[first * 11];                  // Boom! .rdata string literal allocated by compiler
+31:     }
+32:     return 0;
+33: }
+```
+
+Wir testen das Beispiel an Hand der Zeichenkette:
+
+*Ausgabe*:
+
+```
+=================================================================
+==20024==ERROR: AddressSanitizer: global-buffer-overflow on address 0x7ff6a48a552b at pc 0x7ff6a4803f72 bp 0x0081fe8ffc40 sp 0x0081fe8ffc48
+READ of size 1 at 0x7ff6a48a552b thread T0
+    #0 0x7ff6a4803f71 in test_10_global_buffer_overflow_01 C:\10_Global_Buffer_Overflow.cpp:41
+    #1 0x7ff6a4803d74 in test_10_global_buffer_overflow(void) C:\10_Global_Buffer_Overflow.cpp:48
+    #2 0x7ff6a4803fa4 in main C:\Program.cpp:27
+    #3 0x7ff6a4881728 in invoke_main D:\a\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:78
+    #4 0x7ff6a4881671 in __scrt_common_main_seh D:\a\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:288
+    #5 0x7ff6a488152d in __scrt_common_main D:\a\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:330
+    #6 0x7ff6a488179d in mainCRTStartup D:\a\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_main.cpp:16
+    #7 0x7ffe8343e956  (C:\Windows\System32\KERNEL32.DLL+0x18002e956)
+    #8 0x7ffe843c427b  (C:\Windows\SYSTEM32\ntdll.dll+0x18000427b)
+
+0x7ff6a48a552b is located 0 bytes after global variable '<C++ string literal>' defined in '10_Global_Buffer_Overflow.cpp:40:26' (0x7ff6a48a5520) of size 11
+  '<C++ string literal>' is ascii string '0123456789'
+SUMMARY: AddressSanitizer: global-buffer-overflow C:\10_Global_Buffer_Overflow.cpp:41 in test_10_global_buffer_overflow_01
+Shadow bytes around the buggy address:
+  0x7ff6a48a5280: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7ff6a48a5300: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7ff6a48a5380: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7ff6a48a5400: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7ff6a48a5480: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x7ff6a48a5500: 00 00 00 00 00[03]f9 f9 00 00 00 00 00 00 00 00
+  0x7ff6a48a5580: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7ff6a48a5600: 00 00 00 00 00 00 00 00 00 00 00 05 f9 f9 f9 f9
+  0x7ff6a48a5680: 03 f9 f9 f9 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7ff6a48a5700: 01 f9 f9 f9 f9 f9 f9 f9 04 f9 f9 f9 00 01 f9 f9
+  0x7ff6a48a5780: 04 f9 f9 f9 00 02 f9 f9 00 00 00 05 f9 f9 f9 f9
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==20024==ABORTING
 ```
 
 ---
 
+## Literatur <a name="link14"></a>
 
+Eine genaue Beschreibung des Visual Studio Address Sanitizers findet sich in der offiziellen Dokumentation unter
 
-Literatur <a name="link7"></a>
-
-
-https://learn.microsoft.com/en-us/cpp/sanitizers/asan?view=msvc-170
-
-
+[AddressSanitizer](https://learn.microsoft.com/en-us/cpp/sanitizers/asan?view=msvc-170).
 
 ---
 
