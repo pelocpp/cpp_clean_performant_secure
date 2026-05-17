@@ -44,58 +44,78 @@
 So genannte *Address Sanitizer* sind eine Compiler- und Laufzeittechnologie,
 die schwer zu findende Fehler aufdecken.
 
-Address Sanitizer wurde ursprünglich von Google eingeführt
+*Address Sanitizer* wurde ursprünglich von Google eingeführt
 und bieten Technologien zur Laufzeitfehlersuche,
 die das vorhandene Build-System und die vorhandenen Testressourcen direkt nutzen.
 
 Der Visual C++ Sanitizer kann folgende Fehlerursachen aufspüren:
 
- * Alloc/dealloc mismatches and new/delete type mismatches.
- * Allocations too large for the heap.
- * `calloc` overflow and `alloca` overflow.
- * *Double free* and use after free.
- * Global variable overflow.
- * Heap buffer overflow.
- * Invalid alignment of aligned values.
- * `memcpy` and `strncat` parameter overlap.
- * Stack buffer overflow and underflow.
- * Stack use after return and use after scope.
- * Memory use after it's poisoned.
+* Diskrepanzen bei Allokation/Deallokation (`new`/`delete` versus `new[]`/`delete[]`).
+* Allokationen, die zu groß für den Heap sind.
+* Überläufe bei `calloc` und `alloca`.
+* *Double Free* und Verwendung nach Freigabe.
+* Überläufe bei globalen Variablen.
+* Heap-Buffer Überläufe.
+* Ungültige Ausrichtung von ausgerichteten Variablen.
+* Parameter-Überlappungen bei `memcpy` und `strncat`.
+* Stack-Buffer-Überläufe und -Unterläufe.
+* Stack-Nutzung nach Rückkehr und nach Verlassen des Gültigkeitsbereichs.
+* Speichernutzung nach „Poisoning“ (Markierung als ungültig).
 
 ---
 
 ## Interne Funktionsweise eines Address Sanitizers <a name="link2"></a>
 
-Ein Address Sanitizer (ASan) arbeitet, indem es Übersetungszeit-Zeit Instrumentierungen
+Ein *Address Sanitizer* (*ASan*) arbeitet, indem er Übersetzungszeit-Instrumentierungen
 mit einer Laufzeitbibliothek kombiniert,
 um jedes einzelne Byte des Speichers zu überwachen, auf das ein Programm zugreift.
 
-### Der Kernmechanismus: Shadow Memory.
+### Der Kernmechanismus: *Shadow Memory*.
 
 ASan reserviert einen dedizierten Bereich des virtuellen Adressraums, der als &bdquo;*Shadow Memory*&rdquo; (Schatten-Speicher) bezeichnet wird.
 
   * 1:8-Verhältnis: Jeweils acht Bytes des Anwendungsspeichers werden durch genau ein Byte im Shadow Memory überwacht.
   * Mapping: Das Tool verwendet eine einfache mathematische Formel, um für jede beliebige Speicheradresse schnell das entsprechende Shadow-Byte zu ermitteln: `ShadowAddr = (Addr >> 3) + Offset`.
-  * Poisoning: Der Wert eines Shadow-Bytes gibt an, ob die zugehörigen 8 Bytes &bdquo;clean&rdquo; (sicher zugreifbar) oder &bdquo;poisoned&rdquo; (ungültig) sind.
+  * *Poisoning*: Der Wert eines Shadow-Bytes gibt an, ob die zugehörigen 8 Bytes &bdquo;*clean*&rdquo; (sicher zugreifbar) oder &bdquo;*poisoned*&rdquo; (ungültig) sind.
+
+
+1 Byte im Shadow Memory repräsentiert den Zustand von 8 Bytes im echten Arbeitsspeicher.
+
+### Das Prinzip der 1:8 Skalierung
+
+  * Kompression: Der Shadow Memory verbraucht nur 1/8 (12,5 %) der Größe des eigentlichen Speichers.
+  * Zweck: In diesem einen &bdquo;Schatten-Byte&bdquo; wird gespeichert, ob die dazugehörigen 8 Bytes im RAM sicher zugänglich sind oder nicht.
+  * Effizienz: Durch dieses feste Verhältnis kann der ASan per Bit-Verschiebung extrem schnell prüfen, ob ein Speicherzugriff gültig ist.
+
+### Was steht im Shadow Byte?
+
+Das einzelne Byte im Shadow Memory gibt Auskunft über die Gültigkeit der 8 Anwendungs-Bytes:
+
+  * `0x00`: Alle 8 Bytes sind "sauber" (zugreifbar).
+  * `0x01` bis `0x07`: Nur die ersten \(n\) Bytes sind zugreifbar (wichtig für das Ende von Variablen).
+  * Negativer Wert / Spezielle Codes: Der Speicher ist blockiert (z. B. &bdquo;Redzone&rdquo; um ein Array, bereits freigegebener Speicher oder Stack-Überlauf).
+
+Wenn ein Programm 8 GB RAM belegt, reserviert der Address Sanitizer zusätzlich 1 GB als Shadow Memory, um diesen Bereich zu überwachen.
+
 
 ### Wie wird der Maschinencode modifiziert
 
 Wird in Visual Studio die Option `/fsanitize=address` aktiviert, &bdquo;bestückt&rdquo; der Compiler den Maschinencode tatsächlich mit zusätzlichen Instruktionen:
 
   * Instruktions-Injektion: Vor jedem Lese- oder Schreibzugriff auf den Speicher fügt der Compiler eine &bdquo;Prüfung&rdquo; ein. Er berechnet die Shadow-Adresse, liest das entsprechende Shadow-Byte aus und überprüft, ob der Speicherbereich als &bdquo;poisoned&rdquo; markiert ist.
-  * Redzones: Der Compiler fügt &bdquo;Padding&rdquo; (Füllbereiche) um globale Variablen sowie Stack-Variablen herum ein. Diese &bdquo;Redzones&rdquo; werden im Shadow Memory als &bdquo;poisoned&rdquo; markiert; somit trifft jeder &bdquo;Off-by-one&rdquo;-Fehler (ein um eins verschobener Zugriff) unmittelbar auf ein markiertes Byte und löst einen Fehler aus.
-  * Funktions-Interzeption: Die Laufzeitbibliothek ersetzt Standardfunktionen wie `malloc` und `free`.
+  * *Redzones*: Der Compiler fügt &bdquo;Padding&rdquo; (Füllbereiche) um globale Variablen sowie Stack-Variablen herum ein. Diese &bdquo;Redzones&rdquo; werden im Shadow Memory als &bdquo;poisoned&rdquo; markiert. Somit trifft jeder &bdquo;Off-by-one&rdquo;-Fehler (ein um eins verschobener Zugriff) unmittelbar auf ein markiertes Byte und löst einen Fehler aus.
+  * Funktions-Interzeption: Die Laufzeitbibliothek ersetzt Standardfunktionen wie `malloc` und `free`:
     * `malloc` fügt um den zugewiesenen Speicherblock herum &bdquo;poisoned&rdquo; Redzones ein.
     * `free` markiert den gesamten freigegebenen Block als &bdquo;poisoned&rdquo; und verschiebt ihn in eine &bdquo;Quarantäne&rdquo;, sodass er nicht unmittelbar wiederverwendet werden kann &ndash; dies hilft dabei, &bdquo;Use-after-free&rdquo;-Fehler zu erkennen.
   
-### Leistung und Visual Studio-Integration
+### Leistung und Visual Studio Integration
 
-  * 2-fache Verlangsamung: Aufgrund der zusätzlichen Instruktionen bei jedem Speicherzugriff läuft Ihr Programm typischerweise etwa doppelt so langsam.
+  * 2-fache Verlangsamung: Aufgrund der zusätzlichen Instruktionen bei jedem Speicherzugriff läuft ein Programm typischerweise etwa doppelt so langsam.
   * Speicher-Overhead: Der Speicherverbrauch steigt aufgrund des Shadow Memory und der Redzones häufig auf das 2- bis 4-fache an.
-  * IDE-Feedback: In Visual Studio 2019 (ab Version 16.9) und 2022 fängt die IDE im Fehlerfall die Meldung ab und zeigt einen detaillierten Bericht direkt im Editor an; dabei werden die exakte Codezeile sowie die Zuweisungshistorie des betroffenen Speicherbereichs präzise identifiziert.
+  * IDE-Feedback: Im Visual Studio fängt die IDE im Fehlerfall die Meldung ab und zeigt einen detaillierten Bericht direkt im Editor an. Dabei werden die exakte Codezeile sowie die Zuweisungshistorie des betroffenen Speicherbereichs präzise identifiziert.
   
 *Fazit*:<br />
-ASan stellt keine bloßen Vermutungen an; Es validiert aktiv den Speicherzustand bei jeder einzelnen Lese- oder Schreiboperation auf der Ebene der Hardware-Instruktionen.
+ASan stellt keine bloßen Vermutungen an. Es validiert aktiv den Speicherzustand bei jeder einzelnen Lese- oder Schreiboperation auf der Ebene der Hardware-Instruktionen.
 
 ---
 
@@ -105,22 +125,21 @@ In Visual Studio ist der Address Sanitizer sowohl im Debug- als auch im Release-
 
 Die Wahl hängt jedoch von Ihrem spezifischen Ziel für die jeweilige Sitzung ab.
 
-Verwende den Debug-Mode für die anfängliche Fehlersuche.
+### Verwende den Debug-Mode für die anfängliche Fehlersuche.
 
-Dies ist der Standardansatz für die meisten Entwickler während der Programmierphase.
+Dies ist der Standardansatz für die meisten Entwickler während der Programmierphase:
 
  * Voller Kontext: Man erhält präzise Zeilennummern und Variablennamen in den Fehlerberichten.
- * Keine Störung durch Optimierungen: Compiler &bdquo;optimieren&rdquo; manchmal fehlerhaften Code weg, wodurch es für ASan (Address Sanitizer) im Release-Modus schwieriger wird, diese Fehler zu erkennen.
+ * Keine Störung durch Optimierungen: Compiler &bdquo;optimieren&rdquo; manchmal fehlerhaften Code weg, wodurch es für den ASan im Release-Modus schwieriger wird, diese Fehler zu erkennen.
  * Einfachere Einrichtung: ASan lässt sich im Debug-Modus oft leichter konfigurieren, da andere Debugging-Funktionen wie Assertions (`assert`) ergänzt werden.
 
-Verwende den Release-Mode für &bdquo;versteckte&rdquo; oder leistungsintensive Fehler:
+### Verwende den Release-Mode für &bdquo;versteckte&rdquo; oder leistungsintensive Fehler:
 
 Wechseln Sie in diesen spezifischen Szenarien zu einem Release-Build mit ASan:
 
- * Fehler durch Optimierung: Manche Speicherprobleme treten nur dann auf, wenn der Compiler den Code in Bezg auf die Optimierung umstrukturiert hat.
- * Leistungsintensive Anwendungen: ASan verursacht einen erheblichen Mehraufwand (2- bis 3-mal langsamer). Wenn Ihre Anwendung im Debug-Modus zu langsam für Tests ist, kann ein Release-Build sie wieder nutzbar machen.
- * Continuous Integration (CI): Viele Teams erstellen eine spezielle &bdquo;Release-ASan&rdquo;-Konfiguration für automatisierte Tests, um sicherzustellen, dass der produktionsnahe Code-Pfad stabil ist.
-
+ * Fehler durch Optimierung: Manche Speicherprobleme treten nur dann auf, wenn der Compiler den Code in Bezug auf die Optimierung umstrukturiert hat.
+ * Leistungsintensive Anwendungen: ASan verursacht einen erheblichen Mehraufwand (2- bis 3-mal langsamer). Wenn die Anwendung im Debug-Modus zu langsam für Tests ist, kann ein Release-Build sie wieder nutzbar machen.
+ * *Continuous Integration* (CI): Viele Teams erstellen eine spezielle &bdquo;Release-ASan&rdquo;-Konfiguration für automatisierte Tests, um sicherzustellen, dass der produktionsnahe Code-Pfad stabil ist.
 
 ---
 
@@ -168,7 +187,7 @@ Es folgt ein Beispiel, um den Address Sanitizer zu testen:
 ```cpp
 01: int buffer[20];
 02: 
-03: void test_01_basic_global_buffer_overflow()
+03: void test()
 04: {
 05:     std::println("Hello Global Buffer Overflow:");
 06: 
@@ -254,7 +273,7 @@ Nach dem Setzen der Umgebungsvariablen ist Visual Studio neu zu starten, damit d
 *Beispiel*:
 
 ```cpp
-01: void test_02_alloc_dealloc_mismatch()
+01: void test()
 02: {
 03:     std::println("Allocate / Deallocate Mismatch:");
 04: 
@@ -378,7 +397,7 @@ Diese Fehlermeldungen weisen auf einen Speicherzugriff vor dem Beginn einer Stac
 18:     t.join();
 19: }
 20: 
-21: void test_03_stack_buffer_underflow()
+21: void test()
 22: {
 23:    test_03_stack_buffer_underflow_01();
 24:    test_03_stack_buffer_underflow_02();
@@ -462,7 +481,7 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
 
 Es geht um die Freigabe eines bereits freigegebenen Speicherbereichs.
 
-  * In C kann man `free` fehlerhaft aufrufen.
+  * In C kann man `free` mehr als einmal aufrufen.
   * In C++ kann man `delete` mehr als einmal aufrufen.
 
 
@@ -512,7 +531,7 @@ SUMMARY: AddressSanitizer: bad-free C:\Secure_Programming_Address_Sanitizer\04_D
 ## Fehler: *invalid-allocation-alignment* <a name="link9"></a>
 
 Die Funktion `_aligned_malloc` erfordert eine Zweierpotenz zur Angabe der Ausrichtung.
-Wir simulieren die &bdquo;externe&bdquo; Berechnung eines Alignment-Faktors mithilfe einer unoptimierten globalen Variable.
+Wir simulieren die &bdquo;externe&rdquo; Berechnung eines Alignment-Faktors mithilfe einer unoptimierten globalen Variable.
 
 
 *Beispiel*:
@@ -557,7 +576,7 @@ SUMMARY: AddressSanitizer: invalid-allocation-alignment C:\Secure_Programming_Ad
 Im Beispiel zu diesem Fehler wird von einer Klasse `Base` wird nur der Konstruktor `~Base` aufgerufen, nicht jedoch `~Derived`.
 
 Der Compiler generiert einen Aufruf von `~Base()`, da der Destruktor der Basisklasse nicht virtuell ist.
-Beim Aufruf von `delete b` wird der Destruktor des Objekts an die Standarddefinition gebunden.
+Beim Aufruf von `delete b` wird der Destruktor des Objekts an die Definition der Basisklasse gebunden.
 
 Ein fehlendes Schlüsselwort `virtual` bei der Deklaration des Destruktors ist ein häufiger Fehler in C++ bei der Verwendung von Vererbung.
 
@@ -580,7 +599,7 @@ Ein fehlendes Schlüsselwort `virtual` bei der Deklaration des Destruktors ist ei
 13:     T t;
 14: };
 15: 
-16: void test_07_virtual_base_class_destructor()
+16: void test()
 17: {
 18:     Base* b = new Derived;
 19:     delete b;  // Boom! 
@@ -634,7 +653,7 @@ SUMMARY: AddressSanitizer: new-delete-type-mismatch C:\Secure_Programming_Addres
 Die Verwendung einer Stack-Adresse außerhalb des lexikalischen Gültigkeitsbereichs der Lebensdauer einer Variablen
 kann in C oder C++ auf vielfältige Weise erfolgen:
 
-### Beispiel 1 – Einfache verschachtelte lokale Variable
+### Beispiel 1 &ndash; Einfache verschachtelte lokale Variable
 
 *Beispiel*:
 
@@ -712,7 +731,7 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
 ```
 
 
-### Beispiel 2 – Lambda-Capture
+### Beispiel 2 &ndash; Lambda-Capture
 
 *Beispiel*:
 
@@ -941,7 +960,7 @@ Globaler Pufferüberlauf.
 33: }
 ```
 
-Wir testen das Beispiel an Hand der Zeichenkette:
+Wir testen das Beispiel an Hand der Zeichenkette `"0123456789"`:
 
 *Ausgabe*:
 
@@ -1001,11 +1020,10 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
 ## Literatur <a name="link14"></a>
 
 Eine genaue Beschreibung des Visual Studio Address Sanitizers findet sich in der offiziellen Dokumentation unter
-
 [AddressSanitizer](https://learn.microsoft.com/en-us/cpp/sanitizers/asan?view=msvc-170).
 
 ---
 
-[Zurück](./Readme_Secure_Programming.md)
+[Zurück](../Secure_Programming/Readme_Secure_Programming.md)
 
 ---
