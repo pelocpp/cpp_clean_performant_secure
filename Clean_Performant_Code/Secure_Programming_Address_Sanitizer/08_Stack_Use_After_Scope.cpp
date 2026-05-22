@@ -12,7 +12,7 @@
 static int* gp = nullptr;
 static bool b = true;
 
-static int test_09_stack_use_after_scope_01() {
+static int test_08_stack_use_after_scope_01() {
 
     if (b) {
         int x[5] = { };
@@ -25,7 +25,7 @@ static int test_09_stack_use_after_scope_01() {
 // ---------------------------------------------------------------------------
 // Example 2: Lambda Capture
 
-static auto test_09_stack_use_after_scope_02() {
+static auto test_08_stack_use_after_scope_02() {
 
     std::function<int()> f;
 
@@ -66,7 +66,7 @@ static void temp_from_conversion() {
     a.print();
 }
 
-static auto test_09_stack_use_after_scope_03() {
+static auto test_08_stack_use_after_scope_03() {
 
    explicit_temp();          // fails
    temp_from_conversion();   // correct
@@ -75,13 +75,13 @@ static auto test_09_stack_use_after_scope_03() {
 void test_08_stack_use_after_scope()
 {
     // Example 1 
-   // auto p = test_09_stack_use_after_scope_01();
+    auto p = test_08_stack_use_after_scope_01();
 
     // Example 2 
-    auto l = test_09_stack_use_after_scope_02();
+    auto l = test_08_stack_use_after_scope_02();
 
     // Example 3
-    // test_09_stack_use_after_scope_03();
+    test_08_stack_use_after_scope_03();
 }
 
 // ===========================================================================
