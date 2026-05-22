@@ -69,6 +69,7 @@
   * Benutzerdefinierte Speicher-Allokatoren / *Custom Allocator*
   * Speichermanager für Blöcke mit fester Größe / *Fixed-Size-Block Memory Manager*
   * Realisierung eines Objektpools / *Object Pool*
+  * PMR: Polymorphe Speicherverwaltung
 
 
 ## Tools zur Performance-Messung

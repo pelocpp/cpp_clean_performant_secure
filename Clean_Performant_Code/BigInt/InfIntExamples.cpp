@@ -32,7 +32,7 @@ namespace std {
 // adding Faculty support
 
 // function to find the faculty of given number
-static InfInt factorial(int n)
+static InfInt factorial(std::size_t n)
 {
     InfInt res{ 1 };
 
@@ -92,7 +92,7 @@ namespace InfIntExamples {
     static void infint_example_04_faculty() {
 
         // testing faculty
-        for (int n{ 2 }; n < 51; ++n)
+        for (std::size_t n{ 2 }; n < 51; ++n)
         {
             InfInt f{ factorial(n) };
             std::println("Faculty of {:2}: {}", n, f);

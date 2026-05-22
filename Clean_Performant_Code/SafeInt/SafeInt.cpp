@@ -11,9 +11,9 @@
 namespace SafeArithmetic {
 
     // sum the 16-bit signed integers stored in the values vector
-    static int16_t sum(const std::vector<int16_t>& values)
+    static std::int16_t sum(const std::vector<std::int16_t>& values)
     {
-        int16_t result{};
+        std::int16_t result{};
 
         for (auto num : values)
         {
@@ -23,20 +23,20 @@ namespace SafeArithmetic {
         return result;
     }
 
-    static int16_t sum_safe_hand_written(const std::vector<int16_t>& values)
+    static std::int16_t sum_safe_hand_written(const std::vector<std::int16_t>& values)
     {
-        int16_t result{};
+        std::int16_t result{};
 
         for (auto num : values)
         {
             //
             // Check for integer overflow *before* doing the sum operation
             //
-            if (num > 0 && result > std::numeric_limits<int16_t>::max() - num)
+            if (num > 0 && result > std::numeric_limits<std::int16_t>::max() - num)
             {
                 throw std::overflow_error("Overflow in Sum function when adding a positive number.");
             }
-            else if (num < 0 && result < std::numeric_limits<int16_t>::min() - num)
+            else if (num < 0 && result < std::numeric_limits<std::int16_t>::min() - num)
             {
                 throw std::overflow_error("Underflow in Sum function when adding a negative number.");
             }
@@ -48,11 +48,11 @@ namespace SafeArithmetic {
         return result;
     }
 
-    static int16_t sum_safe(const std::vector<int16_t>& values)
+    static std::int16_t sum_safe(const std::vector<std::int16_t>& values)
     {
         // use SafeInt to check against integer overflow
 
-        SafeInt<int16_t> sum{};    // = 0; <-- automatically initialized to 0
+        SafeInt<std::int16_t> sum{};    // = 0; <-- automatically initialized to 0
 
         for (auto num : values)
         {
@@ -66,27 +66,27 @@ namespace SafeArithmetic {
 
     static void test_maximum_int16_t()
     {
-        std::print("Maximum value representable with int16_t: ");
-        std::println("{}", std::numeric_limits<int16_t>::max());
+        std::print("Maximum value representable with std::int16_t: ");
+        std::println("{}", std::numeric_limits<std::int16_t>::max());
     }
 
     static void test_sum_unsave() 
     {
-        std::vector<int16_t> vec{ 30'000, 2'000, 700, 60, 7, 1 };   // 32'767 // change last 0 to 1
+        std::vector<std::int16_t> vec{ 30'000, 2'000, 700, 60, 7, 1 };   // 32'767 // change last 0 to 1
         auto result{ sum(vec) };
         std::println("Sum: {}", result);
     }
 
     static void test_sum_safe_hand_written()
     {
-        std::vector<int16_t> vec{ 30'000, 2'000, 700, 60, 7, 1 };
+        std::vector<std::int16_t> vec{ 30'000, 2'000, 700, 60, 7, 1 };
         auto result{ sum_safe_hand_written(vec) };
         std::println("Sum: {}", result);
     }
 
     static void test_sum_safe()
     {
-        std::vector<int16_t> vec{ 30'000, 2'000, 700, 60, 7, 1 };
+        std::vector<std::int16_t> vec{ 30'000, 2'000, 700, 60, 7, 1 };
         auto result{ sum_safe(vec) };
         std::println("Sum: {}", result);
     }
@@ -95,7 +95,7 @@ namespace SafeArithmetic {
     {
         try
         {
-            std::vector<int16_t> vec{ 30'000, 2'000, 700, 60, 7, 1 };
+            std::vector<std::int16_t> vec{ 30'000, 2'000, 700, 60, 7, 1 };
             auto result{ sum_safe(vec) };
             std::println("Sum: {}", result);
         }
