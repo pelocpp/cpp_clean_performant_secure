@@ -16,7 +16,7 @@
 #include <variant>
 #include <vector>
 
-namespace Ranges {
+namespace Ranges_Demo {
 
     // =======================================================================
     // Comparison Ranges vs. Traditional Iterators
@@ -38,7 +38,7 @@ namespace Ranges {
         std::ranges::sort(numbers);
     }
 
-    static void comparison_iterators_vs_ranges()
+    void comparison_iterators_vs_ranges()
     {
         comparison_iterators();
         comparison_ranges();
@@ -67,7 +67,7 @@ namespace Ranges {
         //std::ranges::sort(numbers);
     }
 
-    static void ranges_example_concepts()
+    void ranges_example_concepts()
     {
         stl_example_without_use_of_concepts();
         ranges_example_with_use_of_concepts();
@@ -76,7 +76,7 @@ namespace Ranges {
     // =======================================================================
     // Views
 
-    static void ranges_views()
+    void ranges_views()
     {
         std::vector<int> numbers = { 1, 2, 3, 4, 5, 6 };
 
@@ -91,7 +91,7 @@ namespace Ranges {
     // =======================================================================
     // Range Adaptors
 
-    static void ranges_range_adaptors_last_example_improved()
+    void ranges_range_adaptors_last_example_improved()
     {
         std::vector<int> numbers = { 1, 2, 3, 4, 5, 6 };
 
@@ -102,7 +102,7 @@ namespace Ranges {
         }
     }
 
-    static void ranges_range_adaptors()
+    void ranges_range_adaptors()
     {
         std::vector<int> numbers = { 1, 2, 3, 4, 5, 6 };
 
@@ -115,7 +115,7 @@ namespace Ranges {
         }
     }
 
-    static void ranges_range_adaptors_classic()
+    void ranges_range_adaptors_classic()
     {
         std::vector<int> numbers = { 1, 2, 3, 4, 5, 6 };
 
@@ -190,7 +190,7 @@ namespace Ranges {
         }
     }
 
-    static void ranges_composition_of_views()
+    void ranges_composition_of_views()
     {
         ranges_composition_of_views_01();
         ranges_composition_of_views_02();
@@ -199,7 +199,7 @@ namespace Ranges {
     // =======================================================================
     // Lazy Evaluation
 
-    static void ranges_lazy_evaluation()
+    void ranges_lazy_evaluation()
     {
         auto lazySquares =
             std::views::iota(1, 10) | std::views::transform([](auto i) { return i * i; });
@@ -235,7 +235,7 @@ namespace Ranges {
         std::print("Result: {} ", upper);
     }
 
-    static void ranges_eager_evaluation()
+    void ranges_eager_evaluation()
     {
         ranges_eager_evaluation_01();
         ranges_eager_evaluation_02();
@@ -245,7 +245,7 @@ namespace Ranges {
     // =======================================================================
     // Bounded vs. Unbounded (Infinite) Range
 
-    static void ranges_bounded_vs_unbounded_range()
+    void ranges_bounded_vs_unbounded_range()
     {
         // use bounded std::views::iota with begin and end value
         for (int n : std::views::iota(0, 10)) {
@@ -287,7 +287,7 @@ namespace Ranges {
         return true;
     }
 
-    static void ranges_lazy_primes()
+    void ranges_lazy_primes()
     {
         // generate an infinite range starting from 2
         auto numbers = std::ranges::iota_view{ 2 };
@@ -357,7 +357,7 @@ namespace Ranges {
     }
 }
 
-namespace Ranges
+namespace Ranges_Demo
 {
     struct Person
     {
@@ -368,22 +368,20 @@ namespace Ranges
 
 namespace std
 {
-    using namespace Ranges;
-
     template <>
-    struct formatter<Person>
+    struct formatter<Ranges_Demo::Person>
     {
         constexpr auto parse(std::format_parse_context& ctx) {
             return ctx.begin();
         }
 
-        auto format(const Person& person, std::format_context& ctx) const {
+        auto format(const Ranges_Demo::Person& person, std::format_context& ctx) const {
             return std::format_to(ctx.out(), "Name: {}, Age: {}", person.m_name, person.m_age);
         }
     };
 }
 
-namespace Ranges {
+namespace Ranges_Demo {
 
     // =======================================================================
     // Projections - Part II
@@ -447,7 +445,7 @@ namespace Ranges {
        std::println();
     }
 
-    static void ranges_projections()
+    void ranges_projections()
     {
         ranges_projections_01();
         ranges_projections_02();
@@ -529,7 +527,7 @@ namespace Ranges {
         );
     }
 
-    static void ranges_sentinels()
+    void ranges_sentinels()
     {
         ranges_sentinels_01();
         ranges_sentinels_02();
@@ -569,7 +567,7 @@ namespace Ranges {
         }
     }
 
-    static void ranges_dangling_iterators()
+    void ranges_dangling_iterators()
     {
         ranges_dangling_iterators_01();
         ranges_dangling_iterators_02();
@@ -678,7 +676,7 @@ namespace Ranges {
         }
     }
 
-    static void ranges_keys_view_and_values_view()
+    void ranges_keys_view_and_values_view()
     {
         ranges_keys_view_and_values_view_01();
         ranges_keys_view_and_values_view_02();
@@ -689,7 +687,7 @@ namespace Ranges {
     // =======================================================================
     // std::ranges::common_view
 
-    static void ranges_common_view()
+    void ranges_common_view()
     {
         // std::vector<int> numbers = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
         // or
@@ -707,7 +705,7 @@ namespace Ranges {
     // =======================================================================
     // all_of, any_of, none_of
 
-    static void ranges_all_of_any_of_none_of()
+    void ranges_all_of_any_of_none_of()
     {
         std::vector<int> numbers = { 2, 4, 6, 8, 10 };
 
@@ -724,7 +722,7 @@ namespace Ranges {
     // =======================================================================
     // example with std::variant: filtering of elements of a specific type
 
-    static void ranges_example_variant()
+    void ranges_example_variant()
     {
         std::vector<std::variant<int, std::string>> mixedData = { 1, 2, "three", 4, "five", "six" };
 
@@ -740,7 +738,7 @@ namespace Ranges {
     // =======================================================================
     // example with std::map: mapping elements to another type
 
-    static void ranges_example_unordered_map()
+    void ranges_example_unordered_map()
     {
         std::vector<int> numbers{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
@@ -765,7 +763,7 @@ namespace Ranges {
     // example: trimming a string to alpha characters and converting
     //          the remainder to lower case letters
 
-    static void ranges_example_trim_alpha_tolower()
+    void ranges_example_trim_alpha_tolower()
     {
         auto trimToWord = [](const auto& word) {
 
@@ -796,34 +794,6 @@ namespace Ranges {
         word = trimToWord(word);
         std::println("Word: {}", word);
     }
-}
-
-// =================================================================
-
-void ranges_clean_code_examples()
-{
-    using namespace Ranges;
-
-    comparison_iterators_vs_ranges();
-    ranges_example_concepts();
-    ranges_views();
-    ranges_range_adaptors_last_example_improved();
-    ranges_range_adaptors();
-    ranges_range_adaptors_classic();
-    ranges_composition_of_views();
-    ranges_lazy_evaluation();
-    ranges_eager_evaluation();
-    ranges_bounded_vs_unbounded_range();
-    ranges_lazy_primes();
-    ranges_projections();
-    ranges_sentinels();
-    ranges_dangling_iterators();
-    ranges_keys_view_and_values_view();
-    ranges_common_view();
-    ranges_all_of_any_of_none_of();
-    ranges_example_variant();
-    ranges_example_unordered_map();
-    ranges_example_trim_alpha_tolower();
 }
 
 // ===========================================================================
