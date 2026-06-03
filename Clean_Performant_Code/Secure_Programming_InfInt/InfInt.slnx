@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="InfInt/InfInt.vcxproj" Id="40a8e787-ff61-4817-b96f-d49dd76ceeb5" />
+</Solution>
