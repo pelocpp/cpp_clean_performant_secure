@@ -271,7 +271,8 @@ zum Vektor höchstwahrscheinlich viel mehr Cache-Fehler erzeugt und damit langsam
 Es gibt auch eine vorwärts verkettete Liste namens `std::forward_list` (auch als einfach verkettete Liste bekannt).
 
 Der Grund, warum Sie die doppelt verkettete Listen nicht immer der `std::forward_list` vorziehen sollten,
-ist der übermäßige Speicher, der von den *Previous*-Zeigern (Zeiger auf das vorherige Element) in der doppelt verkettete Liste belegt wird.
+ist der übermäßige Speicher, der von den *Previous*-Zeigern (Zeiger auf das vorherige Element)
+in der doppelt verketteten Liste belegt wird.
 
 Wenn Sie die Liste also nicht rückwärts durchlaufen müssen, verwenden Sie die Klasse `std::forward_list`.
 
