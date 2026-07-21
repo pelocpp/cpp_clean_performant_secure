@@ -183,7 +183,7 @@ Schwer lesbarer Code ist gleichzeitig schwer verständlicher Code.
 
 Eine Richtlinie stammt von Bjarne Stroustrup *himself*:
 
-  * Verwenden Sie Klasse (`class`), wenn es *Invarianten* gibt.
+  * Verwenden Sie Klassen (`class`), wenn es *Invarianten* gibt.
   * Verwenden Sie Strukturen (`struct`), wenn alle Datenelemente sich unabhängig voneinander verändern können.
 
 Es bleibt nur noch zu klären, was man unter einer *Invariante* versteht?

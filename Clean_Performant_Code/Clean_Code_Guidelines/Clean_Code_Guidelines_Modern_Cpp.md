@@ -20,14 +20,16 @@
   * [Perfektes Weiterleiten (*Perfect Forwarding*, `std::forward`)](#link12)
   * [Bessere Lesbarkeit durch *Structured Binding*](#link13)
   * [Vorteile von Lambda-Objekten](#link14)
-  * [Typreiche Programmierung (*Type-Rich Programming*, *Type Traits*)](#link15)
-  * [Verwendung von Konzepten (`concept`) und Anforderungen (`requires`)](#link16)
-  * [Ausnahmesicherheit (*Exception Safety*)](#link17)
-  * [Die No-Throw-Garantie (*No-Throw Guarantee*)](#link18)
-  * [Das `noexcept` Schlüsselwort](#link19)
-  * [*Strong Types*](#link20)
-  * [`const` Propagation für Zeiger](#link21)
-  * [Literatur](#link22)
+  * [Verwendung von Utility-Klassen (`std::variant`, `std::tuple`, `std::any`, etc.)](#link15)
+  * [Monadische Schnittstellen zur Vereinfachung von Fehlerüberprüfungen (`std::optional`, `std::expected`)](#link16)			
+  * [Typreiche Programmierung (*Type-Rich Programming*, *Type Traits*)](#link17)
+  * [Verwendung von Konzepten (`concept`) und Anforderungen (`requires`)](#link18)
+  * [Ausnahmesicherheit (*Exception Safety*)](#link19)
+  * [Die No-Throw-Garantie (*No-Throw Guarantee*)](#link20)
+  * [Das `noexcept` Schlüsselwort](#link21)
+  * [*Strong Types*](#link22)
+  * [`const` Propagation für Zeiger](#link23)
+  * [Literatur](#link24)
 
 ---
 
@@ -429,19 +431,38 @@ Siehe Repository [*Modern C++*](https://github.com/pelocpp/cpp_modern).
 
 ---
 
-### Typreiche Programmierung (*Type-Rich Programming*, *Type Traits*) <a name="link15"></a>
+### Verwendung von Utility-Klassen (`std::variant`, `std::tuple`, `std::any`, etc. <a name="link15"></a>
 
 Siehe Repository [*Modern C++*](https://github.com/pelocpp/cpp_modern).
 
 ---
 
-### Verwendung von Konzepten (`concept`) und Anforderungen (`requires`) <a name="link16"></a>
+### Monadische Schnittstellen zur Vereinfachung von Fehlerüberprüfungen (`std::optional`, `std::expected`) <a name="link16"></a>
+
+Eine monadische Schnittstelle (*Monadic Interface*) in C++ ist ein Programmiermuster,
+mit dem man Operationen (Methodenaufrufe) elegant aneinanderreihen kann,
+ohne ständig manuelle Fehlerprüfungen (wie `if`-Abfragen) schreiben zu müssen.
+
+Im Falle der Klasse `std::optional` bedeutet das:<br />
+Man kann eine Kette von Funktionen aufrufen, und C++ kümmert sich im Hintergrund automatisch darum, ob überhaupt ein Wert existiert.
 
 Siehe Repository [*Modern C++*](https://github.com/pelocpp/cpp_modern).
 
 ---
 
-### Ausnahmesicherheit (*Exception Safety*) <a name="link17"></a>
+### Typreiche Programmierung (*Type-Rich Programming*, *Type Traits*) <a name="link17"></a>
+
+Siehe Repository [*Modern C++*](https://github.com/pelocpp/cpp_modern).
+
+---
+
+### Verwendung von Konzepten (`concept`) und Anforderungen (`requires`) <a name="link18"></a>
+
+Siehe Repository [*Modern C++*](https://github.com/pelocpp/cpp_modern).
+
+---
+
+### Ausnahmesicherheit (*Exception Safety*) <a name="link19"></a>
 
 Die Idee hinter der Thematik *Exception Safety* besteht darin, dass Funktionen bzw. eine Klasse und ihre Methoden
 ihren Clients eine Art Versprechen bzw. eine Garantie hinsichtlich möglicherweise ausgelöster oder nicht ausgelöster Ausnahmen geben.
@@ -489,7 +510,7 @@ Die vierte und letzte Ebene der Ausnahmesicherheit behandeln wir im nächsten Abs
 
 ---
 
-### Die No-Throw-Garantie (*No-Throw Guarantee*) <a name="link18"></a>
+### Die No-Throw-Garantie (*No-Throw Guarantee*) <a name="link20"></a>
 
 
 Diese Ebene der Ausnahmesicherheit ist die höchste Ausnahmesicherheitsstufe:
@@ -537,7 +558,7 @@ Eine `swap`-Funktion muss unter allen Umständen die No-Throw-Garantie gewährleit
 
 ---
 
-### Das `noexcept` Schlüsselwort <a name="link19"></a>
+### Das `noexcept` Schlüsselwort <a name="link21"></a>
 
 Der Spezifizierer `noexcept` in der Signatur einer Funktion gibt an,
 dass diese Funktion **keine** Ausnahme auslösen darf.
@@ -575,7 +596,7 @@ Destruktoren einer Klasse sind implizit als `noexcept` definiert.
 
 ---
 
-### *Strong Types* <a name="link20"></a>
+### *Strong Types* <a name="link22"></a>
 
 Was versteht man unter dem Begriff &bdquo;*Strong Typing*&rdquo;?
 
@@ -679,7 +700,7 @@ Hantierung aller Regeln, die mit einer bestimmten Instanzvariablen verbunden sin
 
 ---
 
-### `const` Propagation für Zeiger <a name="link21"></a>
+### `const` Propagation für Zeiger <a name="link23"></a>
 
 Mit dem Schlüsselwort `const` können wir dem Compiler mitteilen,
 welche Objekte unveränderlich sind.
@@ -765,7 +786,7 @@ für Zeiger.
 
 ---
 
-# Literatur <a name="link22"></a>
+# Literatur <a name="link24"></a>
 
 Zum Schlagwort &bdquo;*Temporary Lifetime Extension*&rdquo;
 gibt es im Netz zwei interessante Aufsätze:

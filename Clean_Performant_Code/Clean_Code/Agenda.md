@@ -41,10 +41,11 @@
   * Vorteile von `auto` (*Automatic Type Deduction*)
   * Bessere Lesbarkeit durch *Structured Binding*
   * Vorteile von Lambda-Objekten
+  * Verwendung von Utility-Klassen (`std::variant`, `std::tuple`, `std::any`, etc.)
+  * Monadische Schnittstellen zur Vereinfachung von Fehlerüberprüfungen (`std::optional`, `std::expected`)
   * Typreiche Programmierung (*Type-Rich Programming*, *Type Traits*)
   * *Strong Types*
   * Verwendung von Konzepten (`concept`) und Anforderungen (`requires`)
-
 
 ## Einige Design Patterns (Entwurfsmuster) und Idiome
   * Das SOLID Idiom
@@ -81,7 +82,6 @@
   * Pipelining mit Bereichs-Adaptern
   * Sauberer Code in der funktionalen Programmierung
 
-
 ## Notwendigkeit des Testens
 
   * Unit-Tests
@@ -89,7 +89,6 @@
     * Test Codequalität
     * Unit-Test-Benennung
   * Beispiel: Die Bibliothek *Catch2*
-
 
 ---
 

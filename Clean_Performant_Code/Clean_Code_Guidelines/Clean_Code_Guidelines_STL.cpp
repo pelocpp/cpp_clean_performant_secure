@@ -5,8 +5,8 @@
 #include <algorithm>
 #include <map>
 #include <print>
-#include <vector>
 #include <ranges>
+#include <vector>
 
 namespace GuidelinesSTLAlgorithms {
 
