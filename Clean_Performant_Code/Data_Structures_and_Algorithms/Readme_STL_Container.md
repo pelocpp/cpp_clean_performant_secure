@@ -714,7 +714,7 @@ Sollten die Eingabedaten bereits sortiert vorliegen, ist die Performanz ebenfall
 02: 
 03:     std::flat_map<std::string, int> people;
 04: 
-05:     people["Alice"] = 25;
+05:     people["Mary"] = 25;
 06:     people["Bob"] = 30;
 07:     people["Carol"] = 35;
 08: 
@@ -722,24 +722,24 @@ Sollten die Eingabedaten bereits sortiert vorliegen, ist die Performanz ebenfall
 10:         std::println("{} is {} years old.", pair.first, pair.second);
 11:     }
 12: 
-13:     int aliceAge{ people["Alice"] };
-14:     std::println("Alice is {} years old.", aliceAge);
+13:     int maryAge{ people["Mary"] };
+14:     std::println("Mary is {} years old.", maryAge);
 15: 
-16:     people.erase("Alice");
+16:     people.erase("Mary");
 17: 
-18:     bool aliceExists{ people.contains("Alice") };
-19:     std::println("Alice exists in the flat_map: {}.", aliceExists);
+18:     bool maryExists{ people.contains("Mary") };
+19:     std::println("Mary exists in the flat_map: {}.", maryExists);
 20: }
 ```
 
 *Ausgabe*:
 
 ```
-Alice is 25 years old.
+Mary is 25 years old.
 Bob is 30 years old.
 Carol is 35 years old.
-Alice is 25 years old.
-Alice exists in the flat_map: false.
+Mary is 25 years old.
+Mary exists in the flat_map: false.
 ```
 
 ---

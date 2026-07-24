@@ -118,7 +118,7 @@ und schwer reproduzierbar. Es gibt aber Strategien, wie man damit umgehen kann:
 
 ### Verwendung eines RAII-Guards
 
-Manchmal möchte man den ursprünglichen Wert einer globale Variablen sichern
+Manchmal möchte man den ursprünglichen Wert einer globalen Variablen sichern
 und nach dem Test zurücksetzen. Dafür kann man einen RAII Guard schreiben:
 
 ```cpp
@@ -297,7 +297,7 @@ Ein **Stub** liefert immer vordefinierte Daten zurück:
 02: {
 03: public:
 04:     std::shared_ptr<User> findById(int id) override {
-05:         return std::make_shared<User>("Alice");  // there is always "Alice" returned
+05:         return std::make_shared<User>("Mary");  // there is always "Mary" returned
 06:     }
 07: 
 08:     void save(const User& user) override {
@@ -315,7 +315,7 @@ Ein **Stub** liefert immer vordefinierte Daten zurück:
 20:     auto name{ service.getUserName(1) };
 21: 
 22:     // assert
-23:     CHECK(name == "Alice");
+23:     CHECK(name == "Mary");
 24: }
 ```
 

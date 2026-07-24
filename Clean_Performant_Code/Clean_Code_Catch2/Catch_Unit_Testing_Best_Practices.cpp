@@ -268,7 +268,7 @@ class UserRepositoryStub : public UserRepository
 {
 public:
     std::shared_ptr<User> findById(int id) override {
-        return std::make_shared<User>("Alice");  // there is always "Alice" returned
+        return std::make_shared<User>("Mary");  // there is always "Mary" returned
     }
 
     void save(const User& user) override {
@@ -286,7 +286,7 @@ TEST_CASE("getUserName", "[getUserName]")
     auto name{ service.getUserName(1) };
 
     // assert
-    CHECK(name == "Alice");
+    CHECK(name == "Mary");
 }
 
 // ---------------------------------------------------------------------------

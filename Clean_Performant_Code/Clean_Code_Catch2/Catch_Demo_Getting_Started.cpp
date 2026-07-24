@@ -133,8 +133,8 @@ SCENARIO("bdd vectors can be sized and resized", "[bdd_vector]") {
             v.resize(0);
 
             THEN("the size changes but not capacity") {
-                REQUIRE(v.size() == 10);
-                REQUIRE(v.capacity() >= 5);
+                REQUIRE(v.size() == 10);          // Wrong: 10, Correct: 0
+                REQUIRE(v.capacity() >= 5);       // Correct
             }
         }
         WHEN("more capacity is reserved") {

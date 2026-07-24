@@ -156,7 +156,7 @@ namespace STLContainer {
 
             std::map<std::string, int> people;   // replace 'std::map' with 'flat_map', add "#include <flat_map>"
 
-            people["Alice"] = 25;
+            people["Mary"] = 25;
             people["Bob"] = 30;
             people["Carol"] = 35;
 
@@ -164,13 +164,13 @@ namespace STLContainer {
                 std::println("{} is {} years old.", pair.first, pair.second);
             }
 
-            int aliceAge{ people["Alice"] };
-            std::println("Alice is {} years old.", aliceAge);
+            int maryAge{ people["Mary"] };
+            std::println("Mary is {} years old.", maryAge);
 
-            people.erase("Alice");
+            people.erase("Mary");
 
-            bool aliceExists{ people.contains("Alice") };
-            std::println("Alice exists in the flat_map: {}.", aliceExists);
+            bool maryExists{ people.contains("Mary") };
+            std::println("Mary exists in the flat_map: {}.", maryExists);
         }
     }
 
