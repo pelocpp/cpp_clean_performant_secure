@@ -286,7 +286,7 @@ auch eine *Hervorhebung*:
 ### Minimieren Sie die Sichtbarkeit von Mitgliedern einer Klasse <a name="link9"></a>
 
 Man sollte Variablen in einer Klasse möglichst mit `private` kennzeichnen,
-um das Prinzip der `*Datenkapselung*` (*Data Hiding*) zu nutzen.
+um das Prinzip der *Datenkapselung* (*Data Hiding*) zu nutzen.
 
 Dies verbirgt die interne Implementierung und schützt die Daten vor unerwünschtem Zugriff
 und Manipulation von außen.
