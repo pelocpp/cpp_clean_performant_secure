@@ -132,6 +132,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="IsTranparent.cpp" />
     <ClCompile Include="STL_Algorithms.cpp" />
     <ClCompile Include="STL_Container.cpp" />
     <ClCompile Include="Hashing.cpp" />
