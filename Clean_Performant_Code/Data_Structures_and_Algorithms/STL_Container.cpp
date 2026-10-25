@@ -9,6 +9,7 @@
 #include <span>
 #include <stack>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 namespace STLContainer {
@@ -80,6 +81,45 @@ namespace STLContainer {
 
                 print(a);
                 // print(b); // does not compile, print requires an int array of size 10
+            }
+        }
+    }
+
+    namespace Unordered_Set {
+
+        static void test_unordered_set()
+        {
+            // list of IP addresses arriving every permanently (including duplicates)
+            std::vector<std::string> logStream = {
+                "192.168.1.10",
+                "203.0.113.5",
+                "192.168.1.10",  // duplicate!
+                "198.51.100.42",
+                "203.0.113.5",   // duplicate!
+                "192.168.1.50"
+            };
+
+            // 2. an std::unordered_set object for unique visitors
+            std::unordered_set<std::string> uniqueVisitors;
+
+            // 3. adding IPs to the set
+            for (const auto& ip : logStream) {
+                uniqueVisitors.insert(ip);
+            }
+
+            // 4. evaluation
+            std::println("Total log entries: {}", logStream.size());
+            std::println("Unique visitors: {}", uniqueVisitors.size());
+
+            // 5. fast existence check (e.g., for a blacklist or admin check)
+            std::string checkIp = "198.51.100.42";
+
+            // check in O(1) time whether the IP exists in the set
+            if (uniqueVisitors.contains(checkIp)) {      // .contains() is available since C++20
+                std::println("{} visited the page today.", checkIp);
+            }
+            else {
+                std::println("{} wasn't on the site today.", checkIp);
             }
         }
     }
@@ -236,25 +276,28 @@ namespace STLContainer {
 
 void test_stl_container()
 {
-    using namespace STLContainer::Vectors;
-    test_vector();
-    test_std_array();
+    //using namespace STLContainer::Vectors;
+    //test_vector();
+    //test_std_array();
 
-    using namespace STLContainer::Stacks;
-    test_stack();
+    using namespace STLContainer::Unordered_Set;
+    test_unordered_set();
 
-    using namespace STLContainer::Queues;
-    test_queue();
+    //using namespace STLContainer::Stacks;
+    //test_stack();
 
-    using namespace STLContainer::PriorityQueues;
-    test_priority_queue();
+    //using namespace STLContainer::Queues;
+    //test_queue();
 
-    using namespace STLContainer::FlatMap;
-    test_flat_map();
+    //using namespace STLContainer::PriorityQueues;
+    //test_priority_queue();
 
-    using namespace STLContainer::Span;
-    test_array();
-    test_span();
+    //using namespace STLContainer::FlatMap;
+    //test_flat_map();
+
+    //using namespace STLContainer::Span;
+    //test_array();
+    //test_span();
 }
 
 // ===========================================================================

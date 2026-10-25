@@ -409,6 +409,54 @@ Die anderen Buckets sind leer.
 
 *Abbildung* 8: Jeder Bucket enthält 0 oder mehr Elemente.
 
+Beispiel:
+
+```cpp
+01: void test()
+02: {
+03:     // list of IP addresses arriving every permanently (including duplicates)
+04:     std::vector<std::string> logStream = {
+05:         "192.168.1.10",
+06:         "203.0.113.5",
+07:         "192.168.1.10",  // duplicate!
+08:         "198.51.100.42",
+09:         "203.0.113.5",   // duplicate!
+10:         "192.168.1.50"
+11:     };
+12: 
+13:     // 2. an std::unordered_set object for unique visitors
+14:     std::unordered_set<std::string> uniqueVisitors;
+15: 
+16:     // 3. adding IPs to the set
+17:     for (const auto& ip : logStream) {
+18:         uniqueVisitors.insert(ip);
+19:     }
+20: 
+21:     // 4. evaluation
+22:     std::println("Total log entries: {}", logStream.size());
+23:     std::println("Unique visitors: {}", uniqueVisitors.size());
+24: 
+25:     // 5. fast existence check (e.g., for a blacklist or admin check)
+26:     std::string checkIp = "198.51.100.42";
+27: 
+28:     // check in O(1) time whether the IP exists in the set
+29:     if (uniqueVisitors.contains(checkIp)) {      // .contains() is available since C++20
+30:         std::println("{} visited the page today.", checkIp);
+31:     }
+32:     else {
+33:         std::println("{} wasn't on the site today.", checkIp);
+34:     }
+35: }
+```
+
+Ausgabe:
+
+```
+Total log entries: 6
+Unique visitors: 4
+198.51.100.42 visited the page today.
+```
+
 ---
 
 ## Berechnung von Hash-Werten für benutzerdefinierte Typen <a name="link12"></a>
